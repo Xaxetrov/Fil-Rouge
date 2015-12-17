@@ -14,9 +14,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    Entity.cpp
+    Entity.cpp \
+    Nonsolid.cpp \
+    World.cpp \
+    Solid.cpp \
+    Animal.cpp
 
 HEADERS  += mainwindow.h \
-    Entity.h
+    Entity.h \
+    Nonsolid.h \
+    World.h \
+    Solid.h \
+    Animal.h
 
 FORMS    += mainwindow.ui
