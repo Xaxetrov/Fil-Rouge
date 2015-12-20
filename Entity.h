@@ -7,11 +7,13 @@ public:
     Entity(int x, int y, int creationDate);
     int getX() {return m_x;}
     int getY() {return m_y;}
+    int getRadius() {return m_radius;}
     int getCreationDate() {return m_creationDate;}
 
 private:
     int m_x;
     int m_y;
+    int m_radius;
     int m_creationDate;
 
 };
