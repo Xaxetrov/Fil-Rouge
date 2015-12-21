@@ -1,7 +1,7 @@
 #include "Entity.h"
 
-Entity::Entity(int x, int y, int radius) : m_x(x), m_y(y), m_radius(radius)
+Entity::Entity(int x, int y, int radius) : m_coordinate(x, y), m_radius(radius)
 {
-    //init creationDate here
+    m_creationDate = 0;//init creationDate here
 }
 

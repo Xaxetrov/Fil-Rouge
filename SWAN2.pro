@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     AnimalVisionSector.cpp \
     NonSolid.cpp \
     VisionSector.cpp \
-    Vision.cpp
+    Vision.cpp \
+    Coordinate.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -31,6 +32,7 @@ HEADERS  += mainwindow.h \
     AnimalVisionSector.h \
     NonSolid.h \
     VisionSector.h \
-    Vision.h
+    Vision.h \
+    Coordinate.h
 
 FORMS    += mainwindow.ui
