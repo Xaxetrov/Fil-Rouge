@@ -1,12 +1,12 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <iostream>
+/*#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 #include "World.h"
-#include "Neuron.h"
+#include "Neuron.h"*/
 
 int main(int argc, char *argv[])
 {

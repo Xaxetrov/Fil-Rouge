@@ -15,7 +15,7 @@ public:
     QBrush & getEntityBrush(Entity entity);
     QPen & getEntityPen(Entity entity);
 
-    QBrush & BackgroundBrush();
+    QBrush & getBackgroundBrush();
     QBrush & getWaterBrush();
     QPen & getWaterPen();
     QBrush & getGrassBrush();
@@ -27,6 +27,7 @@ private:
     ///environnement colors: (non living)
     //Background color:
     QBrush backgroundBrush;
+    QPen backgroundPen; //used in not found case
     //water color:
     QBrush waterBrush;
     QPen waterPen;
@@ -37,7 +38,6 @@ private:
     //teams colors:
     std::vector<QBrush> teamsBrushs;
     QPen teamsPen;
-
 };
 
 #endif // WORLDCOLORS_H

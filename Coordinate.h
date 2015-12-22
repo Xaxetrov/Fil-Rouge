@@ -5,7 +5,7 @@
 class Coordinate
 {
 public:
-    Coordinate(int x, int y);
+    Coordinate(int x=0, int y=0);
     int getX() {return m_x;}
     int getY() {return m_y;}
     void setX(int x) {m_x=x;}

@@ -20,17 +20,14 @@ SOURCES += main.cpp\
     Animal.cpp \
     AnimalVisionSector.cpp \
     NonSolid.cpp \
-    VisionSector.cpp \
     Vision.cpp \
     Coordinate.cpp \
-<<<<<<< HEAD
     WorldWidget.cpp \
-    WorldColors.cpp
-=======
+    WorldColors.cpp \
     Neuron.cpp \
     NeuralNetwork.cpp \
-    Neuronlayer.cpp
->>>>>>> c8e0fcd5a5d6d888867ad38b4459b3c2c3752abf
+    Neuronlayer.cpp \
+    Visionsector.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -39,16 +36,13 @@ HEADERS  += mainwindow.h \
     Animal.h \
     AnimalVisionSector.h \
     NonSolid.h \
-    VisionSector.h \
     Vision.h \
     Coordinate.h \
-<<<<<<< HEAD
     WorldWidget.h \
-    WorldColors.h
-=======
+    WorldColors.h \
     Neuron.h \
     Neuronlayer.h \
-    NeuralNetwork.h
->>>>>>> c8e0fcd5a5d6d888867ad38b4459b3c2c3752abf
+    NeuralNetwork.h \
+    Visionsector.h
 
 FORMS    += mainwindow.ui
