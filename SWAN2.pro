@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     VisionSector.cpp \
     Vision.cpp \
     Coordinate.cpp \
-    Neuron.cpp
+    Neuron.cpp \
+    NeuralNetwork.cpp \
+    Neuronlayer.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -35,6 +37,8 @@ HEADERS  += mainwindow.h \
     VisionSector.h \
     Vision.h \
     Coordinate.h \
-    Neuron.h
+    Neuron.h \
+    Neuronlayer.h \
+    NeuralNetwork.h
 
 FORMS    += mainwindow.ui
