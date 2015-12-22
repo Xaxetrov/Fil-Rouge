@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     NonSolid.cpp \
     VisionSector.cpp \
     Vision.cpp \
-    Coordinate.cpp
+    Coordinate.cpp \
+    WorldWidget.cpp \
+    WorldColors.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -33,6 +35,8 @@ HEADERS  += mainwindow.h \
     NonSolid.h \
     VisionSector.h \
     Vision.h \
-    Coordinate.h
+    Coordinate.h \
+    WorldWidget.h \
+    WorldColors.h
 
 FORMS    += mainwindow.ui
