@@ -22,7 +22,7 @@ public:
     std::vector<double> update(std::vector<double> &inputs);
 
     //sigmoid response curve
-    double Sigmoid(double activation, double response);
+    double Sigmoid(double activation, double response){return 1;}
 
 private:
     int m_inputNum;

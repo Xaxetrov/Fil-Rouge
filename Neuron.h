@@ -11,6 +11,8 @@ class Neuron
 public:
     Neuron(int inputNum);
     double RandomWeight();
+    int getInputsNum() {return m_inputNum;}
+    std::vector<double> getWeights() {return m_weights;}
 
 private:
     int m_inputNum;
