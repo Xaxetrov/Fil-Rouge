@@ -20,7 +20,7 @@ WorldColors::WorldColors()
     teamsBrushs.push_back(QBrush(Qt::yellow));
 }
 
-QBrush & WorldColors::getEntityBrush(Entity entity)
+QBrush & WorldColors::getEntityBrush(const Entity & entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
     /*if(typeid(entity) == typeid( ... ))
@@ -34,7 +34,7 @@ QBrush & WorldColors::getEntityBrush(Entity entity)
     return backgroundBrush;
 }
 
-QPen & WorldColors::getEntityPen(Entity entity)
+QPen & WorldColors::getEntityPen(const Entity & entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
     /*if(typeid(entity) == typeid( ... ))

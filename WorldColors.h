@@ -12,8 +12,8 @@ class WorldColors
 public:
     WorldColors();
 
-    QBrush & getEntityBrush(Entity entity);
-    QPen & getEntityPen(Entity entity);
+    QBrush & getEntityBrush(const Entity & entity);
+    QPen & getEntityPen(const Entity & entity);
 
     QBrush & getBackgroundBrush();
     QBrush & getWaterBrush();

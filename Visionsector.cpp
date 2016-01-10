@@ -7,24 +7,24 @@ VisionSector::VisionSector(Coordinate &center, int leftAngle, int rightAngle, in
 
 void VisionSector::scan()
 {
-    std::vector<Entity> selection;
+    std::vector<Entity*> selection;
     std::vector<double> distances;
     for(unsigned int i=0; i<m_entities.size(); i++)
     {
         double d = sqrt(pow(m_entities.at(i).getX()-m_center.getX(),2)+pow(m_entities.at(i).getY()-m_center.getY(),2));
         if(d<m_range)
         {
-            selection.push_back(m_entities.at(i));
+            selection.push_back(&m_entities.at(i));
             distances.push_back(d);
         }
     }
 
-    std::vector<Entity> selection2;
+    std::vector<Entity*> selection2;
     std::vector<double> distances2;
     for(unsigned int i=0; i<selection.size(); i++)
     {
-        int dX = selection.at(i).getX();
-        int dY = selection.at(i).getY();
+        int dX = selection.at(i)->getX();
+        int dY = selection.at(i)->getY();
         double angle = atan2(dY,dX);
         if((angle<m_leftAngle && angle>m_rightAngle) || (angle>m_leftAngle && angle<m_rightAngle && m_leftAngle<m_rightAngle))
         {
@@ -49,6 +49,6 @@ void VisionSector::scan()
                 min=distances2.at(i)<min;
             }
         }
-        m_closest=&selection2.at(indMin);
+        m_closest=selection2.at(indMin);
     }
 }

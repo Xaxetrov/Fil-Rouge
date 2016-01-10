@@ -19,19 +19,23 @@ void WorldWidget::updateScene()
     m_scene->clear();
     m_scene->setSceneRect(0,0,m_world->getSizeX(),m_world->getSizeY());
     //add each entity to the scene one by one:
-    std::vector<Entity> entities = m_world->getEntities();
-    for(std::vector<Entity>::iterator ite=entities.begin() ; ite!=entities.end() ; ite++)
+    std::vector<Entity> & entities = m_world->getEntities();
+    for(Entity & ite : entities)
     {
-        drawEntity(&(*ite));
+        drawEntity(ite);
     }
+    /*for(int i=0 ; i<entities.size() ; i++)
+    {
+        drawEntity(entities.at(i));
+    }*/
 }
 
-void WorldWidget::drawEntity(Entity *e)
+void WorldWidget::drawEntity(const Entity & e)
 {
     //draw a circle representing the Entity
-    QRect baseSquare(e->getX()-UNIT_SIZE/2,e->getY()-UNIT_SIZE/2,UNIT_SIZE,UNIT_SIZE);
-    m_scene->addEllipse(baseSquare,colors.getEntityPen(*e),colors.getEntityBrush(*e));
-    if(Animal* living = dynamic_cast<Animal*>(e))
+    QRect baseSquare(e.getX()-UNIT_SIZE/2,e.getY()-UNIT_SIZE/2,UNIT_SIZE,UNIT_SIZE);
+    m_scene->addEllipse(baseSquare,colors.getEntityPen(e),colors.getEntityBrush(e));
+    /*if(Animal* living = dynamic_cast<Animal*>(e))
     {
         //add an eye to show the looking direction
         double angle = living->getAngle();
@@ -39,7 +43,7 @@ void WorldWidget::drawEntity(Entity *e)
         int eyeY = e->getX()+sin(angle)*UNIT_SIZE/4;
         QRect eyeSquare(eyeX,eyeY,UNIT_SIZE/2,UNIT_SIZE/2);
         m_scene->addEllipse(eyeSquare,colors.getEntityPen(*e),colors.getTeamsEyeBrush());
-    }
+    }*/
 }
 
 WorldColors & WorldWidget::getColors()
