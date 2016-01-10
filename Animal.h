@@ -9,19 +9,20 @@ class Animal : public Solid
 public:
     Animal(int x, int y, int radius, int maxSpeed, World * world);
 
-    int getMaxSpeed() {return m_maxSpeed;}
-    int getHealth() {return m_health;}
-    int getHunger() {return m_hunger;}
-    int getThirst() {return m_thirst;}
-    int getFear() {return m_fear;}
+    int getMaxSpeed();
+    int getHealth();
+    int getHunger();
+    int getThirst();
+    int getFear();
+    double getAngle();
 
     void die();
     void move(int speedPercentage);
-    void turn(int angle);
+    void turn(double angle);
 
 private :
     int m_maxSpeed;
-    int m_angle; // m_angle in rad
+    double m_angle; // m_angle in rad
     int m_health;
     int m_hunger;
     int m_thirst;

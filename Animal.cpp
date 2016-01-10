@@ -18,8 +18,32 @@ void Animal::move(int speedPercentage)
     }
 }
 
+int Animal::getMaxSpeed()
+{
+    return m_maxSpeed;
+}
 
+int Animal::getHealth()
+{
+    return m_health;
+}
 
+int Animal::getHunger()
+{
+    return m_hunger;
+}
 
+int Animal::getThirst()
+{
+    return m_thirst;
+}
 
+int Animal::getFear()
+{
+    return m_fear;
+}
 
+double Animal::getAngle()
+{
+    return m_angle;
+}
