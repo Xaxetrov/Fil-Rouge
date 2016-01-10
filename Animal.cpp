@@ -8,4 +8,9 @@ Animal::Animal(int x, int y, int radius, int maxSpeed) : Solid(x, y, radius), m_
     m_fear = 0;
 }
 
+Animal::move(int speedPercentage)
+{
+	
+}
+
 
