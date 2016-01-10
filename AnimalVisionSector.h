@@ -7,7 +7,7 @@
 class AnimalVisionSector : public VisionSector
 {
 public:
-    AnimalVisionSector(int leftAngle, int rightAngle, int range, bool frontSector);
+    AnimalVisionSector(Coordinate &center, int leftAngle, int rightAngle, int range, bool frontSector, std::vector<Entity>& e);
     Animal scan();
 
 private:

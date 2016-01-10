@@ -8,10 +8,11 @@
 class Vision
 {
 public:
-    Vision();
+    Vision(Coordinate &center);
 
 private :
     std::vector<VisionSector> sectors;
+    Coordinate &m_center;
 };
 
 #endif // VISION_H

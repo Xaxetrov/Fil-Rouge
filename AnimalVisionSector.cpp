@@ -1,6 +1,7 @@
 #include "AnimalVisionSector.h"
 
-AnimalVisionSector::AnimalVisionSector(int leftAngle, int rightAngle, int range, bool frontSector): VisionSector(leftAngle, rightAngle, range), m_frontSector(frontSector)
+AnimalVisionSector::AnimalVisionSector(Coordinate &center, int leftAngle, int rightAngle, int range, bool frontSector, std::vector<Entity>& e): VisionSector(center, leftAngle, rightAngle, range,e),
+    m_frontSector(frontSector)
 {
 
 }
