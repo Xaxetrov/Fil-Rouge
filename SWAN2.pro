@@ -43,6 +43,7 @@ HEADERS  += mainwindow.h \
     Neuron.h \
     Neuronlayer.h \
     NeuralNetwork.h \
-    Visionsector.h
+    Visionsector.h \
+    config.h
 
 FORMS    += mainwindow.ui
