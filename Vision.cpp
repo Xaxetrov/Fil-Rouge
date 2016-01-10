@@ -1,7 +1,7 @@
 #include "Vision.h"
 
 
-Vision::Vision()
+Vision::Vision(Coordinate &center) : m_center(center)
 {
 
 }
