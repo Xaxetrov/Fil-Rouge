@@ -22,7 +22,7 @@ void WorldWidget::updateScene()
     std::vector<Entity> entities = m_world->getEntities();
     for(std::vector<Entity>::iterator ite=entities.begin() ; ite!=entities.end() ; ite++)
     {
-        drawEntity(&*ite);
+        drawEntity(&(*ite));
     }
 }
 
