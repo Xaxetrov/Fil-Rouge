@@ -24,10 +24,6 @@ void WorldWidget::updateScene()
     {
         drawEntity(ite);
     }
-    /*for(int i=0 ; i<entities.size() ; i++)
-    {
-        drawEntity(entities.at(i));
-    }*/
 }
 
 void WorldWidget::drawEntity(const Entity & e)
