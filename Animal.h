@@ -17,7 +17,7 @@ public:
 
     void die();
     void move(int speedPercentage);
-    void turn(int angle);
+    void turn(double angle);
 
 private :
     int m_maxSpeed;
