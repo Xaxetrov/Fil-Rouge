@@ -1,6 +1,7 @@
 #include "Animal.h"
+#include <cmath>
 
-Animal::Animal(int x, int y, int radius, int maxSpeed) : Solid(x, y, radius), m_maxSpeed(maxSpeed)
+Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 0;
@@ -10,9 +11,12 @@ Animal::Animal(int x, int y, int radius, int maxSpeed) : Solid(x, y, radius), m_
 
 void Animal::move(int speedPercentage)
 {
-
+    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+    if (!m_world->isCollision(*this))
+    {
+        setCoordinate(getX() + cos(m_angle + M_PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + M_PI) * speedPercentage * m_maxSpeed / 100);
+    }
 }
-
 
 int Animal::getMaxSpeed()
 {
