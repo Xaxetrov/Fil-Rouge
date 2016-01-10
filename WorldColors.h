@@ -22,6 +22,7 @@ public:
     QPen & getGrassPen();
     std::vector<QBrush> & getTeamsBrushs();
     QPen & getTeamsPen();
+    QBrush & getTeamsEyeBrush();
 
 private:
     ///environnement colors: (non living)
@@ -38,6 +39,7 @@ private:
     //teams colors:
     std::vector<QBrush> teamsBrushs;
     QPen teamsPen;
+    QBrush teamsEye;
 };
 
 #endif // WORLDCOLORS_H

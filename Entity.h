@@ -7,6 +7,7 @@ class Entity
 {
 public:
     Entity(int x, int y, int creationDate);
+    Entity(const Entity & e); //to disable copy constructor
     Coordinate getCoordinate() {return m_coordinate;}
     void setCoordinate(int x, int y) {m_coordinate.set(x, y);}
     int getX() {return m_coordinate.getX();}

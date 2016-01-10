@@ -19,7 +19,7 @@ public:
     WorldColors & getColors();
 
 public slots:
-    void updateView();
+    void updateScene();
 
 private:
     void drawEntity(Entity *entity);
