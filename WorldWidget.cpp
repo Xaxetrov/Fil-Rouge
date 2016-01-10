@@ -31,6 +31,7 @@ void WorldWidget::drawEntity(const Entity & e)
     //draw a circle representing the Entity
     QRect baseSquare(e.getX()-UNIT_SIZE/2,e.getY()-UNIT_SIZE/2,UNIT_SIZE,UNIT_SIZE);
     m_scene->addEllipse(baseSquare,colors.getEntityPen(e),colors.getEntityBrush(e));
+    //TODO found why Animal and Entity are not polymorphic... (virtual method ?)
     /*if(Animal* living = dynamic_cast<Animal*>(e))
     {
         //add an eye to show the looking direction
