@@ -17,7 +17,9 @@ void Coordinate::set(int x, int y)
 
 double Coordinate::distance(const Coordinate &c1, const Coordinate &c2)
 {
-    int deltaX = std::min(c1.getX() - c2.getX(), WORLD_SIZE_X - c1.getX() + c2.getX());
-    int deltaY = std::min(c1.getY() - c2.getY(), WORLD_SIZE_Y - c1.getY() + c2.getY());
-    return sqrt(deltaX * deltaX + deltaY * deltaY);
+    int deltaX = std::abs(c1.getX() - c2.getX());
+    int deltaY = std::abs(c1.getY() - c2.getY());
+    int deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
+    int deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
+    return sqrt(deltaXTore * deltaXTore + deltaYTore * deltaYTore);
 }
