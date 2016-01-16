@@ -15,6 +15,7 @@ public:
     int getRadius() const {return m_radius;}
     int getCreationDate() {return m_creationDate;}
 
+    virtual bool isLiving() = 0; // Temporary
 
 private:
     Coordinate m_coordinate;

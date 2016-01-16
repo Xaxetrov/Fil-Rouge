@@ -19,7 +19,6 @@ SOURCES += main.cpp\
     World.cpp \
     Solid.cpp \
     Animal.cpp \
-    AnimalVisionSector.cpp \
     NonSolid.cpp \
     Vision.cpp \
     Coordinate.cpp \
@@ -28,14 +27,16 @@ SOURCES += main.cpp\
     Neuron.cpp \
     NeuralNetwork.cpp \
     Neuronlayer.cpp \
-    Visionsector.cpp
+    Percepted.cpp \
+    Visionsector.cpp \
+    Visionsector_Living.cpp \
+    Visionsector_NonLiving.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
     World.h \
     Solid.h \
     Animal.h \
-    AnimalVisionSector.h \
     NonSolid.h \
     Vision.h \
     Coordinate.h \
@@ -44,7 +45,10 @@ HEADERS  += mainwindow.h \
     Neuron.h \
     Neuronlayer.h \
     NeuralNetwork.h \
+    Percepted.h \
     Visionsector.h \
+    VisionsectorLiving.h \
+    VisionsectorNonLiving.h \
     config.h
 
 FORMS    += mainwindow.ui

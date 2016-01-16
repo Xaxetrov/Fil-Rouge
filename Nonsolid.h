@@ -8,6 +8,8 @@ class NonSolid : public Entity
 public:
     NonSolid(int x, int y, int radius);
 
+    bool isLiving() { return false; }; // Temporary
+
 };
 
 #endif // NONSOLID_H
