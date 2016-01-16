@@ -6,8 +6,8 @@
 class VisionSector_Living : public VisionSector
 {
     public:
-        VisionSector_Living(Coordinate &center, int angle1, int angle2, int range, std::vector<Entity> &entities);
-        bool see();
+        VisionSector_Living(Coordinate &center, const int angle1, const int angle2, const int range, std::vector<Entity> &entities);
+        void see();
 
     private:
     

@@ -10,8 +10,9 @@ class VisionSector
 {
     public:
         VisionSector(Coordinate &center, int angle1, int angle2, int range, std::vector<Entity> &entities);
-        ~VisionSector();
+        virtual ~VisionSector();
 
+        virtual void see() = 0;
         Percepted* getNearestPercepted() { return m_nearestPercepted; };
 
     protected:

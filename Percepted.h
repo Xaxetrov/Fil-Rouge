@@ -11,11 +11,11 @@ class Percepted
 
         void set(Entity *entity, double distance);
 
-        Entity * getEntity() { return m_entity; };
+        Entity* getEntity() { return m_entity; };
         double getDistance() { return m_distance; };
 
     private:
-        Entity * m_entity;
+        Entity* m_entity;
         double m_distance;
 };
 

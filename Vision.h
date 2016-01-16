@@ -11,11 +11,12 @@ class Vision
 {
 	public:
 	    Vision(Coordinate &position, std::vector<Entity> &entities);
-        void scan();
+        virtual ~Vision();
+        void see();
 
 	private:
-        Coordinate * m_position;
-        std::vector<VisionSector> m_sectors;
+        Coordinate &m_position;
+        std::vector<VisionSector *> m_sectors;
         std::vector<Entity> &m_entities;
 };
 
