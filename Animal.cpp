@@ -13,7 +13,7 @@ Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x,
 void Animal::move(int speedPercentage)
 {
     setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-    if (!m_world->isCollision(*this))
+    if (!m_world->isCollision(this))
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
     }

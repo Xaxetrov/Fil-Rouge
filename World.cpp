@@ -5,7 +5,7 @@ World::World()
     //comment test
 }
 
-std::vector<Entity> & World::getEntities()
+std::vector<Entity *> &World::getEntities()
 {
     return m_entities;
 }
@@ -25,26 +25,23 @@ int World::getSizeY()
     return m_size.getY();
 }
 
-bool World::isCollision(const Entity &e) const
+bool World::isCollision(const Entity* e) const
 {
-    std::vector<Entity>::const_iterator itEntities;
-    for (itEntities = m_entities.begin(); itEntities != m_entities.end(); itEntities++)
+    for( Entity* currantEntity : m_entities)
     {
-        if(&e != &(*itEntities) && isCollision(e, (*itEntities)))
+        if( e!=currantEntity && isCollision(e, currantEntity))
         {
             return true;
         }
     }
     return false;
-
-
 }
 
 // private methods
 
-bool World::isCollision(const Entity &e1, const Entity &e2) const
+bool World::isCollision(const Entity *e1, const Entity *e2) const
 {
-    Coordinate c1 = e1.getCoordinate();
-    Coordinate c2 = e2.getCoordinate();
-    return(Coordinate::distance(c1, c2) < e1.getRadius() + e2.getRadius());
+    Coordinate c1 = e1->getCoordinate();
+    Coordinate c2 = e2->getCoordinate();
+    return(Coordinate::distance(c1, c2) < (e1->getRadius()+e2->getRadius()) );
 }

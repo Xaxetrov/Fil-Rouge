@@ -22,7 +22,7 @@ public slots:
     void updateScene();
 
 private:
-    void drawEntity(const Entity &entity);
+    void drawEntity(const Entity *entity);
 
 private:
     QGraphicsScene * m_scene;

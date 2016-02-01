@@ -20,7 +20,7 @@ public:
     void move(int speedPercentage);
     void turn(double angle);
 
-    bool isLiving() { return true; }; // Temporary
+    bool isLiving() { return true; } // Temporary
 
 private :
     int m_maxSpeed;
