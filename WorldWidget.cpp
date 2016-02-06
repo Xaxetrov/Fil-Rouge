@@ -5,12 +5,16 @@ WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
     m_scene = new QGraphicsScene();
     setScene(m_scene);
-    updateScene();
 }
 
 WorldWidget::~WorldWidget()
 {
     delete m_scene;
+}
+
+void WorldWidget::setWorld(World *world)
+{
+    m_world = world;
 }
 
 void WorldWidget::updateScene()
@@ -29,18 +33,18 @@ void WorldWidget::updateScene()
 void WorldWidget::drawEntity(const Entity * e)
 {
     //draw a circle representing the Entity
-    QRect baseSquare(e->getX()-UNIT_SIZE/2,e->getY()-UNIT_SIZE/2,UNIT_SIZE,UNIT_SIZE);
+    QRect baseSquare(e->getX()-e->getRadius(),e->getY()-e->getRadius(),e->getRadius()*2,e->getRadius()*2);
     m_scene->addEllipse(baseSquare,colors.getEntityPen(e),colors.getEntityBrush(e));
-    //TODO found why Animal and Entity are not polymorphic... (virtual method ?)
-    /*if(Animal* living = dynamic_cast<Animal*>(e))
+    if(const Animal* const living = dynamic_cast<const Animal*>(e))
     {
         //add an eye to show the looking direction
         double angle = living->getAngle();
-        int eyeX = e->getX()+cos(angle)*UNIT_SIZE/4;
-        int eyeY = e->getX()+sin(angle)*UNIT_SIZE/4;
-        QRect eyeSquare(eyeX,eyeY,UNIT_SIZE/2,UNIT_SIZE/2);
-        m_scene->addEllipse(eyeSquare,colors.getEntityPen(*e),colors.getTeamsEyeBrush());
-    }*/
+        int eyeRadius = e->getRadius()/3;
+        int eyeXCenter = e->getX()+cos(angle)*(e->getRadius()-eyeRadius);
+        int eyeYCenter = e->getX()+sin(angle)*(e->getRadius()-eyeRadius);
+        QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
+        m_scene->addEllipse(eyeSquare,colors.getEntityPen(e),colors.getTeamsEyeBrush());
+    }
 }
 
 WorldColors & WorldWidget::getColors()

@@ -11,9 +11,11 @@ public:
     std::vector<Entity*> & getEntities();
 
     Coordinate & getSize();
-    int getSizeX();
-    int getSizeY();
+    int getSizeX() const;
+    int getSizeY() const;
     bool isCollision(const Entity* e) const;
+
+    void addEntity(Entity * entity);
 
 private:
     bool isCollision(const Entity* e1, const Entity* e2) const;

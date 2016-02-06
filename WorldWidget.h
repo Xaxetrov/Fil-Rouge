@@ -13,10 +13,12 @@ class WorldWidget : public QGraphicsView
     Q_OBJECT //enable slot and signal suport in this class
 
 public:
-    WorldWidget(World * world);
+    WorldWidget(World * world = 0);
     virtual ~WorldWidget();
 
     WorldColors & getColors();
+
+    void setWorld(World * world);
 
 public slots:
     void updateScene();
@@ -30,7 +32,7 @@ private:
     World * m_world;
 
 public: //Public const:
-    static const int UNIT_SIZE = 10;
+    //static const int UNIT_SIZE = 10;
 };
 
 #endif // WORLDWIDGET_H

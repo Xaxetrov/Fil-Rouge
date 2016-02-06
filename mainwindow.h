@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include "WorldWidget.h"
+#include "World.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -16,7 +19,12 @@ public:
     ~MainWindow();
 
 private:
+    void loadWorld();
+
+private:
     Ui::MainWindow *ui;
+    WorldWidget worldWidget;
+    World world;
 };
 
 #endif // MAINWINDOW_H

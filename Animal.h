@@ -9,12 +9,12 @@ class Animal : public Solid
 public:
     Animal(int x, int y, int radius, int maxSpeed, World * world);
 
-    int getMaxSpeed();
-    int getHealth();
-    int getHunger();
-    int getThirst();
-    int getFear();
-    double getAngle();
+    int getMaxSpeed() const;
+    int getHealth() const;
+    int getHunger() const;
+    int getThirst() const;
+    int getFear() const;
+    double getAngle() const;
 
     void die();
     void move(int speedPercentage);

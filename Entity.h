@@ -8,6 +8,7 @@ class Entity
 public:
     Entity(int x, int y, int creationDate);
     Entity(const Entity & e); //to disable copy constructor
+    virtual ~Entity();
     Coordinate getCoordinate() const {return m_coordinate;}
     void setCoordinate(int x, int y) {m_coordinate.set(x, y);}
     int getX() const {return m_coordinate.getX();}

@@ -1,8 +1,9 @@
 #include "World.h"
+#include "config.h"
 
 World::World()
 {
-    //comment test
+    m_size.set(WORLD_SIZE_X,WORLD_SIZE_Y);
 }
 
 std::vector<Entity *> &World::getEntities()
@@ -15,12 +16,12 @@ Coordinate & World::getSize()
     return m_size;
 }
 
-int World::getSizeX()
+int World::getSizeX() const
 {
     return m_size.getX();
 }
 
-int World::getSizeY()
+int World::getSizeY() const
 {
     return m_size.getY();
 }
@@ -35,6 +36,11 @@ bool World::isCollision(const Entity* e) const
         }
     }
     return false;
+}
+
+void World::addEntity(Entity *entity)
+{
+    m_entities.push_back(entity);
 }
 
 // private methods

@@ -23,9 +23,11 @@ WorldColors::WorldColors()
 QBrush & WorldColors::getEntityBrush(const Entity * entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
-    /*if(typeid(entity) == typeid( ... ))
+    if(typeid(*entity) == typeid( Animal ))
     {
+        return teamsBrushs.at(2);
     }
+    /*
     else if(typeid(entity) == typeid( ... ))
     {
     }
@@ -37,9 +39,11 @@ QBrush & WorldColors::getEntityBrush(const Entity * entity)
 QPen & WorldColors::getEntityPen(const Entity *entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
-    /*if(typeid(entity) == typeid( ... ))
+    if(typeid(*entity) == typeid( Animal ))
     {
+        return teamsPen;
     }
+    /*
     else if(typeid(entity) == typeid( ... ))
     {
     }
