@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -30,7 +31,8 @@ SOURCES += main.cpp\
     Percepted.cpp \
     Visionsector.cpp \
     Visionsector_Living.cpp \
-    Visionsector_NonLiving.cpp
+    Visionsector_NonLiving.cpp \
+    SaveManager.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -47,8 +49,9 @@ HEADERS  += mainwindow.h \
     NeuralNetwork.h \
     Percepted.h \
     Visionsector.h \
-    VisionsectorLiving.h \
-    VisionsectorNonLiving.h \
-    config.h
+    Visionsector_Living.h \
+    Visionsector_NonLiving.h \
+    config.h \
+    SaveManager.h
 
 FORMS    += mainwindow.ui
