@@ -9,13 +9,14 @@ int main(int argc, char *argv[])
 {
     /*QApplication a(argc, argv);
     MainWindow w;
-    w.show();*/
+    w.show();
+    return a.exec();*/
 
     NeuralNetwork n;
     SaveManager s;
     QString saveName = "test";
     int r = s.SaveNetwork(n, saveName);
 
-    return r;//a.exec();
+    return r;
 }
 
