@@ -1,24 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <NeuronalNetwork>
-    <NeuronLayer>
-        <NeuronLayerNumber>inputLayer</NeuronLayerNumber>
+    <NeuronLayer id="0" inputNum="0">
+        <!--this is the input layer-->
     </NeuronLayer>
-    <NeuronLayer>
-        <NeuronLayerNumber>1</NeuronLayerNumber>
-    </NeuronLayer>
-    <NeuronLayer>
-        <NeuronLayerNumber>1</NeuronLayerNumber>
-    </NeuronLayer>
-    <NeuronLayer>
-        <NeuronLayerNumber>1</NeuronLayerNumber>
-    </NeuronLayer>
-    <NeuronLayer>
-        <NeuronLayerNumber>1</NeuronLayerNumber>
-    </NeuronLayer>
-    <NeuronLayer>
-        <NeuronLayerNumber>1</NeuronLayerNumber>
-    </NeuronLayer>
-    <NeuronLayer>
-        <NeuronLayerNumber>outputLayer</NeuronLayerNumber>
+    <NeuronLayer id="1">
+        <!--this is the output layer-->
     </NeuronLayer>
 </NeuronalNetwork>

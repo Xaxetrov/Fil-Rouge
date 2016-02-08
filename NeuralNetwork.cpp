@@ -2,7 +2,7 @@
 
 using namespace std;
 
-NeuralNetwork::NeuralNetwork()
+NeuralNetwork::NeuralNetwork() : m_inputsNum(0), m_outputsNum(0), m_hiddenLayersNum(0), m_neuronsPerHiddenLayerNum(0)
 {
 
 }
@@ -13,14 +13,14 @@ vector<double> NeuralNetwork::update(std::vector<double> &inputs)
     int weight = 0;
 
     //first check that we have the correct amount of inputs
-    if (inputs.size() != m_inputNum)
+    if (inputs.size() != m_inputsNum)
     {
         //just return an empty vector if incorrect.
         return outputs;
     }
 
     //For each layer...
-    for (int i=0; i<m_hiddenLayerNum + 1; ++i)
+    for (unsigned int i=0; i<m_hiddenLayersNum + 1; ++i)
     {
         if ( i > 0 )
         {

@@ -6,14 +6,27 @@
 class NeuralNetwork
 {
 public:
+
+    // --- CONSTRUCTION ---
+
     NeuralNetwork();
     void CreateNetwork();
+
+
+    // --- GETTERS ---
 
     //gets the weights from the NN
     std::vector<double> getWeights() const;
 
     //returns the total number of weights in the net
     int getWeightsNum() const;
+
+    //returns the number of inputs
+    int getInputsNum() const { return m_inputsNum; }
+
+    //returns a const reference to layers
+    const std::vector<NeuronLayer>& getLayers() const { return m_layers; }
+
 
     //replaces the weights with new ones
     void putWeights(std::vector<double> &weights);
@@ -25,10 +38,10 @@ public:
     double Sigmoid(double activation, double response){return 1;}
 
 private:
-    int m_inputNum;
-    int m_outputNum;
-    int m_hiddenLayerNum;
-    int m_neuronsPerHiddenLayerNum;
+    unsigned int m_inputsNum;
+    unsigned int m_outputsNum;
+    unsigned int m_hiddenLayersNum;
+    unsigned int m_neuronsPerHiddenLayerNum;
 
     //storage for each layer of neurons including the output layer
     std::vector<NeuronLayer> m_layers;

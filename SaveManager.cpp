@@ -10,25 +10,6 @@ SaveManager::SaveManager()
 
 int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
 {
-    /*QString fileName = savePath+neuralNetworkName+".xml";
-    QDomDocument dom(neuralNetworkName);
-    QFile doc_xml(fileName);
-    std::cerr << fileName.toStdString();
-    if(!doc_xml.open(QIODevice::ReadWrite))
-    {
-        std::cerr << "impossible d'ouvrir le XML1" << std::endl;
-        doc_xml.close();
-        return 1;
-    }
-    if(!dom.setContent(&doc_xml))
-    {
-        std::cerr << "impossible d'ouvrir le XML2" << std::endl;
-        doc_xml.close();
-        return 2;
-    }
-    doc_xml.close();*/
-
-
     QString fileXmlName = savePath+neuralNetworkName+".xml";
     QFile fileXml(fileXmlName);
 
@@ -38,35 +19,38 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
     }
     QXmlStreamWriter writer(&fileXml);
 
-    // Active l'indentation automatique du fichier XML pour une meilleur visibilitÃ©
+    // Active l'indentation automatique du fichier XML pour une meilleur visibilite
     writer.setAutoFormatting(true);
 
     // Insert la norme de codification du fichier XML :
     writer.writeStartDocument();
 
-    // Ã‰lÃ©ment racine du fichier XML
+    // element racine du fichier XML
     writer.writeStartElement("NeuronalNetwork");
 
-    int m_hiddenLayerNum=5;   // arbitraire
+    // recuperation de quelqes informations sur le réseau de neurones
+    const unsigned int hiddenLayerNum=nn.getLayers().size(); //nombre de couches cachées (en plus de l'input et de l'output)
+    const unsigned int inputNum = nn.getInputsNum(); // nombre d'inputs
 
     writer.writeStartElement("NeuronLayer");
-    writer.writeStartElement("NeuronLayerNumber");
-    writer.writeCharacters("inputLayer");
-    writer.writeEndElement();
+    writer.writeAttribute("id",QString::number(0)); // 0 means "input layer"
+    writer.writeAttribute("inputNum", QString::number(inputNum));
+    writer.writeComment("this is the input layer");
     writer.writeEndElement();
 
-    for (int i=0;i<m_hiddenLayerNum;i++)
-    {   writer.writeStartElement("NeuronLayer");
-        writer.writeStartElement("NeuronLayerNumber");
-        writer.writeCharacters(QString::number(1));
-        writer.writeEndElement();
+    for (unsigned int i=1; i<=hiddenLayerNum; i++)
+    {
+        writer.writeStartElement("NeuronLayer");
+        writer.writeAttribute("id", QString::number(i));
+        /**
+          Informations a generer ici
+          */
         writer.writeEndElement();
     }
 
     writer.writeStartElement("NeuronLayer");
-    writer.writeStartElement("NeuronLayerNumber");
-    writer.writeCharacters("outputLayer");
-    writer.writeEndElement();
+    writer.writeAttribute("id", QString::number(hiddenLayerNum+1));
+    writer.writeComment("this is the output layer");
     writer.writeEndElement();
 
     writer.writeEndDocument();
