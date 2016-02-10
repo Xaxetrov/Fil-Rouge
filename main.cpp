@@ -12,7 +12,12 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();*/
 
-    NeuralNetwork n;
+    std::vector<unsigned int> myTestVector;
+    myTestVector.push_back(3);
+    myTestVector.push_back(5);
+    myTestVector.push_back(2);
+    NeuralNetwork n(myTestVector);
+
     SaveManager s;
     QString saveName = "test";
     int r = s.SaveNetwork(n, saveName);

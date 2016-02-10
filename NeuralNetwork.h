@@ -9,9 +9,7 @@ public:
 
     // --- CONSTRUCTION ---
 
-    NeuralNetwork();
-    void CreateNetwork();
-
+    NeuralNetwork(std::vector<unsigned int> layerSizes); // sending [3,5,2] means 3 input neurons, 5 hiddens and 2 outputs with equal weights
 
     // --- GETTERS ---
 
@@ -41,7 +39,6 @@ private:
     unsigned int m_inputsNum;
     unsigned int m_outputsNum;
     unsigned int m_hiddenLayersNum;
-    unsigned int m_neuronsPerHiddenLayerNum;
 
     //storage for each layer of neurons including the output layer
     std::vector<NeuronLayer> m_layers;

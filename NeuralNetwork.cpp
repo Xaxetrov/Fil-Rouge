@@ -2,9 +2,22 @@
 
 using namespace std;
 
-NeuralNetwork::NeuralNetwork() : m_inputsNum(0), m_outputsNum(0), m_hiddenLayersNum(0), m_neuronsPerHiddenLayerNum(0)
+NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
 {
-
+    if (layerSizes.size()!=0)
+    {
+        m_inputsNum=layerSizes.at(0);
+    }
+    if (layerSizes.size()>1)
+    {
+        m_outputsNum = layerSizes.at(layerSizes.size()-1);
+        m_hiddenLayersNum = layerSizes.size()-2;
+        for(int i=1; i<layerSizes.size(); i++)
+        {
+            NeuronLayer nL(layerSizes.at(i), layerSizes.at(i-1));
+            m_layers.push_back(nL);
+        }
+    }
 }
 
 vector<double> NeuralNetwork::update(std::vector<double> &inputs)

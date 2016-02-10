@@ -1,5 +1,6 @@
 #include "Neuronlayer.h"
 
+
 NeuronLayer::NeuronLayer(int neuronNum, int inputsPerNeuronNum) :
     m_neuronNum(neuronNum)
 {

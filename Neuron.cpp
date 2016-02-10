@@ -2,11 +2,12 @@
 
 Neuron::Neuron(int inputNum) : m_inputNum(inputNum)
 {
+
     //we need an additional weight for the bias hence the +1
     for (int i=0; i<inputNum+1; ++i)
     {
-    //set up the weights with an initial random value
-    m_weights.push_back(RandomWeight());
+        //set up the weights with an initial random value
+        m_weights.push_back(RandomWeight());
     }
 }
 
