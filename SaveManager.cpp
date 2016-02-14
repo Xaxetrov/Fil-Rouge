@@ -88,34 +88,56 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
     myV.push_back(1);
     NeuralNetwork n(myV);
 
-    QXmlStreamReader reader;
-    QString fileXmlName = savePath+neuralNetworkName+".xml";
-    QFile file(fileXmlName);
-
-    if (!file.open(QFile::ReadOnly | QFile::Text))
-    {   std::cerr << "Error cannot read file " << qPrintable(fileXmlName)
-                  << ": " << qPrintable(file.errorString())
-                  << std::endl;
+    const QString fileXmlName = savePath+neuralNetworkName+".xml";
+    QFile* xmlFile = new QFile(fileXmlName);
+    if (!xmlFile->exists())
+    {   std::cout << "file does not exist" << std::endl;
     }
+    if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
+    {   std::cout << "Can't open the file" << std::endl;
+    }
+    QXmlStreamReader reader(xmlFile);
 
-    reader.setDevice(&file);
+    while (!reader.atEnd() && !reader.hasError())
+    {   QXmlStreamReader::TokenType token = reader.readNext();
+        if (token==QXmlStreamReader::StartDocument)
+        {   continue;
+        }
 
-    reader.readNext();
-
-    while(!reader.atEnd())
-    {   // TODO
+        if (token==QXmlStreamReader::StartElement)
+        {   if (reader.name()=="NeuronalNetwork")
+            {   this->parseNeuronalNetwork(reader);
+            }
+        }
     }
 
     if (reader.hasError())
-    {   std::cerr << "Error: Failed to parse file "
-                    << qPrintable(fileXmlName) << ": "
-                    << qPrintable(reader.errorString()) << std::endl;
-    } else if (file.error() != QFile::NoError)
-    {   std::cerr << "Error: Cannot read file " << qPrintable(fileXmlName)
-                     << ": " << qPrintable(file.errorString())
-                     << std::endl;
+    {   std::cout << "Error in reading XML" << std::endl;
     }
 
     return n;
 
+}
+
+void SaveManager::parseNeuronalNetwork(QXmlStreamReader& reader)
+{   unsigned int inputsNum;
+    unsigned int outputsNum;
+    unsigned int hiddenLayersNum;
+
+    if (reader.tokenType() != QXmlStreamReader::StartElement && reader.name() != "NeuronalNetwork")
+    {   std::cout << "Error in reading NeuronalNetwork" << std::endl;
+    }
+    reader.readNext();
+    while (!(reader.tokenType() == QXmlStreamReader::EndElement && reader.name() == "NeuronalNetwork"))
+    {   // Input layer management
+        QXmlStreamAttributes attributes = reader.attributes();
+        if (reader.name() == "NeuronLayer" && attributes.hasAttribute("id") && attributes.value("id").toString() == "0")
+        {   reader.readNext();
+            inputsNum=reader.readElementText().toInt();
+            reader.readNext();
+        }
+
+        // Others layer management
+        // TODO
+    }
 }

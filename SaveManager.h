@@ -3,6 +3,7 @@
 
 #include "NeuralNetwork.h"
 #include <QString>
+#include <QtXml>
 
 static const QString savePath("../save/");
 
@@ -12,6 +13,7 @@ public:
     SaveManager();
     int SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName="temp");
     NeuralNetwork LoadNetwork(QString neuralNetworkName="temp");
+    void parseNeuronalNetwork(QXmlStreamReader& reader);
 };
 
 #endif // SAVEMANAGER_H
