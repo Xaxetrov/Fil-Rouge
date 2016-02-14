@@ -23,3 +23,36 @@ double Coordinate::distance(const Coordinate &c1, const Coordinate &c2)
     int deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
     return sqrt(deltaXTore * deltaXTore + deltaYTore * deltaYTore);
 }
+
+double Coordinate::angle(const Coordinate &c1, const Coordinate &c2)
+{
+    int x1 = c1.getX();
+    int x2 = c2.getX();
+    double deltaX = x2 - x1;
+    int y1 = c1.getY();
+    int y2 = c2.getY();
+    double deltaY = y2 - y1;
+
+    if (std::abs(x1 - x2) > WORLD_SIZE_X)
+    {
+        deltaX += (x1 < x2) ? -WORLD_SIZE_X : WORLD_SIZE_X;
+    }
+
+    if (std::abs(y1 - y2) > WORLD_SIZE_Y)
+    {
+        deltaY += (y1 < y2) ? -WORLD_SIZE_Y : WORLD_SIZE_Y;
+    }
+
+    if (deltaX == 0)
+    {
+        return (y2 > y1) ? PI/2.0 : -PI/2.0;
+    }
+    else if (deltaX > 0)
+    {
+        return std::atan(deltaY / deltaX);
+    }
+    else
+    {
+        return std::atan(deltaY / deltaX) + PI;
+    }
+}

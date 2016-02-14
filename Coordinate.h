@@ -11,6 +11,10 @@ public:
 
     static double distance(const Coordinate &c1, const Coordinate &c2);
 
+    // Give the angle ((0, x), (c1, c2)) in rad
+    // if c1 == c2, the angle is -PI/2
+    static double angle(const Coordinate &c1, const Coordinate &c2);
+
 private:
     int m_x;
     int m_y;
