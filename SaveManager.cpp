@@ -86,7 +86,36 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
     myV.push_back(1);
     myV.push_back(1);
     myV.push_back(1);
-
     NeuralNetwork n(myV);
+
+    QXmlStreamReader reader;
+    QString fileXmlName = savePath+neuralNetworkName+".xml";
+    QFile file(fileXmlName);
+
+    if (!file.open(QFile::ReadOnly | QFile::Text))
+    {   std::cerr << "Error cannot read file " << qPrintable(fileXmlName)
+                  << ": " << qPrintable(file.errorString())
+                  << std::endl;
+    }
+
+    reader.setDevice(&file);
+
+    reader.readNext();
+
+    while(!reader.atEnd())
+    {   // TODO
+    }
+
+    if (reader.hasError())
+    {   std::cerr << "Error: Failed to parse file "
+                    << qPrintable(fileXmlName) << ": "
+                    << qPrintable(reader.errorString()) << std::endl;
+    } else if (file.error() != QFile::NoError)
+    {   std::cerr << "Error: Cannot read file " << qPrintable(fileXmlName)
+                     << ": " << qPrintable(file.errorString())
+                     << std::endl;
+    }
+
     return n;
+
 }

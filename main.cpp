@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();*/
 
-    std::vector<unsigned int> myTestVector;
+    /*std::vector<unsigned int> myTestVector;
     myTestVector.push_back(3);
     myTestVector.push_back(5);
     myTestVector.push_back(2);
@@ -20,8 +20,14 @@ int main(int argc, char *argv[])
 
     SaveManager s;
     QString saveName = "test";
-    int r = s.SaveNetwork(n, saveName);
+    int r = s.SaveNetwork(n, saveName);*/
 
-    return r;
+    SaveManager s;
+    QString saveName = "test";
+    s.LoadNetwork(saveName);
+
+   // return r;
+
+    return 0;
 }
 
