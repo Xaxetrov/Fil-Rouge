@@ -13,7 +13,7 @@ public:
     SaveManager();
     int SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName="temp");
     NeuralNetwork LoadNetwork(QString neuralNetworkName="temp");
-    void parseNeuronalNetwork(QXmlStreamReader& reader);
+    void parseNeuralNetwork(QXmlStreamReader& reader);
 };
 
 #endif // SAVEMANAGER_H

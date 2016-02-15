@@ -12,7 +12,7 @@ NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
     {
         m_outputsNum = layerSizes.at(layerSizes.size()-1);
         m_hiddenLayersNum = layerSizes.size()-2;
-        for(int i=1; i<layerSizes.size(); i++)
+        for(unsigned int i=1; i<layerSizes.size(); i++)
         {
             NeuronLayer nL(layerSizes.at(i), layerSizes.at(i-1));
             m_layers.push_back(nL);

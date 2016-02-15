@@ -26,7 +26,7 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
     writer.writeStartDocument();
 
     // element racine du fichier XML
-    writer.writeStartElement("NeuronalNetwork");
+    writer.writeStartElement("NeuralNetwork");
 
     // recuperation de quelqes informations sur le réseau de neurones
     const std::vector<NeuronLayer> layers = nn.getLayers();
@@ -97,16 +97,17 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
     {   std::cout << "Can't open the file" << std::endl;
     }
     QXmlStreamReader reader(xmlFile);
+    std::cerr<<"file opened !"<<std::endl;/////////////////////////////////////////////////A supprimer quand debug terminé
 
-    while (!reader.atEnd() && !reader.hasError())
+    while (!reader.atEnd())
     {   QXmlStreamReader::TokenType token = reader.readNext();
         if (token==QXmlStreamReader::StartDocument)
         {   continue;
         }
 
         if (token==QXmlStreamReader::StartElement)
-        {   if (reader.name()=="NeuronalNetwork")
-            {   this->parseNeuronalNetwork(reader);
+        {   if (reader.name()=="NeuralNetwork")
+            {   this->parseNeuralNetwork(reader);
             }
         }
     }
@@ -119,16 +120,16 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
 
 }
 
-void SaveManager::parseNeuronalNetwork(QXmlStreamReader& reader)
+void SaveManager::parseNeuralNetwork(QXmlStreamReader& reader)
 {   unsigned int inputsNum;
     unsigned int outputsNum;
     unsigned int hiddenLayersNum;
 
-    if (reader.tokenType() != QXmlStreamReader::StartElement && reader.name() != "NeuronalNetwork")
-    {   std::cout << "Error in reading NeuronalNetwork" << std::endl;
+    if (reader.tokenType() != QXmlStreamReader::StartElement && reader.name() != "NeuralNetwork")
+    {   std::cout << "Error in reading NeuralNetwork" << std::endl;
     }
     reader.readNext();
-    while (!(reader.tokenType() == QXmlStreamReader::EndElement && reader.name() == "NeuronalNetwork"))
+    while (!(reader.tokenType() == QXmlStreamReader::EndElement && reader.name() == "NeuralNetwork"))
     {   // Input layer management
         QXmlStreamAttributes attributes = reader.attributes();
         if (reader.name() == "NeuronLayer" && attributes.hasAttribute("id") && attributes.value("id").toString() == "0")

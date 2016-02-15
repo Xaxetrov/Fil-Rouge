@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<NeuronalNetwork>
+<NeuralNetwork>
     <NeuronLayer id="0">
         <inputsNum>3</inputsNum>
         <!--this is the input layer-->
@@ -32,4 +32,4 @@
             <weights>0.99649 0.00393689 -0.436506 -0.136113 -0.53151 -0.266579</weights>
         </Neuron>
     </NeuronLayer>
-</NeuronalNetwork>
+</NeuralNetwork>
