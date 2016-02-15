@@ -6,11 +6,11 @@
 class VisionSector_Living : public VisionSector
 {
     public:
-        VisionSector_Living(Coordinate &center, const int angle1, const int angle2, const int range, std::vector<Entity> &entities);
+        VisionSector_Living(Coordinate &center, const double animalAngle, const double angle1, const double angle2, const int range, std::vector<Entity*> &entities);
         void see();
 
     private:
-    
+
 };
 
 #endif // VISIONSECTOR_LIVING_H

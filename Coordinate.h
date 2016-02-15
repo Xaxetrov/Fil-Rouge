@@ -9,11 +9,11 @@ public:
     int getY() const {return m_y;}
     void set(int x, int y);
 
-    static double distance(const Coordinate &c1, const Coordinate &c2);
+    static double getDistance(const Coordinate &c1, const Coordinate &c2);
 
     // Give the angle ((0, x), (c1, c2)) in rad
     // if c1 == c2, the angle is -PI/2
-    static double angle(const Coordinate &c1, const Coordinate &c2);
+    static double getAngle(const Coordinate &c1, const Coordinate &c2);
 
 private:
     int m_x;

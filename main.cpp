@@ -7,10 +7,10 @@
 
 int main(int argc, char *argv[])
 {
-    /*QApplication a(argc, argv);
+    QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    return a.exec();*/
+    return a.exec();
 
     /*std::vector<unsigned int> myTestVector;
     myTestVector.push_back(3);
@@ -22,12 +22,11 @@ int main(int argc, char *argv[])
     QString saveName = "test";
     int r = s.SaveNetwork(n, saveName);*/
 
-    SaveManager s;
+    /*SaveManager s;
     QString saveName = "test";
-    s.LoadNetwork(saveName);
+    s.LoadNetwork(saveName);*/
 
    // return r;
 
     return 0;
 }
-

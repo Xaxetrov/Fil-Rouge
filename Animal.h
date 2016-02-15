@@ -3,6 +3,8 @@
 
 #include "Solid.h"
 #include "World.h"
+#include "NeuralNetwork.h"
+#include "Vision.h"
 
 class Animal : public Solid
 {
@@ -29,10 +31,9 @@ private :
     int m_hunger;
     int m_thirst;
     int m_fear;
-    int m_brain; // change to neural net
-    int m_vision; // change to AnimalVision
+    NeuralNetwork* m_brain;
+    Vision * m_vision;
     World * m_world;
-
 };
 
 #endif // ANIMAL_H

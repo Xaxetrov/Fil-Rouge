@@ -1,3 +1,5 @@
+#define DISABLE_NEURAL_NETWORK // Disables the neural network and uses instead a simple AI to test the world and the perception.
+
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
 
@@ -30,7 +32,11 @@ public:
     void putWeights(std::vector<double> &weights);
 
     //calculates the outputs from a set of inputs
-    std::vector<double> update(std::vector<double> &inputs);
+    std::vector<double> run(std::vector<double> &inputs);
+
+    //ajust the weights to improve the performance of the network
+    //score : number (positive/negative) that caracterizes the results of the last network uses.
+    void improve(int score);
 
     //sigmoid response curve
     double Sigmoid(double activation, double response){return 1;}

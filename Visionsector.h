@@ -9,7 +9,7 @@
 class VisionSector
 {
     public:
-        VisionSector(Coordinate &center, int angle1, int angle2, int range, std::vector<Entity> &entities);
+        VisionSector(Coordinate &center, const double animalAngle, const double angle1, const double angle2, int range, std::vector<Entity*> &entities);
         virtual ~VisionSector();
 
         virtual void see() = 0;
@@ -25,10 +25,10 @@ class VisionSector
         void clearPercepted(); // Clear and free memory of m_percepted.
 
         Coordinate &m_center;
-        int m_angle1;
-        int m_angle2;
+        double m_angle1;
+        double m_angle2;
         int m_range;
-        std::vector<Entity>& m_entities;
+        std::vector<Entity*>& m_entities;
 };
 
 #endif // VISIONSECTOR_H

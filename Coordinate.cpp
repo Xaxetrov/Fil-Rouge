@@ -15,7 +15,7 @@ void Coordinate::set(int x, int y)
                                                             // (x % y + y) % y return a value btw 0 and y - 1
 }
 
-double Coordinate::distance(const Coordinate &c1, const Coordinate &c2)
+double Coordinate::getDistance(const Coordinate &c1, const Coordinate &c2)
 {
     int deltaX = std::abs(c1.getX() - c2.getX());
     int deltaY = std::abs(c1.getY() - c2.getY());
@@ -24,7 +24,7 @@ double Coordinate::distance(const Coordinate &c1, const Coordinate &c2)
     return sqrt(deltaXTore * deltaXTore + deltaYTore * deltaYTore);
 }
 
-double Coordinate::angle(const Coordinate &c1, const Coordinate &c2)
+double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
 {
     int x1 = c1.getX();
     int x2 = c2.getX();
