@@ -10,6 +10,7 @@ class Animal : public Solid
 {
 public:
     Animal(int x, int y, int radius, int maxSpeed, World * world);
+    ~Animal();
 
     int getMaxSpeed() const;
     int getHealth() const;

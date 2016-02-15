@@ -1,14 +1,29 @@
 #include "Animal.h"
 #include "config.h"
 #include <cmath>
+#include <vector>
+using namespace std;
 
 Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
 {
     m_angle = 0; //initialize angle here
-    m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
     m_hunger = 0;
     m_thirst = 0;
     m_fear = 0;
+    m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
+
+    vector<unsigned int> layerSizes;
+    for(unsigned int i = 0; i < NB_LAYERS; i++)
+    {
+      layerSizes.push_back(LAYER_SIZES[i]);
+    }
+    m_brain = new NeuralNetwork(layerSizes);
+}
+
+Animal::~Animal()
+{
+    delete(m_vision);
+    delete(m_brain);
 }
 
 void Animal::move(int speedPercentage)
