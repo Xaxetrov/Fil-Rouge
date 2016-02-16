@@ -10,3 +10,11 @@ NeuronLayer::NeuronLayer(int neuronNum, int inputsPerNeuronNum) :
     }
 }
 
+NeuronLayer::NeuronLayer(const std::vector<std::vector<double>>& neuronWeights) : m_neuronNum(neuronWeights.size())
+{
+    for(unsigned int i=0; i< neuronWeights.size(); i++)
+    {
+        m_neurons.push_back(neuronWeights.at(i));
+    }
+}
+

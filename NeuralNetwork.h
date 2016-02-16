@@ -12,6 +12,7 @@ public:
     // --- CONSTRUCTION ---
 
     NeuralNetwork(std::vector<unsigned int> layerSizes); // sending [3,5,2] means 3 input neurons, 5 hiddens and 2 outputs with equal weights
+    NeuralNetwork(int inputsNum,const std::vector<std::vector<std::vector<double>>>& neuronWeights);
 
     // --- GETTERS ---
 

@@ -11,6 +11,14 @@ Neuron::Neuron(int inputNum) : m_inputNum(inputNum)
     }
 }
 
+Neuron::Neuron(const std::vector<double>& weights) : m_inputNum(weights.size())
+{
+    for(unsigned int i=0; i<weights.size(); i++)
+    {
+        m_weights.push_back(weights.at(i));
+    }
+}
+
 double  Neuron::RandomWeight()
 {
     double bottom = (double) rand() / (RAND_MAX) - 1;

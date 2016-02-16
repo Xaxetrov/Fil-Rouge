@@ -10,6 +10,7 @@ class Neuron
 {
 public:
     Neuron(int inputNum);
+    Neuron(const std::vector<double>& weights);
     double RandomWeight();
     int getInputsNum() {return m_inputNum;}
     std::vector<double> getWeights() const{return m_weights;}
