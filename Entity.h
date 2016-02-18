@@ -3,6 +3,9 @@
 
 #include "Coordinate.h"
 
+/*
+ * A Entity is something, anything
+ */
 class Entity
 {
 public:
@@ -15,6 +18,8 @@ public:
     int getY() const {return m_coordinate.getY();}
     int getRadius() const {return m_radius;}
     int getCreationDate() {return m_creationDate;}
+
+    virtual int play();
 
     virtual bool isLiving() = 0; // Temporary
 

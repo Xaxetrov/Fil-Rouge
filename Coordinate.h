@@ -1,6 +1,9 @@
 #ifndef COORDINATE_H
 #define COORDINATE_H
 
+#include "config.h"
+#include "iostream"
+
 class Coordinate
 {
 public:

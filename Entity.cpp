@@ -9,3 +9,8 @@ Entity::~Entity()
 {
 
 }
+
+int Entity::play()
+{
+    return 0;
+}

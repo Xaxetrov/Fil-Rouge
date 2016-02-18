@@ -7,6 +7,7 @@ class Solid : public Entity
 {
 public:
     Solid(int x, int y, int radius);
+    virtual int play();
 
 };
 

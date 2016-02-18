@@ -1,7 +1,5 @@
 #include "Animal.h"
-#include "config.h"
-#include <cmath>
-#include <vector>
+
 using namespace std;
 
 Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
@@ -24,6 +22,12 @@ Animal::~Animal()
 {
     delete(m_vision);
     delete(m_brain);
+}
+
+int Animal::play()
+{
+    //TODO : make the animal do something
+    return 0;
 }
 
 void Animal::move(int speedPercentage)

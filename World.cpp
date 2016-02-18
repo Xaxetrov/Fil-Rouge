@@ -1,5 +1,4 @@
 #include "World.h"
-#include "config.h"
 
 World::World()
 {
@@ -42,6 +41,34 @@ void World::addEntity(Entity *entity)
 {
     m_entities.push_back(entity);
 }
+
+int World::tic()
+{
+    int entityErrorsNum = 0;
+    for(unsigned int i=0; i<m_entities.size(); i++)
+    {
+        if(m_entities.at(i)->play())
+        {
+            //TODO : manage entities errors
+            std::cerr << "Entity no " << i << " failed to play" << std::endl;
+            entityErrorsNum++;
+        }
+    }
+    return entityErrorsNum;
+}
+
+int World::tic(int ticNum)
+{
+    int ticResult=0;
+    for(int i=0; i<ticNum; i++)
+    {
+        if(tic())
+        {
+            //TODO : manage tic errors
+        }
+    }
+}
+
 
 // private methods
 

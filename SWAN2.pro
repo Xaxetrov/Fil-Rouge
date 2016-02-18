@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     Visionsector.cpp \
     Visionsector_Living.cpp \
     Visionsector_NonLiving.cpp \
-    SaveManager.cpp
+    SaveManager.cpp \
+    config.c
 
 HEADERS  += mainwindow.h \
     Entity.h \

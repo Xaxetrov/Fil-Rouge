@@ -23,6 +23,8 @@ public:
     void move(int speedPercentage);
     void turn(double angle);
 
+    virtual int play();
+
     bool isLiving() { return true; } // Temporary
 
 private :
