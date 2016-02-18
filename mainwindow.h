@@ -18,6 +18,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_actionQuit_triggered();
+
+    void on_actionStartTimer_triggered();
+
+    void on_actionStop_triggered();
+
 private:
     void loadWorld();
 

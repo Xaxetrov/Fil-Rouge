@@ -20,8 +20,22 @@ void MainWindow::loadWorld()
     //TODO load the world from a file or something like that
 
     //world = World();
-    Animal * animal1 = new Animal(10,10,10,2,&world);
+    Animal * animal0 = new Animal(250,250,10,2,&world);
+    Animal * animal1 = new Animal(0,0,10,2,&world);
+    Animal * animal2 = new Animal(499,499,10,2,&world);
+    Animal * animal3 = new Animal(0,499,10,2,&world);
+    Animal * animal4 = new Animal(499,0,10,2,&world);
+    Animal * animal5 = new Animal(215,025,10,2,&world);
+    Animal * animal6 = new Animal(125,350,10,2,&world);
+    Animal * animal7 = new Animal(350,50,10,2,&world);
+    world.addEntity(animal0);
     world.addEntity(animal1);
+    world.addEntity(animal2);
+    world.addEntity(animal3);
+    world.addEntity(animal4);
+    world.addEntity(animal5);
+    world.addEntity(animal6);
+    world.addEntity(animal7);
 }
 
 MainWindow::~MainWindow()
@@ -32,3 +46,17 @@ MainWindow::~MainWindow()
         delete e;
     }
 }
+
+void MainWindow::on_actionQuit_triggered()
+{
+    QApplication::quit();
+}
+void MainWindow::on_actionStartTimer_triggered()
+{
+    worldWidget.startSimulation();
+}
+void MainWindow::on_actionStop_triggered()
+{
+    worldWidget.suspendSimulation();
+}
+

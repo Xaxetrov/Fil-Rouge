@@ -1,8 +1,9 @@
 #ifndef WORLDWIDGET_H
 #define WORLDWIDGET_H
 
-#include "QGraphicsView"
-#include "QGraphicsScene"
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QTimer>
 
 #include "WorldColors.h"
 #include "World.h"
@@ -20,8 +21,14 @@ public:
 
     void setWorld(World * world);
 
+    bool isSimulationRunning() const;
+
 public slots:
     void updateScene();
+    void resizeEvent(QResizeEvent *e);
+    void tick();
+    void startSimulation(); //to start the timer
+    void suspendSimulation(); //to stop the timer
 
 private:
     void drawEntity(const Entity *entity);
@@ -30,6 +37,8 @@ private:
     QGraphicsScene * m_scene;
     WorldColors colors;
     World * m_world;
+    //timer
+    QTimer timer;
 
 public: //Public const:
     //static const int UNIT_SIZE = 10;

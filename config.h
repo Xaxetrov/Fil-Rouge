@@ -5,8 +5,8 @@
 const double PI = 3.1415926535897932;
 
 // World
-const int WORLD_SIZE_X = -1;
-const int WORLD_SIZE_Y = -1;
+const int WORLD_SIZE_X = 500;
+const int WORLD_SIZE_Y = 500;
 
 // Vision
 const int NB_VISIONSECTORS_LIVING = 3;
@@ -26,5 +26,9 @@ const int VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 // Neural network
 const unsigned int NB_LAYERS = 3;
 const unsigned int LAYER_SIZES[NB_LAYERS] = {10, 6, 2};
+
+// User Interface
+const unsigned UPDATE_TIMER_INTERVALE = 100; //ms
+
 
 #endif // CONFIG_H

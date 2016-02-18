@@ -5,7 +5,7 @@
 
 WorldColors::WorldColors()
 {
-    backgroundBrush = QBrush(Qt::white);
+    backgroundBrush = QBrush(QColor(255,255,255));
     backgroundPen = QPen();
     waterBrush = QBrush(Qt::blue);
     waterPen = QPen(Qt::blue);
