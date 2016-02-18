@@ -49,5 +49,5 @@ bool World::isCollision(const Entity *e1, const Entity *e2) const
 {
     Coordinate c1 = e1->getCoordinate();
     Coordinate c2 = e2->getCoordinate();
-    return(Coordinate::distance(c1, c2) < (e1->getRadius()+e2->getRadius()) );
+    return(Coordinate::getDistance(c1, c2) < (e1->getRadius()+e2->getRadius()) );
 }

@@ -6,7 +6,7 @@
 class VisionSector_NonLiving : public VisionSector
 {
     public:
-        VisionSector_NonLiving(Coordinate &center, int angle1, int angle2, int range, std::vector<Entity> &entities);
+        VisionSector_NonLiving(Coordinate &center, const double animalAngle, const double angle1, const double angle2, int range, std::vector<Entity*> &entities);
         void see();
 
     private:

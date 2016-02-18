@@ -7,8 +7,9 @@ class NeuronLayer
 {
 public:
     NeuronLayer(int neuronNum, int inputsPerNeuronNum);
-    int getNeuronNum(){return m_neuronNum;}
-    std::vector<Neuron> getNeurons(){return m_neurons;}
+    NeuronLayer(const std::vector<std::vector<double>>& neuronWeights);
+    int getNeuronNum() const{return m_neuronNum;}
+    std::vector<Neuron> getNeurons() const{return m_neurons;}
 private :
     int m_neuronNum;
     std::vector<Neuron> m_neurons;
