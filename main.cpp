@@ -7,15 +7,16 @@
 
 int main(int argc, char *argv[])
 {
-    /*QApplication a(argc, argv);
+    QApplication a(argc, argv);
     MainWindow w;
-    w.show();*/
+    w.show();
 
-    NeuralNetwork n;
+    /*NeuralNetwork n;
     SaveManager s;
     QString saveName = "test";
     int r = s.SaveNetwork(n, saveName);
 
-    return r;//a.exec();
+    return r;*/
+    return a.exec();
 }
 
