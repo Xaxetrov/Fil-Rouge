@@ -2,7 +2,9 @@
 #define COORDINATE_H
 
 #include "config.h"
-#include "iostream"
+#include "config/errors.h"
+
+#include <iostream>
 
 class Coordinate
 {

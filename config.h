@@ -30,10 +30,5 @@ const unsigned int LAYER_SIZES[NB_LAYERS] = {10, 6, 2};
 // User Interface
 const unsigned UPDATE_TIMER_INTERVALE = 100; //ms
 
-//Errors
-//Entities errors : from 1 to 99
-extern const int ENTITY_PLAY_ERROR;
-//World errors : from 100 to 199
-extern const int WORLD_TIC_ERROR;
 
 #endif // CONFIG_H
