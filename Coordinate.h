@@ -1,7 +1,7 @@
 #ifndef COORDINATE_H
 #define COORDINATE_H
 
-#include "config.h"
+#include "config/config.h"
 #include "config/errors.h"
 
 #include <iostream>

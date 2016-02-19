@@ -2,7 +2,6 @@
 #include "VisionSector_Living.h"
 #include "VisionSector_NonLiving.h"
 #include "Coordinate.h"
-#include "config.h"
 
 Vision::Vision(Coordinate position, double angle, std::vector<Entity*> &entities) : m_position(position), m_angle(angle), m_entities(entities)
 {

@@ -40,7 +40,7 @@ public:
     void improve(int score);
 
     //sigmoid response curve
-    double Sigmoid(double activation, double response){return 1;}
+    double Sigmoid(double activation, double response){return (int) activation+response +1;}//to disable warnings
 
 private:
     unsigned int m_inputsNum;

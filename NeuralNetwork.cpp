@@ -23,7 +23,7 @@ NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
 NeuralNetwork::NeuralNetwork(int inputsNum, const std::vector<std::vector<std::vector<double> > > &neuronWeights) :
     m_inputsNum(inputsNum), m_outputsNum(neuronWeights.at(neuronWeights.size()-1).size()), m_hiddenLayersNum(neuronWeights.size())
 {
-    for(int i=0; i<neuronWeights.size(); i++)
+    for(unsigned int i=0; i<neuronWeights.size(); i++)
     {
         m_layers.push_back(neuronWeights.at(i));
     }
@@ -86,4 +86,5 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
 
 void NeuralNetwork::improve(int score)
 {
+    std::cerr << "improve method does nothing " << score << std::endl;
 }

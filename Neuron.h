@@ -1,10 +1,8 @@
 #ifndef NEURON_H
 #define NEURON_H
 
-#include <stdlib.h>
-
 #include <vector>
-
+#include <iostream>
 
 class Neuron
 {

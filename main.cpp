@@ -2,7 +2,6 @@
 #include <QApplication>
 #include <iostream>
 
-#include "World.h"
 #include "SaveManager.h"
 
 int main(int argc, char *argv[])

@@ -1,6 +1,5 @@
 #include "WorldWidget.h"
 #include "Animal.h"
-#include "config.h"
 
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
