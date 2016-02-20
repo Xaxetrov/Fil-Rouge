@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<World>
+	<x>100</x>
+	<y>100</y>
+	<Entity type="Vegetal">
+		<x>0</x>
+		<y>0</y>
+		<radius>50</radius>
+	</Entity>
+	<Entity type="Water">
+		<x>100</x>
+		<y>0</y>
+		<radius>20</radius>
+	</Entity>
+</World>
