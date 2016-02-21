@@ -68,3 +68,8 @@ double Animal::getAngle() const
 {
     return m_angle;
 }
+
+const Vision * Animal::getVision() const
+{
+    return m_vision;
+}

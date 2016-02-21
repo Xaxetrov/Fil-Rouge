@@ -40,6 +40,8 @@ private:
     std::vector<QBrush> teamsBrushs;
     QPen teamsPen;
     QBrush teamsEye;
+    QBrush teamsNullBrush;
+    QPen teamsNullPen;
 };
 
 #endif // WORLDCOLORS_H

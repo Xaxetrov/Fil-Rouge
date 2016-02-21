@@ -14,13 +14,13 @@ const int NB_VISIONSECTORS_NONLIVING = 3;
 
 const int VISIONSECTORS_LIVING[NB_VISIONSECTORS_LIVING][3] = {
    {-15, 15, 100}, /* numbers represent angle1, angle2 and range */
-   {-15, -30, 60} ,
-   {15, 30, 60}
+   {-15, -45, 60} ,
+   {15, 45, 60}
 };
 const int VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
    {-15, 15, 100}, /* numbers represent angle1, angle2 and range */
-   {-15, -30, 60} ,
-   {15, 30, 60}
+   {-15, -45, 60} ,
+   {15, 45, 60}
 };
 
 // Neural network

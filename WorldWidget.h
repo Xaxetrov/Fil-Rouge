@@ -8,6 +8,7 @@
 #include "WorldColors.h"
 #include "World.h"
 #include "Entity.h"
+#include "Animal.h"
 
 class WorldWidget : public QGraphicsView
 {
@@ -28,9 +29,13 @@ public slots:
     //event
     //void resizeEvent(QResizeEvent *e);
     void wheelEvent(QWheelEvent *e);
+    void mouseDoubleClickEvent(QMouseEvent *e);
     void tick();
     void startSimulation(); //to start the timer
     void suspendSimulation(); //to stop the timer
+
+signals:
+    void animalSelected(Animal * a);
 
 private:
     void drawEntity(const Entity *entity);

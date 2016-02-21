@@ -18,6 +18,7 @@ public:
     int getThirst() const;
     int getFear() const;
     double getAngle() const;
+    const Vision * getVision() const;
 
     void die();
     void move(int speedPercentage);

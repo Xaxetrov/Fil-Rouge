@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     Visionsector.cpp \
     Visionsector_Living.cpp \
     Visionsector_NonLiving.cpp \
-    SaveManager.cpp
+    SaveManager.cpp \
+    EntityViewWidget.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -54,6 +55,7 @@ HEADERS  += mainwindow.h \
     SaveManager.h \
     config/errors.h \
     config/config.h \
-    config/nnNames.h
+    config/nnNames.h \
+    EntityViewWidget.h
 
 FORMS    += mainwindow.ui

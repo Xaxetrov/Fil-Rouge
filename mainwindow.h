@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "WorldWidget.h"
+#include "EntityViewWidget.h"
 #include "World.h"
 
 namespace Ui {
@@ -31,6 +32,7 @@ private:
 private:
     Ui::MainWindow *ui;
     WorldWidget worldWidget;
+    EntityViewWidget entityWidget;
     World world;
 };
 

@@ -103,6 +103,25 @@ void WorldWidget::drawEntity(const Entity * e)
     }
 }
 
+void WorldWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    for(Entity * e:m_world->getEntities())
+    {
+        if(Animal* living = dynamic_cast<Animal*>(e))
+        {
+            QPointF point = this->mapToScene(event->pos());
+            if(point.x()<e->getX()+e->getRadius() && point.x()>e->getX()-e->getRadius() &&
+                    point.y()<e->getY()+e->getRadius() && point.y()>e->getY()-e->getRadius())
+            {
+                emit animalSelected(living);
+                return;
+            }
+        }
+    }
+    //if nothing found send nullptr
+    emit animalSelected(nullptr);
+}
+
 WorldColors & WorldWidget::getColors()
 {
     return colors;

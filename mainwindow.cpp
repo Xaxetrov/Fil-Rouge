@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "Animal.h"
+#include <QDockWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,10 +10,20 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //set central widget
     loadWorld();
     worldWidget.setWorld(&world);
     setCentralWidget(&worldWidget);
     worldWidget.updateScene();
+    //set dock widget
+    QDockWidget * dockWidget = new QDockWidget(tr("Entity View"),this);
+    dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+    dockWidget->setWidget(&entityWidget);
+    addDockWidget(Qt::RightDockWidgetArea, dockWidget);
+    entityWidget.updateView();
+
+    //event managment
+    QObject::connect(&worldWidget,SIGNAL(animalSelected(Animal*)),&entityWidget,SLOT(setAnimal(Animal*)));
 }
 
 void MainWindow::loadWorld()

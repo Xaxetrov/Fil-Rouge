@@ -18,12 +18,18 @@ WorldColors::WorldColors()
     teamsBrushs.push_back(QBrush(Qt::red));
     teamsBrushs.push_back(QBrush(Qt::cyan));
     teamsBrushs.push_back(QBrush(Qt::yellow));
+    teamsNullBrush = QBrush(Qt::gray);
+    teamsNullPen = QPen(Qt::gray);
 }
 
 QBrush & WorldColors::getEntityBrush(const Entity * entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
-    if(typeid(*entity) == typeid( Animal ))
+    if(entity == nullptr)
+    {
+        return teamsNullBrush;
+    }
+    else if(typeid(*entity) == typeid( Animal ))
     {
         return teamsBrushs.at(2);
     }
@@ -39,7 +45,11 @@ QBrush & WorldColors::getEntityBrush(const Entity * entity)
 QPen & WorldColors::getEntityPen(const Entity *entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
-    if(typeid(*entity) == typeid( Animal ))
+    if(entity == nullptr)
+    {
+        return teamsNullPen;
+    }
+    else if(typeid(*entity) == typeid( Animal ))
     {
         return teamsPen;
     }
