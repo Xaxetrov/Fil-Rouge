@@ -25,7 +25,9 @@ public:
 
 public slots:
     void updateScene();
-    void resizeEvent(QResizeEvent *e);
+    //event
+    //void resizeEvent(QResizeEvent *e);
+    void wheelEvent(QWheelEvent *e);
     void tick();
     void startSimulation(); //to start the timer
     void suspendSimulation(); //to stop the timer

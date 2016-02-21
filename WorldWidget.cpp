@@ -1,5 +1,9 @@
+#include <cmath>
+#include <QWheelEvent>
+
 #include "WorldWidget.h"
 #include "Animal.h"
+
 
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
@@ -11,6 +15,8 @@ WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
     //disable scroll bar as counter intuitive
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    //fit the scene in the view
+    //this->fitInView(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,Qt::KeepAspectRatio);
 
     //set timer:
     timer.setInterval(UPDATE_TIMER_INTERVALE);
@@ -27,6 +33,9 @@ WorldWidget::~WorldWidget()
 void WorldWidget::setWorld(World *world)
 {
     m_world = world;
+    this->updateScene();
+    //fit the scene in the view
+    this->fitInView(0,0,2*WORLD_SIZE_X,2*WORLD_SIZE_Y,Qt::KeepAspectRatio); //why 2* ??? but it work more or less
 }
 
 void WorldWidget::updateScene()
@@ -43,10 +52,17 @@ void WorldWidget::updateScene()
     }
 }
 
-void WorldWidget::resizeEvent(QResizeEvent *e)
+/*void WorldWidget::resizeEvent(QResizeEvent *e)
 {
     this->fitInView(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,Qt::KeepAspectRatio);
     QGraphicsView::resizeEvent(e);
+}*/
+
+void WorldWidget::wheelEvent(QWheelEvent* e)
+{
+    QPoint numDegree = e->angleDelta() /8;
+    qreal factor = std::pow(1.01, numDegree.ry());
+    this->scale(factor, factor);
 }
 
 void WorldWidget::tick()
