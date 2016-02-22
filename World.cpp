@@ -42,7 +42,7 @@ void World::addEntity(Entity *entity)
     m_entities.push_back(entity);
 }
 
-int World::tic()
+int World::tick()
 {
     int entityErrorsNum = 0;
     for(unsigned int i=0; i<m_entities.size(); i++)
@@ -57,12 +57,12 @@ int World::tic()
     return entityErrorsNum;
 }
 
-int World::tic(int ticNum)
+int World::tick(int ticNum)
 {
-    int ticResult=0;
+    int tickResult=0;
     for(int i=0; i<ticNum; i++)
     {
-        if(tic())
+        if(tick())
         {
             //TODO : manage tic errors
         }

@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include <QApplication>
-#include <iostream>
 
 #include "SaveManager.h"
 
@@ -17,6 +16,7 @@ int main(int argc, char *argv[])
     int r = s.SaveNetwork(n, saveName);
     s.LoadNetwork(saveName);
 */
+
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

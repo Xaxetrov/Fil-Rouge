@@ -1,5 +1,4 @@
 #include "NeuralNetwork.h"
-
 using namespace std;
 
 NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
@@ -34,7 +33,8 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     vector<double> outputs; //stores the resultant outputs from each layer
 
     #ifdef DISABLE_NEURAL_NETWORK
-
+      outputs.push_back(20.0); // move speed 80%
+      outputs.push_back(0.0); // don't turn
     #else
         int weight = 0;
 

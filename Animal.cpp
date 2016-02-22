@@ -1,5 +1,5 @@
 #include "Animal.h"
-
+#include <fstream>
 using namespace std;
 
 Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
@@ -26,16 +26,29 @@ Animal::~Animal()
 
 int Animal::play()
 {
-    //TODO : make the animal do something
+    vector<double> inputs;
+    vector<double> outputs;
+    // TO DO : give values to inputs
+
+    outputs = m_brain->run(inputs);
+
+    if(outputs[0] > 0)
+    {
+      move(outputs[0]);
+    }
+
     return 0;
 }
 
 void Animal::move(int speedPercentage)
 {
-    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-    if (!m_world->isCollision(this))
+    if (m_world->isCollision(this))
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
+    }
+    else
+    {
+      setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
 }
 

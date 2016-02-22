@@ -31,8 +31,8 @@ public:
     void addEntity(Entity * entity);
 
     //I'm also almost the master of the time, I can make the world tic for you !
-    int tic();
-    int tic(int ticsNum);
+    int tick();
+    int tick(int ticsNum);
 
 private:
     //Privates methods

@@ -4,7 +4,6 @@
 #include "WorldWidget.h"
 #include "Animal.h"
 
-
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
     m_scene = new QGraphicsScene();
@@ -67,8 +66,7 @@ void WorldWidget::wheelEvent(QWheelEvent* e)
 
 void WorldWidget::tick()
 {
-    ///TODO implemente tick on world
-    //m_world->tick();
+    m_world->tick();
     updateScene();
 }
 
@@ -126,10 +124,3 @@ WorldColors & WorldWidget::getColors()
 {
     return colors;
 }
-
-
-
-
-
-
-

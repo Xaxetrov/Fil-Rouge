@@ -12,15 +12,15 @@ const int WORLD_SIZE_Y = 500;
 const int NB_VISIONSECTORS_LIVING = 3;
 const int NB_VISIONSECTORS_NONLIVING = 3;
 
-const int VISIONSECTORS_LIVING[NB_VISIONSECTORS_LIVING][3] = {
-   {-15, 15, 100}, /* numbers represent angle1, angle2 and range */
-   {-15, -45, 60} ,
-   {15, 45, 60}
+const double VISIONSECTORS_LIVING[NB_VISIONSECTORS_LIVING][3] = {
+   {-0.26, 0.26, 100}, /* numbers represent angle1, angle2 and range */
+   {-0.26, -0.79, 60} ,
+   {0.26, 0.79, 60}
 };
-const int VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
-   {-15, 15, 100}, /* numbers represent angle1, angle2 and range */
-   {-15, -45, 60} ,
-   {15, 45, 60}
+const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
+   {-0.26, 0.26, 100}, /* numbers represent angle1, angle2 and range */
+   {-0.26, -0.79, 60} ,
+   {0.26, 0.79, 60}
 };
 
 // Neural network
