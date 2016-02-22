@@ -34,7 +34,7 @@ void WorldWidget::setWorld(World *world)
     m_world = world;
     this->updateScene();
     //fit the scene in the view
-    this->fitInView(0,0,2*WORLD_SIZE_X,2*WORLD_SIZE_Y,Qt::KeepAspectRatio); //why 2* ??? but it work more or less
+    this->fitInView(0,0,2*m_world->getSizeX(),2*m_world->getSizeY(),Qt::KeepAspectRatio); //why 2* ??? but it work more or less
 }
 
 void WorldWidget::updateScene()
@@ -42,7 +42,8 @@ void WorldWidget::updateScene()
     //clear the scene:
     m_scene->clear();
     m_scene->setSceneRect(0,0,m_world->getSizeX(),m_world->getSizeY());
-    m_scene->setBackgroundBrush(colors.getBackgroundBrush());
+    m_scene->setBackgroundBrush(QBrush(Qt::gray));
+    m_scene->addRect(0,0,m_world->getSizeX(),m_world->getSizeY(),QPen(Qt::gray),colors.getBackgroundBrush());
     //add each entity to the scene one by one:
     std::vector<Entity*> & entities = m_world->getEntities();
     for(Entity* ite : entities)
