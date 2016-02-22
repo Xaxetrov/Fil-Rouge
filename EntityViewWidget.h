@@ -23,7 +23,7 @@ public slots:
     void setAnimal(Animal *a);
 
 private:
-    QPolygonF generateVisionSector(int angle1, int angle2, int depth, int numberOfPoint=3) const;
+    QPolygonF generateVisionSector(double angle1, double angle2, int depth, int numberOfPoint=3) const;
 
 private:
     Animal * animal;

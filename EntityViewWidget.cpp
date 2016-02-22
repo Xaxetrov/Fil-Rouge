@@ -27,7 +27,7 @@ void EntityViewWidget::updateView()
     scene.addEllipse(eyebaseSquare,borderPen,colors.getTeamsEyeBrush());
 }
 
-QPolygonF EntityViewWidget::generateVisionSector(int angle1, int angle2, int depth, int numberOfPoint) const
+QPolygonF EntityViewWidget::generateVisionSector(double angle1, double angle2, int depth, int numberOfPoint) const
 {
     QPolygonF ret;
     ret.push_back(QPoint(0,0));//add the center of the entity
@@ -35,7 +35,7 @@ QPolygonF EntityViewWidget::generateVisionSector(int angle1, int angle2, int dep
     double angle = angle1;
     for(double i=0 ; i<numberOfPoint ; i++)
     {
-        ret.push_back(QPoint(depth*cos(angle*PI/180.0-PI/2.0),depth*sin(angle*PI/180.0-PI/2.0)));
+        ret.push_back(QPoint(depth*cos(angle-PI/2.0),depth*sin(angle-PI/2.0)));
         angle += deltaAngle;
     }
     return ret;
@@ -51,5 +51,3 @@ void EntityViewWidget::setAnimal(Animal *a)
     animal = a;
     updateView();
 }
-
-
