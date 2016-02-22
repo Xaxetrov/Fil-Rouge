@@ -20,19 +20,22 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_actionQuit_triggered();
-
-    void on_actionStartTimer_triggered();
-
-    void on_actionStop_triggered();
+    void switchTimer();
 
 private:
     void loadWorld();
 
+
 private:
+    //ui
     Ui::MainWindow *ui;
     WorldWidget worldWidget;
     EntityViewWidget entityWidget;
+    QMenu * fileMenu;
+    QMenu * simulationMenu;
+    QAction * simmulationStartStopAction;
+    QAction * fileExitAction;
+
     World world;
 };
 

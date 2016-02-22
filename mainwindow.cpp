@@ -21,9 +21,17 @@ MainWindow::MainWindow(QWidget *parent) :
     dockWidget->setWidget(&entityWidget);
     addDockWidget(Qt::RightDockWidgetArea, dockWidget);
     entityWidget.updateView();
+    //(re)set menu bar
+    this->menuBar()->clear();
+    fileMenu = this->menuBar()->addMenu(tr("File"));
+    simulationMenu = this->menuBar()->addMenu(tr("Simulation"));
+    fileExitAction = fileMenu->addAction(tr("Exit"));
+    simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
 
     //event managment
     QObject::connect(&worldWidget,SIGNAL(animalSelected(Animal*)),&entityWidget,SLOT(setAnimal(Animal*)));
+    QObject::connect(fileExitAction,SIGNAL(triggered(bool)),this,SLOT(close()));
+    QObject::connect(simulationMenu,SIGNAL(triggered(QAction*)),this,SLOT(switchTimer()));
 }
 
 void MainWindow::loadWorld()
@@ -47,8 +55,6 @@ void MainWindow::loadWorld()
     world.addEntity(animal5);
     world.addEntity(animal6);
     world.addEntity(animal7);
-
-    on_actionStartTimer_triggered(); // Temporary
 }
 
 MainWindow::~MainWindow()
@@ -60,15 +66,16 @@ MainWindow::~MainWindow()
     }
 }
 
-void MainWindow::on_actionQuit_triggered()
+void MainWindow::switchTimer()
 {
-    QApplication::quit();
-}
-void MainWindow::on_actionStartTimer_triggered()
-{
-    worldWidget.startSimulation();
-}
-void MainWindow::on_actionStop_triggered()
-{
-    worldWidget.suspendSimulation();
+    if(worldWidget.isSimulationRunning())
+    {
+        worldWidget.suspendSimulation();
+        simmulationStartStopAction->setText(tr("Restart simulation"));
+    }
+    else
+    {
+        worldWidget.startSimulation();
+        simmulationStartStopAction->setText(tr("Stop simulation"));
+    }
 }
