@@ -29,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     dockWidget->setWidget(&entityWidget);
     addDockWidget(Qt::RightDockWidgetArea, dockWidget);
-    entityWidget.updateView();
+    //entityWidget.updateView();
+    entityWidget.update();
     //(re)set menu bar
     this->menuBar()->clear();
     fileMenu = this->menuBar()->addMenu(tr("File"));

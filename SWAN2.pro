@@ -39,7 +39,9 @@ SOURCES += main.cpp\
     SaveManager.cpp \
     EntityViewWidget.cpp \
     Vegetal.cpp \
-    Water.cpp
+    Water.cpp \
+    EntityFrame.cpp \
+    EntityAttributeWidget.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -64,6 +66,8 @@ HEADERS  += mainwindow.h \
     config/nnNames.h \
     EntityViewWidget.h \
     Vegetal.h \
-    Water.h
+    Water.h \
+    EntityFrame.h \
+    EntityAttributeWidget.h
 
 FORMS    += mainwindow.ui

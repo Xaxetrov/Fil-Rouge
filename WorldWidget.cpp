@@ -6,6 +6,7 @@
 #include "Vegetal.h"
 #include "Water.h"
 
+
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
     m_scene = new QGraphicsScene();
