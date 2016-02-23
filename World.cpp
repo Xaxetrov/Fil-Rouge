@@ -28,6 +28,12 @@ int World::getSizeY() const
     return m_size_y;
 }
 
+void World::setSize(int size_x, int size_y)
+{
+   m_size_x = size_x;
+   m_size_y = size_y;
+}
+
 bool World::isCollision(const Entity* e) const
 {
     for( Entity* currantEntity : m_entities)

@@ -2,6 +2,8 @@
 
 #include <typeinfo>
 #include "Animal.h"
+#include "Vegetal.h"
+#include "Water.h"
 
 WorldColors::WorldColors()
 {
@@ -33,6 +35,14 @@ QBrush & WorldColors::getEntityBrush(const Entity * entity)
     {
         return teamsBrushs.at(2);
     }
+    else if(typeid(*entity) == typeid( Vegetal ))
+    {
+      return grassBrush;
+    }
+    else if(typeid(*entity) == typeid( Water))
+    {
+      return waterBrush;
+    }
     /*
     else if(typeid(entity) == typeid( ... ))
     {
@@ -52,6 +62,14 @@ QPen & WorldColors::getEntityPen(const Entity *entity)
     else if(typeid(*entity) == typeid( Animal ))
     {
         return teamsPen;
+    }
+    else if(typeid(*entity) == typeid( Vegetal ))
+    {
+      return grassPen;
+    }
+    else if(typeid(*entity) == typeid( Water ))
+    {
+      return waterPen;
     }
     /*
     else if(typeid(entity) == typeid( ... ))

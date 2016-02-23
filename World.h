@@ -25,6 +25,8 @@ public:
     //You sir are hopeless...
     int getSizeY() const;
 
+    void setSize(int size_x, int size_y);
+
     bool isCollision(const Entity* e) const;
 
     //More ! Give me more of them !

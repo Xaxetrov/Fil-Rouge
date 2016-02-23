@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <World>
-	<x>100</x>
-	<y>100</y>
+	<x>500</x>
+	<y>500</y>
 	<Entity type="Vegetal">
 		<x>0</x>
 		<y>0</y>

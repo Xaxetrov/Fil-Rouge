@@ -12,6 +12,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = SWAN2
 TEMPLATE = app
 
+DESTDIR=bin
+OBJECTS_DIR = build
+MOC_DIR = build
+
 QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
@@ -33,7 +37,9 @@ SOURCES += main.cpp\
     Visionsector_Living.cpp \
     Visionsector_NonLiving.cpp \
     SaveManager.cpp \
-    EntityViewWidget.cpp
+    EntityViewWidget.cpp \
+    Vegetal.cpp \
+    Water.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -56,6 +62,8 @@ HEADERS  += mainwindow.h \
     config/errors.h \
     config/config.h \
     config/nnNames.h \
-    EntityViewWidget.h
+    EntityViewWidget.h \
+    Vegetal.h \
+    Water.h
 
 FORMS    += mainwindow.ui

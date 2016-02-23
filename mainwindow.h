@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QXmlStreamReader>
 
 #include "WorldWidget.h"
 #include "EntityViewWidget.h"
@@ -24,6 +25,9 @@ private slots:
 
 private:
     void loadWorld();
+    void loadXML(QString worldSave);
+    void parseWorld(QXmlStreamReader& reader);
+    void parseEntity(QXmlStreamReader& reader);
 
 
 private:
