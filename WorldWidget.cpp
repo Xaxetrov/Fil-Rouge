@@ -3,6 +3,9 @@
 
 #include "WorldWidget.h"
 #include "Animal.h"
+#include "Vegetal.h"
+#include "Water.h"
+
 
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
@@ -34,7 +37,7 @@ void WorldWidget::setWorld(World *world)
     m_world = world;
     this->updateScene();
     //fit the scene in the view
-    this->fitInView(0,0,2*WORLD_SIZE_X,2*WORLD_SIZE_Y,Qt::KeepAspectRatio); //why 2* ??? but it work more or less
+    this->fitInView(0,0,2*m_world->getSizeX(),2*m_world->getSizeY(),Qt::KeepAspectRatio); //why 2* ??? but it work more or less
 }
 
 void WorldWidget::updateScene()
@@ -42,7 +45,8 @@ void WorldWidget::updateScene()
     //clear the scene:
     m_scene->clear();
     m_scene->setSceneRect(0,0,m_world->getSizeX(),m_world->getSizeY());
-    m_scene->setBackgroundBrush(colors.getBackgroundBrush());
+    m_scene->setBackgroundBrush(QBrush(Qt::gray));
+    m_scene->addRect(0,0,m_world->getSizeX(),m_world->getSizeY(),QPen(Qt::gray),colors.getBackgroundBrush());
     //add each entity to the scene one by one:
     std::vector<Entity*> & entities = m_world->getEntities();
     for(Entity* ite : entities)
@@ -86,19 +90,23 @@ bool WorldWidget::isSimulationRunning() const
 
 void WorldWidget::drawEntity(const Entity * e)
 {
-    //draw a circle representing the Entity
-    QRect baseSquare(e->getX()-e->getRadius(),e->getY()-e->getRadius(),e->getRadius()*2,e->getRadius()*2);
-    m_scene->addEllipse(baseSquare,colors.getEntityPen(e),colors.getEntityBrush(e));
-    if(const Animal* const living = dynamic_cast<const Animal*>(e))
-    {
-        //add an eye to show the looking direction
-        double angle = living->getAngle();
-        int eyeRadius = e->getRadius()/3;
-        int eyeXCenter = e->getX()+cos(angle)*(e->getRadius()-eyeRadius);
-        int eyeYCenter = e->getY()+sin(angle)*(e->getRadius()-eyeRadius);
-        QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
-        m_scene->addEllipse(eyeSquare,colors.getEntityPen(e),colors.getTeamsEyeBrush());
-    }
+   if(const Animal* const living = dynamic_cast<const Animal*>(e))
+   {
+     //draw a circle representing the Entity
+     QRect baseSquare(e->getX()-e->getRadius(),e->getY()-e->getRadius(),e->getRadius()*2,e->getRadius()*2);
+     m_scene->addEllipse(baseSquare,colors.getEntityPen(e),colors.getEntityBrush(e));
+     //add an eye to show the looking direction
+     double angle = living->getAngle();
+     int eyeRadius = e->getRadius()/3;
+     int eyeXCenter = e->getX()+cos(angle)*(e->getRadius()-eyeRadius);
+     int eyeYCenter = e->getY()+sin(angle)*(e->getRadius()-eyeRadius);
+     QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
+     m_scene->addEllipse(eyeSquare,colors.getEntityPen(e),colors.getTeamsEyeBrush());
+   }
+   else
+   {
+     m_scene->addRect(e->getX(), e->getY(), e->getRadius(), e->getRadius(), colors.getEntityPen(e),colors.getEntityBrush(e));
+   }
 }
 
 void WorldWidget::mouseDoubleClickEvent(QMouseEvent *event)

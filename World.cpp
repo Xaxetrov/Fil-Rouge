@@ -2,7 +2,10 @@
 
 World::World()
 {
-    m_size.set(WORLD_SIZE_X,WORLD_SIZE_Y);
+    //don't work: aply a modulus by WORLD_SIZE so always 0...
+    //m_size.set(WORLD_SIZE_X,WORLD_SIZE_Y);
+    m_size_x = WORLD_SIZE_X;
+    m_size_y = WORLD_SIZE_Y;
 }
 
 std::vector<Entity *> &World::getEntities()
@@ -10,19 +13,25 @@ std::vector<Entity *> &World::getEntities()
     return m_entities;
 }
 
-Coordinate & World::getSize()
+/*Coordinate & World::getSize()
 {
     return m_size;
-}
+}*/
 
 int World::getSizeX() const
 {
-    return m_size.getX();
+    return m_size_x;
 }
 
 int World::getSizeY() const
 {
-    return m_size.getY();
+    return m_size_y;
+}
+
+void World::setSize(int size_x, int size_y)
+{
+   m_size_x = size_x;
+   m_size_y = size_y;
 }
 
 bool World::isCollision(const Entity* e) const

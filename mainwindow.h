@@ -2,9 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QXmlStreamReader>
 
 #include "WorldWidget.h"
-#include "EntityViewWidget.h"
+//#include "EntityViewWidget.h"
+#include "EntityFrame.h"
 #include "World.h"
 
 namespace Ui {
@@ -24,13 +26,17 @@ private slots:
 
 private:
     void loadWorld();
+    void loadXML(QString worldSave);
+    void parseWorld(QXmlStreamReader& reader);
+    void parseEntity(QXmlStreamReader& reader);
 
 
 private:
     //ui
     Ui::MainWindow *ui;
     WorldWidget worldWidget;
-    EntityViewWidget entityWidget;
+    //EntityViewWidget entityWidget;
+    EntityFrame entityWidget;
     QMenu * fileMenu;
     QMenu * simulationMenu;
     QAction * simmulationStartStopAction;

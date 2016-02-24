@@ -19,11 +19,13 @@ public:
     std::vector<Entity*> & getEntities();
 
     //Why do you want it ? I'm the biggest world of all worlds !
-    Coordinate & getSize();
+    //Coordinate & getSize(); disabled as not working :/
     //What did I just told you ? It's useless !
     int getSizeX() const;
     //You sir are hopeless...
     int getSizeY() const;
+
+    void setSize(int size_x, int size_y);
 
     bool isCollision(const Entity* e) const;
 
@@ -42,7 +44,8 @@ private:
 
     //My loves, my life
     std::vector<Entity*> m_entities;
-    Coordinate m_size;
+    int m_size_x;
+    int m_size_y;
 };
 
 #endif // WORLD_H
