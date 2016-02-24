@@ -11,6 +11,8 @@
 
 //DEBUG
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -49,7 +51,7 @@ void MainWindow::loadWorld()
     const QString worldSave("../save/world.xml");
     loadXML(worldSave);
 
-    Animal * animal0 = new Animal(130,278,10,50,&world);
+    /*Animal * animal0 = new Animal(130,278,10,50,&world);
     Animal * animal1 = new Animal(160,278,10,50,&world);
     Animal * animal2 = new Animal(99,319,10,50,&world);
     Animal * animal3 = new Animal(40,99,10,50,&world);
@@ -64,7 +66,15 @@ void MainWindow::loadWorld()
     world.addEntity(animal4);
     world.addEntity(animal5);
     world.addEntity(animal6);
-    world.addEntity(animal7);
+    world.addEntity(animal7);*/
+srand(std::time(0));
+    for(int i = 0; i < 10; i++)
+    {
+      int x = rand() % WORLD_SIZE_X;
+      int y = rand() % WORLD_SIZE_Y;
+      Animal * animal = new Animal(x,y,10,50,&world);
+      world.addEntity(animal);
+    }
 }
 
 void MainWindow::loadXML(QString worldSave)

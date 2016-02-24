@@ -36,8 +36,6 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
 
     #ifdef DISABLE_NEURAL_NETWORK
 
-    outputs.push_back(5.0); // move speed 5%
-
     bool percepted = false;
     for(int i = 0; i < inputs.size(); i++)
     {
@@ -49,12 +47,17 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     }
     if(percepted)
     {
+      outputs.push_back(0); // move speed 0%
+
       srand(std::time(0));
       int random_direction = (rand() % 2) * 2 - 1;
       outputs.push_back(random_direction * 1.5707963);
     }
     else
+    {
+      outputs.push_back(5.0); // move speed 5%
       outputs.push_back(0);
+    }
 
     #else
 

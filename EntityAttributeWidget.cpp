@@ -2,6 +2,8 @@
 
 EntityAttributeWidget::EntityAttributeWidget()
 {
+   animal = nullptr; // Avoid random crashes
+
    defaultLabel = new QLabel("No entity selected");
 
    healthLabel = new QLabel();
