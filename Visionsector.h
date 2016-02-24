@@ -13,7 +13,7 @@ class VisionSector
         virtual ~VisionSector();
 
         virtual void see() = 0;
-        Percepted* getNearestPercepted() { return m_nearestPercepted; };
+        const Percepted* getNearestPercepted() const { return m_nearestPercepted; }
 
     protected:
         void scan();

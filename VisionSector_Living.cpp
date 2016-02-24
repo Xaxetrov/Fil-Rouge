@@ -12,7 +12,7 @@ void VisionSector_Living::see()
     int indMin = 0;
     for(unsigned int i = 0; i < m_percepted.size(); i++)
     {
-        if(dynamic_cast <Animal*> (m_percepted.at(i)->getEntity()) != nullptr && (min == -1 || m_percepted.at(i)->getDistance() < min))
+        if(dynamic_cast <const Animal*> (m_percepted.at(i)->getEntity()) != nullptr && (min == -1 || m_percepted.at(i)->getDistance() < min))
         {
             indMin = i;
             min = m_percepted.at(i)->getDistance();

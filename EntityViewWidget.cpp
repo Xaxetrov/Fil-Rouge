@@ -11,16 +11,29 @@ void EntityViewWidget::updateView()
     scene.clear();
     QPen & borderPen = colors.getEntityPen(animal);
     QBrush & backgroundBrush = colors.getBackgroundBrush();
+    ///draw vision sector
     //draw base vision sector
-    for(int i=0 ; i<NB_VISIONSECTORS_LIVING ; i++)
+    for(unsigned i=0 ; i<NB_VISIONSECTORS_LIVING ; i++)
     {
         QPolygonF visionSector;
         visionSector = generateVisionSector(VISIONSECTORS_LIVING[i][0],VISIONSECTORS_LIVING[i][1],VISIONSECTORS_LIVING[i][2]);
         scene.addPolygon(visionSector,borderPen,backgroundBrush);
     }
-    //draw viewed vision sector
-    //TODO
-    //draw entity
+    //draw filled part of vision sector
+    if(animal != nullptr)
+    {
+        const vector<const Percepted*> & percepted = animal->getVision()->getPercepted();
+        for(unsigned i=0 ; i<NB_VISIONSECTORS_LIVING && i<percepted.size(); i++)
+        {
+            if(percepted[i]->getEntity() != nullptr)
+            {
+                QPolygonF filledVision;
+                filledVision = generateVisionSector(VISIONSECTORS_LIVING[i][0],VISIONSECTORS_LIVING[i][1],percepted[i]->getDistance());
+                scene.addPolygon(filledVision,borderPen,colors.getEntityBrush(percepted[i]->getEntity()));
+            }
+        }
+    }
+    //draw currant entity
     QRect baseSquare(-10,-10,20,20);
     scene.addEllipse(baseSquare,borderPen,colors.getEntityBrush(animal));
     QRect eyebaseSquare(-3,-10,6,6);
@@ -43,7 +56,7 @@ QPolygonF EntityViewWidget::generateVisionSector(double angle1, double angle2, i
 
 void EntityViewWidget::resizeEvent(QResizeEvent *e)
 {
-    this->fitInView(-45,-110,90,120,Qt::KeepAspectRatio);
+    this->fitInView(this->sceneRect(),Qt::KeepAspectRatio);
 }
 
 void EntityViewWidget::setAnimal(Animal *a)

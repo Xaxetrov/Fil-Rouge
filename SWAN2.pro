@@ -12,9 +12,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = SWAN2
 TEMPLATE = app
 
-DESTDIR=bin
-OBJECTS_DIR = build
-MOC_DIR = build
+#DESTDIR=bin
+#OBJECTS_DIR = build
+#MOC_DIR = build
 
 QMAKE_CXXFLAGS += -std=c++11
 

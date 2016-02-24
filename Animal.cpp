@@ -31,13 +31,13 @@ int Animal::play()
 
     // The animal looks around itself
     m_vision->see();
-    vector<Percepted*> percepted = m_vision->getPercepted();
+    vector<const Percepted*> percepted = m_vision->getPercepted();
 
     for(unsigned int i = 0; i < percepted.size(); i++)
     {
       if(percepted[i]->getEntity() != nullptr) // If it sees something
       {
-        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
+        inputs.push_back(/*(double) percepted[i]->getEntity()->getTypeId()*/0.0);
         inputs.push_back(percepted[i]->getDistance());
       }
       else

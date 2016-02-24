@@ -37,9 +37,9 @@ void Vision::see()
     }
 }
 
-vector<Percepted*> Vision::getPercepted()
+const vector<const Percepted*> Vision::getPercepted() const
 {
-  vector<Percepted*> percepted;
+  vector<const Percepted*> percepted;
   for(int i = 0; i < NB_VISIONSECTORS_LIVING + NB_VISIONSECTORS_NONLIVING; i++)
   {
       percepted.push_back(m_sectors[i]->getNearestPercepted());

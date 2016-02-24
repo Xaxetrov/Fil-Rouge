@@ -11,8 +11,8 @@ class Percepted
 
         void set(Entity *entity, double distance);
 
-        Entity* getEntity() { return m_entity; };
-        double getDistance() { return m_distance; };
+        const Entity* getEntity() const { return m_entity; }
+        double getDistance() const { return m_distance; }
 
     private:
         Entity* m_entity;

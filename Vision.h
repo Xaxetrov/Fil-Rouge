@@ -10,17 +10,17 @@ using namespace std;
 
 class Vision
 {
-	public:
-	    Vision(const Coordinate * position, double * angle, vector<Entity*> &entities);
-      virtual ~Vision();
-      void see();
-			vector<Percepted*> getPercepted();
+public:
+    Vision(const Coordinate * position, double * angle, vector<Entity*> &entities);
+    virtual ~Vision();
+    void see();
+    const vector<const Percepted*> getPercepted() const;
 
-	private:
-        const Coordinate * m_position;
-				const double * m_angle;
-        vector<VisionSector *> m_sectors;
-        vector<Entity*> &m_entities;
+private:
+    const Coordinate * m_position;
+    const double * m_angle;
+    vector<VisionSector *> m_sectors;
+    vector<Entity*> &m_entities;
 };
 
 #endif // VISION_H
