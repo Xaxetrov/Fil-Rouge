@@ -53,6 +53,7 @@ void WorldWidget::updateScene()
     {
         drawEntity(ite);
     }
+    emit sceneUpdated();
 }
 
 /*void WorldWidget::resizeEvent(QResizeEvent *e)

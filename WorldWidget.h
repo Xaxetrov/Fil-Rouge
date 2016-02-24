@@ -36,6 +36,7 @@ public slots:
 
 signals:
     void animalSelected(Animal * a);
+    void sceneUpdated();
 
 private:
     void drawEntity(const Entity *entity);

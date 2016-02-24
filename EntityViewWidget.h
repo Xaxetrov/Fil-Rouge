@@ -17,10 +17,11 @@ class EntityViewWidget : public QGraphicsView
 public:
     EntityViewWidget(Animal * a = nullptr);
     void setAnimal(Animal *a);
-    void updateView();
+
     void resizeEvent(QResizeEvent *e);
 
 public slots:
+    void updateView();
 
 private:
     QPolygonF generateVisionSector(double angle1, double angle2, int depth, int numberOfPoint=3) const;
