@@ -1,5 +1,4 @@
 #include "Animal.h"
-#include <fstream>
 using namespace std;
 
 Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
@@ -8,7 +7,7 @@ Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x,
     m_hunger = 0;
     m_thirst = 0;
     m_fear = 0;
-    m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
+    m_vision = new Vision(getCoordinate(), &m_angle, world->getEntities());
 
     vector<unsigned int> layerSizes;
     for(unsigned int i = 0; i < NB_LAYERS; i++)
@@ -26,12 +25,37 @@ Animal::~Animal()
 
 int Animal::play()
 {
+    // Inputs and outputs of the neural network
     vector<double> inputs;
     vector<double> outputs;
-    // TO DO : give values to inputs
 
+    // The animal looks around itself
+    m_vision->see();
+    vector<Percepted*> percepted = m_vision->getPercepted();
+
+    for(unsigned int i = 0; i < percepted.size(); i++)
+    {
+      if(percepted[i]->getEntity() != nullptr) // If it sees something
+      {
+        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
+        inputs.push_back(percepted[i]->getDistance());
+      }
+      else
+      {
+        inputs.push_back(0.0);
+        inputs.push_back(0.0);
+      }
+    }
+
+    // The animal decides what to do
     outputs = m_brain->run(inputs);
 
+    // The animal moves
+    // First it turns, then it moves
+    if(outputs[1] != 0)
+    {
+      turn(outputs[1]);
+    }
     if(outputs[0] > 0)
     {
       move(outputs[0]);
@@ -50,6 +74,11 @@ void Animal::move(int speedPercentage)
     {
       setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
+}
+
+void Animal::turn(double angle)
+{
+  m_angle += angle;
 }
 
 int Animal::getMaxSpeed() const

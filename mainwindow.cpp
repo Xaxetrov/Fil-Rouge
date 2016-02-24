@@ -39,11 +39,11 @@ void MainWindow::loadWorld()
     //TODO load the world from a file or something like that
 
     //world = World();
-    Animal * animal0 = new Animal(250,250,10,50,&world);
-    Animal * animal1 = new Animal(0,0,10,50,&world);
-    Animal * animal2 = new Animal(499,499,10,50,&world);
-    Animal * animal3 = new Animal(0,499,10,50,&world);
-    Animal * animal4 = new Animal(499,0,10,50,&world);
+    Animal * animal0 = new Animal(130,278,10,50,&world);
+    Animal * animal1 = new Animal(160,278,10,50,&world);
+    Animal * animal2 = new Animal(99,319,10,50,&world);
+    Animal * animal3 = new Animal(40,99,10,50,&world);
+    Animal * animal4 = new Animal(199,236,10,50,&world);
     Animal * animal5 = new Animal(215,025,10,50,&world);
     Animal * animal6 = new Animal(125,350,10,50,&world);
     Animal * animal7 = new Animal(350,50,10,50,&world);

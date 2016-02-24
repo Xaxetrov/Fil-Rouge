@@ -2,8 +2,9 @@
 #include "VisionSector_Living.h"
 #include "VisionSector_NonLiving.h"
 #include "Coordinate.h"
+using namespace std;
 
-Vision::Vision(Coordinate position, double angle, std::vector<Entity*> &entities) : m_position(position), m_angle(angle), m_entities(entities)
+Vision::Vision(const Coordinate * position, double * angle, std::vector<Entity*> &entities) : m_position(position), m_angle(angle), m_entities(entities)
 {
     for(int i = 0; i < NB_VISIONSECTORS_LIVING; i++)
     {
@@ -34,4 +35,14 @@ void Vision::see()
     {
         m_sectors.at(i)->see();
     }
+}
+
+vector<Percepted*> Vision::getPercepted()
+{
+  vector<Percepted*> percepted;
+  for(int i = 0; i < NB_VISIONSECTORS_LIVING + NB_VISIONSECTORS_NONLIVING; i++)
+  {
+      percepted.push_back(m_sectors[i]->getNearestPercepted());
+  }
+  return percepted;
 }

@@ -2,6 +2,7 @@
 #define VISION_H
 
 #include <vector>
+using namespace std;
 
 #include "Entity.h"
 #include "Coordinate.h"
@@ -10,15 +11,16 @@
 class Vision
 {
 	public:
-	    Vision(Coordinate position, double angle, std::vector<Entity*> &entities);
-        virtual ~Vision();
-        void see();
+	    Vision(const Coordinate * position, double * angle, vector<Entity*> &entities);
+      virtual ~Vision();
+      void see();
+			vector<Percepted*> getPercepted();
 
 	private:
-        Coordinate m_position;
-				int m_angle;
-        std::vector<VisionSector *> m_sectors;
-        std::vector<Entity*> &m_entities;
+        const Coordinate * m_position;
+				const double * m_angle;
+        vector<VisionSector *> m_sectors;
+        vector<Entity*> &m_entities;
 };
 
 #endif // VISION_H

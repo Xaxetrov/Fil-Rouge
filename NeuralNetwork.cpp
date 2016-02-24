@@ -1,4 +1,6 @@
 #include "NeuralNetwork.h"
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
@@ -33,9 +35,29 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     vector<double> outputs; //stores the resultant outputs from each layer
 
     #ifdef DISABLE_NEURAL_NETWORK
-      outputs.push_back(20.0); // move speed 80%
-      outputs.push_back(0.0); // don't turn
+
+    outputs.push_back(5.0); // move speed 5%
+
+    bool percepted = false;
+    for(int i = 0; i < inputs.size(); i++)
+    {
+      if(inputs[i] > 0)
+      {
+        percepted = true;
+        break;
+      }
+    }
+    if(percepted)
+    {
+      srand(std::time(0));
+      int random_direction = (rand() % 2) * 2 - 1;
+      outputs.push_back(random_direction * 1.5707963);
+    }
+    else
+      outputs.push_back(0);
+
     #else
+
         int weight = 0;
 
         //first check that we have the correct amount of inputs

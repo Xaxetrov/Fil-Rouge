@@ -25,8 +25,7 @@ public:
     void turn(double angle);
 
     virtual int play();
-
-    bool isLiving() { return true; } // Temporary
+    unsigned int getTypeId() { return 20; };
 
 private :
     int m_maxSpeed;

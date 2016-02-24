@@ -7,6 +7,7 @@ class Water : public NonSolid
 {
 public:
   Water(int x, int y, int radius);
+  virtual unsigned int getTypeId() { return 10; };
 };
 
 

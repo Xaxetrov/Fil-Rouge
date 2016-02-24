@@ -7,6 +7,7 @@ class Vegetal : public NonSolid
 {
   public:
     Vegetal(int x, int y, int radius);
+    virtual unsigned int getTypeId() { return 11; };
 };
 
 #endif //VEGETAL_H
