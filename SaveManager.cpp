@@ -82,13 +82,15 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
 
 NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
 {
-    std::vector<unsigned int> myV;
+    /*std::vector<unsigned int> myV;
     myV.push_back(1);
     myV.push_back(1);
     myV.push_back(1);
-    NeuralNetwork n(myV);
+    NeuralNetwork n(myV);*/
+    std::vector<std::vector<std::vector<double> > > neuronWeights;
+    int inputsNum;
 
-    const QString fileXmlName = savePath+neuralNetworkName+".xml";
+    const QString fileXmlName = "./../Fil-Rouge/save/test.xml"; //savePath+neuralNetworkName+".xml"; NE FONCTIONNE PAS CHEZ MOI
     QFile* xmlFile = new QFile(fileXmlName);
     if (!xmlFile->exists())
     {   std::cout << "file does not exist" << std::endl;
@@ -107,7 +109,7 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
 
         if (token==QXmlStreamReader::StartElement)
         {   if (reader.name()=="NeuralNetwork")
-            {   this->parseNeuralNetwork(reader);
+            {   inputsNum=this->parseNeuralNetwork(reader,neuronWeights);
             }
         }
     }
@@ -116,65 +118,75 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
     {   std::cout << "Error in reading XML" << std::endl;
     }
 
+    NeuralNetwork n(inputsNum,neuronWeights);
+
     return n;
 
 }
 
-void SaveManager::parseNeuralNetwork(QXmlStreamReader& reader)
-{   int inputsNum;
-    std::vector<std::vector<std::vector<double> > > neuronWeights;
-    int currentNeuronLayer;
-    int currentNeuron;
-    QString weights;
-    std::vector<double> weightsArray;
+int SaveManager::parseNeuralNetwork(QXmlStreamReader& reader, std::vector<std::vector<std::vector<double> > > &neuronWeights)
+{   QString weights;
     QXmlStreamAttributes attributes;
+    int inputsNum;
 
-    if (reader.tokenType() != QXmlStreamReader::StartElement && reader.name() != "NeuralNetwork")
+    if (reader.tokenType() != QXmlStreamReader::StartElement || reader.name() != "NeuralNetwork")
     {   std::cout << "Error in reading NeuralNetwork" << std::endl;
     }
+    reader.readNext();
     reader.readNext();
     while (!(reader.tokenType() == QXmlStreamReader::EndElement && reader.name() == "NeuralNetwork"))
     {   attributes = reader.attributes();
         // Input layer management
         if (reader.name() == "NeuronLayer" && attributes.hasAttribute("id") && attributes.value("id").toString() == "0")
         {   reader.readNext();
+            reader.readNext();
             inputsNum=reader.readElementText().toInt();
             reader.readNext();
-        } else if (reader.name() == "NeuronLayer" && attributes.hasAttribute("id"))
-        // General layer management
-        {   currentNeuronLayer=attributes.value("id").toInt();
             reader.readNext();
-            while (!(reader.tokenType() == QXmlStreamReader::EndElement && reader.name() == "NeuralLayer"))
+            reader.readNext();
+            reader.readNext();
+        } else if (reader.name() == "NeuronLayer" && attributes.hasAttribute("id"))
+
+        // General layer management
+        {   std::vector<std::vector<double> > neuronsArray;
+            reader.readNext();
+            reader.readNext();
+            while (!(reader.tokenType() == QXmlStreamReader::EndElement && reader.name() == "NeuronLayer"))
             {   attributes = reader.attributes();
                 if (reader.name() == "Neuron" && attributes.hasAttribute("id"))
+
                 // Neuron management
-                {   currentNeuron=attributes.value("id").toInt();
+                {   std::vector<double> weightsArray;
                     reader.readNext();
-                    while (!(reader.tokenType() == QXmlStreamReader::EndElement && reader.name() == "Neuron"))
-                    {   if (reader.name() == "weights")
-                        // weights management
-                        {   weights=reader.readElementText();
-                            parseWeights(weights,weightsArray);
-                            for (unsigned int i=0;i<weightsArray.size();i++)
-                            {   neuronWeights[currentNeuronLayer][currentNeuron].push_back(weightsArray[i]);
-                            }
-                        } else
-                        // error
-                        {   std::cout << "Error during the loading" << std::endl;
-                        }
+                    reader.readNext();
+                    if (reader.name() == "weights")
+                    {   weights=reader.readElementText();
+                        parseWeights(weights,weightsArray);
+                    } else
+                    // error
+                    {   std::cout << "Error during the loading (Neuron management)" << std::endl;
                     }
+                    neuronsArray.push_back(weightsArray);
+                    reader.readNext();
+                    reader.readNext();
+                    reader.readNext();
+                    reader.readNext();
+
                 } else
                 // error
-                {   std::cout << "Error during the loading" << std::endl;
+                {   std::cout << "Error during the loading (General layer management)" << std::endl;
                 }
-
             }
+            neuronWeights.push_back(neuronsArray);
+            reader.readNext();
+            reader.readNext();
+
         } else
         // error
         {   std::cout << "Error during the loading" << std::endl;
         }
-        reader.readNext();
     }
+    return inputsNum;
 }
 
 void SaveManager::parseWeights (QString weights, std::vector<double> &weightsArray)
