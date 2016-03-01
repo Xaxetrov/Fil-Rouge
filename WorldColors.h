@@ -24,6 +24,8 @@ public:
     QPen & getTeamsPen();
     QBrush & getTeamsEyeBrush();
 
+    QPen & getTeamsSelectedPen();
+
 private:
     ///environnement colors: (non living)
     //Background color:
@@ -39,6 +41,7 @@ private:
     //teams colors:
     std::vector<QBrush> teamsBrushs;
     QPen teamsPen;
+    QPen teamsSelectedPen;
     QBrush teamsEye;
     QBrush teamsNullBrush;
     QPen teamsNullPen;

@@ -15,6 +15,7 @@ WorldColors::WorldColors()
     grassPen = QPen(Qt::green);
 
     teamsPen = QPen(Qt::black);
+    teamsSelectedPen = QPen(Qt::yellow);
     teamsEye = QBrush(Qt::black);
     teamsBrushs.push_back(QBrush(Qt::darkGreen));
     teamsBrushs.push_back(QBrush(Qt::red));
@@ -118,4 +119,9 @@ QBrush & WorldColors::getBackgroundBrush()
 QBrush & WorldColors::getTeamsEyeBrush()
 {
     return teamsEye;
+}
+
+QPen & WorldColors::getTeamsSelectedPen()
+{
+    return teamsSelectedPen;
 }

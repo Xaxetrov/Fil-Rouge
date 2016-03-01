@@ -9,6 +9,10 @@
 
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
+    //setup default selected animal
+    selectedAnimal = nullptr;
+
+    //setup a new scene
     m_scene = new QGraphicsScene();
     this->setScene(m_scene);
 
@@ -56,17 +60,24 @@ void WorldWidget::updateScene()
     emit sceneUpdated();
 }
 
-/*void WorldWidget::resizeEvent(QResizeEvent *e)
+void WorldWidget::resizeEvent(QResizeEvent *e)
 {
     this->fitInView(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,Qt::KeepAspectRatio);
     QGraphicsView::resizeEvent(e);
-}*/
+}
 
 void WorldWidget::wheelEvent(QWheelEvent* e)
 {
     QPoint numDegree = e->angleDelta() /8;
     qreal factor = std::pow(1.01, numDegree.ry());
     this->scale(factor, factor);
+}
+
+void WorldWidget::selectAnimal(Animal *a)
+{
+    selectedAnimal = a;
+    emit animalSelected(a);
+    updateScene();
 }
 
 void WorldWidget::tick()
@@ -93,16 +104,22 @@ void WorldWidget::drawEntity(const Entity * e)
 {
    if(const Animal* const living = dynamic_cast<const Animal*>(e))
    {
+     //select the apropriate pen
+     QPen animalPen;
+     if(living == selectedAnimal)
+         animalPen = colors.getTeamsSelectedPen();
+     else
+         animalPen = colors.getEntityPen(e);
      //draw a circle representing the Entity
      QRect baseSquare(e->getX()-e->getRadius(),e->getY()-e->getRadius(),e->getRadius()*2,e->getRadius()*2);
-     m_scene->addEllipse(baseSquare,colors.getEntityPen(e),colors.getEntityBrush(e));
+     m_scene->addEllipse(baseSquare,animalPen,colors.getEntityBrush(e));
      //add an eye to show the looking direction
      double angle = living->getAngle();
      int eyeRadius = e->getRadius()/3;
      int eyeXCenter = e->getX()+cos(angle)*(e->getRadius()-eyeRadius);
      int eyeYCenter = e->getY()+sin(angle)*(e->getRadius()-eyeRadius);
      QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
-     m_scene->addEllipse(eyeSquare,colors.getEntityPen(e),colors.getTeamsEyeBrush());
+     m_scene->addEllipse(eyeSquare,animalPen,colors.getTeamsEyeBrush());
    }
    else
    {
@@ -120,13 +137,13 @@ void WorldWidget::mouseDoubleClickEvent(QMouseEvent *event)
             if(point.x()<e->getX()+e->getRadius() && point.x()>e->getX()-e->getRadius() &&
                     point.y()<e->getY()+e->getRadius() && point.y()>e->getY()-e->getRadius())
             {
-                emit animalSelected(living);
+                selectAnimal(living);
                 return;
             }
         }
     }
     //if nothing found send nullptr
-    emit animalSelected(nullptr);
+    selectAnimal(nullptr);
 }
 
 WorldColors & WorldWidget::getColors()

@@ -27,9 +27,10 @@ public:
 public slots:
     void updateScene();
     //event
-    //void resizeEvent(QResizeEvent *e);
+    void resizeEvent(QResizeEvent *e);
     void wheelEvent(QWheelEvent *e);
     void mouseDoubleClickEvent(QMouseEvent *e);
+    void selectAnimal(Animal * a);
     void tick();
     void startSimulation(); //to start the timer
     void suspendSimulation(); //to stop the timer
@@ -45,6 +46,7 @@ private:
     QGraphicsScene * m_scene;
     WorldColors colors;
     World * m_world;
+    Animal * selectedAnimal;
     //timer
     QTimer timer;
 
