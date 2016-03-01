@@ -51,7 +51,7 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
 
       srand(std::time(0));
       int random_direction = (rand() % 2) * 2 - 1;
-      outputs.push_back(random_direction * 1.5707963);
+      outputs.push_back(random_direction * 1.5707963); //pi/2
     }
     else
     {
