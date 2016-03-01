@@ -3,6 +3,7 @@
 
 #include "Animal.h"
 #include <QDockWidget>
+#include <QKeyEvent>
 
 #include "Vegetal.h"
 #include "Water.h"
@@ -235,5 +236,13 @@ void MainWindow::switchTimer()
     {
         worldWidget.startSimulation();
         simmulationStartStopAction->setText(tr("Stop simulation"));
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *e)
+{
+    if(e->key() == Qt::Key_Space)
+    {
+        switchTimer();
     }
 }

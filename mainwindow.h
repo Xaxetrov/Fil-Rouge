@@ -23,6 +23,7 @@ public:
 
 private slots:
     void switchTimer();
+    void keyPressEvent(QKeyEvent * e);
 
 private:
     void loadWorld();
