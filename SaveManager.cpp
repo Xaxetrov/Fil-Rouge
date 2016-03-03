@@ -10,7 +10,7 @@ SaveManager::SaveManager()
 
 int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
 {
-    QString fileXmlName = savePath+neuralNetworkName+".xml";
+    QString fileXmlName = neuralNetworkName;   //savePath+neuralNetworkName+".xml";
     QFile fileXml(fileXmlName);
     // Ouverture du fichier en Ã©criture et en texte. (sort de la fonction si le fichier ne s'ouvre pas)
     if(!fileXml.open(QFile::WriteOnly | QFile::Text))
@@ -36,7 +36,6 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
     writer.writeStartElement("NeuronLayer");
     writer.writeAttribute("id",QString::number(0)); // 0 means "input layer"
     writer.writeTextElement("inputsNum", QString::number(inputNum));
-    writer.writeComment("this is the input layer");
     writer.writeEndElement();
 
     //for each layer
@@ -46,11 +45,7 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
         unsigned int neuronsNum = neurons.size();
         writer.writeStartElement("NeuronLayer");
         writer.writeAttribute("id", QString::number(layer));
-        if(layer == workingLayersNum)
-        {
-            writer.writeComment("this is the output layer");
-        }
-        writer.writeComment("this is the output layer");
+
         //for each neuron
         for (unsigned int neuron=0; neuron<neuronsNum; neuron++)
         {
@@ -59,11 +54,11 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
             const std::vector<double> weights = neurons.at(neuron).getWeights();
             if(weights.size()!=0)
             {
-                QString tempS = QString::number(weights.at(0));
+                QString tempS = QString::number(weights.at(0)) + " ";
                 //for each weight
                 for(unsigned int w=1; w<weights.size(); w++)
                 {
-                    tempS += " " + QString::number(weights.at(w));
+                    tempS +=QString::number(weights.at(w)) + " " ;
                 }
                 writer.writeTextElement("weights", tempS);
             }
@@ -90,7 +85,7 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
     std::vector<std::vector<std::vector<double> > > neuronWeights;
     int inputsNum;
 
-    const QString fileXmlName = "./../Fil-Rouge/save/test.xml"; //savePath+neuralNetworkName+".xml"; NE FONCTIONNE PAS CHEZ MOI
+    const QString fileXmlName = neuralNetworkName; //savePath+neuralNetworkName+".xml"; NE FONCTIONNE PAS CHEZ MOI
     QFile* xmlFile = new QFile(fileXmlName);
     if (!xmlFile->exists())
     {   std::cout << "file does not exist" << std::endl;
