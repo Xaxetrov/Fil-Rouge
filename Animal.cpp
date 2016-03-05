@@ -1,11 +1,13 @@
 #include "Animal.h"
-using namespace std;
+#include <iostream>
 
 Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
 {
     m_angle = 0; //initialize angle here
-    m_hunger = 0;
-    m_thirst = 0;
+    m_hunger = 100;
+    m_thirst = 100;
+    m_health = 100;
+    dead = false;
     m_fear = 0;
     m_vision = new Vision(getCoordinate(), &m_angle, world->getEntities());
 
@@ -25,6 +27,30 @@ Animal::~Animal()
 
 int Animal::play()
 {
+    if(m_health == 0 || dead)
+    {
+      dead = true;
+    }
+    else
+    {
+      m_hunger--;
+      m_thirst--;
+    }
+    
+    if(m_hunger == 0 || m_thirst == 0)
+    {
+      dead = true;
+    }
+    else if(m_hunger < 50 || m_thirst < 50)
+    {
+      m_health--;
+    }
+    else if(m_hunger < 25 || m_thirst < 25)
+    {
+      m_health--;
+    }
+
+
     // Inputs and outputs of the neural network
     vector<double> inputs;
     vector<double> outputs;
@@ -115,4 +141,9 @@ double Animal::getAngle() const
 const Vision * Animal::getVision() const
 {
     return m_vision;
+}
+
+bool Animal::isDead() const
+{
+   return dead;
 }

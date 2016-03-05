@@ -1,5 +1,6 @@
 #include <cmath>
 #include <QWheelEvent>
+#include <iostream>
 
 #include "WorldWidget.h"
 #include "Animal.h"

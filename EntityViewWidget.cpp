@@ -1,6 +1,8 @@
 #include "EntityViewWidget.h"
 #include "config/config.h"
 
+#include <iostream>
+
 EntityViewWidget::EntityViewWidget(Animal *a): QGraphicsView(), animal(a)
 {
     setScene(&scene);
@@ -15,9 +17,9 @@ void EntityViewWidget::updateView()
     //draw base vision sector
     for(unsigned i=0 ; i<NB_VISIONSECTORS_LIVING ; i++)
     {
-        QPolygonF visionSector;
-        visionSector = generateVisionSector(VISIONSECTORS_LIVING[i][0],VISIONSECTORS_LIVING[i][1],VISIONSECTORS_LIVING[i][2]);
-        scene.addPolygon(visionSector,borderPen,backgroundBrush);
+       QPolygonF visionSector;
+       visionSector = generateVisionSector(VISIONSECTORS_LIVING[i][0],VISIONSECTORS_LIVING[i][1],VISIONSECTORS_LIVING[i][2]);
+       scene.addPolygon(visionSector,borderPen,backgroundBrush);
     }
     //draw filled part of vision sector
     if(animal != nullptr)

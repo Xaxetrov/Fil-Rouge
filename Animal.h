@@ -19,6 +19,7 @@ public:
     int getFear() const;
     double getAngle() const;
     const Vision * getVision() const;
+    bool isDead() const;
 
     void die();
     void move(int speedPercentage);
@@ -34,6 +35,7 @@ private :
     int m_hunger;
     int m_thirst;
     int m_fear;
+    bool dead;
     NeuralNetwork* m_brain;
     Vision * m_vision;
     World * m_world;

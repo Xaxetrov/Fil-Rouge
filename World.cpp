@@ -1,4 +1,7 @@
 #include "World.h"
+#include "Animal.h"
+
+#include <iostream>
 
 World::World()
 {
@@ -62,6 +65,16 @@ int World::tick()
             std::cerr << "Entity no " << i << " failed to play" << std::endl;
             entityErrorsNum++;
         }
+        if(Animal* animal = dynamic_cast<Animal*>(m_entities.at(i)))
+        {
+           /*if(animal->isDead())
+           {
+             delete m_entities.at(i);
+             m_entities.at(i) = nullptr;
+             m_entities.erase(m_entities.begin()+i);
+          }*/
+        }
+
     }
     return entityErrorsNum;
 }
