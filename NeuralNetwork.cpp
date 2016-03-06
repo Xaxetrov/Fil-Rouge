@@ -52,7 +52,7 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
 
       srand(std::time(0));
       int random_direction = (rand() % 2) * 2 - 1;
-      outputs.push_back(random_direction * PI / 2.0);
+      outputs.push_back(random_direction * PI /*/ 2.0*/);
     }
     else
     {

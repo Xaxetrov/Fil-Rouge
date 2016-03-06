@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 
 #include "Animal.h"
+#include "config/config.h"
+#include "cmath"
+
 #include <QDockWidget>
 #include <QKeyEvent>
 
@@ -69,14 +72,31 @@ void MainWindow::loadWorld()
     world.addEntity(animal5);
     world.addEntity(animal6);
     world.addEntity(animal7);*/
-srand(std::time(0));
+
+    //random generator
+    /*
+    srand(std::time(0));
     for(int i = 0; i < 10; i++)
     {
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;
       Animal * animal = new Animal(x,y,10,50,&world);
       world.addEntity(animal);
-    }
+    }*/
+
+    Animal * animal0 = new Animal(0,250,10,50,&world);
+    Animal * animal1 = new Animal(180,80,10,50,&world);
+    Animal * animal2 = new Animal(350,80,10,50,&world);
+    animal0->turn(PI/2);
+    animal2->turn(PI);
+    world.addEntity(animal0);
+    world.addEntity(animal1);
+    world.addEntity(animal2);
+    Animal * animal3 = new Animal(100,200,10,50,&world);
+    Animal * animal4 = new Animal(200,200,10,50,&world);
+    animal4->turn(PI);
+    world.addEntity(animal3);
+    world.addEntity(animal4);
 }
 
 void MainWindow::loadXML(QString worldSave)
@@ -244,5 +264,12 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
     if(e->key() == Qt::Key_Space)
     {
         switchTimer();
+    }
+    else if(e->key()==Qt::Key_Enter || e->key()==Qt::Key_Return)
+    {
+        if(!worldWidget.isSimulationRunning())
+        {
+            worldWidget.tick();
+        }
     }
 }
