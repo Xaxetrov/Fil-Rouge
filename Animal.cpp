@@ -116,7 +116,7 @@ void Animal::move(int speedPercentage)
 void Animal::turn(double angle)
 {
   m_angle += angle;
-  //cout << setprecision(10) << m_angle << std::endl;
+  cout << setprecision(10) << m_angle << std::endl;
 }
 
 int Animal::getMaxSpeed() const
