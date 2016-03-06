@@ -26,7 +26,7 @@ public:
     void turn(double angle);
 
     virtual int play();
-    unsigned int getTypeId() { return 20; };
+    unsigned int getTypeId() { return 20; }
 
 private :
     int m_maxSpeed;

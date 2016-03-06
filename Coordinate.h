@@ -9,10 +9,10 @@
 class Coordinate
 {
 public:
-    Coordinate(int x=0, int y=0);
-    int getX() const {return m_x;}
-    int getY() const {return m_y;}
-    void set(int x, int y);
+    Coordinate(double x=0, double y=0);
+    double getX() const {return m_x;}
+    double getY() const {return m_y;}
+    void set(double x, double y);
 
     static double getDistance(const Coordinate &c1, const Coordinate &c2);
 
@@ -21,8 +21,8 @@ public:
     static double getAngle(const Coordinate &c1, const Coordinate &c2);
 
 private:
-    int m_x;
-    int m_y;
+    double m_x;
+    double m_y;
 };
 
 #endif // COORDINATE_H

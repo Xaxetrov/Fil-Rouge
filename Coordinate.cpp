@@ -2,34 +2,39 @@
 #include <cmath>
 #include <algorithm>
 
-Coordinate::Coordinate(int x, int y)
+Coordinate::Coordinate(double x, double y)
 {
     set(x,y);
 }
 
-void Coordinate::set(int x, int y)
+void Coordinate::set(double x, double y)
 {
-    m_x = (x % WORLD_SIZE_X + WORLD_SIZE_X) % WORLD_SIZE_X; // x % y return a value btw -y + 1 and y - 1.
-    m_y = (y % WORLD_SIZE_Y + WORLD_SIZE_Y) % WORLD_SIZE_Y; // x % y + y return a value btw 1 and 2y - 1
-                                                            // (x % y + y) % y return a value btw 0 and y - 1
+    int intX = (int) x;
+    double fracX = x - intX;
+    int intY = (int) y;
+    double fracY = y - intY;
+
+    m_x = (intX % WORLD_SIZE_X + WORLD_SIZE_X) % WORLD_SIZE_X + fracX; // x % y return a value btw -y + 1 and y - 1.
+    m_y = (intY % WORLD_SIZE_Y + WORLD_SIZE_Y) % WORLD_SIZE_Y + fracY; // x % y + y return a value btw 1 and 2y - 1
+                                                                       // (x % y + y) % y return a value btw 0 and y - 1
 }
 
 double Coordinate::getDistance(const Coordinate &c1, const Coordinate &c2)
 {
-    int deltaX = std::abs(c1.getX() - c2.getX());
-    int deltaY = std::abs(c1.getY() - c2.getY());
-    int deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
-    int deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
+    double deltaX = std::abs(c1.getX() - c2.getX());
+    double deltaY = std::abs(c1.getY() - c2.getY());
+    double deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
+    double deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
     return sqrt(deltaXTore * deltaXTore + deltaYTore * deltaYTore);
 }
 
 double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
 {
-    int x1 = c1.getX();
-    int x2 = c2.getX();
+    double x1 = c1.getX();
+    double x2 = c2.getX();
     double deltaX = x2 - x1;
-    int y1 = c1.getY();
-    int y2 = c2.getY();
+    double y1 = c1.getY();
+    double y2 = c2.getY();
     double deltaY = y2 - y1;
 
     if (std::abs(x1 - x2) > WORLD_SIZE_X)

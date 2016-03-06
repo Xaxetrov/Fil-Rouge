@@ -1,7 +1,9 @@
 #include "VisionSector_Living.h"
 #include "Animal.h"
 
-VisionSector_Living::VisionSector_Living(const Coordinate * center, double * animalAngle, const double angle1, const double angle2, int range, std::vector<Entity*> &entities): VisionSector(center, animalAngle, angle1, angle2, range, entities)
+VisionSector_Living::VisionSector_Living(const Coordinate * center, double * animalAngle, const double angle1, const double angle2, int range,
+                                         std::vector<Entity*> &entities):
+    VisionSector(center, animalAngle, angle1, angle2, range, entities)
 {}
 
 void VisionSector_Living::see()

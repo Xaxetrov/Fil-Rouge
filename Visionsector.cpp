@@ -7,8 +7,9 @@ using namespace std;
 #include <cstdlib>
 #include <ctime>
 
-VisionSector::VisionSector(const Coordinate * center, const double * animalAngle, const double angle1, const double angle2, int range, std::vector<Entity*>& entities) : m_center(center), m_animalAngle(animalAngle), m_angle1(angle1),
-    m_angle2(angle2), m_range(range), m_entities(entities)
+VisionSector::VisionSector(const Coordinate * center, const double * animalAngle, const double angle1, const double angle2, int range,
+                           std::vector<Entity*>& entities) :
+    m_center(center), m_animalAngle(animalAngle), m_angle1(angle1), m_angle2(angle2), m_range(range), m_entities(entities)
 {
     m_nearestPercepted = new Percepted();
 }
@@ -31,7 +32,7 @@ void VisionSector::scan()
 
         double d = Coordinate::getDistance(Coordinate(m_entities.at(i)->getX(), m_entities.at(i)->getY()), Coordinate(m_center->getX(), m_center->getY()));
 
-          if(d < m_range)
+        if(d < m_range)
         {
             selection.push_back(m_entities.at(i));
             distances.push_back(d);

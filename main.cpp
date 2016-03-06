@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     NeuralNetwork n2=s.LoadNetwork(save1);
     s.SaveNetwork(n2,save2);*/
 
-
-
     return 0;
 }
+
+
