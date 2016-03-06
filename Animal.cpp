@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
-Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
+Animal::Animal(int x, int y, int radius, int maxSpeed, World * world, bool tmpDebug) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world), tmpDebug(tmpDebug)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 100;
@@ -93,24 +93,28 @@ int Animal::play()
 
 void Animal::move(int speedPercentage)
 {
-    if (speedPercentage != 5)
-        std::cout << speedPercentage << std::endl;
+//    if (speedPercentage != 5)
+//        std::cout << speedPercentage << std::endl;
 
-    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+//    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100.0, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100.0);
+//    if (m_world->isCollision(this))
+//    {
+//        setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100.0, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100.0);
+//        if (tmpDebug)
+//        {
+//            std::cout << "Collision" << std::endl;
+//        }
+//    }
+
     if (m_world->isCollision(this))
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
+        //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
-
-//    if (m_world->isCollision(this))
-//    {
-//        setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
-//        //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-//    }
-//    else
-//    {
-//      setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-//    }
+    else
+    {
+      setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+    }
 }
 
 void Animal::turn(double angle)

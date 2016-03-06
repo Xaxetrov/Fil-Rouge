@@ -9,7 +9,7 @@
 class Animal : public Solid
 {
 public:
-    Animal(int x, int y, int radius, int maxSpeed, World * world);
+    Animal(int x, int y, int radius, int maxSpeed, World * world, bool tmpDebug = false);
     ~Animal();
 
     int getMaxSpeed() const;
@@ -36,6 +36,7 @@ private :
     int m_thirst;
     int m_fear;
     bool dead;
+    bool tmpDebug;
     NeuralNetwork* m_brain;
     Vision * m_vision;
     World * m_world;
