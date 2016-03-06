@@ -124,7 +124,7 @@ void WorldWidget::drawEntity(const Entity * e)
    }
    else
    {
-     m_scene->addRect(e->getX(), e->getY(), e->getRadius(), e->getRadius(), colors.getEntityPen(e),colors.getEntityBrush(e));
+     m_scene->addRect(e->getX()-e->getRadius(), e->getY()-e->getRadius(), 2*e->getRadius(), 2*e->getRadius(), colors.getEntityPen(e),colors.getEntityBrush(e));
    }
 }
 
