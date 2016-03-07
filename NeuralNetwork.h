@@ -39,9 +39,6 @@ public:
     //score : number (positive/negative) that caracterizes the results of the last network uses.
     void improve(int score);
 
-    //sigmoid response curve
-    double Sigmoid(double activation, double response){return (int) activation+response +1;}//to disable warnings
-
 private:
     unsigned int m_inputsNum;
     unsigned int m_outputsNum;

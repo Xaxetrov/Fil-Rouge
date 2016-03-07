@@ -19,6 +19,26 @@ Neuron::Neuron(const std::vector<double>& weights) : m_inputNum(weights.size())
     }
 }
 
+double Neuron::run(std::vector<double> inputs)
+{
+    double sum = 0;
+
+    //bad size of inputs
+    if(inputs.size() != m_weights.size()-1)
+    {
+        return 0;
+    }
+    //sums the weights * inputs
+    for(unsigned int i=0; i<m_weights.size()-1; i++)
+    {
+        sum += m_weights[i] * inputs[i];
+    }
+    //adds in the bias
+    sum += m_weights[m_weights.size()-1];
+    //goes through the sigmoid and returns;
+    return Sigmoid(sum);
+}
+
 double  Neuron::RandomWeight()
 {
     double bottom = (double) rand() / (RAND_MAX) - 1;
