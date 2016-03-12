@@ -81,7 +81,6 @@ int World::tick()
 
 int World::tick(int ticNum)
 {
-    int tickResult=0;
     for(int i=0; i<ticNum; i++)
     {
         if(tick())

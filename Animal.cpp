@@ -113,6 +113,11 @@ void Animal::move(int speedPercentage)
 //    }
 }
 
+int Animal::computeScore()
+{
+    return m_health*100 - m_hunger*10 - m_thirst*10;
+}
+
 void Animal::turn(double angle)
 {
   m_angle += angle;
