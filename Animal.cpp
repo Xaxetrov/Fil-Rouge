@@ -115,7 +115,7 @@ void Animal::move(int speedPercentage)
 
 int Animal::computeScore()
 {
-    return m_health*100 - m_hunger*10 - m_thirst*10;
+    return m_health*100 + m_hunger*10 + m_thirst*10 + m_fear*3;
 }
 
 void Animal::turn(double angle)
