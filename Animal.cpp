@@ -37,7 +37,7 @@ int Animal::play()
       m_hunger--;
       m_thirst--;
     }
-    
+
     if(m_hunger == 0 || m_thirst == 0)
     {
       dead = true;
@@ -50,7 +50,6 @@ int Animal::play()
     {
       m_health--;
     }
-
 
     // Inputs and outputs of the neural network
     vector<double> inputs;

@@ -40,7 +40,7 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     bool percepted = false;
     for(unsigned int i = 0; i < inputs.size(); i++)
     {
-      if(inputs[i] > 0 && inputs[i]<40.0)
+      if(inputs[i] > 0/* && inputs[i]<40.0*/)
       {
         percepted = true;
         break;

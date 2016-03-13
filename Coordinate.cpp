@@ -60,3 +60,16 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
         return std::atan(deltaY / deltaX) + PI;
     }
 }
+
+double Coordinate::modulo2PI(double angle)
+{
+  while(angle >= PI)
+  {
+    angle -= 2*PI;
+  }
+  while(angle < -1 * PI)
+  {
+    angle += 2*PI;
+  }
+  return angle;
+}
