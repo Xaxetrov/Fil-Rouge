@@ -8,12 +8,12 @@ NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
 {
     if (layerSizes.size()!=0)
     {
-        m_inputsNum=layerSizes.at(0);
+        m_inputNum=layerSizes.at(0);
     }
     if (layerSizes.size()>1)
     {
-        m_outputsNum = layerSizes.at(layerSizes.size()-1);
-        m_hiddenLayersNum = layerSizes.size()-2;
+        m_outputNum = layerSizes.at(layerSizes.size()-1);
+        m_hiddenLayerNum = layerSizes.size()-2;
         for(unsigned int i=1; i<layerSizes.size(); i++)
         {
             NeuronLayer nL(layerSizes.at(i), layerSizes.at(i-1));
@@ -23,12 +23,33 @@ NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
 }
 
 NeuralNetwork::NeuralNetwork(int inputsNum, const std::vector<std::vector<std::vector<double> > > &neuronWeights) :
-    m_inputsNum(inputsNum), m_outputsNum(neuronWeights.at(neuronWeights.size()-1).size()), m_hiddenLayersNum(neuronWeights.size())
+    m_inputNum(inputsNum), m_outputNum(neuronWeights.at(neuronWeights.size()-1).size()), m_hiddenLayerNum(neuronWeights.size())
 {
     for(unsigned int i=0; i<neuronWeights.size(); i++)
     {
         m_layers.push_back(neuronWeights.at(i));
     }
+}
+
+//TO FINISH
+NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& mother)
+{
+    //checks if sizes correspond
+    if(father.getInputNum() != mother.getInputNum()
+            || father.getLayers().size() != mother.getLayers().size())
+    {
+            cerr << "error, mother and father NN of different sizes" << endl;
+    }
+    for(unsigned int i=0; i<father.getLayers().size(); i++)
+    {
+        if (father.getLayers()[i].getNeurons().size() != mother.getLayers()[i].getNeurons().size())
+        {
+            cerr << "error, mother and father NN of different sizes" << endl;
+        }
+    }
+    m_inputNum = father.getInputNum();
+    m_outputNum = father.getOutputNum();
+    m_hiddenLayerNum = father.getHiddenLayerNum();
 }
 
 vector<double> NeuralNetwork::run(std::vector<double> &inputs)

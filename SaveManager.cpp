@@ -31,7 +31,7 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
     // recuperation de quelqes informations sur le réseau de neurones
     const std::vector<NeuronLayer> layers = nn.getLayers();
     const unsigned int workingLayersNum=layers.size(); //nombre de couches cachées (en plus de l'input et de l'output)
-    const unsigned int inputNum = nn.getInputsNum(); // nombre d'inputs
+    const unsigned int inputNum = nn.getInputNum(); // nombre d'inputs
 
     writer.writeStartElement("NeuronLayer");
     writer.writeAttribute("id",QString::number(0)); // 0 means "input layer"
