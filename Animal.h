@@ -32,7 +32,7 @@ public:
     virtual int play();
     virtual int computeScore();
 
-    unsigned int getTypeId() { return 20; }
+    unsigned int getTypeId() const { return 20; }
 
 
 private :

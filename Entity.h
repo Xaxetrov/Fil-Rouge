@@ -23,7 +23,7 @@ public:
     int getCreationDate() {return m_creationDate;}
 
     virtual int play();
-    virtual unsigned int getTypeId() = 0; //?
+    virtual unsigned int getTypeId() const = 0; //?
 
 private:
     Coordinate m_coordinate;

@@ -27,7 +27,7 @@ public:
 
     void setSize(int size_x, int size_y);
 
-    bool isCollision(const Entity* e) const;
+    unsigned int isCollision(const Entity* e) const;
 
     //More ! Give me more of them !
     void addEntity(Entity * entity);
@@ -40,7 +40,7 @@ public:
 
 private:
     //Privates methods
-    bool isCollision(const Entity* e1, const Entity* e2) const;
+    unsigned int isCollision(const Entity* e1, const Entity* e2) const;
 
     //Private attributes
 

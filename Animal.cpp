@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 
+using namespace std;
+
 Animal::Animal(double x, double y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
 {
     m_angle = 0; //initialize angle here
@@ -64,7 +66,7 @@ int Animal::play()
     {
       if(percepted[i]->getEntity() != nullptr) // If it sees something
       {
-        inputs.push_back(/*(double) percepted[i]->getEntity()->getTypeId()*/0.0);
+        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
         inputs.push_back(percepted[i]->getDistance());
       }
       else
@@ -97,10 +99,21 @@ void Animal::move(int speedPercentage)
   //      std::cout << speedPercentage << std::endl;
 
     setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-    if (m_world->isCollision(this))
+    unsigned int collision = m_world->isCollision(this);
+
+    if(collision == 20)
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
     }
+    else if(collision == 10)
+    {
+        m_thirst += 2;
+    }
+    else if(collision == 11)
+    {
+        m_hunger += 2;
+    }
+
 
 //    if (m_world->isCollision(this))
 //    {
