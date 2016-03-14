@@ -2,6 +2,7 @@
 #include "Animal.h"
 
 #include <iostream>
+using namespace std;
 
 World::World()
 {
@@ -65,15 +66,15 @@ int World::tick()
             std::cerr << "Entity no " << i << " failed to play" << std::endl;
             entityErrorsNum++;
         }
-        if(Animal* animal = dynamic_cast<Animal*>(m_entities.at(i)))
-        {
+      //  if(Animal* animal = dynamic_cast<Animal*>(m_entities.at(i)))
+      //  {
            /*if(animal->isDead())
            {
              delete m_entities.at(i);
              m_entities.at(i) = nullptr;
              m_entities.erase(m_entities.begin()+i);
           }*/
-        }
+      //  }
 
     }
     return entityErrorsNum;
@@ -89,6 +90,18 @@ int World::tick(int ticNum)
         }
     }
     return 0;
+}
+
+void World::killEntity(const Entity *e)
+{
+  int i = 0;
+  for(Entity* currentEntity : m_entities)
+  {
+      if(e == currentEntity)
+        break;
+      i++;
+  }
+  m_entities.erase(m_entities.begin() + i); // RIP
 }
 
 // private methods

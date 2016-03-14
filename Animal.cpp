@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
-Animal::Animal(int x, int y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
+Animal::Animal(double x, double y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 100;
@@ -31,6 +31,7 @@ int Animal::play()
     if(m_health == 0 || dead)
     {
       dead = true;
+      m_world->killEntity(this); // RIP
     }
     else
     {
@@ -42,7 +43,7 @@ int Animal::play()
     {
       dead = true;
     }
-    else if(m_hunger < 50 || m_thirst < 50)
+    if(m_hunger < 50 || m_thirst < 50)
     {
       m_health--;
     }
@@ -92,8 +93,8 @@ int Animal::play()
 
 void Animal::move(int speedPercentage)
 {
-    if (speedPercentage != 5)
-        std::cout << speedPercentage << std::endl;
+  //  if (speedPercentage != 5)
+  //      std::cout << speedPercentage << std::endl;
 
     setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     if (m_world->isCollision(this))
@@ -120,7 +121,7 @@ int Animal::computeScore()
 void Animal::turn(double angle)
 {
   m_angle += angle;
-  cout << setprecision(10) << m_angle << std::endl;
+  //cout << setprecision(10) << m_angle << std::endl;
 }
 
 int Animal::getMaxSpeed() const

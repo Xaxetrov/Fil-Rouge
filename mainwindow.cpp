@@ -75,7 +75,7 @@ void MainWindow::loadWorld()
     world.addEntity(animal7);*/
 
     //random generator
-
+//
     srand(std::time(0));
     for(int i = 0; i < 20; i++)
     {
@@ -86,6 +86,9 @@ void MainWindow::loadWorld()
       world.addEntity(animal);
     }
 
+/*Animal * animal = new Animal(1.46671, 491.343,10,50,&world);
+animal->turn(3.17);
+world.addEntity(animal);*/
     /*Animal * animal0 = new Animal(400,450,10,50,&world);
     Animal * animal1 = new Animal(180,60,10,50,&world);
     Animal * animal2 = new Animal(350,120,10,50,&world);

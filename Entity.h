@@ -10,7 +10,7 @@ class Entity
 {
 public:
     //ctor, dtor
-    Entity(int x, int y, int creationDate);
+    Entity(double x, double y, int creationDate);
     Entity(const Entity & e); //to disable copy constructor
     virtual ~Entity();
 

@@ -36,6 +36,8 @@ public:
     int tick();
     int tick(int ticsNum);
 
+    void killEntity(const Entity *e); // MOUHAHAHAHAHAAAAAAAAAAAAAAAAA
+
 private:
     //Privates methods
     bool isCollision(const Entity* e1, const Entity* e2) const;

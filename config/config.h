@@ -28,7 +28,7 @@ const unsigned int NB_LAYERS = 3;
 const unsigned int LAYER_SIZES[NB_LAYERS] = {10, 6, 2};
 
 // User Interface
-const unsigned UPDATE_TIMER_INTERVALE = 10; //ms
+const unsigned UPDATE_TIMER_INTERVALE = 100; //ms
 
 
 #endif // CONFIG_H
