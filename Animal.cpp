@@ -45,14 +45,15 @@ int Animal::play()
     {
       dead = true;
     }
-    if(m_hunger < 50 || m_thirst < 50)
-    {
-      m_health--;
-    }
     else if(m_hunger < 25 || m_thirst < 25)
     {
       m_health--;
     }
+    else if(m_hunger < 50 || m_thirst < 50)
+    {
+      m_health--;
+    }
+
 
     // Inputs and outputs of the neural network
     vector<double> inputs;
