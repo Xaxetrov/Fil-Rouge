@@ -125,8 +125,7 @@ void WorldWidget::drawEntity(const Entity * e)
    else
    {
      QRect square(e->getX()-e->getRadius(), e->getY()-e->getRadius(), 2*e->getRadius(), 2*e->getRadius());
-     m_scene->addRect(square, colors.getEntityPen(e),colors.getEntityBrush(e));
-     m_scene->addEllipse(square, QPen(Qt::black),QBrush(Qt::black));
+     m_scene->addEllipse(square, colors.getEntityPen(e),colors.getEntityBrush(e));
    }
 }
 

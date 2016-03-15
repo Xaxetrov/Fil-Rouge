@@ -89,6 +89,7 @@ int World::tick(int ticNum)
             //TODO : manage tic errors
         }
     }
+    return 0;
 }
 
 // private methods

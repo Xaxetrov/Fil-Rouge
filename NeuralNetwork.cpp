@@ -38,7 +38,7 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     #ifdef DISABLE_NEURAL_NETWORK
 
     bool percepted = false;
-    for(int i = 0; i < inputs.size(); i++)
+    for(unsigned int i = 0; i < inputs.size(); i++)
     {
       if(inputs[i] > 0 && inputs[i]<40.0)
       {
@@ -64,9 +64,6 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     }
 
     #else
-
-        int weight = 0;
-
         //first check that we have the correct amount of inputs
         if (inputs.size() != m_inputNum)
         {
@@ -75,38 +72,12 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
         }
 
         //For each layer...
-        for (int i=0; i<m_hiddenLayerNum + 1; ++i)
+        for (int computingLayer=0; computingLayer<m_hiddenLayerNum + 1; i++)
         {
-            if ( i > 0 )
-            {
-                inputs = outputs;
-            }
             outputs.clear();
-            weight = 0;
 
-            //for each neuron sum the (inputs * corresponding weights).Throw
-            //the total at our sigmoid function to get the output.
-            for (int j=0; j<m_layers[i].getNeuronNum(); ++j)
-            {
-                double netInput = 0;
-                int inputsNum = m_layers[i].getNeurons()[j].getInputsNum();
-
-                //for each weight
-                for (int k=0; k<inputsNum - 1; ++k)
-                {
-                    //sum the weights * inputs
-                    netInput += m_layers[i].getNeurons()[j].getWeights()[k] * inputs[weight++];
-                }
-
-                //add in the bias
-                netInput += m_layers[i].getNeurons()[j].getWeights()[inputsNum-1] * -1/*CParams::dBias*/;
-
-                //we can store the outputs from each layer as we generate them.
-                //The combined activation is first filtered through the sigmoid function
-                outputs.push_back(Sigmoid(netInput, 0.7/*CParams::dActivationResponse*/));
-
-                weight = 0;
-            }
+            outputs = m_layers[computingLayer].run(inputs);
+            inputs = outputs;
         }
     #endif
 

@@ -13,10 +13,10 @@ public:
     Entity(const Entity & e); //to disable copy constructor
     virtual ~Entity();
     const Coordinate * getCoordinate() const {return &m_coordinate;}
-    void setCoordinate(int x, int y) {m_coordinate.set(x, y);}
-    int getX() const {return m_coordinate.getX();}
-    int getY() const {return m_coordinate.getY();}
-    int getRadius() const {return m_radius;}
+    void setCoordinate(double x, double y) {m_coordinate.set(x, y);}
+    double getX() const {return m_coordinate.getX();}
+    double getY() const {return m_coordinate.getY();}
+    double getRadius() const {return m_radius;}
     int getCreationDate() {return m_creationDate;}
 
     virtual int play();
