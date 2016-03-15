@@ -2,13 +2,10 @@
 #include <iostream>
 #include <iomanip>
 
-<<<<<<< HEAD
-Animal::Animal(int x, int y, int radius, int maxSpeed, World * world, bool tmpDebug) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world), tmpDebug(tmpDebug)
-=======
 using namespace std;
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
->>>>>>> 55dd41d4354efbc4f6cc9d370d294f22b0c3a928
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world) :
+    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 100;
@@ -36,8 +33,8 @@ int Animal::play()
 {
     if(m_health == 0 || dead)
     {
-      dead = true;
-      m_world->killEntity(this); // RIP
+      //dead = true;
+      //m_world->killEntity(this); // RIP
     }
     else
     {
@@ -47,7 +44,7 @@ int Animal::play()
 
     if(m_hunger == 0 || m_thirst == 0)
     {
-      dead = true;
+      //dead = true;
     }
     if(m_hunger < 50 || m_thirst < 50)
     {
@@ -99,45 +96,20 @@ int Animal::play()
 
 void Animal::move(int speedPercentage)
 {
-<<<<<<< HEAD
-//    if (speedPercentage != 5)
-//        std::cout << speedPercentage << std::endl;
-
-//    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100.0, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100.0);
-//    if (m_world->isCollision(this))
-//    {
-//        setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100.0, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100.0);
-//        if (tmpDebug)
-//        {
-//            std::cout << "Collision" << std::endl;
-//        }
-//    }
-
-    if (m_world->isCollision(this))
-=======
-  //  if (speedPercentage != 5)
-  //      std::cout << speedPercentage << std::endl;
 
     setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-    unsigned int collision = m_world->isCollision(this);
+    unsigned int idCollision = m_world->isCollision(this);
 
-    if(collision == 20)
->>>>>>> 55dd41d4354efbc4f6cc9d370d294f22b0c3a928
+    if(idCollision == 20)
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
         //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
-    else
-    {
-      setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-    }
-<<<<<<< HEAD
-=======
-    else if(collision == 10)
+    else if(idCollision == 10)
     {
         m_thirst += 2;
     }
-    else if(collision == 11)
+    else if(idCollision == 11)
     {
         m_hunger += 2;
     }
@@ -152,7 +124,6 @@ void Animal::move(int speedPercentage)
 //    {
 //      setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
 //    }
->>>>>>> 55dd41d4354efbc4f6cc9d370d294f22b0c3a928
 }
 
 int Animal::computeScore()

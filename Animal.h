@@ -10,7 +10,7 @@ class Animal : public Solid
 {
 public:
     //ctor, dtor
-    Animal(double x, double y, int radius, int maxSpeed, World * world);
+    Animal(double x, double y, int radius, int maxSpeed, double damage, World * world);
     ~Animal();
 
     //getters
@@ -37,6 +37,7 @@ public:
 
 private :
     int m_maxSpeed;
+    double m_damage;
     double m_angle; // m_angle in rad
     int m_health;
     int m_hunger;
