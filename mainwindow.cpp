@@ -56,16 +56,17 @@ void MainWindow::loadWorld()
     const QString worldSave("../save/world.xml");
     loadXML(worldSave);
 
-    /*Animal * animal0 = new Animal(130,278,10,50,&world);
+  /*  Animal * animal0 = new Animal(130,278,10,50,&world);
     Animal * animal1 = new Animal(160,278,10,50,&world);
+    world.addEntity(animal0);
+    world.addEntity(animal1);
     Animal * animal2 = new Animal(99,319,10,50,&world);
     Animal * animal3 = new Animal(40,99,10,50,&world);
     Animal * animal4 = new Animal(199,236,10,50,&world);
     Animal * animal5 = new Animal(215,025,10,50,&world);
     Animal * animal6 = new Animal(125,350,10,50,&world);
     Animal * animal7 = new Animal(350,50,10,50,&world);
-    world.addEntity(animal0);
-    world.addEntity(animal1);
+
     world.addEntity(animal2);
     world.addEntity(animal3);
     world.addEntity(animal4);
@@ -74,7 +75,7 @@ void MainWindow::loadWorld()
     world.addEntity(animal7);*/
 
     //random generator
-
+//
     srand(std::time(0));
     for(int i = 0; i < 20; i++)
     {
@@ -85,12 +86,9 @@ void MainWindow::loadWorld()
       world.addEntity(animal);
     }
 
-    Animal * animal0 = new Animal(0,450,10,50,&world);
-    Animal * animal1 = new Animal(30,80,10,50,&world, false);
-    Animal * animal2 = new Animal(200,450,10,50,&world, true);
-    animal0->turn(-PI/2);
-    //animal2->turn(PI);
-
+/*Animal * animal = new Animal(1.46671, 491.343,10,50,&world);
+animal->turn(3.17);
+world.addEntity(animal);*/
     /*Animal * animal0 = new Animal(400,450,10,50,&world);
     Animal * animal1 = new Animal(180,60,10,50,&world);
     Animal * animal2 = new Animal(350,120,10,50,&world);

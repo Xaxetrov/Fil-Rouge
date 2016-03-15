@@ -13,6 +13,7 @@ public:
 
     NeuralNetwork(std::vector<unsigned int> layerSizes); // sending [3,5,2] means 3 input neurons, 5 hiddens and 2 outputs with equal weights
     NeuralNetwork(int inputsNum,const std::vector<std::vector<std::vector<double>>>& neuronWeights);
+    NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& mother);
 
     // --- GETTERS ---
 
@@ -20,10 +21,13 @@ public:
     std::vector<double> getWeights() const;
 
     //returns the total number of weights in the net
-    int getWeightsNum() const;
-
+    int getWeightNum() const;
     //returns the number of inputs
-    int getInputsNum() const { return m_inputsNum; }
+    int getInputNum() const { return m_inputNum; }
+    //returns the number of outputs
+    int getOutputNum() const { return m_outputNum; }
+    //returns the number of hidden layers
+    int getHiddenLayerNum() const { return m_hiddenLayerNum; }
 
     //returns a const reference to layers
     const std::vector<NeuronLayer>& getLayers() const { return m_layers; }
@@ -40,9 +44,9 @@ public:
     void improve(int score);
 
 private:
-    unsigned int m_inputsNum;
-    unsigned int m_outputsNum;
-    unsigned int m_hiddenLayersNum;
+    unsigned int m_inputNum;
+    unsigned int m_outputNum;
+    unsigned int m_hiddenLayerNum;
 
     //storage for each layer of neurons including the output layer
     std::vector<NeuronLayer> m_layers;

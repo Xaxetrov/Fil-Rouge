@@ -2,7 +2,13 @@
 #include <iostream>
 #include <iomanip>
 
+<<<<<<< HEAD
 Animal::Animal(int x, int y, int radius, int maxSpeed, World * world, bool tmpDebug) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world), tmpDebug(tmpDebug)
+=======
+using namespace std;
+
+Animal::Animal(double x, double y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
+>>>>>>> 55dd41d4354efbc4f6cc9d370d294f22b0c3a928
 {
     m_angle = 0; //initialize angle here
     m_hunger = 100;
@@ -31,18 +37,19 @@ int Animal::play()
     if(m_health == 0 || dead)
     {
       dead = true;
+      m_world->killEntity(this); // RIP
     }
     else
     {
       m_hunger--;
       m_thirst--;
     }
-    
+
     if(m_hunger == 0 || m_thirst == 0)
     {
       dead = true;
     }
-    else if(m_hunger < 50 || m_thirst < 50)
+    if(m_hunger < 50 || m_thirst < 50)
     {
       m_health--;
     }
@@ -50,7 +57,6 @@ int Animal::play()
     {
       m_health--;
     }
-
 
     // Inputs and outputs of the neural network
     vector<double> inputs;
@@ -64,7 +70,7 @@ int Animal::play()
     {
       if(percepted[i]->getEntity() != nullptr) // If it sees something
       {
-        inputs.push_back(/*(double) percepted[i]->getEntity()->getTypeId()*/0.0);
+        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
         inputs.push_back(percepted[i]->getDistance());
       }
       else
@@ -93,6 +99,7 @@ int Animal::play()
 
 void Animal::move(int speedPercentage)
 {
+<<<<<<< HEAD
 //    if (speedPercentage != 5)
 //        std::cout << speedPercentage << std::endl;
 
@@ -107,6 +114,15 @@ void Animal::move(int speedPercentage)
 //    }
 
     if (m_world->isCollision(this))
+=======
+  //  if (speedPercentage != 5)
+  //      std::cout << speedPercentage << std::endl;
+
+    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+    unsigned int collision = m_world->isCollision(this);
+
+    if(collision == 20)
+>>>>>>> 55dd41d4354efbc4f6cc9d370d294f22b0c3a928
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
         //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
@@ -115,12 +131,39 @@ void Animal::move(int speedPercentage)
     {
       setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
+<<<<<<< HEAD
+=======
+    else if(collision == 10)
+    {
+        m_thirst += 2;
+    }
+    else if(collision == 11)
+    {
+        m_hunger += 2;
+    }
+
+
+//    if (m_world->isCollision(this))
+//    {
+//        setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
+//        //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+//    }
+//    else
+//    {
+//      setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+//    }
+>>>>>>> 55dd41d4354efbc4f6cc9d370d294f22b0c3a928
+}
+
+int Animal::computeScore()
+{
+    return m_health*100 + m_hunger*10 + m_thirst*10 + m_fear*3;
 }
 
 void Animal::turn(double angle)
 {
   m_angle += angle;
-  cout << setprecision(10) << m_angle << std::endl;
+  //cout << setprecision(10) << m_angle << std::endl;
 }
 
 int Animal::getMaxSpeed() const

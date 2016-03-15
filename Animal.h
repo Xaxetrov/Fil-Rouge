@@ -9,9 +9,11 @@
 class Animal : public Solid
 {
 public:
-    Animal(int x, int y, int radius, int maxSpeed, World * world, bool tmpDebug = false);
+    //ctor, dtor
+    Animal(double x, double y, int radius, int maxSpeed, World * world);
     ~Animal();
 
+    //getters
     int getMaxSpeed() const;
     int getHealth() const;
     int getHunger() const;
@@ -21,12 +23,17 @@ public:
     const Vision * getVision() const;
     bool isDead() const;
 
+    //basic methods
     void die();
     void move(int speedPercentage);
     void turn(double angle);
 
+    //game methods
     virtual int play();
-    unsigned int getTypeId() { return 20; }
+    virtual int computeScore();
+
+    unsigned int getTypeId() const { return 20; }
+
 
 private :
     int m_maxSpeed;

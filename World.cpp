@@ -2,6 +2,7 @@
 #include "Animal.h"
 
 #include <iostream>
+using namespace std;
 
 World::World()
 {
@@ -37,16 +38,17 @@ void World::setSize(int size_x, int size_y)
    m_size_y = size_y;
 }
 
-bool World::isCollision(const Entity* e) const
+unsigned int World::isCollision(const Entity* e) const
 {
     for(Entity* currentEntity : m_entities)
     {
-        if(e!=currentEntity && isCollision(e, currentEntity))
+        unsigned int collision = isCollision(e, currentEntity);
+        if(e!=currentEntity && collision)
         {
-            return true;
+            return collision;
         }
     }
-    return false;
+    return 0;
 }
 
 void World::addEntity(Entity *entity)
@@ -65,15 +67,15 @@ int World::tick()
             std::cerr << "Entity no " << i << " failed to play" << std::endl;
             entityErrorsNum++;
         }
-        if(Animal* animal = dynamic_cast<Animal*>(m_entities.at(i)))
-        {
+      //  if(Animal* animal = dynamic_cast<Animal*>(m_entities.at(i)))
+      //  {
            /*if(animal->isDead())
            {
              delete m_entities.at(i);
              m_entities.at(i) = nullptr;
              m_entities.erase(m_entities.begin()+i);
           }*/
-        }
+      //  }
 
     }
     return entityErrorsNum;
@@ -81,7 +83,6 @@ int World::tick()
 
 int World::tick(int ticNum)
 {
-    int tickResult=0;
     for(int i=0; i<ticNum; i++)
     {
         if(tick())
@@ -92,11 +93,26 @@ int World::tick(int ticNum)
     return 0;
 }
 
+void World::killEntity(const Entity *e)
+{
+  int i = 0;
+  for(Entity* currentEntity : m_entities)
+  {
+      if(e == currentEntity)
+        break;
+      i++;
+  }
+  m_entities.erase(m_entities.begin() + i); // RIP
+}
+
 // private methods
 
-bool World::isCollision(const Entity *e1, const Entity *e2) const
+unsigned int World::isCollision(const Entity *e1, const Entity *e2) const
 {
     const Coordinate * c1 = e1->getCoordinate();
     const Coordinate * c2 = e2->getCoordinate();
-    return(Coordinate::getDistance(*c1, *c2) < (e1->getRadius() + e2->getRadius()) );
+    if(Coordinate::getDistance(*c1, *c2) < (e1->getRadius() + e2->getRadius()))
+      return e2->getTypeId();
+    else
+      return 0;
 }

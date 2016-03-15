@@ -9,9 +9,12 @@
 class Entity
 {
 public:
-    Entity(int x, int y, int creationDate);
+    //ctor, dtor
+    Entity(double x, double y, int creationDate);
     Entity(const Entity & e); //to disable copy constructor
     virtual ~Entity();
+
+    //attributes accessors
     const Coordinate * getCoordinate() const {return &m_coordinate;}
     void setCoordinate(double x, double y) {m_coordinate.set(x, y);}
     double getX() const {return m_coordinate.getX();}
@@ -20,7 +23,7 @@ public:
     int getCreationDate() {return m_creationDate;}
 
     virtual int play();
-    virtual unsigned int getTypeId() = 0;
+    virtual unsigned int getTypeId() const = 0; //?
 
 private:
     Coordinate m_coordinate;
