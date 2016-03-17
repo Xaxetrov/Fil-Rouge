@@ -28,7 +28,13 @@ const unsigned int NB_LAYERS = 3;
 const unsigned int LAYER_SIZES[NB_LAYERS] = {10, 6, 2};
 
 // User Interface
-const unsigned UPDATE_TIMER_INTERVALE = 100; //ms
+const unsigned UPDATE_TIMER_INTERVALE = 10; //ms
+
+//Animal id
+const unsigned int ID_ANIMAL = 20;
+const unsigned int ID_WATER = 10;
+const unsigned int ID_VEGETAL = 11;
+
 
 
 #endif // CONFIG_H

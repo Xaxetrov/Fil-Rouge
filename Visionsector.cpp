@@ -44,7 +44,7 @@ void VisionSector::scan()
     {
         int dX = selection.at(i)->getX();
         int dY = selection.at(i)->getY();
-        double angle = Coordinate::modulo2PI(Coordinate::getAngle(*m_center, Coordinate(dX, dY)) - *m_animalAngle);
+        double angle = Coordinate::getAngle(*m_center, Coordinate(dX, dY)) - *m_animalAngle; // modulo2PI is moved insigned of getAngle
 
         if((angle <= m_angle1 && angle > m_angle2 && m_angle1 > m_angle2) || (angle >= m_angle1 && angle < m_angle2 && m_angle1 < m_angle2))
         {

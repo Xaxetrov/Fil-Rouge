@@ -3,7 +3,9 @@
 
 #include <vector>
 #include "Entity.h"
+#include "Animal.h"
 
+class Animal;
 /*
  * The world is... the world
  */
@@ -27,7 +29,7 @@ public:
 
     void setSize(int size_x, int size_y);
 
-    unsigned int isCollision(const Entity* e) const;
+    void updateListCollision(Animal* a) const;
 
     //More ! Give me more of them !
     void addEntity(Entity * entity);
@@ -40,7 +42,7 @@ public:
 
 private:
     //Privates methods
-    unsigned int isCollision(const Entity* e1, const Entity* e2) const;
+    bool isCollision(const Entity* e1, const Entity* e2) const;
 
     //Private attributes
 

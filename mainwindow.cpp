@@ -81,7 +81,7 @@ void MainWindow::loadWorld()
     {
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;
-      Animal * animal = new Animal(x,y,10,50, 2, &world);
+      Animal * animal = new Animal(x, y, 10, 50, 2, &world);
       animal->turn( (double)(rand()%628)/100);
       world.addEntity(animal);
     }
@@ -235,7 +235,7 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
   }
   else if(type == "Water")
   {
-    Water * entity = new Water(xEntity, yEntity, radiusEntity);
+    Water * entity = new Water(xEntity, yEntity, radiusEntity, 1000);
     world.addEntity(entity);
   }
   /*
