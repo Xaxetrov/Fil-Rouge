@@ -22,8 +22,6 @@ WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
     //disable scroll bar as counter intuitive
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //fit the scene in the view
-    //this->fitInView(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,Qt::KeepAspectRatio);
 
     //set timer:
     timer.setInterval(UPDATE_TIMER_INTERVALE);
@@ -103,30 +101,76 @@ bool WorldWidget::isSimulationRunning() const
 
 void WorldWidget::drawEntity(const Entity * e)
 {
+    ///TODO implemente toric view on diagonals
+   double x=e->getCoordinate()->getX(), y=e->getCoordinate()->getY();
+   int radius = e->getRadius();
+   vector<QPoint> positions;
+   positions.push_back(QPoint(x,y));
+   if(x<radius)
+   {
+       positions.push_back(QPoint(x+WORLD_SIZE_X,y));
+   }
+   else if(x>WORLD_SIZE_X-radius)
+   {
+       positions.push_back(QPoint(x-WORLD_SIZE_X,y));
+   }
+   if(y<radius)
+   {
+       positions.push_back(QPoint(x,y+WORLD_SIZE_Y));
+   }
+   else if(y>WORLD_SIZE_Y-radius)
+   {
+       positions.push_back(QPoint(x,y-WORLD_SIZE_Y));
+   }
+
    if(const Animal* const living = dynamic_cast<const Animal*>(e))
    {
-     //select the apropriate pen
-     QPen animalPen;
-     if(living == selectedAnimal)
-         animalPen = colors.getTeamsSelectedPen();
-     else
-         animalPen = colors.getEntityPen(e);
-     //draw a circle representing the Entity
-     QRect baseSquare(e->getX()-e->getRadius(),e->getY()-e->getRadius(),e->getRadius()*2,e->getRadius()*2);
-     m_scene->addEllipse(baseSquare,animalPen,colors.getEntityBrush(e));
-     //add an eye to show the looking direction
-     double angle = living->getAngle();
-     int eyeRadius = e->getRadius()/3;
-     int eyeXCenter = e->getX()+cos(angle)*(e->getRadius()-eyeRadius);
-     int eyeYCenter = e->getY()+sin(angle)*(e->getRadius()-eyeRadius);
-     QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
-     m_scene->addEllipse(eyeSquare,animalPen,colors.getTeamsEyeBrush());
+       for(QPoint pos:positions)
+       {
+           drawAnimal(living,pos);
+       }
    }
    else
    {
-     QRect square(e->getX()-e->getRadius(), e->getY()-e->getRadius(), 2*e->getRadius(), 2*e->getRadius());
-     m_scene->addEllipse(square, colors.getEntityPen(e),colors.getEntityBrush(e));
+       for(QPoint pos:positions)
+       {
+           drawBasicEntity(pos,radius,colors.getEntityBrush(e),colors.getEntityPen(e));
+       }
    }
+}
+
+
+void WorldWidget::drawAnimal(QPoint pos, int radius, double angle, QBrush brush, QPen pen)
+{
+    drawBasicEntity(pos,radius,brush,pen);
+    //add an eye to show the looking direction
+    int eyeRadius = radius/3;
+    int eyeXCenter = pos.x()+cos(angle)*(radius-eyeRadius);
+    int eyeYCenter = pos.y()+sin(angle)*(radius-eyeRadius);
+    QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
+    m_scene->addEllipse(eyeSquare,pen,colors.getTeamsEyeBrush());
+}
+
+void WorldWidget::drawAnimal(const Animal *animal)
+{
+    QPoint pos(animal->getX(),animal->getY());
+    drawAnimal(animal,pos);
+}
+
+void WorldWidget::drawAnimal(const Animal *animal, QPoint pos)
+{
+    QPen animalPen;
+    if(animal == selectedAnimal)
+        animalPen = colors.getTeamsSelectedPen();
+    else
+        animalPen = colors.getEntityPen(animal);
+    drawAnimal(pos,animal->getRadius(),animal->getAngle(),colors.getEntityBrush(animal),animalPen);
+}
+
+void WorldWidget::drawBasicEntity(QPoint pos, int radius, QBrush brush, QPen pen)
+{
+    QRect baseSquare(pos.x()-radius,pos.y()-radius,2*radius,2*radius);
+    m_scene->addEllipse(baseSquare,pen,brush);
 }
 
 void WorldWidget::mouseDoubleClickEvent(QMouseEvent *event)
