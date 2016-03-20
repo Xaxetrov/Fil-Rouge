@@ -38,17 +38,15 @@ void World::setSize(int size_x, int size_y)
    m_size_y = size_y;
 }
 
-unsigned int World::isCollision(const Entity* e) const
+void World::updateListCollision(Animal* a) const
 {
     for(Entity* currentEntity : m_entities)
     {
-        unsigned int collision = isCollision(e, currentEntity);
-        if(e!=currentEntity && collision)
+        if(a!=currentEntity && isCollision(a, currentEntity))
         {
-            return collision;
+            a->addEntityInListCollision(currentEntity);
         }
     }
-    return 0;
 }
 
 void World::addEntity(Entity *entity)
@@ -107,12 +105,9 @@ void World::killEntity(const Entity *e)
 
 // private methods
 
-unsigned int World::isCollision(const Entity *e1, const Entity *e2) const
+bool World::isCollision(const Entity *e1, const Entity *e2) const
 {
     const Coordinate * c1 = e1->getCoordinate();
     const Coordinate * c2 = e2->getCoordinate();
-    if(Coordinate::getDistance(*c1, *c2) < (e1->getRadius() + e2->getRadius()))
-      return e2->getTypeId();
-    else
-      return 0;
+    return (Coordinate::getDistance(*c1, *c2) < (e1->getRadius() + e2->getRadius()));
 }

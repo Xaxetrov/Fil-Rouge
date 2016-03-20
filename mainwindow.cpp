@@ -81,7 +81,7 @@ void MainWindow::loadWorld()
     {
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;
-      Animal * animal = new Animal(x,y,10,50,&world);
+      Animal * animal = new Animal(x, y, 10, 50, 2, &world);
       animal->turn( (double)(rand()%628)/100);
       world.addEntity(animal);
     }
@@ -94,14 +94,20 @@ world.addEntity(animal);*/
     Animal * animal2 = new Animal(350,120,10,50,&world);
     animal0->turn(PI/2);
     animal2->turn(PI);
+
     world.addEntity(animal0);
     world.addEntity(animal1);
     world.addEntity(animal2);
     Animal * animal3 = new Animal(100,200,10,50,&world);
     Animal * animal4 = new Animal(200,200,10,50,&world);
     animal4->turn(PI);
+
+//    world.addEntity(animal3);
+//    world.addEntity(animal4);
+
     world.addEntity(animal3);
     world.addEntity(animal4);*/
+
 }
 
 void MainWindow::loadXML(QString worldSave)
@@ -229,7 +235,7 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
   }
   else if(type == "Water")
   {
-    Water * entity = new Water(xEntity, yEntity, radiusEntity);
+    Water * entity = new Water(xEntity, yEntity, radiusEntity, 1000);
     world.addEntity(entity);
   }
   /*

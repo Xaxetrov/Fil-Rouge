@@ -1,10 +1,12 @@
 #include "Animal.h"
+#include "Water.h"
 #include <iostream>
 #include <iomanip>
 
 using namespace std;
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, World * world) : Solid(x, y, radius), m_maxSpeed(maxSpeed), m_world(world)
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world) :
+    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 100;
@@ -26,6 +28,7 @@ Animal::~Animal()
 {
     delete(m_vision);
     delete(m_brain);
+    delete m_collisionList;
 }
 
 int Animal::play()
@@ -33,7 +36,7 @@ int Animal::play()
     if(m_health == 0 || dead)
     {
       dead = true;
-      m_world->killEntity(this); // RIP
+      //m_world->killEntity(this); // RIP
     }
     else
     {
@@ -90,31 +93,29 @@ int Animal::play()
     {
       move(outputs[0]);
     }
+    else // calcul of collisionList hasn't been effectuated
+    {
+        m_world->updateListCollision(this);
+    }
+
+    //eat();
+    drink();
 
     return 0;
 }
 
 void Animal::move(int speedPercentage)
 {
-  //  if (speedPercentage != 5)
-  //      std::cout << speedPercentage << std::endl;
 
     setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-    unsigned int collision = m_world->isCollision(this);
-
-    if(collision == 20)
+    m_world->updateListCollision(this);
+    vector<Entity*> * animalCollisionList = getSubListCollision(ID_ANIMAL);
+    if(animalCollisionList->size() != 0)
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
+        //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
-    else if(collision == 10)
-    {
-        m_thirst += 2;
-    }
-    else if(collision == 11)
-    {
-        m_hunger += 2;
-    }
-
+    delete animalCollisionList;
 
 //    if (m_world->isCollision(this))
 //    {
@@ -135,7 +136,39 @@ int Animal::computeScore()
 void Animal::turn(double angle)
 {
   m_angle += angle;
-  //cout << setprecision(10) << m_angle << std::endl;
+  m_angle = Coordinate::modulo2PI(m_angle);
+}
+
+// The animal drink one time for each pool it is on
+void Animal::drink()
+{
+    vector<Entity*> * waterCollisionList = getSubListCollision(ID_WATER);
+    vector<Entity*>::iterator itWaterCollisionList;
+    for (itWaterCollisionList = waterCollisionList->begin(); itWaterCollisionList != waterCollisionList->end(); itWaterCollisionList++)
+    {
+        (dynamic_cast <Water*> (*itWaterCollisionList))->drink(2);
+        m_thirst += 2;
+    }
+    delete waterCollisionList;
+}
+
+void Animal::addEntityInListCollision(Entity *e)
+{
+    m_collisionList->push_back(e);
+}
+
+vector<Entity*> * Animal::getSubListCollision(unsigned int idEntity)
+{
+    vector<Entity*> * subListCollision = new vector<Entity*>();
+    vector<Entity*>::iterator itCollisionList;
+    for (itCollisionList = m_collisionList->begin(); itCollisionList != m_collisionList->end(); itCollisionList++)
+    {
+        if((*itCollisionList)->getTypeId() == idEntity)
+        {
+            subListCollision->push_back(*itCollisionList);
+        }
+    }
+    return subListCollision;
 }
 
 int Animal::getMaxSpeed() const
@@ -161,6 +194,11 @@ int Animal::getThirst() const
 int Animal::getFear() const
 {
     return m_fear;
+}
+
+double Animal::getDamage() const
+{
+    return m_damage;
 }
 
 double Animal::getAngle() const

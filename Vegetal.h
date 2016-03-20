@@ -5,9 +5,12 @@
 
 class Vegetal : public NonSolid
 {
-  public:
+public:
     Vegetal(int x, int y, int radius);
-    virtual unsigned int getTypeId() const { return 11; };
+    virtual unsigned int getTypeId() const { return ID_VEGETAL; }
+
+private:
+    int m_quantity;
 };
 
 #endif //VEGETAL_H
