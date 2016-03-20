@@ -4,7 +4,7 @@
 #include "Coordinate.h"
 using namespace std;
 
-Vision::Vision(const Coordinate * position, double * angle, std::vector<Entity*> &entities) : m_position(position), m_angle(angle), m_entities(entities)
+Vision::Vision(const Coordinate & position, double & angle, std::vector<shared_ptr<Entity>> &entities) : m_position(position), m_angle(angle), m_entities(entities)
 {
     for(int i = 0; i < NB_VISIONSECTORS_LIVING; i++)
     {

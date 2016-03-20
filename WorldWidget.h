@@ -1,6 +1,7 @@
 #ifndef WORLDWIDGET_H
 #define WORLDWIDGET_H
 
+#include <memory>
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QTimer>
@@ -30,27 +31,27 @@ public slots:
     void resizeEvent(QResizeEvent *e);
     void wheelEvent(QWheelEvent *e);
     void mouseDoubleClickEvent(QMouseEvent *e);
-    void selectAnimal(Animal * a);
+    void selectAnimal(weak_ptr<Animal> a);
     void tick();
     void startSimulation(); //to start the timer
     void suspendSimulation(); //to stop the timer
 
 signals:
-    void animalSelected(Animal * a);
+    void animalSelected(weak_ptr<Animal> a);
     void sceneUpdated();
 
 private:
-    void drawEntity(const Entity *entity);
+    void drawEntity(const shared_ptr<Entity> entity);
     void drawAnimal(QPoint pos,int radius, double angle, QBrush brush, QPen pen);
-    void drawAnimal(const Animal *animal);
-    void drawAnimal(const Animal *animal, QPoint pos);
+    void drawAnimal(const shared_ptr<Animal> animal);
+    void drawAnimal(const shared_ptr<Animal> animal, QPoint pos);
     void drawBasicEntity(QPoint pos,int radius, QBrush brush, QPen pen);
 
 private:
     QGraphicsScene * m_scene;
     WorldColors colors;
     World * m_world;
-    Animal * selectedAnimal;
+    weak_ptr<Animal> selectedAnimal;
     //timer
     QTimer timer;
 

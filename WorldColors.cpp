@@ -25,7 +25,7 @@ WorldColors::WorldColors()
     teamsNullPen = QPen(Qt::gray);
 }
 
-QBrush & WorldColors::getEntityBrush(const Entity * entity)
+QBrush & WorldColors::getEntityBrush(const shared_ptr<Entity> entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
     if(entity == nullptr)
@@ -53,7 +53,7 @@ QBrush & WorldColors::getEntityBrush(const Entity * entity)
     return backgroundBrush;
 }
 
-QPen & WorldColors::getEntityPen(const Entity *entity)
+QPen & WorldColors::getEntityPen(const shared_ptr<Entity> entity)
 {
     //TODO: complete with the corecte class name (don't existe when I wrote this)
     if(entity == nullptr)

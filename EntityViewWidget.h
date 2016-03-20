@@ -15,8 +15,8 @@ class EntityViewWidget : public QGraphicsView
     Q_OBJECT //enable slot and signal suport in this class
 
 public:
-    EntityViewWidget(Animal * a = nullptr);
-    void setAnimal(Animal *a);
+    EntityViewWidget(weak_ptr<Animal> a = weak_ptr<Animal>());
+    void setAnimal(weak_ptr<Animal> a);
 
     void resizeEvent(QResizeEvent *e);
 
@@ -27,7 +27,7 @@ private:
     QPolygonF generateVisionSector(double angle1, double angle2, int depth, int numberOfPoint=3) const;
 
 private:
-    Animal * animal;
+    weak_ptr<Animal> animal;
     QGraphicsScene scene;
     WorldColors colors;
 };

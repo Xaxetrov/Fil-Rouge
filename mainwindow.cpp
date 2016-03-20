@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
 
     //event managment
-    QObject::connect(&worldWidget,SIGNAL(animalSelected(Animal*)),&entityWidget,SLOT(setAnimal(Animal*)));
+    QObject::connect(&worldWidget,SIGNAL(animalSelected(weak_ptr<Animal>)),&entityWidget,SLOT(setAnimal(weak_ptr<Animal>)));
     QObject::connect(fileExitAction,SIGNAL(triggered(bool)),this,SLOT(close()));
     QObject::connect(simulationMenu,SIGNAL(triggered(QAction*)),this,SLOT(switchTimer()));
     QObject::connect(&worldWidget,SIGNAL(sceneUpdated()),&entityWidget,SLOT(update()));
@@ -81,7 +81,7 @@ void MainWindow::loadWorld()
     {
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;
-      Animal * animal = new Animal(x, y, 10, 50, 2, &world);
+      shared_ptr<Animal> animal(make_shared<Animal>(x, y, 10, 50, 2, &world));
       animal->turn( (double)(rand()%628)/100);
       world.addEntity(animal);
     }
@@ -230,12 +230,12 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
-    Vegetal * entity = new Vegetal(xEntity, yEntity, radiusEntity);
+    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity));
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    Water * entity = new Water(xEntity, yEntity, radiusEntity, 1000);
+    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, 1000));
     world.addEntity(entity);
   }
   /*
@@ -250,10 +250,6 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 MainWindow::~MainWindow()
 {
     delete ui;
-    for(Entity* e:world.getEntities())
-    {
-        delete e;
-    }
 }
 
 void MainWindow::switchTimer()

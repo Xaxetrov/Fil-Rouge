@@ -1,6 +1,6 @@
 #include "Percepted.h"
 
-Percepted::Percepted(Entity *entity, double distance) : m_entity(entity), m_distance(distance)
+Percepted::Percepted(std::shared_ptr<Entity> entity, double distance) : m_entity(entity), m_distance(distance)
 {}
 
 Percepted::Percepted()
@@ -9,7 +9,7 @@ Percepted::Percepted()
     m_distance = 0;
 }
 
-void Percepted::set(Entity *entity, double distance)
+void Percepted::set(std::shared_ptr<Entity> entity, double distance)
 {
     m_entity = entity;
     m_distance = distance;

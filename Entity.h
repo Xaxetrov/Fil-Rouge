@@ -15,7 +15,7 @@ public:
     virtual ~Entity();
 
     //attributes accessors
-    const Coordinate * getCoordinate() const {return &m_coordinate;}
+    const Coordinate & getCoordinate() const {return m_coordinate;}
     void setCoordinate(double x, double y) {m_coordinate.set(x, y);}
     double getX() const {return m_coordinate.getX();}
     double getY() const {return m_coordinate.getY();}

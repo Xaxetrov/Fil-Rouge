@@ -11,16 +11,16 @@ using namespace std;
 class Vision
 {
 public:
-    Vision(const Coordinate * position, double * angle, vector<Entity*> &entities);
+    Vision(const Coordinate & position, double & angle, vector<shared_ptr<Entity>> &entities);
     virtual ~Vision();
     void see();
     const vector<const Percepted*> getPercepted() const;
 
 private:
-    const Coordinate * m_position;
-    const double * m_angle;
+    const Coordinate & m_position;
+    const double & m_angle;
     vector<VisionSector *> m_sectors;
-    vector<Entity*> &m_entities;
+    vector<shared_ptr<Entity>> &m_entities;
 };
 
 #endif // VISION_H

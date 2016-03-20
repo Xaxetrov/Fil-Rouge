@@ -14,11 +14,11 @@ class EntityAttributeWidget : public QWidget
 public:
    EntityAttributeWidget();
    virtual ~EntityAttributeWidget();
-   void setAnimal(Animal * a);
+   void setAnimal(weak_ptr<Animal> a);
    void update();
 
 protected:
-   Animal * animal;
+   weak_ptr<Animal> animal;
 
    QVBoxLayout * layout;
    QLabel * defaultLabel;

@@ -12,7 +12,7 @@ World::World()
     m_size_y = WORLD_SIZE_Y;
 }
 
-std::vector<Entity *> &World::getEntities()
+std::vector<shared_ptr<Entity>> &World::getEntities()
 {
     return m_entities;
 }
@@ -38,9 +38,9 @@ void World::setSize(int size_x, int size_y)
    m_size_y = size_y;
 }
 
-void World::updateListCollision(Animal* a) const
+void World::updateListCollision(shared_ptr<Animal> a) const
 {
-    for(Entity* currentEntity : m_entities)
+    for(shared_ptr<Entity> currentEntity : m_entities)
     {
         if(a!=currentEntity && isCollision(a, currentEntity))
         {
@@ -49,7 +49,7 @@ void World::updateListCollision(Animal* a) const
     }
 }
 
-void World::addEntity(Entity *entity)
+void World::addEntity(shared_ptr<Entity> entity)
 {
     m_entities.push_back(entity);
 }
@@ -57,14 +57,16 @@ void World::addEntity(Entity *entity)
 int World::tick()
 {
     int entityErrorsNum = 0;
-    for(unsigned int i=0; i<m_entities.size(); i++)
+    int i=0;
+    for(shared_ptr<Entity> e:m_entities)
     {
-        if(m_entities.at(i)->play())
+        if(e->play())
         {
             //TODO : manage entities errors
             std::cerr << "Entity no " << i << " failed to play" << std::endl;
             entityErrorsNum++;
         }
+        i++;
       //  if(Animal* animal = dynamic_cast<Animal*>(m_entities.at(i)))
       //  {
            /*if(animal->isDead())
@@ -91,10 +93,10 @@ int World::tick(int ticNum)
     return 0;
 }
 
-void World::killEntity(const Entity *e)
+void World::killEntity(shared_ptr<Entity> e)
 {
   int i = 0;
-  for(Entity* currentEntity : m_entities)
+  for(shared_ptr<Entity> currentEntity : m_entities)
   {
       if(e == currentEntity)
         break;
@@ -105,9 +107,16 @@ void World::killEntity(const Entity *e)
 
 // private methods
 
-bool World::isCollision(const Entity *e1, const Entity *e2) const
+bool World::isCollision(const shared_ptr<Entity> e1, const shared_ptr<Entity> e2) const
 {
-    const Coordinate * c1 = e1->getCoordinate();
-    const Coordinate * c2 = e2->getCoordinate();
-    return (Coordinate::getDistance(*c1, *c2) < (e1->getRadius() + e2->getRadius()));
+    const Coordinate & c1 = e1->getCoordinate();
+    const Coordinate & c2 = e2->getCoordinate();
+    return (Coordinate::getDistance(c1,c2) < (e1->getRadius() + e2->getRadius()));
 }
+
+
+
+
+
+
+

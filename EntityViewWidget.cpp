@@ -3,15 +3,16 @@
 
 #include <iostream>
 
-EntityViewWidget::EntityViewWidget(Animal *a): QGraphicsView(), animal(a)
+EntityViewWidget::EntityViewWidget(weak_ptr<Animal> a): QGraphicsView(), animal(a)
 {
     setScene(&scene);
 }
 
 void EntityViewWidget::updateView()
 {
+    shared_ptr<Animal> sharedAnimal = animal.lock();
     scene.clear();
-    QPen & borderPen = colors.getEntityPen(animal);
+    QPen & borderPen = colors.getEntityPen(sharedAnimal);
     QBrush & backgroundBrush = colors.getBackgroundBrush();
     ///draw vision sector
     //draw base vision sector
@@ -22,9 +23,9 @@ void EntityViewWidget::updateView()
        scene.addPolygon(visionSector,borderPen,backgroundBrush);
     }
     //draw filled part of vision sector
-    if(animal != nullptr)
+    if(sharedAnimal != nullptr)
     {
-        const vector<const Percepted*> & percepted = animal->getVision()->getPercepted();
+        const vector<const Percepted*> & percepted = sharedAnimal->getVision()->getPercepted();
         for(unsigned i=0 ; i<NB_VISIONSECTORS_LIVING && i<percepted.size(); i++)
         {
             if(percepted[i]->getEntity() != nullptr)
@@ -37,7 +38,7 @@ void EntityViewWidget::updateView()
     }
     //draw currant entity
     QRect baseSquare(-10,-10,20,20);
-    scene.addEllipse(baseSquare,borderPen,colors.getEntityBrush(animal));
+    scene.addEllipse(baseSquare,borderPen,colors.getEntityBrush(sharedAnimal));
     QRect eyebaseSquare(-3,-10,6,6);
     scene.addEllipse(eyebaseSquare,borderPen,colors.getTeamsEyeBrush());
 }
@@ -61,7 +62,7 @@ void EntityViewWidget::resizeEvent(QResizeEvent *e)
     this->fitInView(this->sceneRect(),Qt::KeepAspectRatio);
 }
 
-void EntityViewWidget::setAnimal(Animal *a)
+void EntityViewWidget::setAnimal(weak_ptr<Animal> a)
 {
     animal = a;
     updateView();

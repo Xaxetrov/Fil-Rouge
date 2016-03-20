@@ -11,7 +11,7 @@
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 {
     //setup default selected animal
-    selectedAnimal = nullptr;
+    selectedAnimal = weak_ptr<Animal>();
 
     //setup a new scene
     m_scene = new QGraphicsScene();
@@ -51,8 +51,8 @@ void WorldWidget::updateScene()
     m_scene->setBackgroundBrush(QBrush(Qt::gray));
     m_scene->addRect(0,0,m_world->getSizeX(),m_world->getSizeY(),QPen(Qt::gray),colors.getBackgroundBrush());
     //add each entity to the scene one by one:
-    std::vector<Entity*> & entities = m_world->getEntities();
-    for(Entity* ite : entities)
+    std::vector<shared_ptr<Entity>> & entities = m_world->getEntities();
+    for(shared_ptr<Entity> ite : entities)
     {
         drawEntity(ite);
     }
@@ -72,7 +72,7 @@ void WorldWidget::wheelEvent(QWheelEvent* e)
     this->scale(factor, factor);
 }
 
-void WorldWidget::selectAnimal(Animal *a)
+void WorldWidget::selectAnimal(weak_ptr<Animal> a)
 {
     selectedAnimal = a;
     emit animalSelected(a);
@@ -99,10 +99,10 @@ bool WorldWidget::isSimulationRunning() const
     return timer.isActive();
 }
 
-void WorldWidget::drawEntity(const Entity * e)
+void WorldWidget::drawEntity(const shared_ptr<Entity> e)
 {
     ///TODO implemente toric view on diagonals
-   double x=e->getCoordinate()->getX(), y=e->getCoordinate()->getY();
+   double x=e->getCoordinate().getX(), y=e->getCoordinate().getY();
    int radius = e->getRadius();
    vector<QPoint> positions;
    positions.push_back(QPoint(x,y));
@@ -123,7 +123,7 @@ void WorldWidget::drawEntity(const Entity * e)
        positions.push_back(QPoint(x,y-WORLD_SIZE_Y));
    }
 
-   if(const Animal* const living = dynamic_cast<const Animal*>(e))
+   if(const shared_ptr<Animal> living = dynamic_pointer_cast<Animal>(e))
    {
        for(QPoint pos:positions)
        {
@@ -151,16 +151,16 @@ void WorldWidget::drawAnimal(QPoint pos, int radius, double angle, QBrush brush,
     m_scene->addEllipse(eyeSquare,pen,colors.getTeamsEyeBrush());
 }
 
-void WorldWidget::drawAnimal(const Animal *animal)
+void WorldWidget::drawAnimal(const shared_ptr<Animal> animal)
 {
     QPoint pos(animal->getX(),animal->getY());
     drawAnimal(animal,pos);
 }
 
-void WorldWidget::drawAnimal(const Animal *animal, QPoint pos)
+void WorldWidget::drawAnimal(const shared_ptr<Animal> animal, QPoint pos)
 {
     QPen animalPen;
-    if(animal == selectedAnimal)
+    if(animal == selectedAnimal.lock())
         animalPen = colors.getTeamsSelectedPen();
     else
         animalPen = colors.getEntityPen(animal);
@@ -175,9 +175,9 @@ void WorldWidget::drawBasicEntity(QPoint pos, int radius, QBrush brush, QPen pen
 
 void WorldWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    for(Entity * e:m_world->getEntities())
+    for(shared_ptr<Entity> e:m_world->getEntities())
     {
-        if(Animal* living = dynamic_cast<Animal*>(e))
+        if(shared_ptr<Animal> living = dynamic_pointer_cast<Animal>(e))
         {
             QPointF point = this->mapToScene(event->pos());
             if(point.x()<e->getX()+e->getRadius() && point.x()>e->getX()-e->getRadius() &&
@@ -189,7 +189,7 @@ void WorldWidget::mouseDoubleClickEvent(QMouseEvent *event)
         }
     }
     //if nothing found send nullptr
-    selectAnimal(nullptr);
+    selectAnimal(weak_ptr<Animal>());
 }
 
 WorldColors & WorldWidget::getColors()

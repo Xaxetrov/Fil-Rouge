@@ -1,6 +1,7 @@
 #ifndef WORLDCOLORS_H
 #define WORLDCOLORS_H
 
+#include <memory>
 #include <vector>
 #include <QColor>
 #include <QPen>
@@ -12,8 +13,8 @@ class WorldColors
 public:
     WorldColors();
 
-    QBrush & getEntityBrush(const Entity * entity);
-    QPen & getEntityPen(const Entity * entity);
+    QBrush & getEntityBrush(const std::shared_ptr<Entity> entity);
+    QPen & getEntityPen(const std::shared_ptr<Entity> entity);
 
     QBrush & getBackgroundBrush();
     QBrush & getWaterBrush();

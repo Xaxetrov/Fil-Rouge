@@ -1,6 +1,8 @@
 #ifndef ANIMAL_H
 #define ANIMAL_H
 
+#include <memory>
+
 #include "Solid.h"
 #include "World.h"
 #include "NeuralNetwork.h"
@@ -8,7 +10,7 @@
 
 class World;
 
-class Animal : public Solid
+class Animal : public Solid, public enable_shared_from_this<Animal>
 {
 public:
     //ctor, dtor
@@ -32,8 +34,8 @@ public:
     void turn(double angle);
     void drink();
     //virtual void eat();
-    vector<Entity*> * getSubListCollision(unsigned int idEntity);
-    void addEntityInListCollision(Entity* e);
+    vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
+    void addEntityInListCollision(weak_ptr<Entity> e);
 
     //game methods
     virtual int play();
@@ -52,7 +54,7 @@ private :
     int m_thirst;
     int m_fear;
     bool dead;
-    vector<Entity*> * m_collisionList;
+    vector<weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
     Vision * m_vision;
     World * m_world;

@@ -1,21 +1,22 @@
 #ifndef PERCEPTED_H
 #define PERCEPTED_H
 
+#include <memory>
 #include "Entity.h"
 
 class Percepted
 {
     public:
-        Percepted(Entity *entity, double distance);
+        Percepted(std::shared_ptr<Entity> entity, double distance);
         Percepted();
 
-        void set(Entity *entity, double distance);
+        void set(std::shared_ptr<Entity> entity, double distance);
 
-        const Entity* getEntity() const { return m_entity; }
+        const std::shared_ptr<Entity> getEntity() const { return m_entity; }
         double getDistance() const { return m_distance; }
 
     private:
-        Entity* m_entity;
+        std::shared_ptr<Entity> m_entity;
         double m_distance;
 };
 

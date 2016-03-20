@@ -2,7 +2,7 @@
 
 EntityAttributeWidget::EntityAttributeWidget()
 {
-   animal = nullptr; // Avoid random crashes
+   //animal = weak_ptr<Animal>(); // Avoid random crashes
 
    defaultLabel = new QLabel("No entity selected");
 
@@ -35,7 +35,7 @@ EntityAttributeWidget::~EntityAttributeWidget()
    delete fearLabel;
 }
 
-void EntityAttributeWidget::setAnimal(Animal * a)
+void EntityAttributeWidget::setAnimal(weak_ptr<Animal> a)
 {
    animal = a;
    update();
@@ -43,7 +43,8 @@ void EntityAttributeWidget::setAnimal(Animal * a)
 
 void EntityAttributeWidget::update()
 {
-   if(animal == nullptr)
+    shared_ptr<Animal> sharedAnimal = animal.lock();
+   if(!sharedAnimal)
    {
       defaultLabel->setVisible(true);
       healthLabel->setVisible(false);
@@ -59,9 +60,9 @@ void EntityAttributeWidget::update()
       thirstLabel->setVisible(true);
       fearLabel->setVisible(true);
 
-      healthLabel->setText(healthText + QString::number(animal->getHealth()));
-      hungerLabel->setText(hungerText + QString::number(animal->getHunger()));
-      thirstLabel->setText(thirstText + QString::number(animal->getThirst()));
-      fearLabel->setText(fearText + QString::number(animal->getFear()));
+      healthLabel->setText(healthText + QString::number(sharedAnimal->getHealth()));
+      hungerLabel->setText(hungerText + QString::number(sharedAnimal->getHunger()));
+      thirstLabel->setText(thirstText + QString::number(sharedAnimal->getThirst()));
+      fearLabel->setText(fearText + QString::number(sharedAnimal->getFear()));
    }
 }

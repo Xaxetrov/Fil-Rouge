@@ -14,7 +14,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     m_health = 100;
     dead = false;
     m_fear = 0;
-    m_vision = new Vision(getCoordinate(), &m_angle, world->getEntities());
+    m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
 
     vector<unsigned int> layerSizes;
     for(unsigned int i = 0; i < NB_LAYERS; i++)
@@ -28,7 +28,7 @@ Animal::~Animal()
 {
     delete(m_vision);
     delete(m_brain);
-    delete m_collisionList;
+    //delete m_collisionList;
 }
 
 int Animal::play()
@@ -95,7 +95,7 @@ int Animal::play()
     }
     else // calcul of collisionList hasn't been effectuated
     {
-        m_world->updateListCollision(this);
+        m_world->updateListCollision(this->shared_from_this());
     }
 
     //eat();
@@ -108,14 +108,13 @@ void Animal::move(int speedPercentage)
 {
 
     setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-    m_world->updateListCollision(this);
-    vector<Entity*> * animalCollisionList = getSubListCollision(ID_ANIMAL);
-    if(animalCollisionList->size() != 0)
+    m_world->updateListCollision(this->shared_from_this());
+    vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(ID_ANIMAL);// Warning -> Animal != Solid
+    if(animalCollisionList.size() != 0)
     {
         setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
         //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
-    delete animalCollisionList;
 
 //    if (m_world->isCollision(this))
 //    {
@@ -142,30 +141,39 @@ void Animal::turn(double angle)
 // The animal drink one time for each pool it is on
 void Animal::drink()
 {
-    vector<Entity*> * waterCollisionList = getSubListCollision(ID_WATER);
-    vector<Entity*>::iterator itWaterCollisionList;
-    for (itWaterCollisionList = waterCollisionList->begin(); itWaterCollisionList != waterCollisionList->end(); itWaterCollisionList++)
+    vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
+    for (weak_ptr<Entity> weakWater:waterCollisionList)
     {
-        (dynamic_cast <Water*> (*itWaterCollisionList))->drink(2);
-        m_thirst += 2;
-    }
-    delete waterCollisionList;
-}
-
-void Animal::addEntityInListCollision(Entity *e)
-{
-    m_collisionList->push_back(e);
-}
-
-vector<Entity*> * Animal::getSubListCollision(unsigned int idEntity)
-{
-    vector<Entity*> * subListCollision = new vector<Entity*>();
-    vector<Entity*>::iterator itCollisionList;
-    for (itCollisionList = m_collisionList->begin(); itCollisionList != m_collisionList->end(); itCollisionList++)
-    {
-        if((*itCollisionList)->getTypeId() == idEntity)
+        shared_ptr<Entity> waterEntity = weakWater.lock();
+        if(waterEntity)
         {
-            subListCollision->push_back(*itCollisionList);
+            shared_ptr<Water> water;
+            if(water = dynamic_pointer_cast<Water>(waterEntity))
+            {
+                water->drink(2);
+                m_thirst += 2;
+            }
+        }
+    }
+}
+
+void Animal::addEntityInListCollision(weak_ptr<Entity> e)
+{
+    m_collisionList.push_back(e);
+}
+
+vector<weak_ptr<Entity>> Animal::getSubListCollision(unsigned int idEntity)
+{
+    vector<weak_ptr<Entity>> subListCollision;
+    for(weak_ptr<Entity> weakEntity:m_collisionList)
+    {
+        shared_ptr<Entity> e = weakEntity.lock();
+        if(e)//if lock worked
+        {
+            if(e->getTypeId() == idEntity)
+            {
+                subListCollision.push_back(e);
+            }
         }
     }
     return subListCollision;

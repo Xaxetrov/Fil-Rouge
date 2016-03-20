@@ -7,8 +7,8 @@ using namespace std;
 #include <cstdlib>
 #include <ctime>
 
-VisionSector::VisionSector(const Coordinate * center, const double * animalAngle, const double angle1, const double angle2, int range,
-                           std::vector<Entity*>& entities) :
+VisionSector::VisionSector(const Coordinate &center, const double &animalAngle, const double &angle1, const double &angle2, int range,
+                           std::vector<std::shared_ptr<Entity>> &entities) :
     m_center(center), m_animalAngle(animalAngle), m_angle1(angle1), m_angle2(angle2), m_range(range), m_entities(entities)
 {
     m_nearestPercepted = new Percepted();
@@ -22,19 +22,19 @@ VisionSector::~VisionSector()
 
 void VisionSector::scan()
 {
-    std::vector<Entity*> selection;
+    std::vector<shared_ptr<Entity>> selection;
     std::vector<double> distances;
 
-    for(unsigned int i=0; i<m_entities.size(); i++)
+    for(shared_ptr<Entity> e:m_entities)
     {
-        if(m_entities.at(i)->getX() == m_center->getX() && m_entities.at(i)->getY() == m_center->getY())
+        if(e->getX() == m_center.getX() && e->getY() == m_center.getY())
           continue;
 
-        double d = Coordinate::getDistance(Coordinate(m_entities.at(i)->getX(), m_entities.at(i)->getY()), Coordinate(m_center->getX(), m_center->getY()));
+        double d = Coordinate::getDistance(e->getCoordinate(), m_center);
 
         if(d < m_range)
         {
-            selection.push_back(m_entities.at(i));
+            selection.push_back(e);
             distances.push_back(d);
         }
     }
@@ -42,13 +42,12 @@ void VisionSector::scan()
     clearPercepted();
     for(unsigned int i=0; i<selection.size(); i++)
     {
-        int dX = selection.at(i)->getX();
-        int dY = selection.at(i)->getY();
-        double angle = Coordinate::getAngle(*m_center, Coordinate(dX, dY)) - *m_animalAngle; // modulo2PI is moved insigned of getAngle
+        shared_ptr<Entity> e = selection.at(i);
+        double angle = Coordinate::getAngle(m_center, e->getCoordinate()) - m_animalAngle; // modulo2PI is moved insigned of getAngle
 
         if((angle <= m_angle1 && angle > m_angle2 && m_angle1 > m_angle2) || (angle >= m_angle1 && angle < m_angle2 && m_angle1 < m_angle2))
         {
-            m_percepted.push_back(new Percepted(selection.at(i), distances.at(i)));
+            m_percepted.push_back(new Percepted(e, distances.at(i)));
         }
     }
 }
