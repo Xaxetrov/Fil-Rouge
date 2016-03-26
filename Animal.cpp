@@ -170,14 +170,21 @@ void Animal::drink()
     vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
     for (weak_ptr<Entity> weakWater:waterCollisionList)
     {
+        // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
+        m_collisionList.remove_if([weakWater](weak_ptr<Entity> p)
+                                  { return !( p.owner_before(weakWater) || weakWater.owner_before(p) ); }
+                                 );
         shared_ptr<Entity> waterEntity = weakWater.lock();
         if(waterEntity)
         {
             shared_ptr<Water> water;
             if(water = dynamic_pointer_cast<Water>(waterEntity))
             {
-                water->drink(2);
-                m_thirst -= 2;
+               if(m_thirst > 0)
+               {
+                  water->drink(2);
+                  m_thirst -= 2;
+               }
             }
         }
     }
@@ -188,6 +195,9 @@ void Animal::mate()
    vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(ID_ANIMAL);
    for(weak_ptr<Entity> weakAnimal:animalCollisionList)
    {
+      m_collisionList.remove_if([weakAnimal](weak_ptr<Entity> p)
+                                { return !( p.owner_before(weakAnimal) || weakAnimal.owner_before(p) ); }
+                               );
       shared_ptr<Entity> animalEntity = weakAnimal.lock();
       if(animalEntity)
       {

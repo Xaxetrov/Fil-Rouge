@@ -2,6 +2,7 @@
 #define ANIMAL_H
 
 #include <memory>
+#include <list>
 
 #include "Solid.h"
 #include "World.h"
@@ -63,7 +64,7 @@ private :
     int m_mating;
     bool dead;
     bool m_female;
-    vector<weak_ptr<Entity>> m_collisionList;
+    list<weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
     Vision * m_vision;
     World * m_world;
