@@ -35,6 +35,12 @@ const unsigned int ID_ANIMAL = 20;
 const unsigned int ID_WATER = 10;
 const unsigned int ID_VEGETAL = 11;
 
-
+// Animal Parameters
+const unsigned int MAX_HEALTH = 100;
+const unsigned int MAX_HUNGER = 100;
+const unsigned int MAX_THIRST = 100;
+const unsigned int MAX_FEAR = 100;
+const unsigned int MAX_MATING = 50;
+const unsigned int MAX_CHILD_PER_ANIMAL = 6;
 
 #endif // CONFIG_H

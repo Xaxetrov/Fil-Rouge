@@ -77,7 +77,7 @@ void MainWindow::loadWorld()
     //random generator
 //
     srand(std::time(0));
-    for(int i = 0; i < 20; i++)
+    for(int i = 0; i < 4; i++)
     {
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;

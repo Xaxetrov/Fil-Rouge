@@ -15,6 +15,7 @@ class Animal : public Solid, public enable_shared_from_this<Animal>
 public:
     //ctor, dtor
     Animal(double x, double y, int radius, int maxSpeed, double damage, World * world);
+    Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, NeuralNetwork * brain, int mating = 0);
     ~Animal();
 
     //getters
@@ -23,16 +24,22 @@ public:
     int getHunger() const;
     int getThirst() const;
     int getFear() const;
+    int getMating() const;
     double getDamage() const;
     double getAngle() const;
     const Vision * getVision() const;
+    const NeuralNetwork * getBrain() const;
     bool isDead() const;
+    bool isFemale() const;
+
+    void setMating();
 
     //basic methods
     void die();
     void move(int speedPercentage);
     void turn(double angle);
     void drink();
+    void mate();
     //virtual void eat();
     vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
     void addEntityInListCollision(weak_ptr<Entity> e);
@@ -53,11 +60,16 @@ private :
     int m_hunger;
     int m_thirst;
     int m_fear;
+    int m_mating;
     bool dead;
+    bool m_female;
     vector<weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
     Vision * m_vision;
     World * m_world;
+
+    //private methods
+    void reproduce(shared_ptr<Animal> father);
 };
 
 #endif // ANIMAL_H

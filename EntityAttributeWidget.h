@@ -35,6 +35,12 @@ protected:
    const QString fearText = "Fear: ";
    QLabel * fearLabel;
 
+   const QString sexText = "Sex: ";
+   QLabel * sexLabel;
+
+   const QString matingText = "Mating: ";
+   QLabel * matingLabel;
+
 };
 
 #endif //ENTITY_ATTRIBUTE_WIDGET_H
