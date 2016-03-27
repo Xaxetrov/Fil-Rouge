@@ -30,10 +30,17 @@ const unsigned int LAYER_SIZES[NB_LAYERS] = {10, 6, 2};
 // User Interface
 const unsigned UPDATE_TIMER_INTERVALE = 10; //ms
 
-//Animal id
+// Id
 const unsigned int ID_ANIMAL = 20;
-const unsigned int ID_WATER = 10;
-const unsigned int ID_VEGETAL = 11;
+const unsigned int ID_RESOURCE = 10;
+const unsigned int ID_WATER = 11;
+const unsigned int ID_VEGETAL = 12;
+const unsigned int ID_MEAT = 13;
+
+// Resource evolution
+const int EVOLUTION_WATER = 0;
+const int EVOLUTION_MEAT = -1;
+const int EVOLUTION_VEGETAL = 1;
 
 // Animal Parameters
 const unsigned int MAX_HEALTH = 100;

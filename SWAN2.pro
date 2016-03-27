@@ -41,7 +41,9 @@ SOURCES += main.cpp\
     Vegetal.cpp \
     Water.cpp \
     EntityFrame.cpp \
-    EntityAttributeWidget.cpp
+    EntityAttributeWidget.cpp \
+    Resource.cpp \
+    Meat.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -68,6 +70,8 @@ HEADERS  += mainwindow.h \
     Vegetal.h \
     Water.h \
     EntityFrame.h \
-    EntityAttributeWidget.h
+    EntityAttributeWidget.h \
+    Resource.h \
+    Meat.h
 
 FORMS    += mainwindow.ui
