@@ -48,7 +48,7 @@ public:
     //game methods
     virtual int play();
     virtual int computeScore();
-    virtual void mappageIO();
+    virtual void mappageInput();
 
     unsigned int getTypeId() const { return ID_ANIMAL; }
 

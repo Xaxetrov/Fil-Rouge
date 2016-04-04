@@ -159,12 +159,19 @@ int Animal::computeScore()
 }
 
 //TO FINISH
-void Animal::mappageIO()
+void Animal::mappageInput()
 {
     m_nnInputs.clear();
-    m_nnOutputs.clear();
-    //m_nnInputs.push_back();
-    //m_nnOutputs.push_back();
+    m_nnInputs.push_back(m_hunger);
+    m_nnInputs.push_back(m_thirst);
+    m_nnInputs.push_back(m_health);
+    const vector<const Percepted*> & percepted = m_vision->getPercepted();
+    for(const Percepted* p:percepted)
+    {
+        m_nnInputs.push_back(p->getEntity()->getTypeId());
+        m_nnInputs.push_back(p->getDistance());
+    }
+    m_nnInputs.push_back(m_hunger);
 }
 
 void Animal::turn(double angle)
