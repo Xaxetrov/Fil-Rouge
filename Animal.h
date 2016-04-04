@@ -48,7 +48,7 @@ public:
     //game methods
     virtual int play();
     virtual int computeScore();
-
+    virtual void mappageIO();
 
     unsigned int getTypeId() const { return ID_ANIMAL; }
 
@@ -66,6 +66,8 @@ private :
     bool m_female;
     list<weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
+    std::vector<double> m_nnInputs;
+    std::vector<double> m_nnOutputs;
     Vision * m_vision;
     World * m_world;
 

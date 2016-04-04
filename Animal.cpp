@@ -158,6 +158,15 @@ int Animal::computeScore()
     return m_health*100 + m_hunger*10 + m_thirst*10 + m_fear*3;
 }
 
+//TO FINISH
+void Animal::mappageIO()
+{
+    m_nnInputs.clear();
+    m_nnOutputs.clear();
+    //m_nnInputs.push_back();
+    //m_nnOutputs.push_back();
+}
+
 void Animal::turn(double angle)
 {
   m_angle += angle;
