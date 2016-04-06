@@ -33,6 +33,11 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     m_brain = new NeuralNetwork(layerSizes);
 }
 
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, world)
+{
+    m_female = sex;
+}
+
 Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, NeuralNetwork * brain, int mating) :
     Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
 {
@@ -44,6 +49,11 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     m_fear = 0;
     m_mating = mating;
     m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
+
+    //Determine if Animal is female or not (1/2 chance)
+    /*default_random_engine generator(random_device{}());
+    bernoulli_distribution distribution(0.5);
+    m_female = distribution(generator);*/
 
     m_brain = brain;
 
@@ -58,6 +68,7 @@ Animal::~Animal()
 
 int Animal::play()
 {
+
     if(m_health == 0 || dead)
     {
       dead = true;
@@ -95,8 +106,12 @@ int Animal::play()
     {
       if(percepted[i]->getEntity() != nullptr) // If it sees something
       {
-        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
-        inputs.push_back(percepted[i]->getDistance());
+        /*inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
+        inputs.push_back(percepted[i]->getDistance());*/
+
+        // Test for the collision
+        inputs.push_back(0.0);
+        inputs.push_back(0.0);
       }
       else
       {
@@ -125,7 +140,7 @@ int Animal::play()
 
     //eat();
     drink();
-    //mate();
+    mate();
 
     return 0;
 }
@@ -236,28 +251,33 @@ void Animal::mate()
 
 void Animal::reproduce(shared_ptr<Animal> father)
 {
-   default_random_engine generator(random_device{}());
-   normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
-   int numberChild = (int)distribution(generator);
-   if(numberChild < 0) numberChild = 0;
-   else if(numberChild > MAX_CHILD_PER_ANIMAL) numberChild = MAX_CHILD_PER_ANIMAL;
+    // Use a normal distribution to determine the number of children of litter
+    default_random_engine generator(random_device{}());
+    normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
+    int numberChild = (int)distribution(generator);
 
-   int child = 0;
-   double angleIntervalle = (2*PI)/(double)numberChild;
-   double baseAngle = 0;
-   double baseRadius = 3*getRadius();
-   while(child < numberChild)
-   {
-      NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
-      double distX = baseRadius*cos(baseAngle);
-      double distY = baseRadius*sin(baseAngle);
-      shared_ptr<Animal> animal(make_shared<Animal>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
-      m_world->addEntity(animal);
-      baseAngle += angleIntervalle;
-      child++;
-   }
-   m_mating = 0;
-   father->setMating();
+    // Normalize in the possible range
+    if(numberChild < 0) numberChild = 0;
+    else if(numberChild > MAX_CHILD_PER_ANIMAL) numberChild = MAX_CHILD_PER_ANIMAL;
+
+    // Create the new entity around the mother (in a circle)
+    int child = 0;
+    double angleIntervalle = (2*PI)/(double)numberChild;
+    double baseAngle = 0;
+    double baseRadius = 4*getRadius();
+
+    while(child < numberChild)
+    {
+       NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
+        double distX = baseRadius*cos(baseAngle);
+        double distY = baseRadius*sin(baseAngle);
+        shared_ptr<Animal> animal(make_shared<Animal>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
+        m_world->addEntity(animal);
+        baseAngle += angleIntervalle;
+        child++;
+    }
+    m_mating = 0;
+    father->setMating();
 }
 
 void Animal::addEntityInListCollision(weak_ptr<Entity> e)

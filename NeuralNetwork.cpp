@@ -2,6 +2,7 @@
 #include "config/config.h"
 #include <cstdlib>
 #include <ctime>
+#include <random>
 using namespace std;
 
 NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
@@ -50,6 +51,35 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
     m_inputNum = father.getInputNum();
     m_outputNum = father.getOutputNum();
     m_hiddenLayerNum = father.getHiddenLayerNum();
+
+    vector<Neuron> childNeurons;
+    default_random_engine generator(random_device{}());
+    bernoulli_distribution distribution(0.5);
+
+
+    for(int i = 0; i < father.m_layers.size(); i++)
+    {
+        const auto& fatherLayer = father.m_layers[i];
+        const auto& motherLayer = mother.m_layers[i];
+        for(int j = 0; j < fatherLayer.getNeuronNum(); j++)
+        {
+            const auto& fatherNeurons = fatherLayer.getNeurons();
+            const auto& motherNeurons = motherLayer.getNeurons();
+
+            // 1/2 chance to take the mother neuron
+            if(distribution(generator))
+            {
+                childNeurons.push_back(motherNeurons[j]);
+            }
+            else
+            {
+                childNeurons.push_back(fatherNeurons[i]);
+            }
+        }
+        m_layers.push_back(childNeurons);
+        childNeurons.clear();
+
+    }
 }
 
 vector<double> NeuralNetwork::run(std::vector<double> &inputs)

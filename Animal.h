@@ -16,6 +16,7 @@ class Animal : public Solid, public enable_shared_from_this<Animal>
 public:
     //ctor, dtor
     Animal(double x, double y, int radius, int maxSpeed, double damage, World * world);
+    Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, bool sex);
     Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, NeuralNetwork * brain, int mating = 0);
     ~Animal();
 
