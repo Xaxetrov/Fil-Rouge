@@ -106,12 +106,12 @@ int Animal::play()
     {
       if(percepted[i]->getEntity() != nullptr) // If it sees something
       {
-        /*inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
-        inputs.push_back(percepted[i]->getDistance());*/
+        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
+        inputs.push_back(percepted[i]->getDistance());
 
         // Test for the collision
-        inputs.push_back(0.0);
-        inputs.push_back(0.0);
+        /*inputs.push_back(0.0);
+        inputs.push_back(0.0);*/
       }
       else
       {
@@ -140,7 +140,7 @@ int Animal::play()
 
     //eat();
     drink();
-    mate();
+    //mate();
 
     return 0;
 }
