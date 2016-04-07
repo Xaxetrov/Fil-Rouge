@@ -54,8 +54,6 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
 {
     double deltaX = c2.getX() - c1.getX();
     double deltaY = c2.getY() - c1.getY();
-    //double deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
-    //double deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
 
     if(deltaX > WORLD_SIZE_X/2.0)
     {
@@ -74,8 +72,7 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
     {
         deltaY = WORLD_SIZE_Y + deltaY;
     }
-    double angle = std::atan2(deltaY,deltaX);
-    return angle; //atan2 return value in [-pi;pi]
+    return std::atan2(deltaY,deltaX); //atan2 return value in [-pi;pi]
 /*
     double x1 = c1.getX();
     double x2 = c2.getX();

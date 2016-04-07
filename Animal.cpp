@@ -187,8 +187,17 @@ void Animal::mappageInput()
     const vector<const Percepted*> & percepted = m_vision->getPercepted();
     for(const Percepted* p:percepted)
     {
-        m_nnInputs.push_back(p->getEntity()->getTypeId());
-        m_nnInputs.push_back(p->getDistance());
+        shared_ptr<Entity> e = p->getEntity();
+        if(e != nullptr)
+        {
+            m_nnInputs.push_back(p->getEntity()->getTypeId());
+            m_nnInputs.push_back(p->getDistance());
+        }
+        else //if nothing is percepted
+        {
+            m_nnInputs.push_back(0);
+            m_nnInputs.push_back(100);
+        }
     }
 }
 
