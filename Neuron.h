@@ -16,6 +16,8 @@ public:
 
      double run(std::vector<double> inputs);
 
+     void printNeuron() const;
+
 private:
     int m_inputNum;
     std::vector<double> m_weights;

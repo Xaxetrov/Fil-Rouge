@@ -37,3 +37,13 @@ std::vector<double> NeuronLayer::run(std::vector<double> inputs)
     }
     return outputs;
 }
+
+void NeuronLayer::printLayer() const
+{
+    for(int i = 0; i < m_neurons.size(); i++)
+    {
+        std::cout << "Neuron " << i << " : ";
+        m_neurons[i].printNeuron();
+        std::cout << std::endl;
+    }
+}

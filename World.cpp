@@ -58,8 +58,10 @@ int World::tick()
 {
     int entityErrorsNum = 0;
     int i=0;
-    for(shared_ptr<Entity> e:m_entities)
+    for(int j = 0; j < m_entities.size(); j++)
     {
+        shared_ptr<Entity> e = m_entities[j];
+
         if(e->play())
         {
             //TODO : manage entities errors
@@ -113,10 +115,3 @@ bool World::isCollision(const shared_ptr<Entity> e1, const shared_ptr<Entity> e2
     const Coordinate & c2 = e2->getCoordinate();
     return (Coordinate::getDistance(c1,c2) < (e1->getRadius() + e2->getRadius()));
 }
-
-
-
-
-
-
-

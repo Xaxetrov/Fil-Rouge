@@ -43,6 +43,9 @@ public:
     //score : number (positive/negative) that caracterizes the results of the last network uses.
     void improve(int score);
 
+    //print in the console all the neurons -> for debugging
+    void printNetwork() const;
+
 private:
     unsigned int m_inputNum;
     unsigned int m_outputNum;

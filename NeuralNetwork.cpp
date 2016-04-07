@@ -73,7 +73,7 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
             }
             else
             {
-                childNeurons.push_back(fatherNeurons[i]);
+                childNeurons.push_back(fatherNeurons[j]);
             }
         }
         m_layers.push_back(childNeurons);
@@ -137,4 +137,13 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
 void NeuralNetwork::improve(int score)
 {
     std::cerr << "improve method does nothing " << score << std::endl;
+}
+
+void NeuralNetwork::printNetwork() const
+{
+    for(int i = 0; i < m_layers.size(); i++)
+    {
+        std::cout << "layer " << (i+1) << "\n" << std::endl;
+        m_layers[i].printLayer();
+    }
 }

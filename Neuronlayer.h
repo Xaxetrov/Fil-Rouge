@@ -14,6 +14,8 @@ public:
     std::vector<Neuron> getNeurons() const{return m_neurons;}
 
     std::vector<double> run(std::vector<double> inputs);
+
+    void printLayer() const;
 private :
     int m_neuronNum;
     std::vector<Neuron> m_neurons;
