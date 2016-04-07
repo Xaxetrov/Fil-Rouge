@@ -129,6 +129,20 @@ void WorldWidget::drawEntity(const shared_ptr<Entity> e)
        {
            drawAnimal(living,pos);
        }
+
+       if(living == selectedAnimal.lock())
+       {
+           vector<const Percepted*> percepted = living->getVision()->getPercepted();
+           for(const Percepted * p:percepted)
+           {
+               const shared_ptr<Entity> e = p->getEntity();
+               if(e != nullptr)
+               {
+                   Coordinate c = e->getCoordinate();
+                   m_scene->addEllipse(c.getX()-5,c.getY()-5,10,10,QPen(Qt::red));
+               }
+           }
+       }
    }
    else
    {

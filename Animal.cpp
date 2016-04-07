@@ -100,38 +100,42 @@ int Animal::play()
 
     // The animal looks around itself
     m_vision->see();
-    vector<const Percepted*> percepted = m_vision->getPercepted();
+    /*vector<const Percepted*> percepted = m_vision->getPercepted();
 
     for(unsigned int i = 0; i < percepted.size(); i++)
     {
       if(percepted[i]->getEntity() != nullptr) // If it sees something
       {
-        /*inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
-        inputs.push_back(percepted[i]->getDistance());*/
+        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
+        inputs.push_back(percepted[i]->getDistance());
 
         // Test for the collision
-        inputs.push_back(0.0);
-        inputs.push_back(0.0);
+        // inputs.push_back(0.0);
+        // inputs.push_back(0.0);
       }
       else
       {
         inputs.push_back(0.0);
         inputs.push_back(0.0);
       }
-    }
+    }*/
 
+    // get mapping of inputs
+    mappageInput();
     // The animal decides what to do
-    outputs = m_brain->run(inputs);
+    m_nnOutputs = m_brain->run(m_nnInputs);
+    // get mapping of outputs
+    mappageOutput();
 
     // The animal moves
     // First it turns, then it moves
-    if(outputs[1] != 0)
+    if(m_rotation != 0)
     {
-      turn(outputs[1]);
+      turn(m_rotation);
     }
-    if(outputs[0] > 0)
+    if(m_speed > 0)
     {
-      move(outputs[0]);
+      move(m_speed);
     }
     else // calcul of collisionList hasn't been effectuated
     {
@@ -140,20 +144,20 @@ int Animal::play()
 
     //eat();
     drink();
-    mate();
+    //mate();
 
     return 0;
 }
 
 void Animal::move(int speedPercentage)
 {
-
-    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+    double speed = speedPercentage * m_maxSpeed / 100.0;
+    setCoordinate(getX() + cos(m_angle) * speed, getY() + sin(m_angle) * speed);
     m_world->updateListCollision(this->shared_from_this());
     vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(ID_ANIMAL);// Warning -> Animal != Solid
     if(animalCollisionList.size() != 0)
     {
-        setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
+        setCoordinate(getX() - cos(m_angle)*speed, getY() - sin(m_angle)*speed);
         //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
 
@@ -183,10 +187,25 @@ void Animal::mappageInput()
     const vector<const Percepted*> & percepted = m_vision->getPercepted();
     for(const Percepted* p:percepted)
     {
-        m_nnInputs.push_back(p->getEntity()->getTypeId());
-        m_nnInputs.push_back(p->getDistance());
+        shared_ptr<Entity> e = p->getEntity();
+        if(e != nullptr)
+        {
+            m_nnInputs.push_back(p->getEntity()->getTypeId());
+            m_nnInputs.push_back(p->getDistance());
+        }
+        else //if nothing is percepted
+        {
+            m_nnInputs.push_back(0);
+            m_nnInputs.push_back(100);
+        }
     }
-    m_nnInputs.push_back(m_hunger);
+}
+
+void Animal::mappageOutput()
+{
+    m_speed = m_nnOutputs[0];
+    m_rotation = m_nnOutputs[1];
+    m_fear = m_nnOutputs[2];
 }
 
 void Animal::turn(double angle)
@@ -194,6 +213,7 @@ void Animal::turn(double angle)
   m_angle += angle;
   m_angle = Coordinate::modulo2PI(m_angle);
 }
+
 
 // The animal drink one time for each pool it is on
 void Animal::drink()
@@ -266,23 +286,12 @@ void Animal::reproduce(shared_ptr<Animal> father)
     double baseAngle = 0;
     double baseRadius = 4*getRadius();
 
-    //cout << "FATHER BRAIN\n" << endl;
-    //father->getBrain()->printNetwork();
-
-    //cout << "MOTHER BRAIN\n" << endl;
-    //this->getBrain()->printNetwork();
-
-    uniform_real_distribution<double> distributionReal(0, 2*PI);
-
     while(child < numberChild)
     {
-        NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
-        //cout << "CHILD BRAIN\n" << endl;
-        //childBrain->printNetwork();
+       NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
         double distX = baseRadius*cos(baseAngle);
         double distY = baseRadius*sin(baseAngle);
         shared_ptr<Animal> animal(make_shared<Animal>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
-        animal->turn(distributionReal(generator));
         m_world->addEntity(animal);
         baseAngle += angleIntervalle;
         child++;
@@ -294,6 +303,11 @@ void Animal::reproduce(shared_ptr<Animal> father)
 void Animal::addEntityInListCollision(weak_ptr<Entity> e)
 {
     m_collisionList.push_back(e);
+}
+
+void Animal::clearEntityListCollision()
+{
+    m_collisionList.clear();
 }
 
 vector<weak_ptr<Entity>> Animal::getSubListCollision(unsigned int idEntity)
@@ -376,4 +390,14 @@ bool Animal::isDead() const
 bool Animal::isFemale() const
 {
    return m_female;
+}
+
+double Animal::getSpeed() const
+{
+    return m_speed;
+}
+
+double Animal::getRotation() const
+{
+    return m_rotation;
 }

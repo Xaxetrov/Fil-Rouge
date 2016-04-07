@@ -57,7 +57,7 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
     bernoulli_distribution distribution(0.5);
 
 
-    for(int i = 0; i < father.m_layers.size(); i++)
+    for(unsigned i = 0; i < father.m_layers.size(); i++)
     {
         const auto& fatherLayer = father.m_layers[i];
         const auto& motherLayer = mother.m_layers[i];
@@ -100,12 +100,13 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     if(percepted)
     {
 //      outputs.push_back(0); // move speed 0%
-//      srand(std::time(0));
-//      int random_direction = (rand() % 2) * 2 - 1;
-//      outputs.push_back(random_direction * PI / 2.0);
+        srand(std::time(0));
+        double random_direction = (rand() % 2) * 2 - 1;
 
-        outputs.push_back(0); // move speed 0%
-        outputs.push_back(-PI);
+        outputs.push_back(5.0); // move speed 5%
+
+        outputs.push_back(random_direction * PI / 2.0);
+//      outputs.push_back(-PI);
     }
     else
     {

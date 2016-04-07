@@ -27,6 +27,8 @@ public:
     int getThirst() const;
     int getFear() const;
     int getMating() const;
+    double getSpeed() const;
+    double getRotation() const;
     double getDamage() const;
     double getAngle() const;
     const Vision * getVision() const;
@@ -45,11 +47,13 @@ public:
     //virtual void eat();
     vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
     void addEntityInListCollision(weak_ptr<Entity> e);
+    void clearEntityListCollision();
 
     //game methods
     virtual int play();
     virtual int computeScore();
     virtual void mappageInput();
+    virtual void mappageOutput();
 
     unsigned int getTypeId() const { return ID_ANIMAL; }
 
@@ -65,6 +69,8 @@ private :
     int m_mating;
     bool dead;
     bool m_female;
+    double m_speed;
+    double m_rotation;
     list<weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
     std::vector<double> m_nnInputs;

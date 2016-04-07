@@ -40,6 +40,7 @@ void World::setSize(int size_x, int size_y)
 
 void World::updateListCollision(shared_ptr<Animal> a) const
 {
+    a->clearEntityListCollision();
     for(shared_ptr<Entity> currentEntity : m_entities)
     {
         if(a!=currentEntity && isCollision(a, currentEntity))

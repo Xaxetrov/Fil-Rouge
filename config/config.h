@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+
 // General constants
 const double PI = 3.1415926535897932;
 
@@ -24,8 +25,8 @@ const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 };
 
 // Neural network
-const unsigned int NB_LAYERS = 3;
-const unsigned int LAYER_SIZES[NB_LAYERS] = {10, 6, 2};
+const unsigned int NB_LAYERS = 2;
+const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+3, 3};
 
 // User Interface
 const unsigned UPDATE_TIMER_INTERVALE = 10; //ms
