@@ -20,12 +20,21 @@ public:
     // if c1 == c2, the angle is -PI/2
     static double getAngle(const Coordinate &c1, const Coordinate &c2);
 
+    double getPolarRadius();
+    double getPolarAngle();
 
     double static modulo2PI(double angle);
+
+protected:
+    void updatePolar();
 
 private:
     double m_x;
     double m_y;
+
+    bool m_polar_ready;
+    double m_r;
+    double m_a;
 };
 
 #endif // COORDINATE_H
