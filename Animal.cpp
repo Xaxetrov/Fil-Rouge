@@ -100,7 +100,7 @@ int Animal::play()
 
     // The animal looks around itself
     m_vision->see();
-    vector<const Percepted*> percepted = m_vision->getPercepted();
+    /*vector<const Percepted*> percepted = m_vision->getPercepted();
 
     for(unsigned int i = 0; i < percepted.size(); i++)
     {
@@ -110,28 +110,32 @@ int Animal::play()
         inputs.push_back(percepted[i]->getDistance());
 
         // Test for the collision
-        /*inputs.push_back(0.0);
-        inputs.push_back(0.0);*/
+        // inputs.push_back(0.0);
+        // inputs.push_back(0.0);
       }
       else
       {
         inputs.push_back(0.0);
         inputs.push_back(0.0);
       }
-    }
+    }*/
 
+    // get mapping of inputs
+    mappageInput();
     // The animal decides what to do
-    outputs = m_brain->run(inputs);
+    m_nnOutputs = m_brain->run(m_nnInputs);
+    // get mapping of outputs
+    mappageOutput();
 
     // The animal moves
     // First it turns, then it moves
-    if(outputs[1] != 0)
+    if(m_rotation != 0)
     {
-      turn(outputs[1]);
+      turn(m_rotation);
     }
-    if(outputs[0] > 0)
+    if(m_speed > 0)
     {
-      move(outputs[0]);
+      move(m_speed);
     }
     else // calcul of collisionList hasn't been effectuated
     {
@@ -186,7 +190,13 @@ void Animal::mappageInput()
         m_nnInputs.push_back(p->getEntity()->getTypeId());
         m_nnInputs.push_back(p->getDistance());
     }
-    m_nnInputs.push_back(m_hunger);
+}
+
+void Animal::mappageOutput()
+{
+    m_speed = m_nnOutputs[0];
+    m_rotation = m_nnOutputs[1];
+    m_fear = m_nnOutputs[2];
 }
 
 void Animal::turn(double angle)
@@ -194,6 +204,7 @@ void Animal::turn(double angle)
   m_angle += angle;
   m_angle = Coordinate::modulo2PI(m_angle);
 }
+
 
 // The animal drink one time for each pool it is on
 void Animal::drink()
@@ -365,4 +376,14 @@ bool Animal::isDead() const
 bool Animal::isFemale() const
 {
    return m_female;
+}
+
+double Animal::getSpeed() const
+{
+    return m_speed;
+}
+
+double Animal::getRotation() const
+{
+    return m_rotation;
 }
