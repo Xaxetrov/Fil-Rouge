@@ -1,7 +1,10 @@
 #include "Animal.h"
 #include "Water.h"
+
 #include <iostream>
 #include <iomanip>
+#include <random>
+#include <algorithm>
 
 using namespace std;
 
@@ -9,12 +12,18 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
 {
     m_angle = 0; //initialize angle here
-    m_hunger = 100;
-    m_thirst = 100;
-    m_health = 100;
+    m_hunger = 0;
+    m_thirst = 0;
+    m_health = MAX_HEALTH;
     dead = false;
     m_fear = 0;
+    m_mating = MAX_MATING;
     m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
+
+    //Determine if Animal is female or not (1/2 chance)
+    default_random_engine generator(random_device{}());
+    bernoulli_distribution distribution(0.5);
+    m_female = distribution(generator);
 
     vector<unsigned int> layerSizes;
     for(unsigned int i = 0; i < NB_LAYERS; i++)
@@ -22,6 +31,32 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
       layerSizes.push_back(LAYER_SIZES[i]);
     }
     m_brain = new NeuralNetwork(layerSizes);
+}
+
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, world)
+{
+    m_female = sex;
+}
+
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, NeuralNetwork * brain, int mating) :
+    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
+{
+    m_angle = 0; //initialize angle here
+    m_hunger = 0;
+    m_thirst = 0;
+    m_health = MAX_HEALTH;
+    dead = false;
+    m_fear = 0;
+    m_mating = mating;
+    m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
+
+    //Determine if Animal is female or not (1/2 chance)
+    /*default_random_engine generator(random_device{}());
+    bernoulli_distribution distribution(0.5);
+    m_female = distribution(generator);*/
+
+    m_brain = brain;
+
 }
 
 Animal::~Animal()
@@ -33,6 +68,7 @@ Animal::~Animal()
 
 int Animal::play()
 {
+
     if(m_health == 0 || dead)
     {
       dead = true;
@@ -40,23 +76,23 @@ int Animal::play()
     }
     else
     {
-      m_hunger--;
-      m_thirst--;
+      m_hunger++;
+      m_thirst++;
     }
 
-    if(m_hunger == 0 || m_thirst == 0)
+    if(m_hunger == MAX_HUNGER || m_thirst == MAX_THIRST)
     {
       dead = true;
     }
-    else if(m_hunger < 25 || m_thirst < 25)
-    {
-      m_health--;
-    }
-    else if(m_hunger < 50 || m_thirst < 50)
+    else if(m_hunger > 50 || m_thirst > 50)
     {
       m_health--;
     }
 
+    if(m_mating != MAX_MATING)
+    {
+      m_mating++;
+    }
 
     // Inputs and outputs of the neural network
     vector<double> inputs;
@@ -72,6 +108,10 @@ int Animal::play()
       {
         inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
         inputs.push_back(percepted[i]->getDistance());
+
+        // Test for the collision
+        /*inputs.push_back(0.0);
+        inputs.push_back(0.0);*/
       }
       else
       {
@@ -100,6 +140,7 @@ int Animal::play()
 
     //eat();
     drink();
+    //mate();
 
     return 0;
 }
@@ -132,6 +173,22 @@ int Animal::computeScore()
     return m_health*100 + m_hunger*10 + m_thirst*10 + m_fear*3;
 }
 
+//TO FINISH
+void Animal::mappageInput()
+{
+    m_nnInputs.clear();
+    m_nnInputs.push_back(m_hunger);
+    m_nnInputs.push_back(m_thirst);
+    m_nnInputs.push_back(m_health);
+    const vector<const Percepted*> & percepted = m_vision->getPercepted();
+    for(const Percepted* p:percepted)
+    {
+        m_nnInputs.push_back(p->getEntity()->getTypeId());
+        m_nnInputs.push_back(p->getDistance());
+    }
+    m_nnInputs.push_back(m_hunger);
+}
+
 void Animal::turn(double angle)
 {
   m_angle += angle;
@@ -144,17 +201,83 @@ void Animal::drink()
     vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
     for (weak_ptr<Entity> weakWater:waterCollisionList)
     {
+        // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
+        m_collisionList.remove_if([weakWater](weak_ptr<Entity> p)
+                                  { return !( p.owner_before(weakWater) || weakWater.owner_before(p) ); }
+                                 );
         shared_ptr<Entity> waterEntity = weakWater.lock();
         if(waterEntity)
         {
             shared_ptr<Water> water;
             if(water = dynamic_pointer_cast<Water>(waterEntity))
             {
-                water->drink(2);
-                m_thirst += 2;
+               if(m_thirst > 0)
+               {
+                  water->drink(2);
+                  m_thirst -= 2;
+               }
             }
         }
     }
+}
+
+void Animal::mate()
+{
+   vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(ID_ANIMAL);
+   for(weak_ptr<Entity> weakAnimal:animalCollisionList)
+   {
+      m_collisionList.remove_if([weakAnimal](weak_ptr<Entity> p)
+                                { return !( p.owner_before(weakAnimal) || weakAnimal.owner_before(p) ); }
+                               );
+      shared_ptr<Entity> animalEntity = weakAnimal.lock();
+      if(animalEntity)
+      {
+         shared_ptr<Animal> animalToMate;
+         if(animalToMate = dynamic_pointer_cast<Animal>(animalEntity))
+         {
+            // this Animal is the female
+            if(m_female && !animalToMate->isFemale())
+            {
+               if(m_mating == MAX_MATING && animalToMate->getMating() == MAX_MATING)
+               {
+                  this->reproduce(animalToMate);
+                  break;
+               }
+            }
+         }
+      }
+   }
+}
+
+void Animal::reproduce(shared_ptr<Animal> father)
+{
+    // Use a normal distribution to determine the number of children of litter
+    default_random_engine generator(random_device{}());
+    normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
+    int numberChild = (int)distribution(generator);
+
+    // Normalize in the possible range
+    if(numberChild < 0) numberChild = 0;
+    else if(numberChild > MAX_CHILD_PER_ANIMAL) numberChild = MAX_CHILD_PER_ANIMAL;
+
+    // Create the new entity around the mother (in a circle)
+    int child = 0;
+    double angleIntervalle = (2*PI)/(double)numberChild;
+    double baseAngle = 0;
+    double baseRadius = 4*getRadius();
+
+    while(child < numberChild)
+    {
+       NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
+        double distX = baseRadius*cos(baseAngle);
+        double distY = baseRadius*sin(baseAngle);
+        shared_ptr<Animal> animal(make_shared<Animal>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
+        m_world->addEntity(animal);
+        baseAngle += angleIntervalle;
+        child++;
+    }
+    m_mating = 0;
+    father->setMating();
 }
 
 void Animal::addEntityInListCollision(weak_ptr<Entity> e)
@@ -204,6 +327,16 @@ int Animal::getFear() const
     return m_fear;
 }
 
+int Animal::getMating() const
+{
+   return m_mating;
+}
+
+void Animal::setMating()
+{
+   m_mating = 0;
+}
+
 double Animal::getDamage() const
 {
     return m_damage;
@@ -219,7 +352,17 @@ const Vision * Animal::getVision() const
     return m_vision;
 }
 
+const NeuralNetwork * Animal::getBrain() const
+{
+   return m_brain;
+}
+
 bool Animal::isDead() const
 {
    return dead;
+}
+
+bool Animal::isFemale() const
+{
+   return m_female;
 }

@@ -18,6 +18,16 @@ NeuronLayer::NeuronLayer(const std::vector<std::vector<double>>& neuronWeights) 
     }
 }
 
+NeuronLayer::NeuronLayer(const std::vector<Neuron>& neurons)
+{
+    m_neuronNum = neurons.size();
+    m_neurons.clear();
+    for(const auto & neuron : neurons)
+    {
+        m_neurons.push_back(neuron);
+    }
+}
+
 std::vector<double> NeuronLayer::run(std::vector<double> inputs)
 {
     std::vector<double> outputs;
