@@ -14,4 +14,5 @@ int Resource::getQuantity() const
 int Resource::play()
 {
     m_quantity += m_quantityEvolution;
+    return 0;
 }
