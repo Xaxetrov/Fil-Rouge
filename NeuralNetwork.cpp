@@ -57,7 +57,7 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
     bernoulli_distribution distribution(0.5);
 
 
-    for(int i = 0; i < father.m_layers.size(); i++)
+    for(unsigned i = 0; i < father.m_layers.size(); i++)
     {
         const auto& fatherLayer = father.m_layers[i];
         const auto& motherLayer = mother.m_layers[i];

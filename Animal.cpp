@@ -305,6 +305,11 @@ void Animal::addEntityInListCollision(weak_ptr<Entity> e)
     m_collisionList.push_back(e);
 }
 
+void Animal::clearEntityListCollision()
+{
+    m_collisionList.clear();
+}
+
 vector<weak_ptr<Entity>> Animal::getSubListCollision(unsigned int idEntity)
 {
     vector<weak_ptr<Entity>> subListCollision;

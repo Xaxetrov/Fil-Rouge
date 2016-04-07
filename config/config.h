@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+
 // General constants
 const double PI = 3.1415926535897932;
 

@@ -47,6 +47,7 @@ public:
     //virtual void eat();
     vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
     void addEntityInListCollision(weak_ptr<Entity> e);
+    void clearEntityListCollision();
 
     //game methods
     virtual int play();
