@@ -52,13 +52,31 @@ double Coordinate::getDistance(const Coordinate &c1, const Coordinate &c2)
 
 double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
 {
-    /*double deltaX = std::abs(c1.getX() - c2.getX());
-    double deltaY = std::abs(c1.getY() - c2.getY());
-    double deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
-    double deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
+    double deltaX = c2.getX() - c1.getX();
+    double deltaY = c2.getY() - c1.getY();
+    //double deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
+    //double deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
 
-    return modulo2PI( std::atan2(deltaYTore,deltaXTore) );*/
+    if(deltaX > WORLD_SIZE_X/2.0)
+    {
+        deltaX = -WORLD_SIZE_X + deltaX;
+    }
+    else if(deltaX < -WORLD_SIZE_X/2.0)
+    {
+        deltaX = WORLD_SIZE_X + deltaX;
+    }
 
+    if(deltaY > WORLD_SIZE_Y/2.0)
+    {
+        deltaY = -WORLD_SIZE_Y + deltaY;
+    }
+    else if(deltaY < -WORLD_SIZE_Y/2.0)
+    {
+        deltaY = WORLD_SIZE_Y + deltaY;
+    }
+    double angle = std::atan2(deltaY,deltaX);
+    return angle; //atan2 return value in [-pi;pi]
+/*
     double x1 = c1.getX();
     double x2 = c2.getX();
     double deltaX = x2 - x1;
@@ -93,7 +111,7 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
         angle = std::atan(deltaY / deltaX) + PI;
     }
 
-    return modulo2PI(angle);
+    return modulo2PI(angle);*/
 }
 
 double Coordinate::modulo2PI(double angle)

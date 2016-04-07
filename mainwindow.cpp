@@ -85,8 +85,8 @@ void MainWindow::loadWorld()
       animal->turn( (double)(rand()%628)/100);
       world.addEntity(animal);
   }
-
-    /*shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
+/*
+    shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
     shared_ptr<Animal> female(make_shared<Animal>(300, 250, 10, 50, 2, &world, true) );
     female->turn(PI);
 
