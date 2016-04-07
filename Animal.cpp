@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <random>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -51,9 +52,9 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
 
     //Determine if Animal is female or not (1/2 chance)
-    /*default_random_engine generator(random_device{}());
+    default_random_engine generator(random_device{}());
     bernoulli_distribution distribution(0.5);
-    m_female = distribution(generator);*/
+    m_female = distribution(generator);
 
     m_brain = brain;
 
@@ -274,7 +275,7 @@ void Animal::reproduce(shared_ptr<Animal> father)
     //cout << "MOTHER BRAIN\n" << endl;
     //this->getBrain()->printNetwork();
 
-    uniform_real_distribution<double> distributionReal(0, 2*PI);
+    uniform_real_distribution<double> distributionReal(-PI/6.0, PI/6.0);
 
     while(child < numberChild)
     {
@@ -283,8 +284,12 @@ void Animal::reproduce(shared_ptr<Animal> father)
         //childBrain->printNetwork();
         double distX = baseRadius*cos(baseAngle);
         double distY = baseRadius*sin(baseAngle);
+        double magnitude = sqrt(distX*distX + distY*distY);
+        double normalizeX = distX/magnitude;
         shared_ptr<Animal> animal(make_shared<Animal>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
-        animal->turn(distributionReal(generator));
+        double angleToTurn = acos(normalizeX);
+        if(distY > 0) angleToTurn *= -1;
+        animal->turn( angleToTurn + distributionReal(generator));
         m_world->addEntity(animal);
         baseAngle += angleIntervalle;
         child++;

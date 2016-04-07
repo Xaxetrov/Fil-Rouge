@@ -105,7 +105,8 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
 
         outputs.push_back(5.0); // move speed 5%
 
-        outputs.push_back(random_direction * PI / 2.0);
+        outputs.push_back(0);
+        //outputs.push_back(random_direction * PI / 2.0);
 //      outputs.push_back(-PI);
     }
     else
