@@ -100,25 +100,6 @@ int Animal::play()
 
     // The animal looks around itself
     m_vision->see();
-    /*vector<const Percepted*> percepted = m_vision->getPercepted();
-
-    for(unsigned int i = 0; i < percepted.size(); i++)
-    {
-      if(percepted[i]->getEntity() != nullptr) // If it sees something
-      {
-        inputs.push_back((double) percepted[i]->getEntity()->getTypeId());
-        inputs.push_back(percepted[i]->getDistance());
-
-        // Test for the collision
-        // inputs.push_back(0.0);
-        // inputs.push_back(0.0);
-      }
-      else
-      {
-        inputs.push_back(0.0);
-        inputs.push_back(0.0);
-      }
-    }*/
 
     // get mapping of inputs
     mappageInput();
@@ -144,7 +125,7 @@ int Animal::play()
 
     //eat();
     drink();
-    //mate();
+    mate();
 
     return 0;
 }
@@ -192,6 +173,7 @@ void Animal::mappageInput()
         {
             m_nnInputs.push_back(p->getEntity()->getTypeId());
             m_nnInputs.push_back(p->getDistance());
+
         }
         else //if nothing is percepted
         {
@@ -286,12 +268,23 @@ void Animal::reproduce(shared_ptr<Animal> father)
     double baseAngle = 0;
     double baseRadius = 4*getRadius();
 
+    //cout << "FATHER BRAIN\n" << endl;
+    //father->getBrain()->printNetwork();
+
+    //cout << "MOTHER BRAIN\n" << endl;
+    //this->getBrain()->printNetwork();
+
+    uniform_real_distribution<double> distributionReal(0, 2*PI);
+
     while(child < numberChild)
     {
-       NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
+        NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
+        //cout << "CHILD BRAIN\n" << endl;
+        //childBrain->printNetwork();
         double distX = baseRadius*cos(baseAngle);
         double distY = baseRadius*sin(baseAngle);
         shared_ptr<Animal> animal(make_shared<Animal>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
+        animal->turn(distributionReal(generator));
         m_world->addEntity(animal);
         baseAngle += angleIntervalle;
         child++;
