@@ -151,13 +151,13 @@ int Animal::play()
 
 void Animal::move(int speedPercentage)
 {
-
-    setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+    double speed = speedPercentage * m_maxSpeed / 100.0;
+    setCoordinate(getX() + cos(m_angle) * speed, getY() + sin(m_angle) * speed);
     m_world->updateListCollision(this->shared_from_this());
     vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(ID_ANIMAL);// Warning -> Animal != Solid
     if(animalCollisionList.size() != 0)
     {
-        setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
+        setCoordinate(getX() - cos(m_angle)*speed, getY() - sin(m_angle)*speed);
         //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
 
