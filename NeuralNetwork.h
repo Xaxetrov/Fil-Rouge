@@ -1,4 +1,4 @@
-#define DISABLE_NEURAL_NETWORK // Disables the neural network and uses instead a simple AI to test the world and the perception.
+//#define DISABLE_NEURAL_NETWORK // Disables the neural network and uses instead a simple AI to test the world and the perception.
 
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
