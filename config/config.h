@@ -44,9 +44,9 @@ const int EVOLUTION_MEAT = -1;
 const int EVOLUTION_VEGETAL = 1;
 
 // Animal Parameters
-const unsigned int MAX_HEALTH = 100;
-const unsigned int MAX_HUNGER = 100;
-const unsigned int MAX_THIRST = 100;
+const unsigned int MAX_HEALTH = 1000;
+const unsigned int MAX_HUNGER = 300;
+const unsigned int MAX_THIRST = 300;
 const unsigned int MAX_FEAR = 100;
 const unsigned int MAX_MATING = 50;
 const unsigned int MAX_CHILD_PER_ANIMAL = 6;

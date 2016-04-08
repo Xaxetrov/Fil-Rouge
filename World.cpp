@@ -65,15 +65,6 @@ int World::tick()
     for(std::list<std::shared_ptr<Entity>>::iterator e=m_entities.begin() ; e!=m_entities.end() ; ++e)
     {
         //shared_ptr<Entity> e = m_entities[j];
-        if(*e==nullptr)
-        {
-            std::cerr << "nullptr ! at " << i << std::endl;
-            continue;
-        }
-        else
-        {
-            std::cerr << i << std::endl;
-        }
         if((*e)->play())
         {
             //TODO : manage entities errors
@@ -87,7 +78,6 @@ int World::tick()
             {
                 std::list<std::shared_ptr<Entity>>::iterator sav = e;
                 sav--;
-                std::cerr << "erase something at " << i  << std::endl;
                 m_entities.erase(e);
                 e=sav;
             }

@@ -7,9 +7,59 @@
 		<y>400</y>
 		<radius>50</radius>
 	</Entity>
+	<Entity type="Vegetal">
+		<x>200</x>
+		<y>10</y>
+		<radius>50</radius>
+	</Entity>
+	<Entity type="Vegetal">
+		<x>380</x>
+		<y>460</y>
+		<radius>50</radius>
+	</Entity>
+	<Entity type="Vegetal">
+		<x>100</x>
+		<y>200</y>
+		<radius>50</radius>
+	</Entity>
+	<Entity type="Vegetal">
+		<x>220</x>
+		<y>280</y>
+		<radius>50</radius>
+	</Entity>
+	<Entity type="Vegetal">
+		<x>250</x>
+		<y>180</y>
+		<radius>50</radius>
+	</Entity>
 	<Entity type="Water">
 		<x>100</x>
 		<y>300</y>
 		<radius>20</radius>
+	</Entity>
+	<Entity type="Water">
+		<x>320</x>
+		<y>250</y>
+		<radius>50</radius>
+	</Entity>
+	<Entity type="Water">
+		<x>350</x>
+		<y>10</y>
+		<radius>20</radius>
+	</Entity>
+	<Entity type="Water">
+		<x>25</x>
+		<y>370</y>
+		<radius>20</radius>
+	</Entity>
+	<Entity type="Water">
+		<x>250</x>
+		<y>100</y>
+		<radius>30</radius>
+	</Entity>
+	<Entity type="Water">
+		<x>350</x>
+		<y>20</y>
+		<radius>40</radius>
 	</Entity>
 </World>
