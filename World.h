@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <list>
 #include "Entity.h"
 #include "Animal.h"
 
@@ -19,7 +20,7 @@ public:
     World();
 
     //Do you wanna get my entities ?
-    std::vector<std::shared_ptr<Entity> > &getEntities();
+    std::list<std::shared_ptr<Entity> > &getEntities();
 
     //Why do you want it ? I'm the biggest world of all worlds !
     //Coordinate & getSize(); disabled as not working :/
@@ -48,7 +49,7 @@ private:
     //Private attributes
 
     //My loves, my life
-    std::vector<std::shared_ptr<Entity>> m_entities;
+    std::list<std::shared_ptr<Entity>> m_entities;
     int m_size_x;
     int m_size_y;
 };

@@ -2,6 +2,7 @@
 #define VISION_H
 
 #include <vector>
+#include <list>
 using namespace std;
 
 #include "Entity.h"
@@ -11,7 +12,7 @@ using namespace std;
 class Vision
 {
 public:
-    Vision(const Coordinate & position, double & angle, vector<shared_ptr<Entity>> &entities);
+    Vision(const Coordinate & position, double & angle, list<shared_ptr<Entity>> &entities);
     virtual ~Vision();
     void see();
     const vector<const Percepted*> getPercepted() const;
@@ -20,7 +21,7 @@ private:
     const Coordinate & m_position;
     const double & m_angle;
     vector<VisionSector *> m_sectors;
-    vector<shared_ptr<Entity>> &m_entities;
+    list<shared_ptr<Entity>> &m_entities;
 };
 
 #endif // VISION_H

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <list>
 #include <cmath>
 #include "Entity.h"
 #include "Percepted.h"
@@ -10,7 +11,7 @@
 class VisionSector
 {
     public:
-        VisionSector(const Coordinate & center, const double & animalAngle, const double & angle1, const double & angle2, int range, std::vector<std::shared_ptr<Entity>> &entities);
+        VisionSector(const Coordinate & center, const double & animalAngle, const double & angle1, const double & angle2, int range, std::list<std::shared_ptr<Entity> > &entities);
         virtual ~VisionSector();
 
         virtual void see() = 0;
@@ -31,7 +32,7 @@ class VisionSector
         double m_angle2;
         int m_range;
         //shared_ptr that way a dead entity can still be seen if died just after vision
-        std::vector<std::shared_ptr<Entity>>& m_entities;
+        std::list<std::shared_ptr<Entity>>& m_entities;
 };
 
 #endif // VISIONSECTOR_H

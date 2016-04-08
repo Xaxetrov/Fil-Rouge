@@ -1,6 +1,7 @@
 #include "World.h"
 #include "Animal.h"
 
+#include <algorithm>
 #include <iostream>
 using namespace std;
 
@@ -12,7 +13,7 @@ World::World()
     m_size_y = WORLD_SIZE_Y;
 }
 
-std::vector<shared_ptr<Entity>> &World::getEntities()
+std::list<shared_ptr<Entity>> &World::getEntities()
 {
     return m_entities;
 }
@@ -59,9 +60,10 @@ int World::tick()
 {
     int entityErrorsNum = 0;
     int i=0;
-    for(int j = 0; j < m_entities.size(); j++)
+    //for(unsigned j = 0; j < m_entities.size(); j++)
+    for(shared_ptr<Entity> e:m_entities)
     {
-        shared_ptr<Entity> e = m_entities[j];
+        //shared_ptr<Entity> e = m_entities[j];
 
         if(e->play())
         {
@@ -98,14 +100,15 @@ int World::tick(int ticNum)
 
 void World::killEntity(shared_ptr<Entity> e)
 {
-  int i = 0;
+  /*int i = 0;
   for(shared_ptr<Entity> currentEntity : m_entities)
   {
       if(e == currentEntity)
         break;
       i++;
   }
-  m_entities.erase(m_entities.begin() + i); // RIP
+  m_entities.erase(m_entities.begin() + i);*/ // RIP
+    m_entities.erase(find(m_entities.begin(),m_entities.end(),e)); //RIP
 }
 
 // private methods
