@@ -61,26 +61,37 @@ int World::tick()
     int entityErrorsNum = 0;
     int i=0;
     //for(unsigned j = 0; j < m_entities.size(); j++)
-    for(shared_ptr<Entity> e:m_entities)
+    //for(shared_ptr<Entity> e:m_entities)
+    for(std::list<std::shared_ptr<Entity>>::iterator e=m_entities.begin() ; e!=m_entities.end() ; ++e)
     {
         //shared_ptr<Entity> e = m_entities[j];
-
-        if(e->play())
+        if(*e==nullptr)
+        {
+            std::cerr << "nullptr ! at " << i << std::endl;
+            continue;
+        }
+        else
+        {
+            std::cerr << i << std::endl;
+        }
+        if((*e)->play())
         {
             //TODO : manage entities errors
             std::cerr << "Entity no " << i << " failed to play" << std::endl;
             entityErrorsNum++;
         }
         i++;
-      //  if(Animal* animal = dynamic_cast<Animal*>(m_entities.at(i)))
-      //  {
-           /*if(animal->isDead())
-           {
-             delete m_entities.at(i);
-             m_entities.at(i) = nullptr;
-             m_entities.erase(m_entities.begin()+i);
-          }*/
-      //  }
+        if(shared_ptr<Animal> animal = dynamic_pointer_cast<Animal>(*e))
+        {
+            if(animal->isDead())
+            {
+                std::list<std::shared_ptr<Entity>>::iterator sav = e;
+                sav--;
+                std::cerr << "erase something at " << i  << std::endl;
+                m_entities.erase(e);
+                e=sav;
+            }
+        }
 
     }
     return entityErrorsNum;
@@ -100,14 +111,6 @@ int World::tick(int ticNum)
 
 void World::killEntity(shared_ptr<Entity> e)
 {
-  /*int i = 0;
-  for(shared_ptr<Entity> currentEntity : m_entities)
-  {
-      if(e == currentEntity)
-        break;
-      i++;
-  }
-  m_entities.erase(m_entities.begin() + i);*/ // RIP
     m_entities.erase(find(m_entities.begin(),m_entities.end(),e)); //RIP
 }
 
