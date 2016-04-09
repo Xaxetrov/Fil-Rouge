@@ -1,5 +1,6 @@
 #include "Animal.h"
 #include "Water.h"
+#include "Vegetal.h"
 
 #include <iostream>
 #include <iomanip>
@@ -40,24 +41,10 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
 }
 
 Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, NeuralNetwork * brain, int mating) :
-    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
+    Animal(x,y,radius,maxSpeed,damage,world)
 {
-    m_angle = 0; //initialize angle here
-    m_hunger = 0;
-    m_thirst = 0;
-    m_health = MAX_HEALTH;
-    dead = false;
-    m_fear = 0;
     m_mating = mating;
-    m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
-
-    //Determine if Animal is female or not (1/2 chance)
-    default_random_engine generator(random_device{}());
-    bernoulli_distribution distribution(0.5);
-    m_female = distribution(generator);
-
     m_brain = brain;
-
 }
 
 Animal::~Animal()
@@ -70,9 +57,10 @@ Animal::~Animal()
 int Animal::play()
 {
 
-    if(m_health == 0 || dead)
+    if(m_health <= 0 || dead)
     {
       dead = true;
+      return 0;// if dead no need to continue playing.
       //m_world->killEntity(this); // RIP
     }
     else
@@ -81,13 +69,32 @@ int Animal::play()
       m_thirst++;
     }
 
-    if(m_hunger == MAX_HUNGER || m_thirst == MAX_THIRST)
+    if(m_hunger >= MAX_HUNGER)
     {
-      dead = true;
+        m_health -= 10;
+        m_hunger = MAX_HUNGER;
     }
-    else if(m_hunger > 50 || m_thirst > 50)
+    else if(m_hunger > MAX_HUNGER*3/4)
+    {
+        m_health--;
+    }
+    else if(m_hunger < 0)
+    {
+        m_hunger = 0;
+    }
+
+    if(m_thirst >= MAX_THIRST)
+    {
+        m_health -= 10;
+        m_thirst = MAX_THIRST;
+    }
+    else if(m_thirst > MAX_THIRST*3/4)
     {
       m_health--;
+    }
+    else if(m_thirst < 0)
+    {
+        m_thirst = 0;
     }
 
     if(m_mating != MAX_MATING)
@@ -124,7 +131,7 @@ int Animal::play()
         m_world->updateListCollision(this->shared_from_this());
     }
 
-    //eat();
+    eat();
     drink();
     mate();
 
@@ -159,7 +166,7 @@ int Animal::computeScore()
     return m_health*100 + m_hunger*10 + m_thirst*10 + m_fear*3;
 }
 
-//TO FINISH
+//TODO: TO FINISH
 void Animal::mappageInput()
 {
     m_nnInputs.clear();
@@ -216,8 +223,40 @@ void Animal::drink()
             {
                if(m_thirst > 0)
                {
-                  water->drink(2);
-                  m_thirst -= 2;
+                   int quantity = std::min(100,m_thirst);
+                   water->drink(quantity);
+                   m_thirst -= quantity;
+               }
+            }
+        }
+    }
+}
+
+// The animal drink one time for each pool it is on
+void Animal::eat()
+{
+    vector<weak_ptr<Entity>> foodCollisionList = getSubListCollision(ID_VEGETAL); //food is not only vegetal -> to adapt later
+    for (weak_ptr<Entity> weakFood:foodCollisionList)
+    {
+        // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
+        m_collisionList.remove_if([weakFood](weak_ptr<Entity> p)
+                                  { return !( p.owner_before(weakFood) || weakFood.owner_before(p) ); }
+                                 );
+        shared_ptr<Entity> foodEntity = weakFood.lock();
+        if(foodEntity)
+        {
+            if(shared_ptr<Vegetal> vegetal = dynamic_pointer_cast<Vegetal>(foodEntity))
+            {
+               if(m_hunger > 0)
+               {
+                   int quantity = std::min(100,m_hunger);
+                   //vegetal->eat(quantity); //disabled for testing purpose
+                   m_hunger -= quantity;
+               }
+               //heal himself
+               if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
+               {
+                   m_health += std::min(5,((int)MAX_HEALTH)-m_health);
                }
             }
         }

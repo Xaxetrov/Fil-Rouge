@@ -43,6 +43,7 @@ public:
     void move(int speedPercentage);
     void turn(double angle);
     void drink();
+    void eat();
     void mate();
     //virtual void eat();
     vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);

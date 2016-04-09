@@ -77,15 +77,7 @@ void MainWindow::loadWorld()
     //random generator
 //
     srand(std::time(0));
-    for(int i = 0; i < 20; i++)
-    {
-      int x = rand() % WORLD_SIZE_X;
-      int y = rand() % WORLD_SIZE_Y;
-      shared_ptr<Animal> animal(make_shared<Animal>(x, y, 10, 50, 2, &world));
-      animal->turn( (double)(rand()%628)/100);
-      world.addEntity(animal);
-  }
-
+    world.feadWidthRandomAnimal(40);
 
     /*shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
     shared_ptr<Animal> female(make_shared<Animal>(300, 250, 10, 50, 2, &world, true) );

@@ -56,10 +56,23 @@ void World::addEntity(shared_ptr<Entity> entity)
     m_entities.push_back(entity);
 }
 
+void World::feadWidthRandomAnimal(unsigned short numberOfEntityToAdd)
+{
+    for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
+    {
+      int x = rand() % WORLD_SIZE_X;
+      int y = rand() % WORLD_SIZE_Y;
+      shared_ptr<Animal> animal(make_shared<Animal>(x, y, 10, 50, 2, this));
+      animal->turn( (double)(rand()%628)/100);
+      addEntity(animal);
+    }
+}
+
 int World::tick()
 {
     int entityErrorsNum = 0;
     int i=0;
+    unsigned short numberOfLiving = 0;
     //for(unsigned j = 0; j < m_entities.size(); j++)
     //for(shared_ptr<Entity> e:m_entities)
     for(std::list<std::shared_ptr<Entity>>::iterator e=m_entities.begin() ; e!=m_entities.end() ; ++e)
@@ -74,6 +87,7 @@ int World::tick()
         i++;
         if(shared_ptr<Animal> animal = dynamic_pointer_cast<Animal>(*e))
         {
+            numberOfLiving++;
             if(animal->isDead())
             {
                 std::list<std::shared_ptr<Entity>>::iterator sav = e;
@@ -82,7 +96,10 @@ int World::tick()
                 e=sav;
             }
         }
-
+    }
+    if(numberOfLiving < MIN_NUMBER_OF_ANIMAL)
+    {
+        feadWidthRandomAnimal(MIN_NUMBER_OF_ANIMAL-numberOfLiving);
     }
     return entityErrorsNum;
 }

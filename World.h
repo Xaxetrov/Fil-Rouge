@@ -35,6 +35,7 @@ public:
 
     //More ! Give me more of them !
     void addEntity(std::shared_ptr<Entity> entity);
+    void feadWidthRandomAnimal(unsigned short numberOfEntityToAdd);
 
     //I'm also almost the master of the time, I can make the world tic for you !
     int tick();
