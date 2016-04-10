@@ -11,8 +11,8 @@ void VisionSector_NonLiving::see()
     scan();
 
     double min = -1;
-    Percepted * indMin;
-    for(Percepted * p:m_percepted)
+    std::shared_ptr<Percepted> indMin;
+    for(std::shared_ptr<Percepted> p:m_percepted)
     {
         if(dynamic_pointer_cast<Animal>(p->getEntity()) == nullptr && (min == -1 || p->getDistance() < min))
         {

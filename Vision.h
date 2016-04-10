@@ -15,7 +15,7 @@ public:
     Vision(const Coordinate & position, double & angle, list<shared_ptr<Entity>> &entities);
     virtual ~Vision();
     void see();
-    const vector<const Percepted*> getPercepted() const;
+    vector<std::shared_ptr<Percepted>> getPercepted() const;
 
 private:
     const Coordinate & m_position;

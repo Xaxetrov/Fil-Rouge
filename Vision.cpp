@@ -37,10 +37,10 @@ void Vision::see()
     }
 }
 
-const vector<const Percepted*> Vision::getPercepted() const
+vector<std::shared_ptr<Percepted>> Vision::getPercepted() const
 {
-  vector<const Percepted*> percepted;
-  for(int i = 0; i < NB_VISIONSECTORS_LIVING + NB_VISIONSECTORS_NONLIVING; i++)
+  vector<std::shared_ptr<Percepted>> percepted;
+  for(unsigned i=0 ; i < NB_VISIONSECTORS_LIVING + NB_VISIONSECTORS_NONLIVING; i++)
   {
       percepted.push_back(m_sectors[i]->getNearestPercepted());
   }

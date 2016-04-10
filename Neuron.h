@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "config/config.h"
+
 class Neuron
 {
 public:
@@ -24,7 +26,7 @@ private:
 
     //sigmoid response curve
     //double Sigmoid(double x){return 1/(1+exp(-x));}
-    double Sigmoid(double x){return atan(x);} //to get negative number
+    double Sigmoid(double x){return atan(x)*(2/PI);} //to get negative number in [-1,1]
     //Random generator
     double RandomWeight();
 };

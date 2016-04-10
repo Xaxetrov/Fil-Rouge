@@ -12,12 +12,12 @@ VisionSector::VisionSector(const Coordinate &center, const double &animalAngle, 
                            std::list<std::shared_ptr<Entity>> &entities) :
     m_center(center), m_animalAngle(animalAngle), m_angle1(angle1), m_angle2(angle2), m_range(range), m_entities(entities)
 {
-    m_nearestPercepted = new Percepted();
+    m_nearestPercepted = std::make_shared<Percepted>();
 }
 
 VisionSector::~VisionSector()
 {
-    delete(m_nearestPercepted);
+    //delete(m_nearestPercepted);
     clearPercepted();
 }
 
@@ -48,7 +48,7 @@ void VisionSector::scan()
 
         if((angle <= m_angle1 && angle > m_angle2 && m_angle1 > m_angle2) || (angle >= m_angle1 && angle < m_angle2 && m_angle1 < m_angle2))
         {
-            m_percepted.push_back(new Percepted(e, distances.at(i)));
+            m_percepted.push_back(std::make_shared<Percepted>(e, distances.at(i), m_range));
         }
     }
 }

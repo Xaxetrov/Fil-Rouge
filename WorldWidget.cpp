@@ -132,8 +132,8 @@ void WorldWidget::drawEntity(const shared_ptr<Entity> e)
 
        if(living == selectedAnimal.lock())
        {
-           vector<const Percepted*> percepted = living->getVision()->getPercepted();
-           for(const Percepted * p:percepted)
+           vector<std::shared_ptr<Percepted>> percepted = living->getVision()->getPercepted();
+           for(std::shared_ptr<Percepted> p:percepted)
            {
                const shared_ptr<Entity> e = p->getEntity();
                if(e != nullptr)

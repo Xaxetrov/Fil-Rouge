@@ -27,6 +27,11 @@ const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 // Neural network
 const unsigned int NB_LAYERS = 2;
 const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+3, 3};
+// Neural network Entity id
+const int NN_ID_ANIMAL = 1;
+const int NN_ID_VEGETAL = 1;
+const int NN_ID_WATER = -1;
+const int NN_ID_MEAT = 2;
 
 // User Interface
 const unsigned UPDATE_TIMER_INTERVALE = 10; //ms
@@ -44,12 +49,14 @@ const int EVOLUTION_MEAT = -1;
 const int EVOLUTION_VEGETAL = 1;
 
 // Animal Parameters
-const unsigned int MAX_HEALTH = 10000;
+const unsigned int MAX_HEALTH = 5000;
 const unsigned int MAX_HUNGER = 1000;
 const unsigned int MAX_THIRST = 1000;
 const unsigned int MAX_FEAR = 100;
 const unsigned int MAX_MATING = 1500;
 const unsigned int MAX_CHILD_PER_ANIMAL = 6;
+const unsigned int DEFAULT_HUNGER = 500;
+const unsigned int DEFAULT_THIRST = 500;
 
 // World Parameters
 const unsigned short MIN_NUMBER_OF_ANIMAL = 10;

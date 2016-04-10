@@ -72,6 +72,8 @@ HEADERS  += mainwindow.h \
     EntityFrame.h \
     EntityAttributeWidget.h \
     Resource.h \
-    Meat.h
+    Meat.h \
+    VisionSector_NonLiving.h \
+    VisionSector_Living.h
 
 FORMS    += mainwindow.ui

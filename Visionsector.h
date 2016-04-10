@@ -15,13 +15,13 @@ class VisionSector
         virtual ~VisionSector();
 
         virtual void see() = 0;
-        const Percepted* getNearestPercepted() const { return m_nearestPercepted; }
+        std::shared_ptr<Percepted> getNearestPercepted() const { return m_nearestPercepted; }
 
     protected:
         void scan();
 
-        std::vector<Percepted*> m_percepted;
-        Percepted* m_nearestPercepted;
+        std::vector<std::shared_ptr<Percepted>> m_percepted;
+        std::shared_ptr<Percepted> m_nearestPercepted;
 
     private :
         void clearPercepted(); // Clear and free memory of m_percepted.

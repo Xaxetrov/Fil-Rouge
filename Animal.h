@@ -57,6 +57,7 @@ public:
     virtual void mappageOutput();
 
     unsigned int getTypeId() const { return ID_ANIMAL; }
+    int getNeralNetworkId() const { return NN_ID_ANIMAL; }
 
 
 private :

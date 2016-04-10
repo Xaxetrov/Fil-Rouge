@@ -8,6 +8,7 @@ class Vegetal : public Resource
 public:
     Vegetal(int x, int y, int radius, int quantity);
     virtual unsigned int getTypeId() const { return ID_VEGETAL; }
+    int getNeralNetworkId() const { return NN_ID_VEGETAL; }
     void eat(int quantity);
 
 private:

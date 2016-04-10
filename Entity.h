@@ -24,6 +24,7 @@ public:
 
     virtual int play();
     virtual unsigned int getTypeId() const = 0; //?
+    virtual int getNeralNetworkId() const = 0;
 
 private:
     Coordinate m_coordinate;

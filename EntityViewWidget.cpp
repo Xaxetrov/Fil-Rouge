@@ -25,7 +25,7 @@ void EntityViewWidget::updateView()
     //draw filled part of vision sector
     if(sharedAnimal != nullptr)
     {
-        const vector<const Percepted*> & percepted = sharedAnimal->getVision()->getPercepted();
+        const vector<std::shared_ptr<Percepted>> & percepted = sharedAnimal->getVision()->getPercepted();
         for(unsigned i=0 ; i<NB_VISIONSECTORS_LIVING && i<percepted.size(); i++)
         {
             if(percepted[i]->getEntity() != nullptr)

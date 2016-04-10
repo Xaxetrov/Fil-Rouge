@@ -173,29 +173,28 @@ void Animal::mappageInput()
     m_nnInputs.push_back((double)m_hunger / (double)MAX_HUNGER);
     m_nnInputs.push_back((double)m_thirst / (double)MAX_THIRST);
     m_nnInputs.push_back((double)m_health / (double)MAX_HEALTH);
-    const vector<const Percepted*> & percepted = m_vision->getPercepted();
-    for(const Percepted* p:percepted)
+    vector<std::shared_ptr<Percepted> > percepted = m_vision->getPercepted();
+    for(std::shared_ptr<Percepted> p:percepted)
     {
         shared_ptr<Entity> e = p->getEntity();
         if(e != nullptr)
         {
-            m_nnInputs.push_back(p->getEntity()->getTypeId());
-            m_nnInputs.push_back(p->getDistance());
-
+            m_nnInputs.push_back(p->getEntity()->getNeralNetworkId());
+            m_nnInputs.push_back(p->getDistance() / (double)p->getVisionRange());
         }
         else //if nothing is percepted
         {
             m_nnInputs.push_back(0);
-            m_nnInputs.push_back(100);
+            m_nnInputs.push_back(-1);
         }
     }
 }
 
 void Animal::mappageOutput()
 {
-    m_speed = m_nnOutputs[0]*5;
+    m_speed = m_nnOutputs[0]*7;
     m_rotation = m_nnOutputs[1]/5;
-    m_fear = m_nnOutputs[2]*100;
+    m_fear = m_nnOutputs[2]*MAX_FEAR;
 }
 
 void Animal::turn(double angle)
