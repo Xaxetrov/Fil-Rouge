@@ -1,11 +1,13 @@
 #include <cmath>
 #include <QWheelEvent>
+#include <QFileDialog>
 #include <iostream>
 
 #include "WorldWidget.h"
 #include "Animal.h"
 #include "Vegetal.h"
 #include "Water.h"
+#include "SaveManager.h"
 
 
 WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
@@ -98,6 +100,8 @@ bool WorldWidget::isSimulationRunning() const
 {
     return timer.isActive();
 }
+
+
 
 void WorldWidget::drawEntity(const shared_ptr<Entity> e)
 {
@@ -210,3 +214,5 @@ WorldColors & WorldWidget::getColors()
 {
     return colors;
 }
+
+

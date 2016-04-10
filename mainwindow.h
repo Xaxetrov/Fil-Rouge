@@ -22,9 +22,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private slots:
+public slots:
     void switchTimer();
     void keyPressEvent(QKeyEvent * e);
+    void saveNeuraleNetwork(shared_ptr<Animal> a, bool pauseDuringSave);
+    void saveNeuraleNetwork();
+    void setSelectedAnimal(std::weak_ptr<Animal> a);
 
 private:
     void loadWorld();
@@ -41,10 +44,13 @@ private:
     EntityFrame entityWidget;
     QMenu * fileMenu;
     QMenu * simulationMenu;
+    QMenu * animalMenu;
     QAction * simmulationStartStopAction;
     QAction * fileExitAction;
+    QAction * saveNeuraleNetworkAction;
 
     World world;
+    std::weak_ptr<Animal> selectedAnimal;
 };
 
 #endif // MAINWINDOW_H

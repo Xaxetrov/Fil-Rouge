@@ -31,13 +31,13 @@ public slots:
     void resizeEvent(QResizeEvent *e);
     void wheelEvent(QWheelEvent *e);
     void mouseDoubleClickEvent(QMouseEvent *e);
-    void selectAnimal(weak_ptr<Animal> a);
+    void selectAnimal(std::weak_ptr<Animal> a);
     void tick();
     void startSimulation(); //to start the timer
     void suspendSimulation(); //to stop the timer
 
 signals:
-    void animalSelected(weak_ptr<Animal> a);
+    void animalSelected(std::weak_ptr<Animal> a);
     void sceneUpdated();
 
 private:

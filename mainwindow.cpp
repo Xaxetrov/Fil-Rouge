@@ -3,13 +3,15 @@
 
 #include "Animal.h"
 #include "config/config.h"
-#include "cmath"
+#include <cmath>
 
 #include <QDockWidget>
 #include <QKeyEvent>
+#include <QFileDialog>
 
 #include "Vegetal.h"
 #include "Water.h"
+#include "SaveManager.h"
 
 #include <QFile>
 
@@ -41,14 +43,19 @@ MainWindow::MainWindow(QWidget *parent) :
     this->menuBar()->clear();
     fileMenu = this->menuBar()->addMenu(tr("File"));
     simulationMenu = this->menuBar()->addMenu(tr("Simulation"));
+    animalMenu = this->menuBar()->addMenu(tr("Animal"));
     fileExitAction = fileMenu->addAction(tr("Exit"));
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
+    saveNeuraleNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
+    animalMenu->setEnabled(false);
 
     //event managment
-    QObject::connect(&worldWidget,SIGNAL(animalSelected(weak_ptr<Animal>)),&entityWidget,SLOT(setAnimal(weak_ptr<Animal>)));
+    QObject::connect(&worldWidget,SIGNAL(animalSelected(std::weak_ptr<Animal>)),&entityWidget,SLOT(setAnimal(std::weak_ptr<Animal>)));
+    QObject::connect(&worldWidget,SIGNAL(animalSelected(std::weak_ptr<Animal>)),this,SLOT(setSelectedAnimal(std::weak_ptr<Animal>)) );
     QObject::connect(fileExitAction,SIGNAL(triggered(bool)),this,SLOT(close()));
     QObject::connect(simulationMenu,SIGNAL(triggered(QAction*)),this,SLOT(switchTimer()));
     QObject::connect(&worldWidget,SIGNAL(sceneUpdated()),&entityWidget,SLOT(update()));
+    QObject::connect(saveNeuraleNetworkAction,SIGNAL(triggered(bool)),this,SLOT(saveNeuraleNetwork()));
 }
 
 void MainWindow::loadWorld()
@@ -280,3 +287,44 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
         }
     }
 }
+
+void MainWindow::setSelectedAnimal(std::weak_ptr<Animal> a)
+{
+    selectedAnimal = a;
+    //enable or disable the animal menu
+    if(a.use_count()!=0)
+    {
+        animalMenu->setEnabled(true);
+    }
+    else
+    {
+        animalMenu->setEnabled(false);
+    }
+}
+
+void MainWindow::saveNeuraleNetwork()
+{
+    if(shared_ptr<Animal> a = selectedAnimal.lock())
+        saveNeuraleNetwork(a,true);
+}
+
+void MainWindow::saveNeuraleNetwork(shared_ptr<Animal> a, bool pauseDuringSave)
+{
+    bool pause = false;
+    if(pauseDuringSave && worldWidget.isSimulationRunning())
+        pause = true;
+    if(pause)
+        worldWidget.suspendSimulation();
+    NeuralNetwork nn = *(a->getBrain()); //copy the neural network
+    SaveManager saveManager;
+    /*QFileDialog fileDialog(this,tr("Save animal Neurale Network"));
+    fileDialog.setDefaultSuffix("xml");*/
+    QString filter = "XML files (*.xml);;All files (*.*)";
+    QString defaultFilter = "XML files (*.xml)";
+    QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),QDir::currentPath(),
+                                                    filter,&defaultFilter);
+    saveManager.SaveNetwork(nn,filePath);
+    if(pause)
+        worldWidget.startSimulation();
+}
+

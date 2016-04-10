@@ -18,7 +18,7 @@ public:
 
 public slots:
     void resizeEvent(QResizeEvent *e);
-    void setAnimal(weak_ptr<Animal> a);
+    void setAnimal(std::weak_ptr<Animal> a);
     void update();
 
 protected:
