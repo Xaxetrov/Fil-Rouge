@@ -124,7 +124,7 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
         }
 
         //For each layer...
-        for (int computingLayer=0; computingLayer<m_hiddenLayerNum + 1; computingLayer++)
+        for (int computingLayer=0; computingLayer < m_hiddenLayerNum+1 ; computingLayer++)
         {
             outputs.clear();
 

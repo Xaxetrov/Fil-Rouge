@@ -1,4 +1,7 @@
 #include "Neuron.h"
+#include <random>
+#include <algorithm>
+#include <iomanip>
 
 Neuron::Neuron(int inputNum) : m_inputNum(inputNum)
 {
@@ -41,9 +44,12 @@ double Neuron::run(std::vector<double> inputs)
 
 double  Neuron::RandomWeight()
 {
-    double bottom = (double) rand() / (RAND_MAX) - 1;
+    std::default_random_engine generator(std::random_device{}());
+    std::normal_distribution<double> distribution(0, 1);
+    return distribution(generator);
+    /*double bottom = (double) rand() / (RAND_MAX) - 1;
     double top = (double) rand() / (RAND_MAX);
-    return (top+bottom);
+    return (top+bottom);*/
 }
 
 void Neuron::printNeuron() const

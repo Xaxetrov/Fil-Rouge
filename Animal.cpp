@@ -170,9 +170,9 @@ int Animal::computeScore()
 void Animal::mappageInput()
 {
     m_nnInputs.clear();
-    m_nnInputs.push_back(m_hunger);
-    m_nnInputs.push_back(m_thirst);
-    m_nnInputs.push_back(m_health);
+    m_nnInputs.push_back((double)m_hunger / (double)MAX_HUNGER);
+    m_nnInputs.push_back((double)m_thirst / (double)MAX_THIRST);
+    m_nnInputs.push_back((double)m_health / (double)MAX_HEALTH);
     const vector<const Percepted*> & percepted = m_vision->getPercepted();
     for(const Percepted* p:percepted)
     {
@@ -193,9 +193,9 @@ void Animal::mappageInput()
 
 void Animal::mappageOutput()
 {
-    m_speed = m_nnOutputs[0];
-    m_rotation = m_nnOutputs[1];
-    m_fear = m_nnOutputs[2];
+    m_speed = m_nnOutputs[0]*5;
+    m_rotation = m_nnOutputs[1]/5;
+    m_fear = m_nnOutputs[2]*100;
 }
 
 void Animal::turn(double angle)

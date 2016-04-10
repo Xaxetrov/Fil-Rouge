@@ -23,7 +23,8 @@ private:
     std::vector<double> m_weights;
 
     //sigmoid response curve
-    double Sigmoid(double x){return 1/(1+exp(-x));}
+    //double Sigmoid(double x){return 1/(1+exp(-x));}
+    double Sigmoid(double x){return atan(x);} //to get negative number
     //Random generator
     double RandomWeight();
 };
