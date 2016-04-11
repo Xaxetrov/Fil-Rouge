@@ -6,7 +6,7 @@
 class Resource : public NonSolid
 {
 public:
-    Resource(int x, int y, int radius, int quantity, int quantityEvolution);
+    Resource(int x, int y, int radius, int quantityPerUnit, int quantityEvolutionPerUnit);
     int play();
 
     int getQuantity() const;

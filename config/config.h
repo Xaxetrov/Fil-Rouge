@@ -44,9 +44,9 @@ const unsigned int ID_VEGETAL = 12;
 const unsigned int ID_MEAT = 13;
 
 // Resource evolution
-const int EVOLUTION_WATER = 0;
+const int EVOLUTION_WATER = 100;
 const int EVOLUTION_MEAT = -1;
-const int EVOLUTION_VEGETAL = 1;
+const int EVOLUTION_VEGETAL = 100;
 
 // Animal Parameters
 const unsigned int MAX_HEALTH = 5000;

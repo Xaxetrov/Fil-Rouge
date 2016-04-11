@@ -4,6 +4,7 @@
 #include "Animal.h"
 #include "config/config.h"
 #include <cmath>
+#include <strstream>
 
 #include <QDockWidget>
 #include <QKeyEvent>
@@ -55,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(fileExitAction,SIGNAL(triggered(bool)),this,SLOT(close()));
     QObject::connect(simulationMenu,SIGNAL(triggered(QAction*)),this,SLOT(switchTimer()));
     QObject::connect(&worldWidget,SIGNAL(sceneUpdated()),&entityWidget,SLOT(update()));
+    QObject::connect(&worldWidget,SIGNAL(sceneUpdated()),this,SLOT(updateStatusBar()));
     QObject::connect(saveNeuraleNetworkAction,SIGNAL(triggered(bool)),this,SLOT(saveNeuraleNetwork()));
 }
 
@@ -237,12 +239,12 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
-    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, 1000));
+    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, 100));
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, 1000));
+    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, 100));
     world.addEntity(entity);
   }
   /*
@@ -300,6 +302,12 @@ void MainWindow::setSelectedAnimal(std::weak_ptr<Animal> a)
     {
         animalMenu->setEnabled(false);
     }
+}
+
+void MainWindow::updateStatusBar()
+{
+    QString message = tr("number of living: ").append("%1").arg(world.getNumberOfLiving());
+    this->statusBar()->showMessage(message);
 }
 
 void MainWindow::saveNeuraleNetwork()

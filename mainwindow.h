@@ -28,6 +28,7 @@ public slots:
     void saveNeuraleNetwork(shared_ptr<Animal> a, bool pauseDuringSave);
     void saveNeuraleNetwork();
     void setSelectedAnimal(std::weak_ptr<Animal> a);
+    void updateStatusBar();
 
 private:
     void loadWorld();

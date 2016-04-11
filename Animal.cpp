@@ -249,7 +249,7 @@ void Animal::eat()
                if(m_hunger > 0)
                {
                    int quantity = std::min(100,m_hunger);
-                   //vegetal->eat(quantity); //disabled for testing purpose
+                   vegetal->eat(quantity); //disabled for testing purpose
                    m_hunger -= quantity;
                }
                //heal himself

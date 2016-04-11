@@ -22,6 +22,8 @@ public:
     //Do you wanna get my entities ?
     std::list<std::shared_ptr<Entity> > &getEntities();
 
+    unsigned getNumberOfLiving() const;
+
     //Why do you want it ? I'm the biggest world of all worlds !
     //Coordinate & getSize(); disabled as not working :/
     //What did I just told you ? It's useless !
@@ -48,6 +50,7 @@ private:
     bool isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<Entity> e2) const;
 
     //Private attributes
+    unsigned m_numberOfLiving;
 
     //My loves, my life
     std::list<std::shared_ptr<Entity>> m_entities;

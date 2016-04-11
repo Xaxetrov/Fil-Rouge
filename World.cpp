@@ -11,6 +11,7 @@ World::World()
     //m_size.set(WORLD_SIZE_X,WORLD_SIZE_Y);
     m_size_x = WORLD_SIZE_X;
     m_size_y = WORLD_SIZE_Y;
+    m_numberOfLiving = 0;
 }
 
 std::list<shared_ptr<Entity>> &World::getEntities()
@@ -72,7 +73,7 @@ int World::tick()
 {
     int entityErrorsNum = 0;
     int i=0;
-    unsigned short numberOfLiving = 0;
+    m_numberOfLiving = 0;
     //for(unsigned j = 0; j < m_entities.size(); j++)
     //for(shared_ptr<Entity> e:m_entities)
     for(std::list<std::shared_ptr<Entity>>::iterator e=m_entities.begin() ; e!=m_entities.end() ; ++e)
@@ -87,9 +88,10 @@ int World::tick()
         i++;
         if(shared_ptr<Animal> animal = dynamic_pointer_cast<Animal>(*e))
         {
-            numberOfLiving++;
+            m_numberOfLiving++;
             if(animal->isDead())
             {
+                //work arround the fat that the currant cell will be deleted
                 std::list<std::shared_ptr<Entity>>::iterator sav = e;
                 sav--;
                 m_entities.erase(e);
@@ -97,9 +99,9 @@ int World::tick()
             }
         }
     }
-    if(numberOfLiving < MIN_NUMBER_OF_ANIMAL)
+    if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
     {
-        feadWidthRandomAnimal(MIN_NUMBER_OF_ANIMAL-numberOfLiving);
+        feadWidthRandomAnimal(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);
     }
     return entityErrorsNum;
 }
@@ -128,4 +130,9 @@ bool World::isCollision(const shared_ptr<Entity> e1, const shared_ptr<Entity> e2
     const Coordinate & c1 = e1->getCoordinate();
     const Coordinate & c2 = e2->getCoordinate();
     return (Coordinate::getDistance(c1,c2) < (e1->getRadius() + e2->getRadius()));
+}
+
+unsigned World::getNumberOfLiving() const
+{
+    return m_numberOfLiving;
 }
