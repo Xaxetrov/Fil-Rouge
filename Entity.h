@@ -10,7 +10,8 @@ class Entity
 {
 public:
     //ctor, dtor
-    Entity(double x, double y, int creationDate);
+    Entity(double x, double y, int radius);
+    Entity(Coordinate c, int radius);
     Entity(const Entity & e); //to disable copy constructor
     virtual ~Entity();
 
@@ -23,6 +24,7 @@ public:
     int getCreationDate() {return m_creationDate;}
 
     virtual int play();
+    virtual bool isDead() const =0;
     virtual unsigned int getTypeId() const = 0; //?
     virtual int getNeralNetworkId() const = 0;
 

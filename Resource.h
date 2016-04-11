@@ -7,9 +7,11 @@ class Resource : public NonSolid
 {
 public:
     Resource(int x, int y, int radius, int quantityPerUnit, int quantityEvolutionPerUnit);
+    Resource(Coordinate c, int radius, int quantityPerUnit, int quantityEvolutionPerUnit);
     int play();
 
     int getQuantity() const;
+    virtual bool isDead() const{return false;} //I'm unkillable !!!
 
 protected :
     int m_quantity;

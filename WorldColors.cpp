@@ -4,6 +4,7 @@
 #include "Animal.h"
 #include "Vegetal.h"
 #include "Water.h"
+#include "Meat.h"
 
 WorldColors::WorldColors()
 {
@@ -13,6 +14,8 @@ WorldColors::WorldColors()
     waterPen = QPen(Qt::blue);
     grassBrush = QBrush(Qt::green);
     grassPen = QPen(Qt::green);
+    meatBrush = QBrush(QColor(212,60,0));
+    meatPen = QPen(QColor(212,60,0));
 
     teamsPen = QPen(Qt::black);
     teamsSelectedPen = QPen(Qt::yellow);
@@ -44,6 +47,10 @@ QBrush & WorldColors::getEntityBrush(const shared_ptr<Entity> entity)
     {
       return waterBrush;
     }
+    else if(typeid(*entity) == typeid( Meat))
+    {
+      return meatBrush;
+    }
     /*
     else if(typeid(entity) == typeid( ... ))
     {
@@ -71,6 +78,10 @@ QPen & WorldColors::getEntityPen(const shared_ptr<Entity> entity)
     else if(typeid(*entity) == typeid( Water ))
     {
       return waterPen;
+    }
+    else if(typeid(*entity) == typeid( Meat ))
+    {
+      return meatPen;
     }
     /*
     else if(typeid(entity) == typeid( ... ))

@@ -3,7 +3,13 @@
 Resource::Resource(int x, int y, int radius, int quantity, int quantityEvolution) : NonSolid(x, y, radius),
     m_quantity(quantity*radius*radius), m_quantityEvolution(quantityEvolution*radius*radius)
 {
+    m_maxQuantity = m_quantity;
+}
 
+Resource::Resource(Coordinate c, int radius, int quantity, int quantityEvolution) : NonSolid(c, radius),
+    m_quantity(quantity*radius*radius), m_quantityEvolution(quantityEvolution*radius*radius)
+{
+    m_maxQuantity = m_quantity;
 }
 
 int Resource::getQuantity() const
@@ -13,6 +19,6 @@ int Resource::getQuantity() const
 
 int Resource::play()
 {
-    m_quantity += m_quantityEvolution;
+    m_quantity += std::min(m_quantityEvolution,m_maxQuantity-m_quantity);
     return 0;
 }

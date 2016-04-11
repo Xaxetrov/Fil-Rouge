@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Animal.h"
+#include "Meat.h"
 
 #include <algorithm>
 #include <iostream>
@@ -88,15 +89,23 @@ int World::tick()
         i++;
         if(shared_ptr<Animal> animal = dynamic_pointer_cast<Animal>(*e))
         {
-            m_numberOfLiving++;
             if(animal->isDead())
             {
-                //work arround the fat that the currant cell will be deleted
-                std::list<std::shared_ptr<Entity>>::iterator sav = e;
-                sav--;
-                m_entities.erase(e);
-                e=sav;
+                int meatQuantity = MAX_HUNGER - animal->getHunger();
+                m_entities.push_back(make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
             }
+            else
+            {
+                m_numberOfLiving++;
+            }
+        }
+        if((*e)->isDead())
+        {
+            //work arround the fat that the currant cell will be deleted
+            std::list<std::shared_ptr<Entity>>::iterator sav = e;
+            sav--;
+            m_entities.erase(e);
+            e=sav;
         }
     }
     if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)

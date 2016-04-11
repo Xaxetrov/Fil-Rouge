@@ -38,6 +38,9 @@ private:
     //grass color:
     QBrush grassBrush;
     QPen grassPen;
+    //meat color:
+    QBrush meatBrush;
+    QPen meatPen;
     ///living colors:
     //teams colors:
     std::vector<QBrush> teamsBrushs;

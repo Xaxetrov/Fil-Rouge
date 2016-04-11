@@ -4,6 +4,10 @@ Meat::Meat(int x, int y, int radius, int quantity) : Resource(x, y, radius, quan
 {
 }
 
+Meat::Meat(Coordinate c, int radius, int quantity) : Resource(c,radius,quantity, EVOLUTION_MEAT)
+{
+}
+
 int Meat::eat(int quantity)
 {
     int eated = std::min(quantity,m_quantity);
