@@ -10,7 +10,7 @@ public:
   virtual unsigned int getTypeId() const { return ID_WATER; }
   int getNeralNetworkId() const { return NN_ID_WATER; }
 
-  void drink(int quantity);
+  int drink(int quantity);
 };
 
 

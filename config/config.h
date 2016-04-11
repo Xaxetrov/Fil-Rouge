@@ -32,6 +32,10 @@ const int NN_ID_ANIMAL = 1;
 const int NN_ID_VEGETAL = 1;
 const int NN_ID_WATER = -1;
 const int NN_ID_MEAT = 2;
+// Neurale network weight modification probability
+const double NN_WEIGHT_CHANGE_PROBABILITY = 0.01; // 1% chance of change by weight
+const double NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to a weight is 0
+const double NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.1; // the value added to a weight as a standart deviation of 0.1
 
 // User Interface
 const unsigned UPDATE_TIMER_INTERVALE = 10; //ms

@@ -223,8 +223,7 @@ void Animal::drink()
                if(m_thirst > 0)
                {
                    int quantity = std::min(100,m_thirst);
-                   water->drink(quantity);
-                   m_thirst -= quantity;
+                   m_thirst -= water->drink(quantity);
                }
             }
         }
@@ -249,13 +248,12 @@ void Animal::eat()
                if(m_hunger > 0)
                {
                    int quantity = std::min(100,m_hunger);
-                   vegetal->eat(quantity); //disabled for testing purpose
-                   m_hunger -= quantity;
+                   m_hunger -= vegetal->eat(quantity);
                }
                //heal himself
                if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
                {
-                   m_health += std::min(5,((int)MAX_HEALTH)-m_health);
+                   m_health += std::min(10,((int)MAX_HEALTH)-m_health);
                }
             }
         }

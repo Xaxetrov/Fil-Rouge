@@ -4,7 +4,9 @@ Vegetal::Vegetal(int x, int y, int radius, int quantity) : Resource(x, y, radius
 {
 }
 
-void Vegetal::eat(int quantity)
+int Vegetal::eat(int quantity)
 {
-    m_quantity -= quantity;
+    int eated = std::min(quantity,m_quantity);
+    m_quantity -= eated;
+    return eated;
 }

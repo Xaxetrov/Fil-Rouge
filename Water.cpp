@@ -5,7 +5,9 @@ Water::Water(int x, int y, int radius, int quantity) : Resource(x,y,radius, quan
   
 }
 
-void Water::drink(int quantity)
+int Water::drink(int quantity)
 {
-    m_quantity -= quantity;
+    int drinked = std::min(quantity,m_quantity);
+    m_quantity -= drinked;
+    return drinked;
 }

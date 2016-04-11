@@ -56,7 +56,11 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
     default_random_engine generator(random_device{}());
     bernoulli_distribution distribution(0.5);
 
-
+    default_random_engine modificationGenerator(random_device{}());
+    bernoulli_distribution modificationDistribution(NN_WEIGHT_CHANGE_PROBABILITY); // % chance to change one weight of a neurone
+    default_random_engine randomChangeGenerator(random_device{}());
+    normal_distribution<double> randomChangeDistribution(NN_WEIGHT_CHANGE_AVERAGE_VALUE,
+                                                         NN_WEIGHT_CHANGE_SDANTARD_DEVIATION); // change on weight are of average 0 and standart variation 0,1 (addition)
     for(unsigned i = 0; i < father.m_layers.size(); i++)
     {
         const auto& fatherLayer = father.m_layers[i];
@@ -74,6 +78,14 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
             else
             {
                 childNeurons.push_back(fatherNeurons[j]);
+            }
+            std::vector<double> * weight = childNeurons.at(j).getPointerToWeights();
+            for(double val:*weight)
+            {
+                if(modificationDistribution(modificationGenerator))
+                {
+                    val += randomChangeDistribution(randomChangeGenerator);
+                }
             }
         }
         m_layers.push_back(childNeurons);

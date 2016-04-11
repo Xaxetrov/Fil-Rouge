@@ -15,10 +15,11 @@ public:
 
     int getInputsNum() {return m_inputNum;}
     std::vector<double> getWeights() const{return m_weights;}
+    std::vector<double>* getPointerToWeights() {return &m_weights;}
 
-     double run(std::vector<double> inputs);
+    double run(std::vector<double> inputs);
 
-     void printNeuron() const;
+    void printNeuron() const;
 
 private:
     int m_inputNum;
