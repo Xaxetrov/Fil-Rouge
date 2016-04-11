@@ -1,5 +1,8 @@
 #include "World.h"
+#include "Entity.h"
 #include "Animal.h"
+#include "Herbivore.h"
+#include "Carnivore.h"
 #include "Meat.h"
 
 #include <algorithm>
@@ -58,7 +61,7 @@ void World::addEntity(shared_ptr<Entity> entity)
     m_entities.push_back(entity);
 }
 
-void World::feadWidthRandomAnimal(unsigned short numberOfEntityToAdd)
+void World::feadWithRandomAnimal(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
@@ -70,11 +73,37 @@ void World::feadWidthRandomAnimal(unsigned short numberOfEntityToAdd)
     }
 }
 
+void World::feadWithRandomHerbivore(unsigned short numberOfEntityToAdd)
+{
+    for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
+    {
+      int x = rand() % WORLD_SIZE_X;
+      int y = rand() % WORLD_SIZE_Y;
+      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, 10, 50, 2, this));
+      animal->turn( (double)(rand()%628)/100);
+      addEntity(animal);
+    }
+}
+
+void World::feadWithRandomCarnivore(unsigned short numberOfEntityToAdd)
+{
+    for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
+    {
+      int x = rand() % WORLD_SIZE_X;
+      int y = rand() % WORLD_SIZE_Y;
+      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, 10, 50, 2, this));
+      animal->turn( (double)(rand()%628)/100);
+      addEntity(animal);
+    }
+}
+
 int World::tick()
 {
     int entityErrorsNum = 0;
     int i=0;
     m_numberOfLiving = 0;
+    m_numberOfCarnivore = 0;
+    m_numberOfHerbivore = 0;
     //for(unsigned j = 0; j < m_entities.size(); j++)
     //for(shared_ptr<Entity> e:m_entities)
     for(std::list<std::shared_ptr<Entity>>::iterator e=m_entities.begin() ; e!=m_entities.end() ; ++e)
@@ -97,6 +126,16 @@ int World::tick()
             else
             {
                 m_numberOfLiving++;
+                switch (animal->getTypeId()) {
+                case ID_CARNIVORE:
+                    m_numberOfCarnivore++;
+                    break;
+                case ID_HERBIVORE:
+                    m_numberOfHerbivore++;
+                    break;
+                default:
+                    break;
+                }
             }
         }
         if((*e)->isDead())
@@ -108,9 +147,17 @@ int World::tick()
             e=sav;
         }
     }
-    if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
+    /*if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
     {
-        feadWidthRandomAnimal(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);
+        feadWithRandomHerbivore(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);
+    }*/
+    if(m_numberOfCarnivore < MIN_NUMBER_OF_CARNIVORE)
+    {
+        feadWithRandomCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+    }
+    if(m_numberOfHerbivore < MIN_NUMBER_OF_HERBVORE)
+    {
+        feadWithRandomHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
     }
     return entityErrorsNum;
 }

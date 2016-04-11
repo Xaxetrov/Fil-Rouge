@@ -2,6 +2,8 @@
 
 #include <typeinfo>
 #include "Animal.h"
+#include "Herbivore.h"
+#include "Carnivore.h"
 #include "Vegetal.h"
 #include "Water.h"
 #include "Meat.h"
@@ -39,6 +41,14 @@ QBrush & WorldColors::getEntityBrush(const shared_ptr<Entity> entity)
     {
         return teamsBrushs.at(2);
     }
+    else if(typeid(*entity) == typeid( Herbivore ))
+    {
+        return teamsBrushs.at(0);
+    }
+    else if(typeid(*entity) == typeid( Carnivore ))
+    {
+        return teamsBrushs.at(1);
+    }
     else if(typeid(*entity) == typeid( Vegetal ))
     {
       return grassBrush;
@@ -68,6 +78,14 @@ QPen & WorldColors::getEntityPen(const shared_ptr<Entity> entity)
         return teamsNullPen;
     }
     else if(typeid(*entity) == typeid( Animal ))
+    {
+        return teamsPen;
+    }
+    else if(typeid(*entity) == typeid( Herbivore ))
+    {
+        return teamsPen;
+    }
+    else if(typeid(*entity) == typeid( Carnivore ))
     {
         return teamsPen;
     }

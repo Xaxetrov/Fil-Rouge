@@ -1,6 +1,7 @@
 #include "Animal.h"
 #include "Water.h"
 #include "Vegetal.h"
+#include "World.h"
 
 #include <iostream>
 #include <iomanip>
@@ -33,6 +34,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
       layerSizes.push_back(LAYER_SIZES[i]);
     }
     m_brain = new NeuralNetwork(layerSizes);
+    m_attack = ATTACK_ANIMAL;
 }
 
 Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, world)
@@ -131,6 +133,7 @@ int Animal::play()
         m_world->updateListCollision(this->shared_from_this());
     }
 
+    attack();
     eat();
     drink();
     mate();
@@ -143,7 +146,7 @@ void Animal::move(int speedPercentage)
     double speed = speedPercentage * m_maxSpeed / 100.0;
     setCoordinate(getX() + cos(m_angle) * speed, getY() + sin(m_angle) * speed);
     m_world->updateListCollision(this->shared_from_this());
-    vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(ID_ANIMAL);// Warning -> Animal != Solid
+    vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
     if(animalCollisionList.size() != 0)
     {
         setCoordinate(getX() - cos(m_angle)*speed, getY() - sin(m_angle)*speed);
@@ -233,7 +236,7 @@ void Animal::drink()
 // The animal drink one time for each pool it is on
 void Animal::eat()
 {
-    vector<weak_ptr<Entity>> foodCollisionList = getSubListCollision(ID_VEGETAL); //food is not only vegetal -> to adapt later
+    vector<weak_ptr<Entity>> foodCollisionList = getSubListResourceCollision();
     for (weak_ptr<Entity> weakFood:foodCollisionList)
     {
         // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
@@ -243,26 +246,32 @@ void Animal::eat()
         shared_ptr<Entity> foodEntity = weakFood.lock();
         if(foodEntity)
         {
-            if(shared_ptr<Vegetal> vegetal = dynamic_pointer_cast<Vegetal>(foodEntity))
-            {
-               if(m_hunger > 0)
-               {
-                   int quantity = std::min(100,m_hunger);
-                   m_hunger -= vegetal->eat(quantity);
-               }
-               //heal himself
-               if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
-               {
-                   m_health += std::min(10,((int)MAX_HEALTH)-m_health);
-               }
-            }
+            tryToEat(foodEntity);
         }
+    }
+}
+
+void Animal::tryToEat(std::shared_ptr<Entity> food)
+{
+    //yes animal are herbivore...
+    if(shared_ptr<Vegetal> vegetal = dynamic_pointer_cast<Vegetal>(food))
+    {
+       if(m_hunger > 0)
+       {
+           int quantity = std::min(EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
+           m_hunger -= vegetal->eat(quantity);
+       }
+       //heal himself
+       if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
+       {
+           m_health += std::min(EAT_MAX_HEALING_VALUE,(unsigned)(MAX_HEALTH-m_health));
+       }
     }
 }
 
 void Animal::mate()
 {
-   vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(ID_ANIMAL);
+   vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(this->getTypeId());
    for(weak_ptr<Entity> weakAnimal:animalCollisionList)
    {
       m_collisionList.remove_if([weakAnimal](weak_ptr<Entity> p)
@@ -271,68 +280,65 @@ void Animal::mate()
       shared_ptr<Entity> animalEntity = weakAnimal.lock();
       if(animalEntity)
       {
-         shared_ptr<Animal> animalToMate;
-         if(animalToMate = dynamic_pointer_cast<Animal>(animalEntity))
-         {
-            // this Animal is the female
-            if(m_female && !animalToMate->isFemale())
-            {
-               if(m_mating == MAX_MATING && animalToMate->getMating() == MAX_MATING)
-               {
-                  this->reproduce(animalToMate);
-                  break;
-               }
-            }
-         }
+           if(tryToMate(animalEntity)) //virtual -> try to mate in the good way
+               break;
       }
    }
 }
 
-void Animal::reproduce(shared_ptr<Animal> father)
+bool Animal::tryToMate(std::shared_ptr<Entity> animalEntity)
 {
-    // Use a normal distribution to determine the number of children of litter
-    default_random_engine generator(random_device{}());
-    normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
-    int numberChild = (int)distribution(generator);
-
-    // Normalize in the possible range
-    if(numberChild < 0) numberChild = 0;
-    else if(numberChild > MAX_CHILD_PER_ANIMAL) numberChild = MAX_CHILD_PER_ANIMAL;
-
-    // Create the new entity around the mother (in a circle)
-    int child = 0;
-    double angleIntervalle = (2*PI)/(double)numberChild;
-    double baseAngle = 0;
-    double baseRadius = 4*getRadius();
-
-    //cout << "FATHER BRAIN\n" << endl;
-    //father->getBrain()->printNetwork();
-
-    //cout << "MOTHER BRAIN\n" << endl;
-    //this->getBrain()->printNetwork();
-
-    uniform_real_distribution<double> distributionReal(-PI/6.0, PI/6.0);
-
-    while(child < numberChild)
+    if(shared_ptr<Animal> animalToMate = dynamic_pointer_cast<Animal>(animalEntity))
     {
-        NeuralNetwork * childBrain = new NeuralNetwork( *(father->getBrain()), *m_brain  );
-        //cout << "CHILD BRAIN\n" << endl;
-        //childBrain->printNetwork();
-        double distX = baseRadius*cos(baseAngle);
-        double distY = baseRadius*sin(baseAngle);
-        double magnitude = sqrt(distX*distX + distY*distY);
-        double normalizeX = distX/magnitude;
-        shared_ptr<Animal> animal(make_shared<Animal>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
-        double angleToTurn = acos(normalizeX);
-        if(distY > 0) angleToTurn *= -1;
-        animal->turn( angleToTurn + distributionReal(generator));
-        m_world->addEntity(animal);
-        baseAngle += angleIntervalle;
-        child++;
+       // this Animal is the female
+       if(m_female && !animalToMate->isFemale())
+       {
+          if(m_mating == MAX_MATING && animalToMate->getMating() == MAX_MATING)
+          {
+             this->reproduce(animalToMate);
+             return true;
+          }
+       }
     }
-    m_mating = 0;
-    father->setMating();
+    return false;
 }
+
+void Animal::attack()
+/**
+ * attack the Animal which are not of the same type as himself
+ * and if they are in front of him (angle defined in config.h)
+ * The attack value is stored in m_attack.
+*/
+{
+    vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
+    for(weak_ptr<Entity> weakAnimal:animalCollisionList)
+    {
+       m_collisionList.remove_if([weakAnimal](weak_ptr<Entity> p)
+                                 { return !( p.owner_before(weakAnimal) || weakAnimal.owner_before(p) ); }
+                                );
+       shared_ptr<Entity> animalEntity = weakAnimal.lock();
+       if(animalEntity)
+       {
+           if(animalEntity->getTypeId() != this->getTypeId())
+           {
+               /*double angle = Coordinate::getAngle(animalEntity->getCoordinate(),this->getCoordinate())-m_angle;
+               if(std::abs(angle)<=MAX_ATTACK_ANGLE)
+               {*/
+                    if(shared_ptr<Animal> a=dynamic_pointer_cast<Animal>(animalEntity))
+                    {
+                        a->loseLive(m_attack);
+                    }
+               //}
+           }
+       }
+    }
+}
+
+void Animal::loseLive(unsigned liveToLose)
+{
+    m_health -= liveToLose;
+}
+
 
 void Animal::addEntityInListCollision(weak_ptr<Entity> e)
 {
@@ -353,6 +359,40 @@ vector<weak_ptr<Entity>> Animal::getSubListCollision(unsigned int idEntity)
         if(e)//if lock worked
         {
             if(e->getTypeId() == idEntity)
+            {
+                subListCollision.push_back(e);
+            }
+        }
+    }
+    return subListCollision;
+}
+
+vector<weak_ptr<Entity>> Animal::getSubListSolidCollision()
+{
+    vector<weak_ptr<Entity>> subListCollision;
+    for(weak_ptr<Entity> weakEntity:m_collisionList)
+    {
+        shared_ptr<Entity> e = weakEntity.lock();
+        if(e)//if lock worked
+        {
+            if(e->getTypeId() >= ID_ANIMAL)
+            {
+                subListCollision.push_back(e);
+            }
+        }
+    }
+    return subListCollision;
+}
+
+vector<weak_ptr<Entity>> Animal::getSubListResourceCollision()
+{
+    vector<weak_ptr<Entity>> subListCollision;
+    for(weak_ptr<Entity> weakEntity:m_collisionList)
+    {
+        shared_ptr<Entity> e = weakEntity.lock();
+        if(e)//if lock worked
+        {
+            if(e->getTypeId() < ID_ANIMAL)
             {
                 subListCollision.push_back(e);
             }

@@ -43,7 +43,9 @@ SOURCES += main.cpp\
     EntityFrame.cpp \
     EntityAttributeWidget.cpp \
     Resource.cpp \
-    Meat.cpp
+    Meat.cpp \
+    Herbivore.cpp \
+    Carnivore.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -74,6 +76,8 @@ HEADERS  += mainwindow.h \
     Resource.h \
     Meat.h \
     VisionSector_NonLiving.h \
-    VisionSector_Living.h
+    VisionSector_Living.h \
+    Herbivore.h \
+    Carnivore.h
 
 FORMS    += mainwindow.ui

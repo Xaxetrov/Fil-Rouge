@@ -4,10 +4,10 @@
 #include <memory>
 #include <vector>
 #include <list>
-#include "Entity.h"
-#include "Animal.h"
 
+class Entity;
 class Animal;
+class Herbivore;
 /*
  * The world is... the world
  */
@@ -37,7 +37,9 @@ public:
 
     //More ! Give me more of them !
     void addEntity(std::shared_ptr<Entity> entity);
-    void feadWidthRandomAnimal(unsigned short numberOfEntityToAdd);
+    void feadWithRandomAnimal(unsigned short numberOfEntityToAdd);
+    void feadWithRandomHerbivore(unsigned short numberOfEntityToAdd);
+    void feadWithRandomCarnivore(unsigned short numberOfEntityToAdd);
 
     //I'm also almost the master of the time, I can make the world tic for you !
     int tick();
@@ -51,6 +53,8 @@ private:
 
     //Private attributes
     unsigned m_numberOfLiving;
+    unsigned m_numberOfHerbivore;
+    unsigned m_numberOfCarnivore;
 
     //My loves, my life
     std::list<std::shared_ptr<Entity>> m_entities;

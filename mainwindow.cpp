@@ -86,7 +86,9 @@ void MainWindow::loadWorld()
     //random generator
 //
     srand(std::time(0));
-    world.feadWidthRandomAnimal(40);
+    //world.feadWithRandomAnimal(40);
+    world.feadWithRandomHerbivore(20);
+    world.feadWithRandomCarnivore(20);
 
     /*shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
     shared_ptr<Animal> female(make_shared<Animal>(300, 250, 10, 50, 2, &world, true) );
@@ -239,12 +241,12 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
-    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, 100));
+    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, 1000));
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, 100));
+    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, 1000));
     world.addEntity(entity);
   }
   /*

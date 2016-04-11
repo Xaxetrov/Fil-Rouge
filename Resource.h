@@ -16,6 +16,7 @@ public:
 protected :
     int m_quantity;
     int m_quantityEvolution;
+    int m_maxQuantity;
 };
 
 #endif // RESOURCE_H
