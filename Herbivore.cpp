@@ -45,10 +45,15 @@ bool Herbivore::tryToMate(std::shared_ptr<Entity> herbivoreEntity)
        // this Animal is the female
        if(m_female && !herbivoreToMate->isFemale())
        {
+            //both herbivore are ready to mate
           if(m_mating == MAX_MATING && herbivoreToMate->getMating() == MAX_MATING)
           {
-             reproduce(herbivoreToMate);
-             return true;
+              //this herbivore (female) is neither hungry nor thirsty
+              if(m_thirst < (MAX_THIRST*3/4) && m_hunger < (MAX_HUNGER*3/4))
+              {
+                 reproduce(herbivoreToMate);
+                 return true;
+              }
           }
        }
     }

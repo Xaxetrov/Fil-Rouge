@@ -45,10 +45,15 @@ bool Carnivore::tryToMate(std::shared_ptr<Entity> carnivoreEntity)
        // this Animal is the female
        if(m_female && !carnivoreToMate->isFemale())
        {
+           //both carnivore are ready to mate
           if(m_mating == MAX_MATING && carnivoreToMate->getMating() == MAX_MATING)
           {
-             reproduce(carnivoreToMate);
-             return true;
+              //this carnivore (female) is neither hungry nor thirsty
+              if(m_thirst < (MAX_THIRST*3/4) && m_hunger < (MAX_HUNGER*3/4))
+              {
+                  reproduce(carnivoreToMate);
+                  return true;
+              }
           }
        }
     }
