@@ -76,7 +76,7 @@ const unsigned int EAT_MAX_HEALING_VALUE = 10; //the max is not the used value i
 // Animal drinking parameters
 const unsigned int DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
-//#define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+#define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
 // World Parameters
 const unsigned short MIN_NUMBER_OF_ANIMAL = 10; //unused
 const unsigned short MIN_NUMBER_OF_HERBVORE = 15;

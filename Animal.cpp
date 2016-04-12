@@ -226,8 +226,8 @@ void Animal::drink()
             {
                if(m_thirst > 0)
                {
-                   int quantity = std::min(100,m_thirst);
-                   m_thirst -= water->drink(quantity);
+                   int quantity = std::min(100,m_thirst); //don't drink more than needed (no negative thirst)
+                   m_thirst -= water->drink(quantity); //drink as much as possible on the water source
                }
             }
         }
