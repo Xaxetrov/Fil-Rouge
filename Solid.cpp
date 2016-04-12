@@ -1,6 +1,6 @@
 #include "Solid.h"
 
-Solid::Solid(int x, int y, int radius) : Entity(x, y, radius)
+Solid::Solid(int x, int y, int radius, int creationDate) : Entity(x, y, radius, creationDate)
 {
 
 }

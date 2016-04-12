@@ -1,13 +1,11 @@
 #include "Entity.h"
 
-Entity::Entity(double x, double y, int radius) : m_coordinate(x, y), m_radius(radius)
+Entity::Entity(double x, double y, int radius, int creationDate) : Entity(Coordinate(x,y),radius,creationDate)
 {
-    m_creationDate = 0;//init creationDate here
 }
 
-Entity::Entity(Coordinate c, int radius) : m_coordinate(c), m_radius(radius)
+Entity::Entity(Coordinate c, int radius, int creationDate) : m_coordinate(c), m_radius(radius), m_creationDate(creationDate)
 {
-    m_creationDate = 0;//init creationDate here
 }
 
 Entity::~Entity()

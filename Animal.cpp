@@ -35,6 +35,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     }
     m_brain = new NeuralNetwork(layerSizes);
     m_attack = ATTACK_ANIMAL;
+    setCreationDate(world->getWorldAge());
 }
 
 Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, world)
@@ -188,7 +189,7 @@ void Animal::mappageInput()
         else //if nothing is percepted
         {
             m_nnInputs.push_back(0);
-            m_nnInputs.push_back(-1);
+            m_nnInputs.push_back(1);//if nothing is seen the max distance is send
         }
     }
 }
@@ -214,9 +215,9 @@ void Animal::drink()
     for (weak_ptr<Entity> weakWater:waterCollisionList)
     {
         // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
-        m_collisionList.remove_if([weakWater](weak_ptr<Entity> p)
+        /*m_collisionList.remove_if([weakWater](weak_ptr<Entity> p)
                                   { return !( p.owner_before(weakWater) || weakWater.owner_before(p) ); }
-                                 );
+                                 );*/
         shared_ptr<Entity> waterEntity = weakWater.lock();
         if(waterEntity)
         {
@@ -240,9 +241,9 @@ void Animal::eat()
     for (weak_ptr<Entity> weakFood:foodCollisionList)
     {
         // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
-        m_collisionList.remove_if([weakFood](weak_ptr<Entity> p)
+        /*m_collisionList.remove_if([weakFood](weak_ptr<Entity> p)
                                   { return !( p.owner_before(weakFood) || weakFood.owner_before(p) ); }
-                                 );
+                                 );*/
         shared_ptr<Entity> foodEntity = weakFood.lock();
         if(foodEntity)
         {
@@ -274,14 +275,13 @@ void Animal::mate()
    vector<weak_ptr<Entity>> animalCollisionList = getSubListCollision(this->getTypeId());
    for(weak_ptr<Entity> weakAnimal:animalCollisionList)
    {
-      m_collisionList.remove_if([weakAnimal](weak_ptr<Entity> p)
-                                { return !( p.owner_before(weakAnimal) || weakAnimal.owner_before(p) ); }
-                               );
       shared_ptr<Entity> animalEntity = weakAnimal.lock();
       if(animalEntity)
       {
            if(tryToMate(animalEntity)) //virtual -> try to mate in the good way
+           {
                break;
+           }
       }
    }
 }
@@ -313,9 +313,6 @@ void Animal::attack()
     vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
     for(weak_ptr<Entity> weakAnimal:animalCollisionList)
     {
-       m_collisionList.remove_if([weakAnimal](weak_ptr<Entity> p)
-                                 { return !( p.owner_before(weakAnimal) || weakAnimal.owner_before(p) ); }
-                                );
        shared_ptr<Entity> animalEntity = weakAnimal.lock();
        if(animalEntity)
        {

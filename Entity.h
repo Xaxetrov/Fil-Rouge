@@ -10,8 +10,8 @@ class Entity
 {
 public:
     //ctor, dtor
-    Entity(double x, double y, int radius);
-    Entity(Coordinate c, int radius);
+    Entity(double x, double y, int radius, int creationDate=0);
+    Entity(Coordinate c, int radius, int creationDate=0);
     Entity(const Entity & e); //to disable copy constructor
     virtual ~Entity();
 
@@ -21,12 +21,15 @@ public:
     double getX() const {return m_coordinate.getX();}
     double getY() const {return m_coordinate.getY();}
     double getRadius() const {return m_radius;}
-    int getCreationDate() {return m_creationDate;}
+    int getCreationDate() const {return m_creationDate;}
 
     virtual int play();
     virtual bool isDead() const =0;
     virtual unsigned int getTypeId() const = 0; //?
     virtual int getNeralNetworkId() const = 0;
+
+protected:
+    void setCreationDate(int creationDate){m_creationDate=creationDate;}
 
 private:
     Coordinate m_coordinate;

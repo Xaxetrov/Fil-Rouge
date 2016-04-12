@@ -33,7 +33,7 @@ const int NN_ID_HERBIVORE = 1;
 const int NN_ID_CARNIVORE = -1;
 const int NN_ID_VEGETAL = 1;
 const int NN_ID_WATER = -1;
-const int NN_ID_MEAT = 2;
+const int NN_ID_MEAT = 0;
 // Neurale network weight modification probability
 const double NN_WEIGHT_CHANGE_PROBABILITY = 0.01; // 1% chance of change by weight
 const double NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to a weight is 0
@@ -65,10 +65,10 @@ const unsigned int MAX_MATING = 1500;
 const unsigned int MAX_CHILD_PER_ANIMAL = 6;
 const unsigned int DEFAULT_HUNGER = 500;
 const unsigned int DEFAULT_THIRST = 500;
-const double MAX_ATTACK_ANGLE = PI/2; //attack angle is [-MAX_ATTACK_ANGLE ; MAX_ATTACK_ANGLE]
+const double MAX_ATTACK_ANGLE = PI/2; //attack angle is [-MAX_ATTACK_ANGLE ; MAX_ATTACK_ANGLE] //Disabled !
 const unsigned int ATTACK_ANIMAL = 100;
-const unsigned int ATTACK_HERBIVORE = 100;
-const unsigned int ATTACK_CARNIVORE = 10000;
+const unsigned int ATTACK_HERBIVORE = 20;
+const unsigned int ATTACK_CARNIVORE = 100;
 // Animal eating parameters
 const unsigned int EAT_MAX_VEGETAL_QUANTITY = 100; // the max is not the used value if hunger is 0
 const unsigned int EAT_MAX_MEAT_QUANTITY = 100; // the max is not the used value if hunger is 0
@@ -76,9 +76,12 @@ const unsigned int EAT_MAX_HEALING_VALUE = 10; //the max is not the used value i
 // Animal drinking parameters
 const unsigned int DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
+//#define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
 // World Parameters
-const unsigned short MIN_NUMBER_OF_ANIMAL = 10;
-const unsigned short MIN_NUMBER_OF_HERBVORE = 5;
+const unsigned short MIN_NUMBER_OF_ANIMAL = 10; //unused
+const unsigned short MIN_NUMBER_OF_HERBVORE = 15;
 const unsigned short MIN_NUMBER_OF_CARNIVORE = 5;
+const unsigned short MAX_NUMBER_HERBIVORE_CHAMPION = 10;
+const unsigned short MAX_NUMBER_CARNIVORE_CHAMPION = 10;
 
 #endif // CONFIG_H

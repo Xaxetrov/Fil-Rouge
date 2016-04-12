@@ -95,7 +95,12 @@ private :
 
 };
 
-//template definition:
+
+
+/////////////////////////////////////
+///template definition:
+/////////////////////////////////////
+
 template <class Living>
 void Animal::reproduce(shared_ptr<Living> father)
 {

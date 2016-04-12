@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <map>
 using namespace std;
 
 World::World()
@@ -15,7 +16,7 @@ World::World()
     //m_size.set(WORLD_SIZE_X,WORLD_SIZE_Y);
     m_size_x = WORLD_SIZE_X;
     m_size_y = WORLD_SIZE_Y;
-    m_numberOfLiving = 0;
+    m_tickPassed = 0;
 }
 
 std::list<shared_ptr<Entity>> &World::getEntities()
@@ -68,7 +69,7 @@ void World::feadWithRandomAnimal(unsigned short numberOfEntityToAdd)
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;
       shared_ptr<Animal> animal(make_shared<Animal>(x, y, 10, 50, 2, this));
-      animal->turn( (double)(rand()%628)/100);
+      animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
 }
@@ -80,7 +81,31 @@ void World::feadWithRandomHerbivore(unsigned short numberOfEntityToAdd)
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;
       shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, 10, 50, 2, this));
-      animal->turn( (double)(rand()%628)/100);
+      animal->turn( (double)(rand()%628)/100.0);
+      addEntity(animal);
+    }
+}
+
+void World::feadWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
+{
+    for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
+    {
+      int x = rand() % WORLD_SIZE_X;
+      int y = rand() % WORLD_SIZE_Y;
+      //generate a brain from the one of the last best herbivore
+      //pick one brain randomly
+      auto ite = bestHerbivore.begin();
+      std::advance(ite,rand() % bestHerbivore.size());
+      NeuralNetwork n1 = ite->second;
+      //pick an other one randomly (they can be the same...)
+      ite = bestHerbivore.begin();
+      std::advance(ite,rand() % bestHerbivore.size());
+      NeuralNetwork n2 = ite->second;
+      //mixe them up
+      NeuralNetwork *nn = new NeuralNetwork(n1,n2);
+      //make a new Herbivore from that brain
+      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, 10, 50, 2, this,nn,MAX_MATING));
+      animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
 }
@@ -92,7 +117,31 @@ void World::feadWithRandomCarnivore(unsigned short numberOfEntityToAdd)
       int x = rand() % WORLD_SIZE_X;
       int y = rand() % WORLD_SIZE_Y;
       shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, 10, 50, 2, this));
-      animal->turn( (double)(rand()%628)/100);
+      animal->turn( (double)(rand()%628)/100.0);
+      addEntity(animal);
+    }
+}
+
+void World::feadWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
+{
+    for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
+    {
+      int x = rand() % WORLD_SIZE_X;
+      int y = rand() % WORLD_SIZE_Y;
+      //generate a brain from the one of the last best carnivore
+      //pick one brain randomly
+      auto ite = bestCarnivore.begin();
+      std::advance(ite,rand() % bestCarnivore.size());
+      NeuralNetwork n1 = ite->second;
+      //pick an other one randomly (they can be the same...)
+      ite = bestCarnivore.begin();
+      std::advance(ite,rand() % bestCarnivore.size());
+      NeuralNetwork n2 = ite->second;
+      //mixe them up
+      NeuralNetwork *nn = new NeuralNetwork(n1,n2);
+      //make a new Carnivore from that brain
+      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, 10, 50, 2, this,nn,MAX_MATING));
+      animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
 }
@@ -120,6 +169,9 @@ int World::tick()
         {
             if(animal->isDead())
             {
+#ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+                saveNeuralNetwork(animal);
+#endif
                 int meatQuantity = MAX_HUNGER - animal->getHunger();
                 m_entities.push_back(make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
             }
@@ -147,17 +199,27 @@ int World::tick()
             e=sav;
         }
     }
+    //incremente the age of the world
+    m_tickPassed++;
     /*if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
     {
         feadWithRandomHerbivore(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);
     }*/
     if(m_numberOfCarnivore < MIN_NUMBER_OF_CARNIVORE)
     {
-        feadWithRandomCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+        #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+            feadWithChildOfChampionCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+        #else
+            feadWithRandomCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+        #endif
     }
     if(m_numberOfHerbivore < MIN_NUMBER_OF_HERBVORE)
     {
-        feadWithRandomHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
+        #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+            feadWithChildOfChampionHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
+        #else
+            feadWithRandomHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
+        #endif
     }
     return entityErrorsNum;
 }
@@ -186,6 +248,33 @@ bool World::isCollision(const shared_ptr<Entity> e1, const shared_ptr<Entity> e2
     const Coordinate & c1 = e1->getCoordinate();
     const Coordinate & c2 = e2->getCoordinate();
     return (Coordinate::getDistance(c1,c2) < (e1->getRadius() + e2->getRadius()));
+}
+
+void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
+{
+    int age = getWorldAge() - a->getCreationDate();
+    if(shared_ptr<Herbivore> h = dynamic_pointer_cast<Herbivore>(a))
+    {
+        if(bestHerbivore.size()==0 || bestHerbivore.rbegin()->first < age )
+        {
+            bestHerbivore.insert(std::pair<int,NeuralNetwork>(age,*(h->getBrain())) );
+        }
+        if(bestHerbivore.size() > MAX_NUMBER_HERBIVORE_CHAMPION)
+        {
+            bestHerbivore.erase(bestHerbivore.begin());
+        }
+    }
+    else if(shared_ptr<Carnivore> c = dynamic_pointer_cast<Carnivore>(a))
+    {
+        if(bestCarnivore.size()==0 || bestCarnivore.rbegin()->first < age )
+        {
+            bestCarnivore.insert(std::pair<int,NeuralNetwork>(age,*(c->getBrain())) );
+        }
+        if(bestCarnivore.size() > MAX_NUMBER_HERBIVORE_CHAMPION)
+        {
+            bestCarnivore.erase(bestCarnivore.begin());
+        }
+    }
 }
 
 unsigned World::getNumberOfLiving() const
