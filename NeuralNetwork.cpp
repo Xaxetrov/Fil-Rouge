@@ -136,7 +136,7 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
         }
 
         //For each layer...
-        for (int computingLayer=0; computingLayer < m_hiddenLayerNum+1 ; computingLayer++)
+        for (unsigned int computingLayer=0; computingLayer < m_hiddenLayerNum+1 ; computingLayer++)
         {
             outputs.clear();
 
@@ -155,7 +155,7 @@ void NeuralNetwork::improve(int score)
 
 void NeuralNetwork::printNetwork() const
 {
-    for(int i = 0; i < m_layers.size(); i++)
+    for(unsigned int i = 0; i < m_layers.size(); i++)
     {
         std::cout << "layer " << (i+1) << "\n" << std::endl;
         m_layers[i].printLayer();
