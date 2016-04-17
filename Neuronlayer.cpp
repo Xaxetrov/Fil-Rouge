@@ -40,7 +40,7 @@ std::vector<double> NeuronLayer::run(std::vector<double> inputs)
 
 void NeuronLayer::printLayer() const
 {
-    for(int i = 0; i < m_neurons.size(); i++)
+    for(unsigned int i = 0; i < m_neurons.size(); i++)
     {
         std::cout << "Neuron " << i << " : ";
         m_neurons[i].printNeuron();

@@ -62,7 +62,7 @@ void World::addEntity(shared_ptr<Entity> entity)
     m_entities.push_back(entity);
 }
 
-void World::feadWithRandomAnimal(unsigned short numberOfEntityToAdd)
+void World::feedWithRandomAnimal(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
@@ -74,7 +74,7 @@ void World::feadWithRandomAnimal(unsigned short numberOfEntityToAdd)
     }
 }
 
-void World::feadWithRandomHerbivore(unsigned short numberOfEntityToAdd)
+void World::feedWithRandomHerbivore(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
@@ -86,7 +86,7 @@ void World::feadWithRandomHerbivore(unsigned short numberOfEntityToAdd)
     }
 }
 
-void World::feadWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
+void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
@@ -110,7 +110,7 @@ void World::feadWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
     }
 }
 
-void World::feadWithRandomCarnivore(unsigned short numberOfEntityToAdd)
+void World::feedWithRandomCarnivore(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
@@ -122,7 +122,7 @@ void World::feadWithRandomCarnivore(unsigned short numberOfEntityToAdd)
     }
 }
 
-void World::feadWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
+void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
@@ -203,22 +203,22 @@ int World::tick()
     m_tickPassed++;
     /*if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
     {
-        feadWithRandomHerbivore(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);
+        feedWithRandomHerbivore(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);
     }*/
     if(m_numberOfCarnivore < MIN_NUMBER_OF_CARNIVORE)
     {
         #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
-            feadWithChildOfChampionCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+            feedWithChildOfChampionCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
         #else
-            feadWithRandomCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+            feedWithRandomCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
         #endif
     }
     if(m_numberOfHerbivore < MIN_NUMBER_OF_HERBVORE)
     {
         #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
-            feadWithChildOfChampionHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
+            feedWithChildOfChampionHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
         #else
-            feadWithRandomHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
+            feedWithRandomHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
         #endif
     }
     return entityErrorsNum;

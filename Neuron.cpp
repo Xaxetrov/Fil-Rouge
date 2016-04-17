@@ -54,7 +54,7 @@ double  Neuron::RandomWeight()
 
 void Neuron::printNeuron() const
 {
-    for(int i = 0; i < m_weights.size(); i++)
+    for(unsigned int i = 0; i < m_weights.size(); i++)
     {
         std::cout << m_weights[i] << " ";
     }
