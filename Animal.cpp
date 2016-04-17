@@ -318,14 +318,14 @@ void Animal::attack()
        {
            if(animalEntity->getTypeId() != this->getTypeId())
            {
-               /*double angle = Coordinate::getAngle(animalEntity->getCoordinate(),this->getCoordinate())-m_angle;
+               double angle = Coordinate::getAngle(this->getCoordinate(),animalEntity->getCoordinate())-m_angle;
                if(std::abs(angle)<=MAX_ATTACK_ANGLE)
-               {*/
+               {
                     if(shared_ptr<Animal> a=dynamic_pointer_cast<Animal>(animalEntity))
                     {
                         a->loseLive(m_attack);
                     }
-               //}
+               }
            }
        }
     }

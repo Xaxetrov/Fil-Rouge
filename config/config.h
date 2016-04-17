@@ -33,7 +33,7 @@ const int NN_ID_HERBIVORE = 1;
 const int NN_ID_CARNIVORE = -1;
 const int NN_ID_VEGETAL = 1;
 const int NN_ID_WATER = -1;
-const int NN_ID_MEAT = 0;
+const int NN_ID_MEAT = 2;
 // Neurale network weight modification probability
 const double NN_WEIGHT_CHANGE_PROBABILITY = 0.01; // 1% chance of change by weight
 const double NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to a weight is 0
@@ -79,8 +79,8 @@ const unsigned int DRINK_MAX_VALUE = 100; // the max is not the used value if th
 #define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
 // World Parameters
 const unsigned short MIN_NUMBER_OF_ANIMAL = 10; //unused
-const unsigned short MIN_NUMBER_OF_HERBVORE = 15;
-const unsigned short MIN_NUMBER_OF_CARNIVORE = 5;
+const unsigned short MIN_NUMBER_OF_HERBVORE = 10;
+const unsigned short MIN_NUMBER_OF_CARNIVORE = 0;
 const unsigned short MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 const unsigned short MAX_NUMBER_CARNIVORE_CHAMPION = 10;
 

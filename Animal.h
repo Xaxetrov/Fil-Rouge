@@ -47,7 +47,6 @@ public:
     void mate();
     void attack();
     void loseLive(unsigned liveToLose);
-    //virtual void eat();
     vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
     vector<weak_ptr<Entity> > getSubListSolidCollision();
     vector<weak_ptr<Entity> > getSubListResourceCollision();
