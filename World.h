@@ -42,11 +42,11 @@ public:
 
     //More ! Give me more of them !
     void addEntity(std::shared_ptr<Entity> entity);
-    void feadWithRandomAnimal(unsigned short numberOfEntityToAdd);
-    void feadWithRandomHerbivore(unsigned short numberOfEntityToAdd);
-    void feadWithRandomCarnivore(unsigned short numberOfEntityToAdd);
-    void feadWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd);
-    void feadWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd);
+    void feedWithRandomAnimal(unsigned short numberOfEntityToAdd);
+    void feedWithRandomHerbivore(unsigned short numberOfEntityToAdd);
+    void feedWithRandomCarnivore(unsigned short numberOfEntityToAdd);
+    void feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd);
+    void feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd);
 
     //I'm also almost the master of the time, I can make the world tic for you !
     int tick();

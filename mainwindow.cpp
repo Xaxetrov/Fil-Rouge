@@ -4,7 +4,7 @@
 #include "Animal.h"
 #include "config/config.h"
 #include <cmath>
-#include <strstream>
+#include <sstream>
 
 #include <QDockWidget>
 #include <QKeyEvent>
@@ -86,9 +86,9 @@ void MainWindow::loadWorld()
     //random generator
 //
     srand(std::time(0));
-    //world.feadWithRandomAnimal(40);
-    world.feadWithRandomHerbivore(30);
-    world.feadWithRandomCarnivore(10);
+    //world.feedWithRandomAnimal(40);
+    world.feedWithRandomHerbivore(30);
+    world.feedWithRandomCarnivore(10);
 
     /*shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
     shared_ptr<Animal> female(make_shared<Animal>(300, 250, 10, 50, 2, &world, true) );
