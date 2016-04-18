@@ -1,7 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-
 // General constants
 const double PI = 3.1415926535897932;
 
@@ -83,5 +82,6 @@ const unsigned short MIN_NUMBER_OF_HERBVORE = 10;
 const unsigned short MIN_NUMBER_OF_CARNIVORE = 0;
 const unsigned short MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 const unsigned short MAX_NUMBER_CARNIVORE_CHAMPION = 10;
+
 
 #endif // CONFIG_H

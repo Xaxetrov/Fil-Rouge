@@ -104,8 +104,8 @@ template <class Living>
 void Animal::reproduce(shared_ptr<Living> father)
 {
     // Use a normal distribution to determine the number of children of litter
-    default_random_engine generator(random_device{}());
-    normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
+    static std::mt19937 generator(random_device{}());
+    std::normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
     int numberChild = (int)distribution(generator);
 
     // Normalize in the possible range

@@ -5,7 +5,6 @@
 
 Neuron::Neuron(int inputNum) : m_inputNum(inputNum)
 {
-
     //we need an additional weight for the bias hence the +1
     for (int i=0; i<inputNum + 1; i++)
     {
@@ -44,12 +43,9 @@ double Neuron::run(std::vector<double> inputs)
 
 double  Neuron::RandomWeight()
 {
-    std::default_random_engine generator(std::random_device{}());
+    static std::mt19937 generator(std::random_device{}());
     std::normal_distribution<double> distribution(0, 1);
     return distribution(generator);
-    /*double bottom = (double) rand() / (RAND_MAX) - 1;
-    double top = (double) rand() / (RAND_MAX);
-    return (top+bottom);*/
 }
 
 void Neuron::printNeuron() const

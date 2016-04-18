@@ -1,6 +1,6 @@
 #include "Nonsolid.h"
 
-NonSolid::NonSolid(int x, int y, int radius) : Entity(x, y, radius)
+NonSolid::NonSolid(int x, int y, int radius) : Entity((double)x, (double)y, radius)
 {
 
 }

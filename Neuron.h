@@ -4,6 +4,8 @@
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <random>
+#include <algorithm>
 
 #include "config/config.h"
 
@@ -31,5 +33,9 @@ private:
     //Random generator
     double RandomWeight();
 };
+
+
+
+
 
 #endif // NEURON_H

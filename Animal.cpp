@@ -24,7 +24,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
 
     //Determine if Animal is female or not (1/2 chance)
-    default_random_engine generator(random_device{}());
+    static std::mt19937 generator(random_device{}());
     bernoulli_distribution distribution(0.5);
     m_female = distribution(generator);
 
