@@ -358,9 +358,9 @@ void MainWindow::loadNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringLoad)
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
                                                     filter,&defaultFilter);
-
     SaveManager saveManager;
     NeuralNetwork* newBrain = saveManager.LoadNetwork(filePath);
-
     a->setBrain(newBrain);
+    if(pause)
+        worldWidget.startSimulation();
 }
