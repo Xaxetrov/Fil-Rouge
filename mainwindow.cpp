@@ -47,7 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     animalMenu = this->menuBar()->addMenu(tr("Animal"));
     fileExitAction = fileMenu->addAction(tr("Exit"));
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
-    saveNeuraleNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
+    saveNeuralNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
+    loadNeuralNetworkAction = animalMenu->addAction(tr("Load neural network"));
     animalMenu->setEnabled(false);
 
     //event managment
@@ -57,7 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(simulationMenu,SIGNAL(triggered(QAction*)),this,SLOT(switchTimer()));
     QObject::connect(&worldWidget,SIGNAL(sceneUpdated()),&entityWidget,SLOT(update()));
     QObject::connect(&worldWidget,SIGNAL(sceneUpdated()),this,SLOT(updateStatusBar()));
-    QObject::connect(saveNeuraleNetworkAction,SIGNAL(triggered(bool)),this,SLOT(saveNeuraleNetwork()));
+    QObject::connect(saveNeuralNetworkAction,SIGNAL(triggered(bool)),this,SLOT(saveNeuralNetwork()));
+    QObject::connect(loadNeuralNetworkAction, SIGNAL(triggered(bool)),this, SLOT(loadNeuralNetwork()));
 }
 
 void MainWindow::loadWorld()
@@ -312,13 +314,13 @@ void MainWindow::updateStatusBar()
     this->statusBar()->showMessage(message);
 }
 
-void MainWindow::saveNeuraleNetwork()
+void MainWindow::saveNeuralNetwork()
 {
     if(shared_ptr<Animal> a = selectedAnimal.lock())
-        saveNeuraleNetwork(a,true);
+        saveNeuralNetwork(a,true);
 }
 
-void MainWindow::saveNeuraleNetwork(shared_ptr<Animal> a, bool pauseDuringSave)
+void MainWindow::saveNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringSave)
 {
     bool pause = false;
     if(pauseDuringSave && worldWidget.isSimulationRunning())
@@ -338,3 +340,27 @@ void MainWindow::saveNeuraleNetwork(shared_ptr<Animal> a, bool pauseDuringSave)
         worldWidget.startSimulation();
 }
 
+void MainWindow::loadNeuralNetwork()
+{
+    if(shared_ptr<Animal> a = selectedAnimal.lock())
+        loadNeuralNetwork(a,true);
+}
+
+void MainWindow::loadNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringLoad)
+{
+    bool pause = false;
+    if(pauseDuringLoad && worldWidget.isSimulationRunning())
+        pause = true;
+    if(pause)
+        worldWidget.suspendSimulation();
+
+    QString filter = "XML files (*.xml);;All files (*.*)";
+    QString defaultFilter = "XML files (*.xml)";
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+                                                    filter,&defaultFilter);
+
+    SaveManager saveManager;
+    NeuralNetwork* newBrain = saveManager.LoadNetwork(filePath);
+
+    a->setBrain(newBrain);
+}

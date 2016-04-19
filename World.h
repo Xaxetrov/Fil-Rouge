@@ -34,6 +34,7 @@ public:
     //You sir are hopeless...
     int getSizeY() const;
 
+    //I'm as wise as the world. Oh wait...
     int getWorldAge() const {return m_tickPassed;}
 
     void setSize(int size_x, int size_y);

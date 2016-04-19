@@ -472,3 +472,9 @@ double Animal::getRotation() const
 {
     return m_rotation;
 }
+
+void Animal::setBrain(NeuralNetwork *newBrain)
+{
+    delete(m_brain);
+    m_brain = newBrain;
+}

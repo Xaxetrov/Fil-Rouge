@@ -35,8 +35,15 @@ public:
     const NeuralNetwork * getBrain() const;
     bool isDead() const;
     bool isFemale() const;
+    virtual unsigned int getTypeId() const { return ID_ANIMAL; }
+    virtual int getNeralNetworkId() const { return NN_ID_ANIMAL; }
+    vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
+    vector<weak_ptr<Entity> > getSubListSolidCollision();
+    vector<weak_ptr<Entity> > getSubListResourceCollision();
 
+    //setters
     void setMating();
+    void setBrain(NeuralNetwork * newBrain);
 
     //basic methods
     void die();
@@ -47,9 +54,6 @@ public:
     void mate();
     void attack();
     void loseLive(unsigned liveToLose);
-    vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
-    vector<weak_ptr<Entity> > getSubListSolidCollision();
-    vector<weak_ptr<Entity> > getSubListResourceCollision();
     void addEntityInListCollision(weak_ptr<Entity> e);
     void clearEntityListCollision();
 
@@ -58,9 +62,6 @@ public:
     virtual int computeScore();
     virtual void mappageInput();
     virtual void mappageOutput();
-
-    virtual unsigned int getTypeId() const { return ID_ANIMAL; }
-    virtual int getNeralNetworkId() const { return NN_ID_ANIMAL; }
 
 protected:
     virtual void tryToEat(std::shared_ptr<Entity> food);

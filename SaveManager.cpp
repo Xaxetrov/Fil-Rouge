@@ -75,7 +75,7 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
     return 0;
 }
 
-NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
+NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)
 {
     /*std::vector<unsigned int> myV;
     myV.push_back(1);
@@ -113,7 +113,7 @@ NeuralNetwork SaveManager::LoadNetwork(QString neuralNetworkName)
     {   std::cout << "Error in reading XML" << std::endl;
     }
 
-    NeuralNetwork n(inputsNum,neuronWeights);
+    NeuralNetwork * n = new NeuralNetwork(inputsNum,neuronWeights);
 
     return n;
 

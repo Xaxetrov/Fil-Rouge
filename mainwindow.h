@@ -25,8 +25,10 @@ public:
 public slots:
     void switchTimer();
     void keyPressEvent(QKeyEvent * e);
-    void saveNeuraleNetwork(shared_ptr<Animal> a, bool pauseDuringSave);
-    void saveNeuraleNetwork();
+    void saveNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringSave);
+    void saveNeuralNetwork();
+    void loadNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringLoad);
+    void loadNeuralNetwork();
     void setSelectedAnimal(std::weak_ptr<Animal> a);
     void updateStatusBar();
 
@@ -48,7 +50,8 @@ private:
     QMenu * animalMenu;
     QAction * simmulationStartStopAction;
     QAction * fileExitAction;
-    QAction * saveNeuraleNetworkAction;
+    QAction * saveNeuralNetworkAction;
+    QAction * loadNeuralNetworkAction;
 
     World world;
     std::weak_ptr<Animal> selectedAnimal;
