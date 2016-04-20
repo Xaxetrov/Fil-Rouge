@@ -88,6 +88,10 @@ void World::feedWithRandomHerbivore(unsigned short numberOfEntityToAdd)
 
 void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
 {
+    if(bestHerbivore.size() == 0)
+    {
+        return;
+    }
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
       int x = rand() % WORLD_SIZE_X;
@@ -124,6 +128,10 @@ void World::feedWithRandomCarnivore(unsigned short numberOfEntityToAdd)
 
 void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
 {
+    if(bestCarnivore.size() == 0)
+    {
+        return;
+    }
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
       int x = rand() % WORLD_SIZE_X;

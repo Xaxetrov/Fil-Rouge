@@ -13,18 +13,19 @@ Neuron::Neuron(int inputNum) : m_inputNum(inputNum)
     }
 }
 
-Neuron::Neuron(const std::vector<double>& weights) : m_inputNum(weights.size())
+Neuron::Neuron(const std::vector<double>& weights) : m_inputNum(weights.size()), m_weights(weights)
 {
-    for(unsigned int i=0; i<weights.size(); i++)
+    /*for(unsigned int i=0; i<weights.size(); i++)
     {
         m_weights.push_back(weights.at(i));
-    }
+    }*/
 }
 
 double Neuron::run(std::vector<double> inputs)
 {
     double sum = 0;
-
+    int inputSize = inputs.size();
+    int weightsSize = m_weights.size()-1;
     //bad size of inputs
     if(inputs.size() != m_weights.size()-1)
     {

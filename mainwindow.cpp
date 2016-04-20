@@ -89,8 +89,8 @@ void MainWindow::loadWorld()
 //
     srand(std::time(0));
     //world.feedWithRandomAnimal(40);
-    world.feedWithRandomHerbivore(30);
-    world.feedWithRandomCarnivore(10);
+    world.feedWithRandomHerbivore(1);
+    world.feedWithRandomCarnivore(0);
 
     /*shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
     shared_ptr<Animal> female(make_shared<Animal>(300, 250, 10, 50, 2, &world, true) );
