@@ -20,6 +20,7 @@ public:
     std::vector<double>* getPointerToWeights() {return &m_weights;}
     std::vector<double> getLastInputs() const { return m_lastInputs; }
     double getLastOutput() const { return m_lastOutput; }
+    void setWeights(std::vector<double> weights) {m_weights = weights;}
 
     double run(std::vector<double> inputs);
 
