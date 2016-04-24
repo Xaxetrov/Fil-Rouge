@@ -79,14 +79,15 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
             {
                 childNeurons.push_back(fatherNeurons[j]);
             }
-            std::vector<double> * weight = childNeurons.at(j).getPointerToWeights();
-            for(double val:*weight)
+            std::vector<double> weight = childNeurons.at(j).getWeights();
+            for(double val:weight)
             {
                 if(modificationDistribution(modificationGenerator))
                 {
                     val += randomChangeDistribution(randomChangeGenerator);
                 }
             }
+            childNeurons.at(j).setWeights(weight);
         }
         m_layers.push_back(childNeurons);
         childNeurons.clear();

@@ -18,6 +18,7 @@ public:
     int getInputsNum() {return m_inputNum;}
     std::vector<double> getWeights() const{return m_weights;}
     std::vector<double>* getPointerToWeights() {return &m_weights;}
+    void setWeights(std::vector<double> weights) {m_weights = weights;}
 
     double run(std::vector<double> inputs);
 
