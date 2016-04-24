@@ -31,6 +31,7 @@ double Neuron::run(std::vector<double> inputs)
     {
         return 0;
     }
+    m_lastInputs = inputs;
     //sums the weights * inputs
     for(unsigned int i=0; i<m_weights.size()-1; i++)
     {
@@ -39,7 +40,8 @@ double Neuron::run(std::vector<double> inputs)
     //adds in the bias
     sum += m_weights[m_weights.size()-1];
     //goes through the sigmoid and returns;
-    return Sigmoid(sum);
+    m_lastOutput = Sigmoid(sum);
+    return m_lastOutput;
 }
 
 double  Neuron::RandomWeight()

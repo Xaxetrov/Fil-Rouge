@@ -19,6 +19,9 @@ WorldColors::WorldColors()
     meatBrush = QBrush(QColor(212,60,0));
     meatPen = QPen(QColor(212,60,0));
 
+    // NNViewWidget
+    connexionPen = QPen(Qt::gray);
+
     teamsPen = QPen(Qt::black);
     teamsSelectedPen = QPen(Qt::yellow);
     teamsEye = QBrush(Qt::black);
@@ -128,6 +131,11 @@ QBrush & WorldColors::getGrassBrush()
 QPen & WorldColors::getGrassPen()
 {
     return grassPen;
+}
+
+QPen & WorldColors::getConnexionPen()
+{
+    return connexionPen;
 }
 
 std::vector<QBrush> & WorldColors::getTeamsBrushs()
