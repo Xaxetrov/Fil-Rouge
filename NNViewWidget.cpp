@@ -25,7 +25,8 @@ void NNViewWidget::updateView()
     {
       for(int j = 0; j < LAYER_SIZES[i]; j++)
       {
-        int x = (2*((j+1)%2)-1)*6*((j+1)/2) - 3*((LAYER_SIZES[i]%2)-1);
+        //int x = (2*((j+1)%2)-1)*6*((j+1)/2) - 3*((LAYER_SIZES[i]%2)-1);
+        int x = (LAYER_SIZES[i]/2) * (-6) - 3*((LAYER_SIZES[i]%2)-1) + 6 * j;
         int y = -20*i;
 
         std::vector<double> weights = sharedAnimal->getBrain()->getLayers().at(i-1).getNeurons().at(j).getWeights();
@@ -35,9 +36,9 @@ void NNViewWidget::updateView()
         {
           if(inputs.size() == LAYER_SIZES[i-1])
           {
-            double color = 171-100*inputs[k];
-            if(color < 0)
-              color = 0;
+            double color = 171.0-171.0*inputs[k];
+            if(color < 20)
+              color = 20;
             else if(color > 171)
               color = 171;
 
@@ -54,7 +55,8 @@ void NNViewWidget::updateView()
 
           QPolygonF connexion;
           connexion.push_back(QPoint(x, y));
-          connexion.push_back(QPoint((2*((k+1)%2)-1)*6*((k+1)/2) - 3*((LAYER_SIZES[i-1]%2)-1),-20*(i-1)));
+          //connexion.push_back(QPoint((2*((k+1)%2)-1)*6*((k+1)/2) - 3*((LAYER_SIZES[i-1]%2)-1),-20*(i-1)));
+          connexion.push_back(QPoint((LAYER_SIZES[i-1]/2) * (-6) - 3*((LAYER_SIZES[i-1]%2)-1) + 6 * k,-20*(i-1)));
           scene.addPolygon(connexion,connexionPen,backgroundBrush);
         }
       }
@@ -65,7 +67,8 @@ void NNViewWidget::updateView()
     {
       for(int j = 0; j < LAYER_SIZES[i]; j++)
       {
-        int x = (2*((j+1)%2)-1)*6*((j+1)/2) - 3*((LAYER_SIZES[i]%2)-1);
+        //int x = (2*((j+1)%2)-1)*6*((j+1)/2) - 3*((LAYER_SIZES[i]%2)-1);
+        int x = (LAYER_SIZES[i]/2) * (-6) - 3*((LAYER_SIZES[i]%2)-1) + 6 * j;
         int y = -20*i;
 
         double neuronActivation = 0;
@@ -79,12 +82,13 @@ void NNViewWidget::updateView()
           neuronActivation = sharedAnimal->getBrain()->getLayers().at(0).getNeurons().at(0).getLastInputs().at(j);
         }
 
-        double color = 171-100*neuronActivation;
-        if(color < 0)
-          color = 0;
+        double color = 171.0-171.0*neuronActivation;
+        cout << neuronActivation << endl;
+        if(color < 20)
+          color = 20;
         else if(color > 171)
           color = 171;
-        QColor neuronColor(QColor(210, color, color));
+        QColor neuronColor(QColor(171, color, color));
         QRect baseSquare(x-1.5, y-1.8, 3, 3);
         scene.addEllipse(baseSquare,borderPen,neuronColor);
       }
