@@ -12,7 +12,7 @@
 using namespace std;
 
 Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world) :
-    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
+    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world), m_age(0)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 0;
@@ -59,7 +59,7 @@ Animal::~Animal()
 
 int Animal::play()
 {
-
+    m_age++;
     if(m_health <= 0 || dead)
     {
       dead = true;
@@ -167,7 +167,7 @@ void Animal::move(int speedPercentage)
 
 int Animal::computeScore()
 {
-    return m_health*100 + m_hunger*10 + m_thirst*10 + m_fear*3;
+    return m_health*100 - m_hunger*10 - m_thirst*10;// + m_fear*3;
 }
 
 //TODO: TO FINISH
@@ -396,6 +396,11 @@ vector<weak_ptr<Entity>> Animal::getSubListResourceCollision()
         }
     }
     return subListCollision;
+}
+
+int Animal::getAge() const
+{
+    return m_age;
 }
 
 int Animal::getMaxSpeed() const
