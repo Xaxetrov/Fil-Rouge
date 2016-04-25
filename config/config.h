@@ -79,7 +79,7 @@ const unsigned int DRINK_MAX_VALUE = 100; // the max is not the used value if th
 // World Parameters
 const unsigned short MIN_NUMBER_OF_ANIMAL = 10; //unused
 const unsigned short MIN_NUMBER_OF_HERBVORE = 10;
-const unsigned short MIN_NUMBER_OF_CARNIVORE = 0;
+const unsigned short MIN_NUMBER_OF_CARNIVORE = 3;
 const unsigned short MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 const unsigned short MAX_NUMBER_CARNIVORE_CHAMPION = 10;
 
