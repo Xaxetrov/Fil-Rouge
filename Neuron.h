@@ -18,6 +18,8 @@ public:
     int getInputsNum() {return m_inputNum;}
     std::vector<double> getWeights() const{return m_weights;}
     std::vector<double>* getPointerToWeights() {return &m_weights;}
+    std::vector<double> getLastInputs() const { return m_lastInputs; }
+    double getLastOutput() const { return m_lastOutput; }
     void setWeights(std::vector<double> weights) {m_weights = weights;}
 
     double run(std::vector<double> inputs);
@@ -27,6 +29,8 @@ public:
 private:
     int m_inputNum;
     std::vector<double> m_weights;
+    double m_lastOutput;
+    std::vector<double> m_lastInputs;
 
     //sigmoid response curve
     //double Sigmoid(double x){return 1/(1+exp(-x));}

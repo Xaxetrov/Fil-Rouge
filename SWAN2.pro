@@ -38,6 +38,7 @@ SOURCES += main.cpp\
     Visionsector_NonLiving.cpp \
     SaveManager.cpp \
     EntityViewWidget.cpp \
+    NNViewWidget.cpp \
     Vegetal.cpp \
     Water.cpp \
     EntityFrame.cpp \
@@ -73,6 +74,7 @@ HEADERS  += mainwindow.h \
     Water.h \
     EntityFrame.h \
     EntityAttributeWidget.h \
+    NNViewWidget.h \
     Resource.h \
     Meat.h \
     VisionSector_NonLiving.h \

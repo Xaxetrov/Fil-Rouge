@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 
 #include "EntityAttributeWidget.h"
+#include "NNViewWidget.h"
 #include "EntityViewWidget.h"
 #include "Animal.h"
 
@@ -24,6 +25,7 @@ public slots:
 protected:
     EntityViewWidget * entityView;
     EntityAttributeWidget * entityAttribute;
+    NNViewWidget * nnView;
 
 
 };

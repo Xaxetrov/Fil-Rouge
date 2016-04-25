@@ -21,6 +21,7 @@ public:
     ~Animal();
 
     //getters
+    int getAge() const;
     int getMaxSpeed() const;
     int getHealth() const;
     int getHunger() const;
@@ -77,6 +78,7 @@ protected:
     int m_attack;
 
 private :
+    int m_age;
     int m_maxSpeed;
     double m_damage;
     double m_angle; // m_angle in rad

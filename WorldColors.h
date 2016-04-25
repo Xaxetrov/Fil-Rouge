@@ -21,6 +21,7 @@ public:
     QPen & getWaterPen();
     QBrush & getGrassBrush();
     QPen & getGrassPen();
+    QPen & getConnexionPen();
     std::vector<QBrush> & getTeamsBrushs();
     QPen & getTeamsPen();
     QBrush & getTeamsEyeBrush();
@@ -41,6 +42,7 @@ private:
     //meat color:
     QBrush meatBrush;
     QPen meatPen;
+    QPen connexionPen;
     ///living colors:
     //teams colors:
     std::vector<QBrush> teamsBrushs;
