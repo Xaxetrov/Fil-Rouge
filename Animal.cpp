@@ -17,6 +17,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
     m_angle = 0; //initialize angle here
     m_hunger = 0;
     m_thirst = 0;
+    m_speed = 0;
     m_health = MAX_HEALTH;
     dead = false;
     m_fear = 0;
@@ -149,16 +150,16 @@ int Animal::play()
 
 void Animal::move(int speedPercentage)
 {
-    double speed = speedPercentage * m_maxSpeed / 100.0;
-    if(speed * MOVE_ENERGY_LOSS > m_energy)
-      speed = m_energy / MOVE_ENERGY_LOSS / 2;
-    m_energy -= speed * MOVE_ENERGY_LOSS / 2;
-    setCoordinate(getX() + cos(m_angle) * speed, getY() + sin(m_angle) * speed);
+    m_speed = speedPercentage * m_maxSpeed / 100.0;
+    if(m_speed * MOVE_ENERGY_LOSS > m_energy)
+      m_speed = m_energy / MOVE_ENERGY_LOSS / 2;
+    m_energy -= m_speed * MOVE_ENERGY_LOSS / 2;
+    setCoordinate(getX() + cos(m_angle) * m_speed, getY() + sin(m_angle) * m_speed);
     m_world->updateListCollision(this->shared_from_this());
     vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
     if(animalCollisionList.size() != 0)
     {
-        setCoordinate(getX() - cos(m_angle)*speed, getY() - sin(m_angle)*speed);
+        setCoordinate(getX() - cos(m_angle)*m_speed, getY() - sin(m_angle)*m_speed);
         //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
     }
 
@@ -223,24 +224,27 @@ void Animal::turn(double angle)
 // The animal drink one time for each pool it is on
 void Animal::drink()
 {
-    vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
-    for (weak_ptr<Entity> weakWater:waterCollisionList)
+    if(m_speed <= MAX_SPEED_TO_EAT)
     {
-        // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
-        /*m_collisionList.remove_if([weakWater](weak_ptr<Entity> p)
-                                  { return !( p.owner_before(weakWater) || weakWater.owner_before(p) ); }
-                                 );*/
-        shared_ptr<Entity> waterEntity = weakWater.lock();
-        if(waterEntity)
+        vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
+        for (weak_ptr<Entity> weakWater:waterCollisionList)
         {
-            shared_ptr<Water> water;
-            if(water = dynamic_pointer_cast<Water>(waterEntity))
+            // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
+            /*m_collisionList.remove_if([weakWater](weak_ptr<Entity> p)
+                                      { return !( p.owner_before(weakWater) || weakWater.owner_before(p) ); }
+                                     );*/
+            shared_ptr<Entity> waterEntity = weakWater.lock();
+            if(waterEntity)
             {
-               if(m_thirst > 0)
-               {
-                   int quantity = std::min(100,m_thirst); //don't drink more than needed (no negative thirst)
-                   m_thirst -= water->drink(quantity); //drink as much as possible on the water source
-               }
+                shared_ptr<Water> water;
+                if(water = dynamic_pointer_cast<Water>(waterEntity))
+                {
+                   if(m_thirst > 0)
+                   {
+                       int quantity = std::min(100,m_thirst); //don't drink more than needed (no negative thirst)
+                       m_thirst -= water->drink(quantity); //drink as much as possible on the water source
+                   }
+                }
             }
         }
     }
@@ -249,17 +253,20 @@ void Animal::drink()
 // The animal drink one time for each pool it is on
 void Animal::eat()
 {
-    vector<weak_ptr<Entity>> foodCollisionList = getSubListResourceCollision();
-    for (weak_ptr<Entity> weakFood:foodCollisionList)
+    if(m_speed <= MAX_SPEED_TO_EAT)
     {
-        // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
-        /*m_collisionList.remove_if([weakFood](weak_ptr<Entity> p)
-                                  { return !( p.owner_before(weakFood) || weakFood.owner_before(p) ); }
-                                 );*/
-        shared_ptr<Entity> foodEntity = weakFood.lock();
-        if(foodEntity)
+        vector<weak_ptr<Entity>> foodCollisionList = getSubListResourceCollision();
+        for (weak_ptr<Entity> weakFood:foodCollisionList)
         {
-            tryToEat(foodEntity);
+            // remove element from the list with a lambda expression because weak_pointer doesn't have == operator
+            /*m_collisionList.remove_if([weakFood](weak_ptr<Entity> p)
+                                      { return !( p.owner_before(weakFood) || weakFood.owner_before(p) ); }
+                                     );*/
+            shared_ptr<Entity> foodEntity = weakFood.lock();
+            if(foodEntity)
+            {
+                tryToEat(foodEntity);
+            }
         }
     }
 }
