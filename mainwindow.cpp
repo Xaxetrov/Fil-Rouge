@@ -243,12 +243,12 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
-    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, 1000));
+    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, VEGETAL_MAXQUANTITY));
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, 1000));
+    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, WATER_MAXQUANTITY));
     world.addEntity(entity);
   }
   /*

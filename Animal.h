@@ -15,9 +15,9 @@ class Animal : public Solid, public enable_shared_from_this<Animal>
 {
 public:
     //ctor, dtor
-    Animal(double x, double y, int radius, int maxSpeed, double damage, World * world);
-    Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, bool sex);
-    Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, NeuralNetwork * brain, int mating = 0);
+    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world);
+    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex);
+    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, int mating = 0);
     ~Animal();
 
     //getters
@@ -28,6 +28,7 @@ public:
     int getThirst() const;
     int getFear() const;
     int getMating() const;
+    int getEnergy() const;
     double getSpeed() const;
     double getRotation() const;
     double getDamage() const;
@@ -76,6 +77,7 @@ protected:
     bool m_female;
     int m_mating;
     int m_attack;
+    double m_energy;
 
 private :
     int m_age;
@@ -138,7 +140,7 @@ void Animal::reproduce(shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        shared_ptr<Living> animal(make_shared<Living>(getX()+distX, getY()-distY, 10, 50, 2, m_world, childBrain) );
+        shared_ptr<Living> animal(make_shared<Living>(getX()+distX, getY()-distY, INITIAL_RADIUS, 50, 2, DEFAULT_ENERGY, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));

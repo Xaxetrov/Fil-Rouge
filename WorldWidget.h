@@ -42,10 +42,10 @@ signals:
 
 private:
     void drawEntity(const shared_ptr<Entity> entity);
-    void drawAnimal(QPoint pos,int radius, double angle, QBrush brush, QPen pen);
+    void drawAnimal(QPoint pos,double radius, double angle, int health, QBrush brush, QPen pen);
     void drawAnimal(const shared_ptr<Animal> animal);
     void drawAnimal(const shared_ptr<Animal> animal, QPoint pos);
-    void drawBasicEntity(QPoint pos,int radius, QBrush brush, QPen pen);
+    void drawBasicEntity(QPoint pos,double radius, QBrush brush, QPen pen);
 
 private:
     QGraphicsScene * m_scene;

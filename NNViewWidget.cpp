@@ -83,7 +83,6 @@ void NNViewWidget::updateView()
         }
 
         double color = 171.0-171.0*neuronActivation;
-        cout << neuronActivation << endl;
         if(color < 20)
           color = 20;
         else if(color > 171)

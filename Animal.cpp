@@ -11,8 +11,8 @@
 
 using namespace std;
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world) :
-    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world), m_age(0)
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world) :
+    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world), m_age(0), m_energy(energy)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 0;
@@ -38,13 +38,13 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, Worl
     setCreationDate(world->getWorldAge());
 }
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, world)
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, energy, world)
 {
     m_female = sex;
 }
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, World * world, NeuralNetwork * brain, int mating) :
-    Animal(x,y,radius,maxSpeed,damage,world)
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, int mating) :
+    Animal(x,y,radius,maxSpeed,damage,energy,world)
 {
     m_mating = mating;
     m_brain = brain;
@@ -60,6 +60,11 @@ Animal::~Animal()
 int Animal::play()
 {
     m_age++;
+
+    m_energy += ENERGY_RECUP;
+    if(m_energy > DEFAULT_ENERGY)
+      m_energy = DEFAULT_ENERGY;
+
     if(m_health <= 0 || dead)
     {
       dead = true;
@@ -145,6 +150,9 @@ int Animal::play()
 void Animal::move(int speedPercentage)
 {
     double speed = speedPercentage * m_maxSpeed / 100.0;
+    if(speed * MOVE_ENERGY_LOSS > m_energy)
+      speed = m_energy / MOVE_ENERGY_LOSS / 2;
+    m_energy -= speed * MOVE_ENERGY_LOSS / 2;
     setCoordinate(getX() + cos(m_angle) * speed, getY() + sin(m_angle) * speed);
     m_world->updateListCollision(this->shared_from_this());
     vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
@@ -203,6 +211,10 @@ void Animal::mappageOutput()
 
 void Animal::turn(double angle)
 {
+  if(fabs(angle) * TURN_ENERGY_LOSS > m_energy)
+    angle = m_energy / TURN_ENERGY_LOSS / 2;
+  m_energy -= fabs(angle) * TURN_ENERGY_LOSS / 2;
+
   m_angle += angle;
   m_angle = Coordinate::modulo2PI(m_angle);
 }
@@ -436,6 +448,11 @@ int Animal::getMating() const
 void Animal::setMating()
 {
    m_mating = 0;
+}
+
+int Animal::getEnergy() const
+{
+   return m_energy;
 }
 
 double Animal::getDamage() const

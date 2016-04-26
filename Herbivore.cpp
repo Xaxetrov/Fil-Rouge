@@ -2,19 +2,19 @@
 #include "Vegetal.h"
 
 
-Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, World *world):
-    Animal(x,y,radius,maxSpeed,damage,world)
+Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world):
+    Animal(x,y,radius,maxSpeed,damage,energy,world)
 {
     m_attack = ATTACK_HERBIVORE;
 }
-Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, World *world, bool sex):
-    Animal(x,y,radius,maxSpeed,damage,world, sex)
+Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, bool sex):
+    Animal(x,y,radius,maxSpeed,damage,energy,world, sex)
 {
     m_attack = ATTACK_HERBIVORE;
 }
 
-Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, World *world, NeuralNetwork * brain, int mating):
-    Animal(x,y,radius,maxSpeed,damage,world, brain, mating)
+Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, NeuralNetwork * brain, int mating):
+    Animal(x,y,radius,maxSpeed,damage,energy,world, brain, mating)
 {
     m_attack = ATTACK_HERBIVORE;
 }
@@ -28,7 +28,9 @@ void Herbivore::tryToEat(std::shared_ptr<Entity> food)
        if(m_hunger > 0)
        {
            int quantity = std::min(EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
-           m_hunger -= vegetal->eat(quantity);
+           double eatenQuantity = vegetal->eat(quantity);
+           m_hunger -= eatenQuantity;
+           m_radius += FATNESS_HERBIVORE * eatenQuantity;
        }
        //heal himself
        if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)

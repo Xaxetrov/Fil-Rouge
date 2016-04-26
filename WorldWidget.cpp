@@ -7,6 +7,7 @@
 #include "Animal.h"
 #include "Vegetal.h"
 #include "Water.h"
+#include "Meat.h"
 #include "SaveManager.h"
 
 
@@ -107,7 +108,7 @@ void WorldWidget::drawEntity(const shared_ptr<Entity> e)
 {
     ///TODO implemente toric view on diagonals
    double x=e->getCoordinate().getX(), y=e->getCoordinate().getY();
-   int radius = e->getRadius();
+   double radius = e->getRadius();
    vector<QPoint> positions;
    positions.push_back(QPoint(x,y));
    if(x<radius)
@@ -152,21 +153,39 @@ void WorldWidget::drawEntity(const shared_ptr<Entity> e)
    {
        for(QPoint pos:positions)
        {
-           drawBasicEntity(pos,radius,colors.getEntityBrush(e),colors.getEntityPen(e));
+          QBrush brush = colors.getEntityBrush(e);
+          QPen pen = colors.getEntityPen(e);
+          if(const shared_ptr<Resource> resource = dynamic_pointer_cast<Resource>(e))
+          {
+            // Add transparency
+            double transparency = ((double)resource->getQuantity()) / ((double)resource->getMaxQuantity());
+            brush.setColor(QColor(brush.color().red(), brush.color().green(), brush.color().blue(), transparency * 255.0));
+            pen.setColor(QColor(pen.color().red(), pen.color().green(), pen.color().blue(), transparency * 255.0));
+          }
+          drawBasicEntity(pos,radius,brush,pen);
        }
    }
 }
 
 
-void WorldWidget::drawAnimal(QPoint pos, int radius, double angle, QBrush brush, QPen pen)
+void WorldWidget::drawAnimal(QPoint pos, double radius, double angle, int health, QBrush brush, QPen pen)
 {
+    // Add transparency
+    double transparency = ((double)health) / MAX_HEALTH;
+    if(transparency < 0.5)
+        transparency = 0.5;
+    brush.setColor(QColor(brush.color().red(), brush.color().green(), brush.color().blue(), transparency * 255.0));
+    pen.setColor(QColor(pen.color().red(), pen.color().green(), pen.color().blue(), transparency * 255.0));
+
     drawBasicEntity(pos,radius,brush,pen);
     //add an eye to show the looking direction
-    int eyeRadius = radius/3;
-    int eyeXCenter = pos.x()+cos(angle)*(radius-eyeRadius);
-    int eyeYCenter = pos.y()+sin(angle)*(radius-eyeRadius);
+    double eyeRadius = radius/3;
+    double eyeXCenter = pos.x()+cos(angle)*(radius-eyeRadius);
+    double eyeYCenter = pos.y()+sin(angle)*(radius-eyeRadius);
     QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
-    m_scene->addEllipse(eyeSquare,pen,colors.getTeamsEyeBrush());
+    QBrush eyeBrush = colors.getTeamsEyeBrush();
+    eyeBrush.setColor(QColor(eyeBrush.color().red(), eyeBrush.color().green(), eyeBrush.color().blue(), transparency * 255));
+    m_scene->addEllipse(eyeSquare,pen,eyeBrush);
 }
 
 void WorldWidget::drawAnimal(const shared_ptr<Animal> animal)
@@ -182,10 +201,10 @@ void WorldWidget::drawAnimal(const shared_ptr<Animal> animal, QPoint pos)
         animalPen = colors.getTeamsSelectedPen();
     else
         animalPen = colors.getEntityPen(animal);
-    drawAnimal(pos,animal->getRadius(),animal->getAngle(),colors.getEntityBrush(animal),animalPen);
+    drawAnimal(pos,animal->getRadius(),animal->getAngle(),animal->getHealth(),colors.getEntityBrush(animal),animalPen);
 }
 
-void WorldWidget::drawBasicEntity(QPoint pos, int radius, QBrush brush, QPen pen)
+void WorldWidget::drawBasicEntity(QPoint pos, double radius, QBrush brush, QPen pen)
 {
     QRect baseSquare(pos.x()-radius,pos.y()-radius,2*radius,2*radius);
     m_scene->addEllipse(baseSquare,pen,brush);
@@ -214,5 +233,3 @@ WorldColors & WorldWidget::getColors()
 {
     return colors;
 }
-
-

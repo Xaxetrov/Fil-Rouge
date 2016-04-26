@@ -51,11 +51,18 @@ const unsigned int ID_VEGETAL = 12;
 const unsigned int ID_MEAT = 13;
 
 // Resource evolution (proportional to the resource surface)
-const int EVOLUTION_WATER = 10;
+const int EVOLUTION_WATER = 5;
 const int EVOLUTION_MEAT = -1;
-const int EVOLUTION_VEGETAL = 10;
+const int EVOLUTION_VEGETAL = 5;
 
 // Animal Parameters
+const double INITIAL_RADIUS = 8;
+const double FATNESS_HERBIVORE = 0.0003; // the greater the constant is, the quicker the animals become fat...
+const double FATNESS_CARNIVORE = 0.0003;
+const double DEFAULT_ENERGY = 100;
+const double ENERGY_RECUP = 1;
+const double MOVE_ENERGY_LOSS = 1;
+const double TURN_ENERGY_LOSS = 100;
 const int MAX_HEALTH = 5000;
 const int MAX_HUNGER = 1000;
 const int MAX_THIRST = 1000;
@@ -72,6 +79,8 @@ const unsigned int ATTACK_CARNIVORE = 100;
 const unsigned int EAT_MAX_VEGETAL_QUANTITY = 100; // the max is not the used value if hunger is 0
 const unsigned int EAT_MAX_MEAT_QUANTITY = 100; // the max is not the used value if hunger is 0
 const unsigned int EAT_MAX_HEALING_VALUE = 10; //the max is not the used value if life is full
+const unsigned int VEGETAL_MAXQUANTITY = 1000;
+const unsigned int WATER_MAXQUANTITY = 1000;
 // Animal drinking parameters
 const unsigned int DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
@@ -81,7 +90,7 @@ const unsigned short MIN_NUMBER_OF_ANIMAL = 10; //unused
 const unsigned short MIN_NUMBER_OF_HERBVORE = 10;
 const unsigned short MIN_NUMBER_OF_CARNIVORE = 0;
 const unsigned short MAX_NUMBER_HERBIVORE_CHAMPION = 10;
-const unsigned short MAX_NUMBER_CARNIVORE_CHAMPION = 10;
+const unsigned short MAX_NUMBER_CARNIVORE_CHAMPION = 0;
 
 
 #endif // CONFIG_H
