@@ -2,19 +2,19 @@
 #include "Meat.h"
 
 
-Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, World *world):
-    Animal(x,y,radius,maxSpeed,damage,world)
+Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world):
+    Animal(x,y,radius,maxSpeed,damage,energy,world)
 {
     m_attack = ATTACK_CARNIVORE;
 }
-Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, World *world, bool sex):
-    Animal(x,y,radius,maxSpeed,damage,world, sex)
+Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, bool sex):
+    Animal(x,y,radius,maxSpeed,damage,energy,world, sex)
 {
     m_attack = ATTACK_CARNIVORE;
 }
 
-Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, World *world, NeuralNetwork * brain, int mating):
-    Animal(x,y,radius,maxSpeed,damage,world, brain, mating)
+Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, NeuralNetwork * brain, int mating):
+    Animal(x,y,radius,maxSpeed,damage,energy,world, brain, mating)
 {
     m_attack = ATTACK_CARNIVORE;
 }
@@ -28,7 +28,9 @@ void Carnivore::tryToEat(std::shared_ptr<Entity> food)
        if(m_hunger > 0)
        {
            int quantity = std::min(EAT_MAX_MEAT_QUANTITY,(unsigned)m_hunger);
-           m_hunger -= meat->eat(quantity);
+           double eatenQuantity = meat->eat(quantity);
+           m_hunger -= eatenQuantity;
+           m_radius += FATNESS_CARNIVORE * eatenQuantity;
        }
        //heal himself
        if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
@@ -59,5 +61,3 @@ bool Carnivore::tryToMate(std::shared_ptr<Entity> carnivoreEntity)
     }
     return false;
 }
-
-

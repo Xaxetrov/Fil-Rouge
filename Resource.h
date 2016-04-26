@@ -11,6 +11,7 @@ public:
     int play();
 
     int getQuantity() const;
+    int getMaxQuantity() const;
     virtual bool isDead() const{return false;} //I'm unkillable !!!
 
 protected :

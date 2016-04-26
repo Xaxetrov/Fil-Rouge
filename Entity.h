@@ -30,10 +30,10 @@ public:
 
 protected:
     void setCreationDate(int creationDate){m_creationDate=creationDate;}
+    double m_radius;
 
 private:
     Coordinate m_coordinate;
-    int m_radius;
     int m_creationDate;
 };
 

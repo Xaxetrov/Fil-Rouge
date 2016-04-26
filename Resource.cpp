@@ -17,6 +17,11 @@ int Resource::getQuantity() const
     return m_quantity;
 }
 
+int Resource::getMaxQuantity() const
+{
+    return m_maxQuantity;
+}
+
 int Resource::play()
 {
     m_quantity += std::min(m_quantityEvolution,m_maxQuantity-m_quantity);

@@ -73,7 +73,7 @@ void EntityAttributeWidget::update()
       matingLabel->setVisible(true);
       sexLabel->setVisible(true);
 
-      healthLabel->setText(healthText + QString::number(sharedAnimal->getHealth()));
+      healthLabel->setText(healthText + QString::number(sharedAnimal->getEnergy()));
       hungerLabel->setText(hungerText + QString::number(sharedAnimal->getHunger()));
       thirstLabel->setText(thirstText + QString::number(sharedAnimal->getThirst()));
       fearLabel->setText(fearText + QString::number(sharedAnimal->getFear()));
