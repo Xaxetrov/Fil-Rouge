@@ -77,6 +77,7 @@ protected:
     bool m_female;
     int m_mating;
     int m_attack;
+    double m_speed;
     double m_energy;
 
 private :
@@ -86,7 +87,6 @@ private :
     double m_angle; // m_angle in rad
     int m_fear;
     bool dead;
-    double m_speed;
     double m_rotation;
     list<weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
