@@ -36,7 +36,7 @@ const int NN_ID_MEAT = 0;
 // Neurale network weight modification probability
 const double NN_WEIGHT_CHANGE_PROBABILITY = 0.1; // 10% chance of change by weight
 const double NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to a weight is 0
-const double NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.1; // the value added to a weight as a standart deviation of 0.1
+const double NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.05; // the value added to a weight as a standart deviation of 0.05
 
 // User Interface
 const unsigned UPDATE_TIMER_INTERVALE = 10; //ms
@@ -68,7 +68,7 @@ const int MAX_HEALTH = 5000;
 const int MAX_HUNGER = 2000;
 const int MAX_THIRST = 2000;
 const unsigned int MAX_FEAR = 100;
-const unsigned int MAX_MATING = 3000;
+const unsigned int MAX_MATING = 2500;
 const unsigned int MAX_CHILD_PER_ANIMAL = 7;
 const unsigned int DEFAULT_HUNGER = 500;
 const unsigned int DEFAULT_THIRST = 500;
