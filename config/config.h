@@ -25,7 +25,7 @@ const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 
 // Neural network
 const unsigned int NB_LAYERS = 3;
-const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+3, 12, 3};
+const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4, 12, 3};
 // Neural network Entity id
 const int NN_ID_ANIMAL = 2;
 const int NN_ID_HERBIVORE = 1;
@@ -34,7 +34,7 @@ const int NN_ID_VEGETAL = 1;
 const int NN_ID_WATER = -1;
 const int NN_ID_MEAT = 0;
 // Neurale network weight modification probability
-const double NN_WEIGHT_CHANGE_PROBABILITY = 0.01; // 1% chance of change by weight
+const double NN_WEIGHT_CHANGE_PROBABILITY = 0.1; // 10% chance of change by weight
 const double NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to a weight is 0
 const double NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.1; // the value added to a weight as a standart deviation of 0.1
 
@@ -68,8 +68,8 @@ const int MAX_HEALTH = 5000;
 const int MAX_HUNGER = 2000;
 const int MAX_THIRST = 2000;
 const unsigned int MAX_FEAR = 100;
-const unsigned int MAX_MATING = 1500;
-const unsigned int MAX_CHILD_PER_ANIMAL = 6;
+const unsigned int MAX_MATING = 3000;
+const unsigned int MAX_CHILD_PER_ANIMAL = 7;
 const unsigned int DEFAULT_HUNGER = 500;
 const unsigned int DEFAULT_THIRST = 500;
 const double MAX_ATTACK_ANGLE = PI/2; //attack angle is [-MAX_ATTACK_ANGLE ; MAX_ATTACK_ANGLE] //Disabled !
@@ -80,8 +80,8 @@ const unsigned int ATTACK_CARNIVORE = 100;
 const unsigned int EAT_MAX_VEGETAL_QUANTITY = 100; // the max is not the used value if hunger is 0
 const unsigned int EAT_MAX_MEAT_QUANTITY = 100; // the max is not the used value if hunger is 0
 const unsigned int EAT_MAX_HEALING_VALUE = 10; //the max is not the used value if life is full
-const unsigned int VEGETAL_MAXQUANTITY = 1000;
-const unsigned int WATER_MAXQUANTITY = 1000;
+const unsigned int VEGETAL_MAXQUANTITY = 5000;
+const unsigned int WATER_MAXQUANTITY = 5000;
 // Animal drinking parameters
 const unsigned int DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
@@ -89,7 +89,7 @@ const unsigned int DRINK_MAX_VALUE = 100; // the max is not the used value if th
 // World Parameters
 const unsigned short MIN_NUMBER_OF_ANIMAL = 10; //unused
 const unsigned short MIN_NUMBER_OF_HERBVORE = 10;
-const unsigned short MIN_NUMBER_OF_CARNIVORE = 3;
+const unsigned short MIN_NUMBER_OF_CARNIVORE = 0;
 const unsigned short MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 const unsigned short MAX_NUMBER_CARNIVORE_CHAMPION = 0;
 

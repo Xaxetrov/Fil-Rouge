@@ -159,8 +159,8 @@ void Animal::move(int speedPercentage)
     vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
     if(animalCollisionList.size() != 0)
     {
-        setCoordinate(getX() - cos(m_angle)*m_speed, getY() - sin(m_angle)*m_speed);
-        //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+        //Colision disabled !!!
+        //setCoordinate(getX() - cos(m_angle)*m_speed, getY() - sin(m_angle)*m_speed);
     }
 
 //    if (m_world->isCollision(this))
@@ -186,6 +186,7 @@ void Animal::mappageInput()
     m_nnInputs.push_back((double)m_hunger / (double)MAX_HUNGER);
     m_nnInputs.push_back((double)m_thirst / (double)MAX_THIRST);
     m_nnInputs.push_back((double)m_health / (double)MAX_HEALTH);
+    m_nnInputs.push_back((double)m_mating / (double)MAX_MATING);
     vector<std::shared_ptr<Percepted> > percepted = m_vision->getPercepted();
     for(std::shared_ptr<Percepted> p:percepted)
     {
