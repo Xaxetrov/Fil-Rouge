@@ -32,6 +32,8 @@ public slots:
     void setSelectedAnimal(std::weak_ptr<Animal> a);
     void updateStatusBar();
 
+    void saveWorld(bool pauseDuringSave=true);
+
 private:
     void loadWorld();
     void loadXML(QString worldSave);
@@ -46,6 +48,7 @@ private:
     //EntityViewWidget entityWidget;
     EntityFrame entityWidget;
     QMenu * fileMenu;
+    QAction * saveWorldAction;
     QMenu * simulationMenu;
     QMenu * animalMenu;
     QAction * simmulationStartStopAction;

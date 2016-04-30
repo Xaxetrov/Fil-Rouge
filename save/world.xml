@@ -87,7 +87,7 @@
 		<maxSpeed>50</maxSpeed>
 		<attack>20</attack>
 		<energy>100</energy>
-		<sex>fasle</sex>
+		<sex>false</sex>
 		<mating>1200</mating>
 		<NeuralNetwork>
 		    <NeuronLayer id="0">
