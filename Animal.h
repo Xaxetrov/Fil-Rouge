@@ -47,6 +47,7 @@ public:
     void setMating();
     void setBrain(NeuralNetwork * newBrain);
     void setSex(bool sex);
+    void setAge(int age) {m_age = age;}
 
     //basic methods
     void die();

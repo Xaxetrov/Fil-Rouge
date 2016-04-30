@@ -12,6 +12,7 @@
 
 #include "Vegetal.h"
 #include "Water.h"
+#include "Meat.h"
 #include "Carnivore.h"
 #include "Herbivore.h"
 #include "SaveManager.h"
@@ -209,7 +210,8 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
   bool sex = true;
   NeuralNetwork * nn = nullptr;
   int mating = 0;
-
+  int age = 0;
+  int quantity = 0;
 
   if(!reader.tokenType() == QXmlStreamReader::StartElement &&
       reader.name() == "Entity")
@@ -273,6 +275,14 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
       {
           mating = reader.readElementText().toInt();
       }
+      else if(reader.name() == "age")
+      {
+          age = reader.readElementText().toInt();
+      }
+      else if(reader.name() == "quantity")
+      {
+          quantity = reader.readElementText().toInt();
+      }
       else
       { //error
       }
@@ -282,12 +292,21 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
-    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, VEGETAL_MAXQUANTITY));
+    if(quantity==0)
+        quantity=VEGETAL_MAXQUANTITY;
+    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, quantity));
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, WATER_MAXQUANTITY));
+    if(quantity==0)
+        quantity=WATER_MAXQUANTITY;
+    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, quantity));
+    world.addEntity(entity);
+  }
+  else if(type == "Meat")
+  {
+    shared_ptr<Meat> entity( make_shared<Meat>(xEntity, yEntity, radiusEntity, quantity));
     world.addEntity(entity);
   }
   else if(type == "Herbivore")
@@ -301,8 +320,12 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
           }
           nn = new NeuralNetwork(layerSizes);
       }
+      if(attack==-2)
+          attack = ATTACK_HERBIVORE;
       shared_ptr<Herbivore> entity( make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
+      entity->setAge(age);
+      entity->turn(angle);
       world.addEntity(entity);
   }
   else if(type == "Carnivore")
@@ -316,16 +339,15 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
           }
           nn = new NeuralNetwork(layerSizes);
       }
+      if(attack==-2)
+          attack = ATTACK_CARNIVORE;
       shared_ptr<Carnivore> entity( make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
+      entity->setAge(age);
+      entity->turn(angle);
       world.addEntity(entity);
   }
-  /*
-  else
-  {
-    Meat * entity = new Meat(xEntity, yEntity, 0, widthEntity);
-    this->addEntity(entity);
-  }*/
+
 
 }
 
