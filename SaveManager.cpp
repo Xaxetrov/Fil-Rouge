@@ -77,31 +77,17 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
 
 NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)
 {
-    /*std::vector<unsigned int> myV;
-    myV.push_back(1);
-    myV.push_back(1);
-    myV.push_back(1);
-    NeuralNetwork n(myV);*/
-
-
     const QString fileXmlName = neuralNetworkName; //savePath+neuralNetworkName+".xml"; NE FONCTIONNE PAS CHEZ MOI
     QFile* xmlFile = new QFile(fileXmlName);
     if (!xmlFile->exists())
     {   std::cout << "file does not exist" << std::endl;
+        return nullptr;
     }
-    if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
+    else if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
     {   std::cout << "Can't open the file" << std::endl;
+        return nullptr;
     }
     QXmlStreamReader reader(xmlFile);
-    std::cerr<<"file opened !"<<std::endl;/////////////////////////////////////////////////A supprimer quand debug terminé
-
-    return LoadNetwork(reader);
-}
-
-NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
-{
-    std::vector<std::vector<std::vector<double> > > neuronWeights;
-    int inputsNum;
 
     while (!reader.atEnd())
     {   QXmlStreamReader::TokenType token = reader.readNext();
@@ -111,7 +97,7 @@ NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
 
         if (token==QXmlStreamReader::StartElement)
         {   if (reader.name()=="NeuralNetwork")
-            {   inputsNum=this->parseNeuralNetwork(reader,neuronWeights);
+            {   return LoadNetwork(reader);
             }
         }
     }
@@ -120,8 +106,17 @@ NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
     {   std::cout << "Error in reading XML" << std::endl;
     }
 
-    NeuralNetwork * n = new NeuralNetwork(inputsNum,neuronWeights);
+    return nullptr;
+}
 
+NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
+{
+    std::vector<std::vector<std::vector<double> > > neuronWeights;
+    int inputsNum;
+    //read the neural network
+    inputsNum=this->parseNeuralNetwork(reader,neuronWeights);
+    //create a neural network
+    NeuralNetwork * n = new NeuralNetwork(inputsNum,neuronWeights);
     return n;
 }
 
