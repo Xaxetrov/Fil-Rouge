@@ -64,6 +64,7 @@ const double ENERGY_RECUP = 1;
 const double MOVE_ENERGY_LOSS = 0.5;
 const double TURN_ENERGY_LOSS = 50;
 const double MAX_SPEED_TO_EAT = 0.5;
+const int MAX_SPEED = 50;
 const int MAX_HEALTH = 5000;
 const int MAX_HUNGER = 2000;
 const int MAX_THIRST = 2000;

@@ -12,6 +12,8 @@
 
 #include "Vegetal.h"
 #include "Water.h"
+#include "Carnivore.h"
+#include "Herbivore.h"
 #include "SaveManager.h"
 
 #include <QFile>
@@ -89,8 +91,8 @@ void MainWindow::loadWorld()
 //
     srand(std::time(0));
     //world.feedWithRandomAnimal(40);
-    world.feedWithRandomHerbivore(20);
-    world.feedWithRandomCarnivore(7);
+    //world.feedWithRandomHerbivore(20);
+    //world.feedWithRandomCarnivore(7);
 
     /*shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
     shared_ptr<Animal> female(make_shared<Animal>(300, 250, 10, 50, 2, &world, true) );
@@ -199,7 +201,15 @@ void MainWindow::parseWorld(QXmlStreamReader& reader)
 void MainWindow::parseEntity(QXmlStreamReader& reader)
 {
   QString type;
-  int xEntity, yEntity, radiusEntity;
+  int xEntity=0, yEntity=0, radiusEntity=INITIAL_RADIUS;
+  double angle = 0.0;
+  int maxSpeed = MAX_SPEED;
+  double attack = -2;
+  double energy = DEFAULT_ENERGY;
+  bool sex = true;
+  NeuralNetwork * nn = nullptr;
+  int mating = 0;
+
 
   if(!reader.tokenType() == QXmlStreamReader::StartElement &&
       reader.name() == "Entity")
@@ -224,15 +234,44 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
     {
       if(reader.name() == "x")
       {
-        xEntity = reader.readElementText().toInt();
+          xEntity = reader.readElementText().toInt();
       }
       else if(reader.name() == "y")
       {
-        yEntity = reader.readElementText().toInt();
+          yEntity = reader.readElementText().toInt();
       }
       else if(reader.name() == "radius")
       {
-        radiusEntity = reader.readElementText().toInt();
+          radiusEntity = reader.readElementText().toInt();
+      }
+      else if(reader.name() == "angle")
+      {
+          angle = reader.readElementText().toDouble();
+      }
+      else if(reader.name() == "attack")
+      {
+          attack = reader.readElementText().toDouble();
+      }
+      else if(reader.name() == "energy")
+      {
+          energy = reader.readElementText().toDouble();
+      }
+      else if(reader.name() == "sex")
+      {
+          sex = (reader.readElementText().toLower()=="true");
+      }
+      else if(reader.name() == "maxSpeed")
+      {
+          maxSpeed = reader.readElementText().toInt();
+      }
+      else if(reader.name() == "NeuralNetwork")
+      {
+          SaveManager savManager;
+          nn = savManager.LoadNetwork(reader);
+      }
+      else if(reader.name() == "mating")
+      {
+          mating = reader.readElementText().toInt();
       }
       else
       { //error
@@ -250,6 +289,36 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
   {
     shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, WATER_MAXQUANTITY));
     world.addEntity(entity);
+  }
+  else if(type == "Herbivore")
+  {
+      if(nn == nullptr)
+      {
+          vector<unsigned int> layerSizes;
+          for(unsigned int i = 0; i < NB_LAYERS; i++)
+          {
+            layerSizes.push_back(LAYER_SIZES[i]);
+          }
+          nn = new NeuralNetwork(layerSizes);
+      }
+      shared_ptr<Herbivore> entity( make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
+      entity->setSex(sex);
+      world.addEntity(entity);
+  }
+  else if(type == "Carnivore")
+  {
+      if(nn == nullptr)
+      {
+          vector<unsigned int> layerSizes;
+          for(unsigned int i = 0; i < NB_LAYERS; i++)
+          {
+            layerSizes.push_back(LAYER_SIZES[i]);
+          }
+          nn = new NeuralNetwork(layerSizes);
+      }
+      shared_ptr<Carnivore> entity( make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
+      entity->setSex(sex);
+      world.addEntity(entity);
   }
   /*
   else

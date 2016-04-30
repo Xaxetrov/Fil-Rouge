@@ -82,8 +82,7 @@ NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)
     myV.push_back(1);
     myV.push_back(1);
     NeuralNetwork n(myV);*/
-    std::vector<std::vector<std::vector<double> > > neuronWeights;
-    int inputsNum;
+
 
     const QString fileXmlName = neuralNetworkName; //savePath+neuralNetworkName+".xml"; NE FONCTIONNE PAS CHEZ MOI
     QFile* xmlFile = new QFile(fileXmlName);
@@ -95,6 +94,14 @@ NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)
     }
     QXmlStreamReader reader(xmlFile);
     std::cerr<<"file opened !"<<std::endl;/////////////////////////////////////////////////A supprimer quand debug terminé
+
+    return LoadNetwork(reader);
+}
+
+NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
+{
+    std::vector<std::vector<std::vector<double> > > neuronWeights;
+    int inputsNum;
 
     while (!reader.atEnd())
     {   QXmlStreamReader::TokenType token = reader.readNext();
@@ -116,7 +123,6 @@ NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)
     NeuralNetwork * n = new NeuralNetwork(inputsNum,neuronWeights);
 
     return n;
-
 }
 
 int SaveManager::parseNeuralNetwork(QXmlStreamReader& reader, std::vector<std::vector<std::vector<double> > > &neuronWeights)

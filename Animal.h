@@ -46,6 +46,7 @@ public:
     //setters
     void setMating();
     void setBrain(NeuralNetwork * newBrain);
+    void setSex(bool sex);
 
     //basic methods
     void die();
@@ -76,7 +77,6 @@ protected:
     int m_thirst;
     bool m_female;
     int m_mating;
-    int m_attack;
     double m_speed;
     double m_energy;
 
