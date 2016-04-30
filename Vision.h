@@ -18,6 +18,8 @@ public:
     vector<std::shared_ptr<Percepted>> getPercepted() const;
 
 private:
+    int maxRangeVisionLiving;
+    int maxRangeVisionNonLiving;
     const Coordinate & m_position;
     const double & m_angle;
     vector<VisionSector *> m_sectors;

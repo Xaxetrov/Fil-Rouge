@@ -41,13 +41,16 @@ double Coordinate::getPolarRadius()
 
 double Coordinate::getDistance(const Coordinate &c1, const Coordinate &c2)
 {
+    return sqrt(getDistanceCarre(c1, c2));
+}
+
+double Coordinate::getDistanceCarre(const Coordinate &c1, const Coordinate &c2)
+{
     double deltaX = std::abs(c1.getX() - c2.getX());
     double deltaY = std::abs(c1.getY() - c2.getY());
     double deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
     double deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
-
-    return std::hypot(deltaXTore,deltaYTore);
-    //return sqrt(deltaXTore * deltaXTore + deltaYTore * deltaYTore);
+    return deltaXTore * deltaXTore + deltaYTore * deltaYTore;
 }
 
 double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
@@ -57,20 +60,20 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
 
     if(deltaX > WORLD_SIZE_X/2.0)
     {
-        deltaX = -WORLD_SIZE_X + deltaX;
+        deltaX += -WORLD_SIZE_X;
     }
     else if(deltaX < -WORLD_SIZE_X/2.0)
     {
-        deltaX = WORLD_SIZE_X + deltaX;
+        deltaX += WORLD_SIZE_X;
     }
 
     if(deltaY > WORLD_SIZE_Y/2.0)
     {
-        deltaY = -WORLD_SIZE_Y + deltaY;
+        deltaY += -WORLD_SIZE_Y;
     }
     else if(deltaY < -WORLD_SIZE_Y/2.0)
     {
-        deltaY = WORLD_SIZE_Y + deltaY;
+        deltaY += WORLD_SIZE_Y;
     }
     return std::atan2(deltaY,deltaX); //atan2 return value in [-pi;pi]
 /*
@@ -81,9 +84,6 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
     double y2 = c2.getY();
     double deltaY = y2 - y1;
     double angle;
-
-
-
 
     if (std::abs(x1 - x2) > WORLD_SIZE_X)
     {

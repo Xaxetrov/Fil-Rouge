@@ -111,10 +111,6 @@ int Animal::play()
       m_mating++;
     }
 
-    // Inputs and outputs of the neural network
-    vector<double> inputs;
-    vector<double> outputs;
-
     // The animal looks around itself
     m_vision->see();
 

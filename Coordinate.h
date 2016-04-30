@@ -15,6 +15,7 @@ public:
     void set(double x, double y);
 
     static double getDistance(const Coordinate &c1, const Coordinate &c2);
+    static double getDistanceCarre(const Coordinate &c1, const Coordinate &c2);
 
     // Give the angle ((0, x), (c1, c2)) in rad
     // if c1 == c2, the angle is -PI/2
