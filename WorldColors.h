@@ -13,8 +13,8 @@ class WorldColors
 public:
     WorldColors();
 
-    QBrush & getEntityBrush(const std::shared_ptr<Entity> entity);
-    QPen & getEntityPen(const std::shared_ptr<Entity> entity);
+    QBrush getEntityBrush(const std::shared_ptr<Entity> entity);
+    QPen   getEntityPen(const std::shared_ptr<Entity> entity);
 
     QBrush & getBackgroundBrush();
     QBrush & getWaterBrush();
@@ -27,6 +27,9 @@ public:
     QBrush & getTeamsEyeBrush();
 
     QPen & getTeamsSelectedPen();
+
+    QBrush setBrushAlpha(QBrush brush,int alpha) const;
+    QPen   setPenAlpha(QPen pen,int alpha) const;
 
 private:
     ///environnement colors: (non living)
