@@ -24,7 +24,7 @@ NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
 }
 
 NeuralNetwork::NeuralNetwork(int inputsNum, const std::vector<std::vector<std::vector<double> > > &neuronWeights) :
-    m_inputNum(inputsNum), m_outputNum(neuronWeights.at(neuronWeights.size()-1).size()), m_hiddenLayerNum(neuronWeights.size())
+    m_inputNum(inputsNum), m_outputNum(neuronWeights.at(neuronWeights.size()-1).size()), m_hiddenLayerNum(neuronWeights.size() - 1)
 {
     for(unsigned int i=0; i<neuronWeights.size(); i++)
     {
