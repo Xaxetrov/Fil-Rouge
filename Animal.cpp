@@ -35,7 +35,6 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
       layerSizes.push_back(LAYER_SIZES[i]);
     }
     m_brain = new NeuralNetwork(layerSizes);
-    m_attack = ATTACK_ANIMAL;
     setCreationDate(world->getWorldAge());
 }
 
@@ -323,7 +322,7 @@ void Animal::attack()
 /**
  * attack the Animal which are not of the same type as himself
  * and if they are in front of him (angle defined in config.h)
- * The attack value is stored in m_attack.
+ * The attack value is stored in m_damage.
 */
 {
     vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
@@ -339,7 +338,7 @@ void Animal::attack()
                {
                     if(shared_ptr<Animal> a=dynamic_pointer_cast<Animal>(animalEntity))
                     {
-                        a->loseLive(m_attack);
+                        a->loseLive(m_damage);
                     }
                }
            }
@@ -503,4 +502,9 @@ void Animal::setBrain(NeuralNetwork *newBrain)
 {
     delete(m_brain);
     m_brain = newBrain;
+}
+
+void Animal::setSex(bool sex)
+{
+    m_female = sex;
 }

@@ -5,18 +5,15 @@
 Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world):
     Animal(x,y,radius,maxSpeed,damage,energy,world)
 {
-    m_attack = ATTACK_HERBIVORE;
 }
 Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, bool sex):
     Animal(x,y,radius,maxSpeed,damage,energy,world, sex)
 {
-    m_attack = ATTACK_HERBIVORE;
 }
 
 Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, NeuralNetwork * brain, int mating):
     Animal(x,y,radius,maxSpeed,damage,energy,world, brain, mating)
 {
-    m_attack = ATTACK_HERBIVORE;
 }
 
 
