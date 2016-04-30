@@ -11,7 +11,7 @@
 #include "Vision.h"
 
 
-class Animal : public Solid, public enable_shared_from_this<Animal>
+class Animal : public Solid, public std::enable_shared_from_this<Animal>
 {
 public:
     //ctor, dtor
@@ -39,9 +39,9 @@ public:
     bool isFemale() const;
     virtual unsigned int getTypeId() const { return ID_ANIMAL; }
     virtual int getNeralNetworkId() const { return NN_ID_ANIMAL; }
-    vector<weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
-    vector<weak_ptr<Entity> > getSubListSolidCollision();
-    vector<weak_ptr<Entity> > getSubListResourceCollision();
+    std::vector<std::weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
+    std::vector<std::weak_ptr<Entity> > getSubListSolidCollision();
+    std::vector<std::weak_ptr<Entity> > getSubListResourceCollision();
 
     //setters
     void setMating();
@@ -57,7 +57,7 @@ public:
     void mate();
     void attack();
     void loseLive(unsigned liveToLose);
-    void addEntityInListCollision(weak_ptr<Entity> e);
+    void addEntityInListCollision(std::weak_ptr<Entity> e);
     void clearEntityListCollision();
 
     //game methods
@@ -70,7 +70,7 @@ protected:
     virtual void tryToEat(std::shared_ptr<Entity> food);
     virtual bool tryToMate(std::shared_ptr<Entity> animalEntity);
 
-    template <class Living> void reproduce(shared_ptr<Living> father);
+    template <class Living> void reproduce(std::shared_ptr<Living> father);
 
     int m_health;
     int m_hunger;
@@ -88,7 +88,7 @@ private :
     int m_fear;
     bool dead;
     double m_rotation;
-    list<weak_ptr<Entity>> m_collisionList;
+    std::list<std::weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
     std::vector<double> m_nnInputs;
     std::vector<double> m_nnOutputs;
@@ -106,10 +106,10 @@ private :
 /////////////////////////////////////
 
 template <class Living>
-void Animal::reproduce(shared_ptr<Living> father)
+void Animal::reproduce(std::shared_ptr<Living> father)
 {
     // Use a normal distribution to determine the number of children of litter
-    static std::mt19937 generator(random_device{}());
+    static std::mt19937 generator(std::random_device{}());
     std::normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
     int numberChild = (int)distribution(generator);
 
@@ -129,7 +129,7 @@ void Animal::reproduce(shared_ptr<Living> father)
     //cout << "MOTHER BRAIN\n" << endl;
     //this->getBrain()->printNetwork();
 
-    uniform_real_distribution<double> distributionReal(-PI/6.0, PI/6.0);
+    std::uniform_real_distribution<double> distributionReal(-PI/6.0, PI/6.0);
 
     while(child < numberChild)
     {
@@ -140,7 +140,7 @@ void Animal::reproduce(shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        shared_ptr<Living> animal(make_shared<Living>(getX()+distX, getY()-distY, INITIAL_RADIUS, 50, 2, DEFAULT_ENERGY, m_world, childBrain) );
+        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, INITIAL_RADIUS, 50, 2, DEFAULT_ENERGY, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));

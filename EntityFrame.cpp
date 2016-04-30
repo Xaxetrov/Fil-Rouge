@@ -21,7 +21,7 @@ EntityFrame::~EntityFrame()
    delete entityAttribute;
 }
 
-void EntityFrame::setAnimal(weak_ptr<Animal> a)
+void EntityFrame::setAnimal(std::weak_ptr<Animal> a)
 {
    entityView->setAnimal(a);
    nnView->setAnimal(a);

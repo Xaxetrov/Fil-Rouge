@@ -44,7 +44,7 @@ EntityAttributeWidget::~EntityAttributeWidget()
    delete matingLabel;
 }
 
-void EntityAttributeWidget::setAnimal(weak_ptr<Animal> a)
+void EntityAttributeWidget::setAnimal(std::weak_ptr<Animal> a)
 {
    animal = a;
    update();
@@ -52,7 +52,7 @@ void EntityAttributeWidget::setAnimal(weak_ptr<Animal> a)
 
 void EntityAttributeWidget::update()
 {
-    shared_ptr<Animal> sharedAnimal = animal.lock();
+    std::shared_ptr<Animal> sharedAnimal = animal.lock();
    if(!sharedAnimal)
    {
       defaultLabel->setVisible(true);

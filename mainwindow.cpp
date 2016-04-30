@@ -282,26 +282,26 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
-    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, VEGETAL_MAXQUANTITY));
+    std::shared_ptr<Vegetal> entity( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, VEGETAL_MAXQUANTITY));
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, WATER_MAXQUANTITY));
+    std::shared_ptr<Water> entity( std::make_shared<Water>(xEntity, yEntity, radiusEntity, WATER_MAXQUANTITY));
     world.addEntity(entity);
   }
   else if(type == "Herbivore")
   {
       if(nn == nullptr)
       {
-          vector<unsigned int> layerSizes;
+          std::vector<unsigned int> layerSizes;
           for(unsigned int i = 0; i < NB_LAYERS; i++)
           {
             layerSizes.push_back(LAYER_SIZES[i]);
           }
           nn = new NeuralNetwork(layerSizes);
       }
-      shared_ptr<Herbivore> entity( make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
+      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
       world.addEntity(entity);
   }
@@ -309,14 +309,14 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
   {
       if(nn == nullptr)
       {
-          vector<unsigned int> layerSizes;
+          std::vector<unsigned int> layerSizes;
           for(unsigned int i = 0; i < NB_LAYERS; i++)
           {
             layerSizes.push_back(LAYER_SIZES[i]);
           }
           nn = new NeuralNetwork(layerSizes);
       }
-      shared_ptr<Carnivore> entity( make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
+      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
       world.addEntity(entity);
   }
@@ -385,11 +385,11 @@ void MainWindow::updateStatusBar()
 
 void MainWindow::saveNeuralNetwork()
 {
-    if(shared_ptr<Animal> a = selectedAnimal.lock())
+    if(std::shared_ptr<Animal> a = selectedAnimal.lock())
         saveNeuralNetwork(a,true);
 }
 
-void MainWindow::saveNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringSave)
+void MainWindow::saveNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringSave)
 {
     bool pause = false;
     if(pauseDuringSave && worldWidget.isSimulationRunning())
@@ -411,11 +411,11 @@ void MainWindow::saveNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringSave)
 
 void MainWindow::loadNeuralNetwork()
 {
-    if(shared_ptr<Animal> a = selectedAnimal.lock())
+    if(std::shared_ptr<Animal> a = selectedAnimal.lock())
         loadNeuralNetwork(a,true);
 }
 
-void MainWindow::loadNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringLoad)
+void MainWindow::loadNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringLoad)
 {
     bool pause = false;
     if(pauseDuringLoad && worldWidget.isSimulationRunning())
