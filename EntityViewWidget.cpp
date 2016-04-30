@@ -12,7 +12,7 @@ void EntityViewWidget::updateView()
 {
     std::shared_ptr<Animal> sharedAnimal = animal.lock();
     scene.clear();
-    QPen & borderPen = colors.getEntityPen(sharedAnimal);
+    QPen borderPen = colors.getEntityPen(sharedAnimal);
     QBrush & backgroundBrush = colors.getBackgroundBrush();
     ///draw vision sector
     //draw base vision sector

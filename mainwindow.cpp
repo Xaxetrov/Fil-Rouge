@@ -12,6 +12,7 @@
 
 #include "Vegetal.h"
 #include "Water.h"
+#include "Meat.h"
 #include "Carnivore.h"
 #include "Herbivore.h"
 #include "SaveManager.h"
@@ -48,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     simulationMenu = this->menuBar()->addMenu(tr("Simulation"));
     animalMenu = this->menuBar()->addMenu(tr("Animal"));
     fileExitAction = fileMenu->addAction(tr("Exit"));
+    saveWorldAction = fileMenu->addAction(tr("Save world as..."));
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
     saveNeuralNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
     loadNeuralNetworkAction = animalMenu->addAction(tr("Load neural network"));
@@ -62,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(&worldWidget,SIGNAL(sceneUpdated()),this,SLOT(updateStatusBar()));
     QObject::connect(saveNeuralNetworkAction,SIGNAL(triggered(bool)),this,SLOT(saveNeuralNetwork()));
     QObject::connect(loadNeuralNetworkAction, SIGNAL(triggered(bool)),this, SLOT(loadNeuralNetwork()));
+    QObject::connect(saveWorldAction, SIGNAL(triggered(bool)),this, SLOT(saveWorld()));
 }
 
 void MainWindow::loadWorld()
@@ -209,7 +212,8 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
   bool sex = true;
   NeuralNetwork * nn = nullptr;
   int mating = 0;
-
+  int age = 0;
+  int quantity = 0;
 
   if(!reader.tokenType() == QXmlStreamReader::StartElement &&
       reader.name() == "Entity")
@@ -273,6 +277,14 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
       {
           mating = reader.readElementText().toInt();
       }
+      else if(reader.name() == "age")
+      {
+          age = reader.readElementText().toInt();
+      }
+      else if(reader.name() == "quantity")
+      {
+          quantity = reader.readElementText().toInt();
+      }
       else
       { //error
       }
@@ -282,12 +294,22 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
-    std::shared_ptr<Vegetal> entity( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, VEGETAL_MAXQUANTITY));
+    if(quantity==0)
+        quantity=VEGETAL_MAXQUANTITY;
+    std::shared_ptr<Vegetal> entity( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, quantity));
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    std::shared_ptr<Water> entity( std::make_shared<Water>(xEntity, yEntity, radiusEntity, WATER_MAXQUANTITY));
+
+    if(quantity==0)
+        quantity=WATER_MAXQUANTITY;
+    std::shared_ptr<Water> entity( std::make_shared<Water>(xEntity, yEntity, radiusEntity, quantity));
+    world.addEntity(entity);
+  }
+  else if(type == "Meat")
+  {
+    std::shared_ptr<Meat> entity( std::make_shared<Meat>(xEntity, yEntity, radiusEntity, quantity));
     world.addEntity(entity);
   }
   else if(type == "Herbivore")
@@ -301,8 +323,12 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
           }
           nn = new NeuralNetwork(layerSizes);
       }
+      if(attack==-2)
+          attack = ATTACK_HERBIVORE;
       std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
+      entity->setAge(age);
+      entity->turn(angle);
       world.addEntity(entity);
   }
   else if(type == "Carnivore")
@@ -316,16 +342,15 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
           }
           nn = new NeuralNetwork(layerSizes);
       }
+      if(attack==-2)
+          attack = ATTACK_CARNIVORE;
       std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
+      entity->setAge(age);
+      entity->turn(angle);
       world.addEntity(entity);
   }
-  /*
-  else
-  {
-    Meat * entity = new Meat(xEntity, yEntity, 0, widthEntity);
-    this->addEntity(entity);
-  }*/
+
 
 }
 
@@ -432,4 +457,23 @@ void MainWindow::loadNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringLo
     a->setBrain(newBrain);
     if(pause)
         worldWidget.startSimulation();
+}
+
+void MainWindow::saveWorld(bool pauseDuringSave)
+{
+    bool pause = false;
+    if(pauseDuringSave && worldWidget.isSimulationRunning())
+        pause = true;
+    if(pause)
+        worldWidget.suspendSimulation();
+
+    SaveManager saveManager;
+    QString filter = "XML files (*.xml);;All files (*.*)";
+    QString defaultFilter = "XML files (*.xml)";
+    QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),QDir::currentPath(),
+                                                    filter,&defaultFilter);
+    saveManager.saveWorld(world,filePath);
+
+    if(pause)
+            worldWidget.startSimulation();
 }

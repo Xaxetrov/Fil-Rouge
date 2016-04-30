@@ -33,8 +33,23 @@ WorldColors::WorldColors()
     teamsNullPen = QPen(Qt::gray);
 }
 
-QBrush & WorldColors::getEntityBrush(const std::shared_ptr<Entity> entity)
+
+QBrush WorldColors::getEntityBrush(const std::shared_ptr<Entity> entity)
 {
+    int alpha = 255;
+    if(auto r = std::dynamic_pointer_cast<Resource>(entity))
+    {
+        alpha = r->getQuantity()*255 / r->getMaxQuantity();
+        if(alpha < 30)
+            alpha = 30;
+    }
+    else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
+    {
+        alpha = a->getHealth()*255 / MAX_HEALTH;
+        if(alpha < 120)
+            alpha = 120;
+    }
+
     //TODO: complete with the corecte class name (don't existe when I wrote this)
     if(entity == nullptr)
     {
@@ -42,27 +57,27 @@ QBrush & WorldColors::getEntityBrush(const std::shared_ptr<Entity> entity)
     }
     else if(typeid(*entity) == typeid( Animal ))
     {
-        return teamsBrushs.at(2);
+        return setBrushAlpha(teamsBrushs.at(2), alpha);
     }
     else if(typeid(*entity) == typeid( Herbivore ))
     {
-        return teamsBrushs.at(0);
+        return setBrushAlpha(teamsBrushs.at(0), alpha);
     }
     else if(typeid(*entity) == typeid( Carnivore ))
     {
-        return teamsBrushs.at(1);
+        return setBrushAlpha(teamsBrushs.at(1), alpha);
     }
     else if(typeid(*entity) == typeid( Vegetal ))
     {
-      return grassBrush;
+      return setBrushAlpha(grassBrush, alpha);
     }
     else if(typeid(*entity) == typeid( Water))
     {
-      return waterBrush;
+      return setBrushAlpha(waterBrush, alpha);
     }
     else if(typeid(*entity) == typeid( Meat))
     {
-      return meatBrush;
+      return setBrushAlpha(meatBrush, alpha);
     }
     /*
     else if(typeid(entity) == typeid( ... ))
@@ -73,8 +88,38 @@ QBrush & WorldColors::getEntityBrush(const std::shared_ptr<Entity> entity)
     return backgroundBrush;
 }
 
-QPen & WorldColors::getEntityPen(const std::shared_ptr<Entity> entity)
+QBrush WorldColors::setBrushAlpha(QBrush brush, int alpha) const
 {
+    QColor color = brush.color();
+    color.setAlpha(alpha);
+    brush.setColor(color);
+    return brush;
+}
+
+QPen WorldColors::setPenAlpha(QPen pen, int alpha) const
+{
+    QColor color = pen.color();
+    color.setAlpha(alpha);
+    pen.setColor(color);
+    return pen;
+}
+
+QPen WorldColors::getEntityPen(const std::shared_ptr<Entity> entity)
+{
+    int alpha = 255;
+    if(auto r = std::dynamic_pointer_cast<Resource>(entity))
+    {
+        alpha = r->getQuantity()*255 / r->getMaxQuantity();
+        if(alpha < 30)
+            alpha = 30;
+    }
+    else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
+    {
+        alpha = a->getHealth()*255 / MAX_HEALTH;
+        if(alpha < 120)
+            alpha = 120;
+    }
+
     //TODO: complete with the corecte class name (don't existe when I wrote this)
     if(entity == nullptr)
     {
@@ -82,27 +127,27 @@ QPen & WorldColors::getEntityPen(const std::shared_ptr<Entity> entity)
     }
     else if(typeid(*entity) == typeid( Animal ))
     {
-        return teamsPen;
+        return setPenAlpha(teamsPen, alpha);
     }
     else if(typeid(*entity) == typeid( Herbivore ))
     {
-        return teamsPen;
+        return setPenAlpha(teamsPen, alpha);
     }
     else if(typeid(*entity) == typeid( Carnivore ))
     {
-        return teamsPen;
+        return setPenAlpha(teamsPen, alpha);
     }
     else if(typeid(*entity) == typeid( Vegetal ))
     {
-      return grassPen;
+      return setPenAlpha(grassPen, alpha);
     }
     else if(typeid(*entity) == typeid( Water ))
     {
-      return waterPen;
+      return setPenAlpha(waterPen, alpha);
     }
     else if(typeid(*entity) == typeid( Meat ))
     {
-      return meatPen;
+      return setPenAlpha(meatPen, alpha);
     }
     /*
     else if(typeid(entity) == typeid( ... ))

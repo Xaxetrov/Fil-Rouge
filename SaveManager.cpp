@@ -1,7 +1,17 @@
 #include "SaveManager.h"
 
+#include "Water.h"
+#include "Meat.h"
+#include "Vegetal.h"
+#include "Animal.h"
+#include "Carnivore.h"
+#include "Herbivore.h"
+
+#include <memory>
 #include <QFile>
 #include <QtXml>
+#include <iostream>
+#include <QString>
 #include <iostream>
 
 SaveManager::SaveManager()
@@ -25,7 +35,18 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
     // Insert la norme de codification du fichier XML :
     writer.writeStartDocument();
 
-    // element racine du fichier XML
+    SaveNetwork(nn,writer);
+
+    writer.writeEndDocument();
+
+    fileXml.close();
+
+
+    return 0;
+}
+
+int SaveManager::SaveNetwork(const NeuralNetwork& nn, QXmlStreamWriter & writer)
+{
     writer.writeStartElement("NeuralNetwork");
 
     // recuperation de quelqes informations sur le réseau de neurones
@@ -66,13 +87,109 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
         }
         writer.writeEndElement();
     }
+    writer.writeEndElement();//NeuraleNetwork
+}
+
+void SaveManager::saveWorld(const World& world, QString savingPath)
+{
+    QFile fileXml(savingPath);
+    // Ouverture du fichier en Ã©criture et en texte. (sort de la fonction si le fichier ne s'ouvre pas)
+    if(!fileXml.open(QFile::WriteOnly | QFile::Text))
+    {   std::cerr << "failed to open file: " << savingPath.toStdString() << std::endl;
+        return;
+    }
+    QXmlStreamWriter writer(&fileXml);
+
+    // Active l'indentation automatique du fichier XML pour une meilleur visibilite
+    writer.setAutoFormatting(true);
+
+    // Insert la norme de codification du fichier XML :
+    writer.writeStartDocument();
+
+    writer.writeStartElement("World");
+
+    writer.writeTextElement("x", QString::number(world.getSizeX()));
+    writer.writeTextElement("y", QString::number(world.getSizeY()));
+
+    for(auto entity:world.getCopyOfEntities())
+    {
+        if(auto r = std::dynamic_pointer_cast<Resource>(entity))
+        {
+            saveResource(r,writer);
+        }
+        else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
+        {
+            saveAnimal(a,writer);
+        }
+    }
+
+    writer.writeEndElement();//World
 
     writer.writeEndDocument();
 
     fileXml.close();
+}
 
+void SaveManager::saveAnimal(const std::shared_ptr<Animal> animal, QXmlStreamWriter &writer)
+{
+    QString type;
+    switch (animal->getTypeId()) {
+    case ID_HERBIVORE:
+        type = "Herbivore";
+        break;
+    case ID_CARNIVORE:
+        type = "Carnivore";
+        break;
+    default:
+        std::cerr << "can't save non Carnivore/Herbivore animals !" << std::endl;
+        return;
+    }
+    writer.writeStartElement("Entity");
+    writer.writeAttribute("type",type);
 
-    return 0;
+    writer.writeTextElement("x", QString::number(animal->getCoordinate().getX()));
+    writer.writeTextElement("y", QString::number(animal->getCoordinate().getY()));
+    writer.writeTextElement("radius", QString::number(animal->getRadius()));
+    writer.writeTextElement("angle", QString::number(animal->getAngle()));
+    writer.writeTextElement("maxSpeed", QString::number(animal->getMaxSpeed()));
+    writer.writeTextElement("attack", QString::number(animal->getDamage()));
+    writer.writeTextElement("energy", QString::number(animal->getEnergy()));
+    writer.writeTextElement("sex", animal->isFemale()?"true":"false" );
+    writer.writeTextElement("angle", QString::number(animal->getMating()));
+    writer.writeTextElement("age", QString::number(animal->getAge()));
+
+    SaveNetwork(*(animal->getBrain()),writer);
+
+    writer.writeEndElement();//Entity
+}
+
+void SaveManager::saveResource(const std::shared_ptr<Resource> resource, QXmlStreamWriter &writer)
+{
+    QString type;
+    switch (resource->getTypeId()) {
+    case ID_MEAT:
+        type = "Meat";
+        break;
+    case ID_WATER:
+        type = "Water";
+        break;
+    case ID_VEGETAL:
+        type = "Vegetal";
+        break;
+    default:
+        std::cerr << "can't save non Meat/Water/Vegetal resources !" << std::endl;
+        return;
+    }
+    writer.writeStartElement("Entity");
+    writer.writeAttribute("type",type);
+
+    writer.writeTextElement("x", QString::number(resource->getCoordinate().getX()));
+    writer.writeTextElement("y", QString::number(resource->getCoordinate().getY()));
+    writer.writeTextElement("radius", QString::number(resource->getRadius()));
+    writer.writeTextElement("quantity", QString::number(resource->getQuantity()));
+    writer.writeTextElement("maxQuantity", QString::number(resource->getMaxQuantity()));
+
+    writer.writeEndElement();//Entity
 }
 
 NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)

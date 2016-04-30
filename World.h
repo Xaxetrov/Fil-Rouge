@@ -24,6 +24,7 @@ public:
 
     //Do you wanna get my entities ?
     std::list<std::shared_ptr<Entity> > &getEntities();
+    std::list<std::shared_ptr<Entity> >  getCopyOfEntities() const;
 
     unsigned getNumberOfLiving() const;
 

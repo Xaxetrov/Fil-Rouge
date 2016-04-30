@@ -16,8 +16,8 @@ void NNViewWidget::updateView()
 
   if(sharedAnimal)
   {
-    QPen & borderPen = colors.getEntityPen(sharedAnimal);
-    QPen & connexionPen = colors.getConnexionPen();
+    QPen borderPen = colors.getEntityPen(sharedAnimal);
+    QPen connexionPen = colors.getConnexionPen();
     QBrush & backgroundBrush = colors.getBackgroundBrush();
 
     // Draw connections

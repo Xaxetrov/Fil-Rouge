@@ -25,6 +25,11 @@ std::list<shared_ptr<Entity>> &World::getEntities()
     return m_entities;
 }
 
+std::list<shared_ptr<Entity>> World::getCopyOfEntities() const
+{
+    return m_entities;
+}
+
 /*Coordinate & World::getSize()
 {
     return m_size;

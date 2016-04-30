@@ -42,7 +42,7 @@ signals:
 
 private:
     void drawEntity(const std::shared_ptr<Entity> entity);
-    void drawAnimal(QPoint pos,double radius, double angle, int health, QBrush brush, QPen pen);
+    void drawAnimal(QPoint pos,double radius, double angle, QBrush brush, QPen pen);
     void drawAnimal(const std::shared_ptr<Animal> animal);
     void drawAnimal(const std::shared_ptr<Animal> animal, QPoint pos);
     void drawBasicEntity(QPoint pos,double radius, QBrush brush, QPen pen);

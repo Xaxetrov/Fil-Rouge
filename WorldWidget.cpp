@@ -153,6 +153,7 @@ void WorldWidget::drawEntity(const std::shared_ptr<Entity> e)
    {
        for(QPoint pos:positions)
        {
+
           QBrush brush = colors.getEntityBrush(e);
           QPen pen = colors.getEntityPen(e);
           if(const std::shared_ptr<Resource> resource = std::dynamic_pointer_cast<Resource>(e))
@@ -162,21 +163,14 @@ void WorldWidget::drawEntity(const std::shared_ptr<Entity> e)
             brush.setColor(QColor(brush.color().red(), brush.color().green(), brush.color().blue(), transparency * 255.0));
             pen.setColor(QColor(pen.color().red(), pen.color().green(), pen.color().blue(), transparency * 255.0));
           }
-          drawBasicEntity(pos,radius,brush,pen);
+          drawBasicEntity(pos,radius,colors.getEntityBrush(e),colors.getEntityPen(e));
        }
    }
 }
 
 
-void WorldWidget::drawAnimal(QPoint pos, double radius, double angle, int health, QBrush brush, QPen pen)
+void WorldWidget::drawAnimal(QPoint pos, double radius, double angle, QBrush brush, QPen pen)
 {
-    // Add transparency
-    double transparency = ((double)health) / MAX_HEALTH;
-    if(transparency < 0.5)
-        transparency = 0.5;
-    brush.setColor(QColor(brush.color().red(), brush.color().green(), brush.color().blue(), transparency * 255.0));
-    pen.setColor(QColor(pen.color().red(), pen.color().green(), pen.color().blue(), transparency * 255.0));
-
     drawBasicEntity(pos,radius,brush,pen);
     //add an eye to show the looking direction
     double eyeRadius = radius/3;
@@ -184,7 +178,6 @@ void WorldWidget::drawAnimal(QPoint pos, double radius, double angle, int health
     double eyeYCenter = pos.y()+sin(angle)*(radius-eyeRadius);
     QRect eyeSquare(eyeXCenter-eyeRadius,eyeYCenter-eyeRadius,eyeRadius*2,eyeRadius*2);
     QBrush eyeBrush = colors.getTeamsEyeBrush();
-    eyeBrush.setColor(QColor(eyeBrush.color().red(), eyeBrush.color().green(), eyeBrush.color().blue(), transparency * 255));
     m_scene->addEllipse(eyeSquare,pen,eyeBrush);
 }
 
@@ -201,7 +194,7 @@ void WorldWidget::drawAnimal(const std::shared_ptr<Animal> animal, QPoint pos)
         animalPen = colors.getTeamsSelectedPen();
     else
         animalPen = colors.getEntityPen(animal);
-    drawAnimal(pos,animal->getRadius(),animal->getAngle(),animal->getHealth(),colors.getEntityBrush(animal),animalPen);
+    drawAnimal(pos,animal->getRadius(),animal->getAngle(),colors.getEntityBrush(animal),animalPen);
 }
 
 void WorldWidget::drawBasicEntity(QPoint pos, double radius, QBrush brush, QPen pen)
