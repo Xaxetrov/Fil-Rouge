@@ -21,34 +21,20 @@ VisionSector::~VisionSector()
     clearPercepted();
 }
 
-void VisionSector::scan()
+void VisionSector::scan(const std::vector<std::shared_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities)
 {
-    std::vector<shared_ptr<Entity>> selection;
-    std::vector<double> distances;
-
-    for(shared_ptr<Entity> e:m_entities)
-    {
-        if(e->getX() == m_center.getX() && e->getY() == m_center.getY())
-          continue;
-
-        double d = Coordinate::getDistance(e->getCoordinate(), m_center);
-
-        if(d < m_range)
-        {
-            selection.push_back(e);
-            distances.push_back(d);
-        }
-    }
-
     clearPercepted();
-    for(unsigned int i=0; i<selection.size(); i++)
+    for(unsigned int i=0; i<entitiesInRangeOfVision.size(); i++)
     {
-        shared_ptr<Entity> e = selection.at(i);
-        double angle = Coordinate::getAngle(m_center, e->getCoordinate()) - m_animalAngle; // modulo2PI is moved insigned of getAngle
-
-        if((angle <= m_angle1 && angle > m_angle2 && m_angle1 > m_angle2) || (angle >= m_angle1 && angle < m_angle2 && m_angle1 < m_angle2))
+        if (distanceOfEntities.at(i) < m_range)
         {
-            m_percepted.push_back(std::make_shared<Percepted>(e, distances.at(i), m_range));
+            shared_ptr<Entity> e = entitiesInRangeOfVision.at(i);
+            double angle = Coordinate::getAngle(m_center, e->getCoordinate()) - m_animalAngle; // modulo2PI is moved insigned of getAngle
+
+            if(angle >= m_angle1 && angle < m_angle2)
+            {
+                m_percepted.push_back(std::make_shared<Percepted>(e, distanceOfEntities.at(i), m_range));
+            }
         }
     }
 }

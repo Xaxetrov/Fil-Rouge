@@ -114,11 +114,11 @@ void SaveManager::saveWorld(const World& world, QString savingPath)
 
     for(auto entity:world.getCopyOfEntities())
     {
-        if(auto r = dynamic_pointer_cast<Resource>(entity))
+        if(auto r = std::dynamic_pointer_cast<Resource>(entity))
         {
             saveResource(r,writer);
         }
-        else if(auto a = dynamic_pointer_cast<Animal>(entity))
+        else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
         {
             saveAnimal(a,writer);
         }
@@ -131,7 +131,7 @@ void SaveManager::saveWorld(const World& world, QString savingPath)
     fileXml.close();
 }
 
-void SaveManager::saveAnimal(const shared_ptr<Animal> animal, QXmlStreamWriter &writer)
+void SaveManager::saveAnimal(const std::shared_ptr<Animal> animal, QXmlStreamWriter &writer)
 {
     QString type;
     switch (animal->getTypeId()) {
@@ -167,7 +167,7 @@ void SaveManager::saveAnimal(const shared_ptr<Animal> animal, QXmlStreamWriter &
     writer.writeEndElement();//Entity
 }
 
-void SaveManager::saveResource(const shared_ptr<Resource> resource, QXmlStreamWriter &writer)
+void SaveManager::saveResource(const std::shared_ptr<Resource> resource, QXmlStreamWriter &writer)
 {
     QString type;
     switch (resource->getTypeId()) {

@@ -261,7 +261,9 @@ bool World::isCollision(const shared_ptr<Entity> e1, const shared_ptr<Entity> e2
 {
     const Coordinate & c1 = e1->getCoordinate();
     const Coordinate & c2 = e2->getCoordinate();
-    return (Coordinate::getDistance(c1,c2) < (e1->getRadius() + e2->getRadius()));
+    double r1 = e1->getRadius();
+    double r2 = e2->getRadius();
+    return (Coordinate::getDistanceCarre(c1,c2) < (r1 + r2) * (r1 + r2));
 }
 
 void World::saveNeuralNetwork(std::shared_ptr<Animal> a)

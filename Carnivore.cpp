@@ -20,7 +20,7 @@ Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage
 void Carnivore::tryToEat(std::shared_ptr<Entity> food)
 {
     //Carenivore are... carnivore... so they try to eat meat !
-    if(shared_ptr<Meat> meat = dynamic_pointer_cast<Meat>(food))
+    if(std::shared_ptr<Meat> meat = std::dynamic_pointer_cast<Meat>(food))
     {
        if(m_hunger > 0)
        {
@@ -39,7 +39,7 @@ void Carnivore::tryToEat(std::shared_ptr<Entity> food)
 
 bool Carnivore::tryToMate(std::shared_ptr<Entity> carnivoreEntity)
 {
-    if(shared_ptr<Carnivore> carnivoreToMate = dynamic_pointer_cast<Carnivore>(carnivoreEntity))
+    if(std::shared_ptr<Carnivore> carnivoreToMate = std::dynamic_pointer_cast<Carnivore>(carnivoreEntity))
     {
        // this Animal is the female
        if(m_female && !carnivoreToMate->isFemale())

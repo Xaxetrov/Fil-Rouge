@@ -14,11 +14,11 @@ class VisionSector
         VisionSector(const Coordinate & center, const double & animalAngle, const double & angle1, const double & angle2, int range, std::list<std::shared_ptr<Entity> > &entities);
         virtual ~VisionSector();
 
-        virtual void see() = 0;
+        virtual void see(const std::vector<std::shared_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities) = 0;
         std::shared_ptr<Percepted> getNearestPercepted() const { return m_nearestPercepted; }
 
     protected:
-        void scan();
+        void scan(const std::vector<std::shared_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities);
 
         std::vector<std::shared_ptr<Percepted>> m_percepted;
         std::shared_ptr<Percepted> m_nearestPercepted;

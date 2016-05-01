@@ -41,17 +41,17 @@ signals:
     void sceneUpdated();
 
 private:
-    void drawEntity(const shared_ptr<Entity> entity);
+    void drawEntity(const std::shared_ptr<Entity> entity);
     void drawAnimal(QPoint pos,double radius, double angle, QBrush brush, QPen pen);
-    void drawAnimal(const shared_ptr<Animal> animal);
-    void drawAnimal(const shared_ptr<Animal> animal, QPoint pos);
+    void drawAnimal(const std::shared_ptr<Animal> animal);
+    void drawAnimal(const std::shared_ptr<Animal> animal, QPoint pos);
     void drawBasicEntity(QPoint pos,double radius, QBrush brush, QPen pen);
 
 private:
     QGraphicsScene * m_scene;
     WorldColors colors;
     World * m_world;
-    weak_ptr<Animal> selectedAnimal;
+    std::weak_ptr<Animal> selectedAnimal;
     //timer
     QTimer timer;
 

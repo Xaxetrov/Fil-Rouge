@@ -25,9 +25,9 @@ public:
 public slots:
     void switchTimer();
     void keyPressEvent(QKeyEvent * e);
-    void saveNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringSave);
+    void saveNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringSave);
     void saveNeuralNetwork();
-    void loadNeuralNetwork(shared_ptr<Animal> a, bool pauseDuringLoad);
+    void loadNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringLoad);
     void loadNeuralNetwork();
     void setSelectedAnimal(std::weak_ptr<Animal> a);
     void updateStatusBar();

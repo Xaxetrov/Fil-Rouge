@@ -20,7 +20,7 @@ Herbivore::Herbivore(double x, double y, int radius, int maxSpeed, double damage
 void Herbivore::tryToEat(std::shared_ptr<Entity> food)
 {
     //Herbivore are... herbivore... so they try to eat vegetal
-    if(shared_ptr<Vegetal> vegetal = dynamic_pointer_cast<Vegetal>(food))
+    if(std::shared_ptr<Vegetal> vegetal = std::dynamic_pointer_cast<Vegetal>(food))
     {
        if(m_hunger > 0)
        {
@@ -39,7 +39,7 @@ void Herbivore::tryToEat(std::shared_ptr<Entity> food)
 
 bool Herbivore::tryToMate(std::shared_ptr<Entity> herbivoreEntity)
 {
-    if(shared_ptr<Herbivore> herbivoreToMate = dynamic_pointer_cast<Herbivore>(herbivoreEntity))
+    if(std::shared_ptr<Herbivore> herbivoreToMate = std::dynamic_pointer_cast<Herbivore>(herbivoreEntity))
     {
        // this Animal is the female
        if(m_female && !herbivoreToMate->isFemale())

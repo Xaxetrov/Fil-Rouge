@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-NNViewWidget::NNViewWidget(weak_ptr<Animal> a): QGraphicsView(), animal(a)
+NNViewWidget::NNViewWidget(std::weak_ptr<Animal> a): QGraphicsView(), animal(a)
 {
     setScene(&scene);
     updateView();
@@ -11,7 +11,7 @@ NNViewWidget::NNViewWidget(weak_ptr<Animal> a): QGraphicsView(), animal(a)
 
 void NNViewWidget::updateView()
 {
-  shared_ptr<Animal> sharedAnimal = animal.lock();
+  std::shared_ptr<Animal> sharedAnimal = animal.lock();
   scene.clear();
 
   if(sharedAnimal)
@@ -21,9 +21,9 @@ void NNViewWidget::updateView()
     QBrush & backgroundBrush = colors.getBackgroundBrush();
 
     // Draw connections
-    for(int i = 1; i < NB_LAYERS; i++)
+    for(unsigned int i = 1; i < NB_LAYERS; i++)
     {
-      for(int j = 0; j < LAYER_SIZES[i]; j++)
+      for(unsigned int j = 0; j < LAYER_SIZES[i]; j++)
       {
         //int x = (2*((j+1)%2)-1)*6*((j+1)/2) - 3*((LAYER_SIZES[i]%2)-1);
         int x = (LAYER_SIZES[i]/2) * (-6) - 3*((LAYER_SIZES[i]%2)-1) + 6 * j;
@@ -32,7 +32,7 @@ void NNViewWidget::updateView()
         std::vector<double> weights = sharedAnimal->getBrain()->getLayers().at(i-1).getNeurons().at(j).getWeights();
         std::vector<double> inputs = sharedAnimal->getBrain()->getLayers().at(i-1).getNeurons().at(j).getLastInputs();
 
-        for(int k = 0; k < LAYER_SIZES[i-1]; k++)
+        for(unsigned int k = 0; k < LAYER_SIZES[i-1]; k++)
         {
           if(inputs.size() == LAYER_SIZES[i-1])
           {
@@ -63,9 +63,9 @@ void NNViewWidget::updateView()
     }
 
     // Draw neurons
-    for(int i = 0; i < NB_LAYERS; i++)
+    for(unsigned int i = 0; i < NB_LAYERS; i++)
     {
-      for(int j = 0; j < LAYER_SIZES[i]; j++)
+      for(unsigned int j = 0; j < LAYER_SIZES[i]; j++)
       {
         //int x = (2*((j+1)%2)-1)*6*((j+1)/2) - 3*((LAYER_SIZES[i]%2)-1);
         int x = (LAYER_SIZES[i]/2) * (-6) - 3*((LAYER_SIZES[i]%2)-1) + 6 * j;
@@ -100,7 +100,7 @@ void NNViewWidget::resizeEvent(QResizeEvent *e)
     this->fitInView(this->sceneRect(),Qt::KeepAspectRatio);
 }
 
-void NNViewWidget::setAnimal(weak_ptr<Animal> a)
+void NNViewWidget::setAnimal(std::weak_ptr<Animal> a)
 {
     animal = a;
     updateView();

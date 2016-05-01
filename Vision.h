@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <list>
-using namespace std;
 
 #include "Entity.h"
 #include "Coordinate.h"
@@ -12,16 +11,21 @@ using namespace std;
 class Vision
 {
 public:
-    Vision(const Coordinate & position, double & angle, list<shared_ptr<Entity>> &entities);
+    Vision(const Coordinate & position, double & angle, std::list<std::shared_ptr<Entity>> &entities);
     virtual ~Vision();
     void see();
-    vector<std::shared_ptr<Percepted>> getPercepted() const;
+    std::vector<std::shared_ptr<Percepted>> getPercepted() const;
 
 private:
+    void scan();
+
+    int m_maxRangeVision;
+    std::vector<std::shared_ptr<Entity> > m_entitiesInRangeOfVision;
+    std::vector<double> m_distanceOfEntities;
     const Coordinate & m_position;
     const double & m_angle;
-    vector<VisionSector *> m_sectors;
-    list<shared_ptr<Entity>> &m_entities;
+    std::vector<VisionSector *> m_sectors;
+    std::list<std::shared_ptr<Entity>> &m_entities;
 };
 
 #endif // VISION_H

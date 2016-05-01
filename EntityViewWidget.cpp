@@ -3,14 +3,14 @@
 
 #include <iostream>
 
-EntityViewWidget::EntityViewWidget(weak_ptr<Animal> a): QGraphicsView(), animal(a)
+EntityViewWidget::EntityViewWidget(std::weak_ptr<Animal> a): QGraphicsView(), animal(a)
 {
     setScene(&scene);
 }
 
 void EntityViewWidget::updateView()
 {
-    shared_ptr<Animal> sharedAnimal = animal.lock();
+    std::shared_ptr<Animal> sharedAnimal = animal.lock();
     scene.clear();
     QPen borderPen = colors.getEntityPen(sharedAnimal);
     QBrush & backgroundBrush = colors.getBackgroundBrush();
@@ -25,7 +25,7 @@ void EntityViewWidget::updateView()
     //draw filled part of vision sector
     if(sharedAnimal != nullptr)
     {
-        const vector<std::shared_ptr<Percepted>> & percepted = sharedAnimal->getVision()->getPercepted();
+        const std::vector<std::shared_ptr<Percepted>> & percepted = sharedAnimal->getVision()->getPercepted();
         for(unsigned i=0 ; i<NB_VISIONSECTORS_LIVING && i<percepted.size(); i++)
         {
             if(percepted[i]->getEntity() != nullptr)
@@ -62,7 +62,7 @@ void EntityViewWidget::resizeEvent(QResizeEvent *e)
     this->fitInView(this->sceneRect(),Qt::KeepAspectRatio);
 }
 
-void EntityViewWidget::setAnimal(weak_ptr<Animal> a)
+void EntityViewWidget::setAnimal(std::weak_ptr<Animal> a)
 {
     animal = a;
     updateView();

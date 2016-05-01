@@ -33,16 +33,17 @@ WorldColors::WorldColors()
     teamsNullPen = QPen(Qt::gray);
 }
 
-QBrush WorldColors::getEntityBrush(const shared_ptr<Entity> entity)
+
+QBrush WorldColors::getEntityBrush(const std::shared_ptr<Entity> entity)
 {
     int alpha = 255;
-    if(auto r = dynamic_pointer_cast<Resource>(entity))
+    if(auto r = std::dynamic_pointer_cast<Resource>(entity))
     {
         alpha = r->getQuantity()*255 / r->getMaxQuantity();
         if(alpha < 30)
             alpha = 30;
     }
-    else if(auto a = dynamic_pointer_cast<Animal>(entity))
+    else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
     {
         alpha = a->getHealth()*255 / MAX_HEALTH;
         if(alpha < 120)
@@ -103,16 +104,16 @@ QPen WorldColors::setPenAlpha(QPen pen, int alpha) const
     return pen;
 }
 
-QPen WorldColors::getEntityPen(const shared_ptr<Entity> entity)
+QPen WorldColors::getEntityPen(const std::shared_ptr<Entity> entity)
 {
     int alpha = 255;
-    if(auto r = dynamic_pointer_cast<Resource>(entity))
+    if(auto r = std::dynamic_pointer_cast<Resource>(entity))
     {
         alpha = r->getQuantity()*255 / r->getMaxQuantity();
         if(alpha < 30)
             alpha = 30;
     }
-    else if(auto a = dynamic_pointer_cast<Animal>(entity))
+    else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
     {
         alpha = a->getHealth()*255 / MAX_HEALTH;
         if(alpha < 120)

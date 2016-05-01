@@ -18,8 +18,8 @@ public:
     int SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName="temp");
     int SaveNetwork(const NeuralNetwork& nn, QXmlStreamWriter & writer);
     void saveWorld(const World& world, QString savingPath);
-    void saveAnimal(const shared_ptr<Animal> animal, QXmlStreamWriter & writer);
-    void saveResource(const shared_ptr<Resource> resource, QXmlStreamWriter & writer);
+    void saveAnimal(const std::shared_ptr<Animal> animal, QXmlStreamWriter & writer);
+    void saveResource(const std::shared_ptr<Resource> resource, QXmlStreamWriter & writer);
 
     NeuralNetwork *LoadNetwork(QString neuralNetworkName="temp");
     NeuralNetwork *LoadNetwork(QXmlStreamReader& reader);
