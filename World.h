@@ -36,8 +36,9 @@ public:
     int getSizeY() const;
 
     //I'm as wise as the world. Oh wait...
-    int getWorldAge() const {return m_tickPassed;}
+    unsigned getWorldAge() const {return m_tickPassed;}
 
+    void setWorldAge(unsigned tickPassed) {m_tickPassed = tickPassed;}
     void setSize(int size_x, int size_y);
 
     void updateListCollision(std::shared_ptr<Animal> a) const;

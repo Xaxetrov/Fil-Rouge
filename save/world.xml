@@ -1,147 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <World>
-	<x>500</x>
-	<y>500</y>
-	<Entity type="Vegetal">
-		<x>350</x>
-		<y>400</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Vegetal">
-		<x>400</x>
-		<y>100</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Vegetal">
-		<x>200</x>
-		<y>10</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Vegetal">
-		<x>380</x>
-		<y>460</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Vegetal">
-		<x>100</x>
-		<y>200</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Vegetal">
-		<x>220</x>
-		<y>280</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Vegetal">
-		<x>250</x>
-		<y>180</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>100</x>
-		<y>300</y>
-		<radius>20</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>400</x>
-		<y>250</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>450</x>
-		<y>25</y>
-		<radius>20</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>100</x>
-		<y>420</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>70</x>
-		<y>70</y>
-		<radius>50</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>25</x>
-		<y>370</y>
-		<radius>20</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>300</x>
-		<y>70</y>
-		<radius>30</radius>
-	</Entity>
-	<Entity type="Water">
-		<x>200</x>
-		<y>400</y>
-		<radius>40</radius>
-	</Entity>
-	
-	
-	<Entity type="Herbivore">
-		<x>250</x>
-		<y>250</y>
-		<radius>10</radius>
-		<angle>3.14</angle>
-		<maxSpeed>50</maxSpeed>
-		<attack>20</attack>
-		<energy>100</energy>
-		<sex>false</sex>
-		<mating>1200</mating>
-		<NeuralNetwork>
-		    <NeuronLayer id="0">
-			<inputsNum>16</inputsNum>
-		    </NeuronLayer>
-		    <NeuronLayer id="1">
-			<Neuron id="0">
-			    <weights>-0.460396 -0.0964768 1.6545 0.30378 0.54062 -0.536736 0.619272 0.597176 -0.112628 0.862553 0.278518 -0.470672 -0.0971196 -0.43806 0.545661 -2.02433 0.848493 </weights>
-			</Neuron>
-			<Neuron id="1">
-			    <weights>1.69029 0.88589 1.55758 1.23142 -0.713189 0.197961 0.745318 0.551089 -1.46876 0.00844486 0.207784 0.542413 -0.294645 0.23415 -0.0554942 -0.59112 -1.12157 </weights>
-			</Neuron>
-			<Neuron id="2">
-			    <weights>-0.204572 -0.000432467 1.22601 0.226717 -0.0930092 -1.35517 -1.006 0.509209 0.573822 -0.52842 -0.8068 0.855171 -0.342373 0.550301 0.674141 0.302876 -0.00310002 </weights>
-			</Neuron>
-			<Neuron id="3">
-			    <weights>2.01808 0.0435274 -0.294122 0.0452774 0.119922 0.474732 -1.85196 2.06212 0.842603 1.12963 0.20034 -0.7509 -0.749537 -0.372277 1.19448 -1.43472 0.272823 </weights>
-			</Neuron>
-			<Neuron id="4">
-			    <weights>-0.369745 -0.760913 -1.27844 0.694737 1.99035 0.11149 0.970794 1.39654 -2.78609 -1.03039 -0.331857 1.05882 0.548696 0.168253 0.5665 -0.545396 -1.28109 </weights>
-			</Neuron>
-			<Neuron id="5">
-			    <weights>-0.403449 -1.35543 -0.138492 1.17174 0.0455075 -1.35915 -0.158847 -0.160121 0.353205 -1.9043 0.991799 -0.223517 0.598014 0.297751 0.107023 -0.173165 -2.36711 </weights>
-			</Neuron>
-			<Neuron id="6">
-			    <weights>0.772511 0.0198653 -1.02841 -1.01561 0.903181 -0.910859 0.284065 0.102017 0.310862 2.18656 -2.3449 1.28995 0.212904 1.77436 -0.262099 0.869187 0.397594 </weights>
-			</Neuron>
-			<Neuron id="7">
-			    <weights>0.136531 -2.83168 -0.281431 0.511946 0.176515 -1.82425 0.0824584 0.666623 -0.353909 0.674418 0.948145 0.700965 0.549104 1.59674 -0.82995 -0.695906 -0.111052 </weights>
-			</Neuron>
-			<Neuron id="8">
-			    <weights>-2.35056 -1.11319 0.983095 1.40001 0.758759 0.639419 1.11794 0.59435 -0.253211 -0.236183 0.901316 0.488851 0.27291 1.31842 0.214238 -0.128847 -1.0189 </weights>
-			</Neuron>
-			<Neuron id="9">
-			    <weights>-0.186755 0.0893712 0.979146 -0.0592537 -1.41457 1.27751 1.62013 -0.0221515 -1.33665 0.630445 -0.377818 -0.662599 0.62212 -0.559813 1.01353 -0.0752052 -0.792435 </weights>
-			</Neuron>
-			<Neuron id="10">
-			    <weights>-1.63797 1.50382 -0.208978 -0.744795 -0.600378 -0.164214 -0.384248 -0.436031 -0.690246 -0.598649 -0.103607 1.17698 0.786175 0.282542 1.76292 0.434492 0.330637 </weights>
-			</Neuron>
-			<Neuron id="11">
-			    <weights>-0.33126 3.13957 0.833605 -1.45147 -0.05309 -1.00385 -1.02098 1.23495 1.78161 -0.51558 0.945249 0.071882 -1.73074 -1.52889 0.775828 0.209529 -1.1355 </weights>
-			</Neuron>
-		    </NeuronLayer>
-		    <NeuronLayer id="2">
-			<Neuron id="0">
-			    <weights>-0.0227891 -0.905004 -1.61546 -0.603328 2.0031 0.139392 0.755223 -1.25486 1.99478 -0.141302 -0.233894 -1.28988 0.213033 </weights>
-			</Neuron>
-			<Neuron id="1">
-			    <weights>-0.37991 1.66751 0.94029 -0.290617 -0.524163 -0.885164 -0.80452 1.68848 -0.465199 0.580488 1.90561 0.952542 -1.09376 </weights>
-			</Neuron>
-			<Neuron id="2">
-			    <weights>1.00546 1.23923 -0.384808 -0.730026 -0.472712 0.380138 1.57751 -0.350527 0.639037 -0.706583 0.810465 -0.0895202 -1.03226 </weights>
-			</Neuron>
-		    </NeuronLayer>
-		</NeuralNetwork>
-	</Entity>
+    <x>500</x>
+    <y>500</y>
+    <age>0</age>
+    <Entity type="Vegetal">
+        <x>350</x>
+        <y>400</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>400</x>
+        <y>100</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>200</x>
+        <y>10</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>380</x>
+        <y>460</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>100</x>
+        <y>200</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>220</x>
+        <y>280</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>250</x>
+        <y>180</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>100</x>
+        <y>300</y>
+        <radius>20</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>400</x>
+        <y>250</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>450</x>
+        <y>25</y>
+        <radius>20</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>100</x>
+        <y>420</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>70</x>
+        <y>70</y>
+        <radius>50</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>25</x>
+        <y>370</y>
+        <radius>20</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>300</x>
+        <y>70</y>
+        <radius>30</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>200</x>
+        <y>400</y>
+        <radius>40</radius>
+        <quantity>5000</quantity>
+        <maxQuantity>5000</maxQuantity>
+    </Entity>
+    
 </World>

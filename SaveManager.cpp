@@ -110,6 +110,7 @@ void SaveManager::saveWorld(const World& world, QString savingPath)
 
     writer.writeTextElement("x", QString::number(world.getSizeX()));
     writer.writeTextElement("y", QString::number(world.getSizeY()));
+    writer.writeTextElement("age", QString::number(world.getWorldAge()));
 
     for(auto entity:world.getCopyOfEntities())
     {
@@ -155,8 +156,11 @@ void SaveManager::saveAnimal(const shared_ptr<Animal> animal, QXmlStreamWriter &
     writer.writeTextElement("attack", QString::number(animal->getDamage()));
     writer.writeTextElement("energy", QString::number(animal->getEnergy()));
     writer.writeTextElement("sex", animal->isFemale()?"true":"false" );
-    writer.writeTextElement("angle", QString::number(animal->getMating()));
+    writer.writeTextElement("mating", QString::number(animal->getMating()));
     writer.writeTextElement("age", QString::number(animal->getAge()));
+    writer.writeTextElement("hunger", QString::number(animal->getHunger()));
+    writer.writeTextElement("thirst", QString::number(animal->getThirst()));
+    writer.writeTextElement("health", QString::number(animal->getHealth()));
 
     SaveNetwork(*(animal->getBrain()),writer);
 

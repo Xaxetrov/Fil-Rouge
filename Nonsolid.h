@@ -6,8 +6,8 @@
 class NonSolid : public Entity
 {
 public:
-    NonSolid(int x, int y, int radius);
-    NonSolid(Coordinate c, int radius);
+    NonSolid(double x, double y, double radius);
+    NonSolid(Coordinate c, double radius);
 
     virtual int play();
 

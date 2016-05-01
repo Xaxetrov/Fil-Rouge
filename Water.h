@@ -6,7 +6,7 @@
 class Water : public Resource
 {
 public:
-  Water(int x, int y, int radius, int quantity);
+  Water(double x, double y, double radius, double quantity);
   virtual unsigned int getTypeId() const { return ID_WATER; }
   int getNeralNetworkId() const { return NN_ID_WATER; }
 

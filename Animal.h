@@ -48,6 +48,10 @@ public:
     void setBrain(NeuralNetwork * newBrain);
     void setSex(bool sex);
     void setAge(int age) {m_age = age;}
+    void setAngle(double angle) {m_angle = angle;}
+    void setHunger(int hunger) {m_hunger = hunger;}
+    void setThirst(int thirst) {m_thirst = thirst;}
+    void setHealth(int health) {m_health = health;}
 
     //basic methods
     void die();

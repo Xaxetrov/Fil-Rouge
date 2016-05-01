@@ -1,6 +1,6 @@
 #include "Water.h"
 
-Water::Water(int x, int y, int radius, int quantity) : Resource(x,y,radius, quantity, EVOLUTION_WATER)
+Water::Water(double x, double y, double radius, double quantity) : Resource(x,y,radius, quantity, EVOLUTION_WATER)
 {
   
 }

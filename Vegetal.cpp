@@ -1,6 +1,6 @@
 #include "Vegetal.h"
 
-Vegetal::Vegetal(int x, int y, int radius, int quantity) : Resource(x, y, radius, quantity, EVOLUTION_VEGETAL)
+Vegetal::Vegetal(double x, double y, double radius, int quantity) : Resource(x, y, radius, quantity, EVOLUTION_VEGETAL)
 {
 }
 

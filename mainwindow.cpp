@@ -50,6 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     animalMenu = this->menuBar()->addMenu(tr("Animal"));
     fileExitAction = fileMenu->addAction(tr("Exit"));
     saveWorldAction = fileMenu->addAction(tr("Save world as..."));
+    loadWorldAction = fileMenu->addAction(tr("Load world"));
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
     saveNeuralNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
     loadNeuralNetworkAction = animalMenu->addAction(tr("Load neural network"));
@@ -65,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(saveNeuralNetworkAction,SIGNAL(triggered(bool)),this,SLOT(saveNeuralNetwork()));
     QObject::connect(loadNeuralNetworkAction, SIGNAL(triggered(bool)),this, SLOT(loadNeuralNetwork()));
     QObject::connect(saveWorldAction, SIGNAL(triggered(bool)),this, SLOT(saveWorld()));
+    QObject::connect(loadWorldAction, SIGNAL(triggered(bool)),this, SLOT(loadWorldSave()));
 }
 
 void MainWindow::loadWorld()
@@ -166,6 +168,7 @@ void MainWindow::loadXML(QString worldSave)
 void MainWindow::parseWorld(QXmlStreamReader& reader)
 {
   int xWorld, yWorld;
+  unsigned ageWorld;
 
   if(reader.tokenType() != QXmlStreamReader::StartElement &&
      reader.name() != "World")
@@ -178,7 +181,11 @@ void MainWindow::parseWorld(QXmlStreamReader& reader)
   {
     if(reader.tokenType() == QXmlStreamReader::StartElement)
     {
-      if(reader.name() == "x")
+      if(reader.name() == "Entity")
+      {
+        this->parseEntity(reader);
+      }
+      else if(reader.name() == "x")
       {
         xWorld = reader.readElementText().toInt();
       }
@@ -186,9 +193,9 @@ void MainWindow::parseWorld(QXmlStreamReader& reader)
       {
         yWorld = reader.readElementText().toInt();
       }
-      else if(reader.name() == "Entity")
+      else if(reader.name() == "age")
       {
-        this->parseEntity(reader);
+        ageWorld = reader.readElementText().toUInt();
       }
       else
       { //error
@@ -198,13 +205,13 @@ void MainWindow::parseWorld(QXmlStreamReader& reader)
     reader.readNext();
   }
   world.setSize(xWorld,yWorld);
-
+  world.setWorldAge(ageWorld);
 }
 
 void MainWindow::parseEntity(QXmlStreamReader& reader)
 {
   QString type;
-  int xEntity=0, yEntity=0, radiusEntity=INITIAL_RADIUS;
+  double xEntity=0.0, yEntity=0.0, radiusEntity=INITIAL_RADIUS;
   double angle = 0.0;
   int maxSpeed = MAX_SPEED;
   double attack = -2;
@@ -213,7 +220,10 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
   NeuralNetwork * nn = nullptr;
   int mating = 0;
   int age = 0;
-  int quantity = 0;
+  int quantity = 0, maxQuantity = 0;
+  int hunger = 0;
+  int thirst = 0;
+  int health = MAX_HEALTH;
 
   if(!reader.tokenType() == QXmlStreamReader::StartElement &&
       reader.name() == "Entity")
@@ -238,15 +248,15 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
     {
       if(reader.name() == "x")
       {
-          xEntity = reader.readElementText().toInt();
+          xEntity = reader.readElementText().toDouble();
       }
       else if(reader.name() == "y")
       {
-          yEntity = reader.readElementText().toInt();
+          yEntity = reader.readElementText().toDouble();
       }
       else if(reader.name() == "radius")
       {
-          radiusEntity = reader.readElementText().toInt();
+          radiusEntity = reader.readElementText().toDouble();
       }
       else if(reader.name() == "angle")
       {
@@ -285,6 +295,22 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
       {
           quantity = reader.readElementText().toInt();
       }
+      else if(reader.name() == "maxQuantity")
+      {
+          maxQuantity = reader.readElementText().toInt();
+      }
+      else if(reader.name() == "hunger")
+      {
+          hunger = reader.readElementText().toInt();
+      }
+      else if(reader.name() == "thirst")
+      {
+          thirst = reader.readElementText().toInt();
+      }
+      else if(reader.name() == "health")
+      {
+          health = reader.readElementText().toInt();
+      }
       else
       { //error
       }
@@ -294,21 +320,28 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
 
   if(type == "Vegetal")
   {
+    if(maxQuantity==0)
+        maxQuantity=VEGETAL_MAXQUANTITY;
     if(quantity==0)
-        quantity=VEGETAL_MAXQUANTITY;
-    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, quantity));
+        quantity=maxQuantity;
+    shared_ptr<Vegetal> entity( make_shared<Vegetal>(xEntity, yEntity, radiusEntity, maxQuantity));
+    entity->setCurrantQuantity(quantity);
     world.addEntity(entity);
   }
   else if(type == "Water")
   {
-    if(quantity==0)
-        quantity=WATER_MAXQUANTITY;
-    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, quantity));
+      if(maxQuantity==0)
+          maxQuantity=WATER_MAXQUANTITY;
+      if(quantity==0)
+          quantity=maxQuantity;
+    shared_ptr<Water> entity( make_shared<Water>(xEntity, yEntity, radiusEntity, maxQuantity));
+    entity->setCurrantQuantity(quantity);
     world.addEntity(entity);
   }
   else if(type == "Meat")
   {
-    shared_ptr<Meat> entity( make_shared<Meat>(xEntity, yEntity, radiusEntity, quantity));
+    shared_ptr<Meat> entity( make_shared<Meat>(xEntity, yEntity, radiusEntity, maxQuantity));
+    entity->setCurrantQuantity(quantity);
     world.addEntity(entity);
   }
   else if(type == "Herbivore")
@@ -327,7 +360,10 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
       shared_ptr<Herbivore> entity( make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
-      entity->turn(angle);
+      entity->setAngle(angle);
+      entity->setHunger(hunger);
+      entity->setThirst(thirst);
+      entity->setHealth(health);
       world.addEntity(entity);
   }
   else if(type == "Carnivore")
@@ -346,7 +382,10 @@ void MainWindow::parseEntity(QXmlStreamReader& reader)
       shared_ptr<Carnivore> entity( make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
-      entity->turn(angle);
+      entity->setAngle(angle);
+      entity->setHunger(hunger);
+      entity->setThirst(thirst);
+      entity->setHealth(health);
       world.addEntity(entity);
   }
 
@@ -475,4 +514,24 @@ void MainWindow::saveWorld(bool pauseDuringSave)
 
     if(pause)
             worldWidget.startSimulation();
+}
+
+void MainWindow::loadWorldSave(bool pauseDuringLoad)
+{
+    bool pause = false;
+    if(pauseDuringLoad && worldWidget.isSimulationRunning())
+        pause = true;
+    if(pause)
+        worldWidget.suspendSimulation();
+
+    QString filter = "XML files (*.xml);;All files (*.*)";
+    QString defaultFilter = "XML files (*.xml)";
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+                                                    filter,&defaultFilter);
+    world = World();
+    loadXML(filePath);
+    worldWidget.setWorld(&world);
+
+    if(pause)
+        worldWidget.startSimulation();
 }

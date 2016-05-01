@@ -33,6 +33,7 @@ public slots:
     void updateStatusBar();
 
     void saveWorld(bool pauseDuringSave=true);
+    void loadWorldSave(bool pauseDuringLoad=true);
 
 private:
     void loadWorld();
@@ -49,6 +50,7 @@ private:
     EntityFrame entityWidget;
     QMenu * fileMenu;
     QAction * saveWorldAction;
+    QAction * loadWorldAction;
     QMenu * simulationMenu;
     QMenu * animalMenu;
     QAction * simmulationStartStopAction;
