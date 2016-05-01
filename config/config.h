@@ -39,7 +39,7 @@ const double NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to a
 const double NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.05; // the value added to a weight as a standart deviation of 0.05
 
 // User Interface
-const unsigned UPDATE_TIMER_INTERVALE = 1; //ms
+const unsigned UPDATE_TIMER_INTERVALE = 10; //ms
 
 // Id
 const unsigned int ID_ANIMAL = 20;
