@@ -169,7 +169,7 @@ void Animal::move(int speedPercentage)
 //    }
 }
 
-int Animal::computeScore()
+int Animal::computeScore() // /!\ update MAX_SCORE in config.h
 {
     return m_health*100 - m_hunger*10 - m_thirst*10;// + m_fear*3;
 }
@@ -343,6 +343,44 @@ void Animal::attack()
                }
            }
        }
+    }
+}
+
+void Animal::evolve()
+/**
+ * Modify the neuronal network of the animal if the evolution of its score is negative
+ */
+{
+    int newScore =  computeScore();
+    int diffScore = (newScore > m_score)/(MAX_SCORE*5); // modification of the coefficients lower or equal at 0.2
+    if (diffScore < 0)
+    {
+        const NeuralNetwork *nn = getBrain();
+
+        // recuperation de quelqes informations sur le réseau de neurones
+        const std::vector<NeuronLayer> layers = nn->getLayers();
+        const unsigned int workingLayersNum=layers.size(); //nombre de couches cachées (en plus de l'input et de l'output)
+
+        //for each layer
+        for (unsigned int layer=1; layer<=workingLayersNum; layer++)
+        {
+            const std::vector<Neuron> neurons = layers.at(layer-1).getNeurons();
+            unsigned int neuronsNum = neurons.size();
+
+            //for each neuron
+            for (unsigned int neuron=0; neuron<neuronsNum; neuron++)
+            {
+                const std::vector<double> weights = neurons.at(neuron).getWeights();
+                if(weights.size()!=0)
+                {
+                    //for each weight
+                    for(unsigned int w=1; w<weights.size(); w++)
+                    {
+                        // TODO coeff+=diffScore;
+                    }
+                }
+            }
+        }
     }
 }
 

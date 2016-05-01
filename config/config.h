@@ -68,6 +68,7 @@ const int MAX_SPEED = 50;
 const int MAX_HEALTH = 5000;
 const int MAX_HUNGER = 2000;
 const int MAX_THIRST = 2000;
+const int MAX_SCORE = 500000;
 const unsigned int MAX_FEAR = 100;
 const unsigned int MAX_MATING = 2500;
 const unsigned int MAX_CHILD_PER_ANIMAL = 7;

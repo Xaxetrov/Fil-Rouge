@@ -61,6 +61,7 @@ public:
     void eat();
     void mate();
     void attack();
+    void evolve();
     void loseLive(unsigned liveToLose);
     void addEntityInListCollision(std::weak_ptr<Entity> e);
     void clearEntityListCollision();
@@ -84,6 +85,7 @@ protected:
     int m_mating;
     double m_speed;
     double m_energy;
+    double m_score;
 
 private :
     int m_age;
