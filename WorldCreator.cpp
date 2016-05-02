@@ -12,9 +12,9 @@ WorldCreator::WorldCreator(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->tabWidget = QTabWidget(this); //replace with a clean one
-    ui->tabWidget->addTab(&resourceWidget,tr("Resources"));
-    ui->tabWidget->addTab(&animalWidget,tr("Animaux"));
+    ui->tabWidget = &tabWidget; //replace with a clean one
+    tabWidget.addTab(&resourceWidget,tr("Resources"));
+    tabWidget.addTab(&animalWidget,tr("Animaux"));
 }
 
 WorldCreator::~WorldCreator()

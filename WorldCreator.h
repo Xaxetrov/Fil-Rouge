@@ -30,6 +30,7 @@ public slots:
 
 private:
     Ui::WorldCreator *ui;
+    QTabWidget tabWidget;
     WorldCreatorAnimalsWidget animalWidget;
     WorldCreatorResourcesWidget resourceWidget;
     World world;
