@@ -2,6 +2,10 @@
 #define WORLDCREATOR_H
 
 #include <QMainWindow>
+#include <QTabWidget>
+
+#include "WorldCreatorAnimalsWidget.h"
+#include "WorldCreatorResourcesWidget.h"
 
 namespace Ui {
 class WorldCreator;
@@ -17,6 +21,8 @@ public:
 
 private:
     Ui::WorldCreator *ui;
+    WorldCreatorAnimalsWidget animalWidget;
+    WorldCreatorResourcesWidget resourceWidget;
 };
 
 #endif // WORLDCREATOR_H
