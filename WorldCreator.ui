@@ -18,16 +18,11 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="tabResources">
+      <widget class="QWidget" name="tab1">
        <attribute name="title">
         <string>Resources</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tabAnimaux">
-       <attribute name="title">
-        <string>Animaux</string>
        </attribute>
       </widget>
      </widget>
