@@ -37,17 +37,12 @@ void WorldCreator::loadWorld()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load the world of your dreams"),QDir::currentPath(),
                                                     filter,&defaultFilter);
     SaveManager saveManager;
     world = saveManager.loadWorld(filePath);
-}
 
-void WorldCreator::finish()
-{
-    SaveManager saveManager;
-
-    //delete old entities
+    //delete old animals
     std::list<std::shared_ptr<Entity>> entities = world.getEntities();
     for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
     {
@@ -59,10 +54,16 @@ void WorldCreator::finish()
             e=sav;
         }
     }
+}
+
+void WorldCreator::finish()
+{
+    SaveManager saveManager;
 
     //set neuralnets to entities & create entities
     unsigned numH(animalWidget.getNumberOfHerbivore()), numC(animalWidget.getNumberOfCarnivore());
     world.feedWithRandomHerbivore(numH);
+    std::list<std::shared_ptr<Entity>> entities = world.getEntities();
     if(animalWidget.isHerbivoreChecked())
     {
         std::list<QString>::iterator iteReseaux = herbivores.begin();
@@ -112,7 +113,7 @@ void WorldCreator::addHerbivoreBrain()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a herbivore brain"),QDir::currentPath(),
                                                     filter,&defaultFilter);
     herbivores.push_back(filePath);
 }
@@ -121,7 +122,7 @@ void WorldCreator::addCarnivoreBrain()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a carnivore brain"),QDir::currentPath(),
                                                     filter,&defaultFilter);
     carnivores.push_back(filePath);
 }
