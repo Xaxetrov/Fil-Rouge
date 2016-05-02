@@ -15,6 +15,8 @@ public:
     explicit WorldCreator(QWidget *parent = 0);
     ~WorldCreator();
 
+public slots:
+
 private:
     Ui::WorldCreator *ui;
 };
