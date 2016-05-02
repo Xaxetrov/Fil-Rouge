@@ -30,7 +30,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox"/>
+         <widget class="QSpinBox" name="sb_herbivore"/>
         </item>
         <item>
          <widget class="QLabel" name="label_2">
@@ -40,7 +40,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_2"/>
+         <widget class="QSpinBox" name="sb_carnivore"/>
         </item>
        </layout>
       </widget>
