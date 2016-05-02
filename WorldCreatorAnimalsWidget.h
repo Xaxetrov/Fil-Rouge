@@ -26,7 +26,7 @@ public:
 
 private:
     Ui::WorldCreatorAnimalsWidget *ui;
-    QStringListModel *listModel;
+    //QStringListModel *listModel;
 };
 
 #endif // WORLDCREATORANIMALSWIDGET_H
