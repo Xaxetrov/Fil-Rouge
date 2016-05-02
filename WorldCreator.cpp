@@ -35,6 +35,27 @@ void WorldCreator::loadWorld()
 void WorldCreator::finish()
 {
     SaveManager saveManager;
+
+    //set neuralnets to entities
+    unsigned numH(getNumberOfHerbivore), numC(getNumberOfCarnivore);
+    if(isHerbivoreChecked)
+    {
+
+    }
+    else
+    {
+
+    }
+    if(isCarnivoreChecked)
+    {
+
+    }
+    else
+    {
+
+    }
+
+    //put World in a predefined xmlFile
     QString path("../save/worldByWC.xml");
     saveManager.saveWorld(world,path);
 }
