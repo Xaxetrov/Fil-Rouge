@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     Resource.cpp \
     Meat.cpp \
     Herbivore.cpp \
-    Carnivore.cpp
+    Carnivore.cpp \
+    WorldCreator.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -80,6 +81,8 @@ HEADERS  += mainwindow.h \
     VisionSector_NonLiving.h \
     VisionSector_Living.h \
     Herbivore.h \
-    Carnivore.h
+    Carnivore.h \
+    WorldCreator.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    WorldCreator.ui
