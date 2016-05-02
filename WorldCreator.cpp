@@ -30,7 +30,7 @@ void WorldCreator::loadWorld()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load the world of your dreams"),QDir::currentPath(),
                                                     filter,&defaultFilter);
     SaveManager saveManager;
     world = saveManager.loadWorld(filePath);
@@ -105,7 +105,7 @@ void WorldCreator::addHerbivoreBrain()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a herbivore brain"),QDir::currentPath(),
                                                     filter,&defaultFilter);
     herbivores.push_back(filePath);
 }
@@ -114,7 +114,7 @@ void WorldCreator::addCarnivoreBrain()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a carnivore brain"),QDir::currentPath(),
                                                     filter,&defaultFilter);
     carnivores.push_back(filePath);
 }
