@@ -2,6 +2,9 @@
 #define WORLDCREATOR_H
 
 #include <QMainWindow>
+#include <list>
+
+#include "World.h"
 
 namespace Ui {
 class WorldCreator;
@@ -16,9 +19,18 @@ public:
     ~WorldCreator();
 
 public slots:
+    void loadWorld();
+    void finish();
+    void addHerbivoreBrain();
+    void addCarnivoreBrain();
 
 private:
     Ui::WorldCreator *ui;
+    World world;
+
+    std::list<QString> herbivores;
+    std::list<QString> carnivores;
+
 };
 
 #endif // WORLDCREATOR_H

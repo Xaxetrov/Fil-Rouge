@@ -31,6 +31,7 @@ public slots:
     void loadNeuralNetwork();
     void setSelectedAnimal(std::weak_ptr<Animal> a);
     void updateStatusBar();
+    void openWorldCreator(bool pauseDuringLoad=true);
 
     void saveWorld(bool pauseDuringSave=true);
     void loadWorldSave(bool pauseDuringLoad=true);
@@ -57,6 +58,7 @@ private:
     QAction * fileExitAction;
     QAction * saveNeuralNetworkAction;
     QAction * loadNeuralNetworkAction;
+    QAction * openWorldCreatorAction;
 
     World world;
     std::weak_ptr<Animal> selectedAnimal;
