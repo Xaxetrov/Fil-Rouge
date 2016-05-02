@@ -34,13 +34,8 @@ void WorldCreator::loadWorld()
                                                     filter,&defaultFilter);
     SaveManager saveManager;
     world = saveManager.loadWorld(filePath);
-}
 
-void WorldCreator::finish()
-{
-    SaveManager saveManager;
-
-    //delete old entities
+    //delete old animals
     std::list<std::shared_ptr<Entity>> entities = world.getEntities();
     for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
     {
@@ -52,10 +47,16 @@ void WorldCreator::finish()
             e=sav;
         }
     }
+}
+
+void WorldCreator::finish()
+{
+    SaveManager saveManager;
 
     //set neuralnets to entities & create entities
     unsigned numH(animalWidget.getNumberOfHerbivore()), numC(animalWidget.getNumberOfCarnivore());
     world.feedWithRandomHerbivore(numH);
+    std::list<std::shared_ptr<Entity>> entities = world.getEntities();
     if(animalWidget.isHerbivoreChecked())
     {
         std::list<QString>::iterator iteReseaux = herbivores.begin();
