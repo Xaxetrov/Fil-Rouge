@@ -18,8 +18,12 @@ public:
     void addToHerbivoreList(QString path);
     void addToCarnivoreList(QString path);
 
+    bool isHerbivoreChecked();
+    bool isCarnivoreChecked();
+
 private:
     Ui::WorldCreatorAnimalsWidget *ui;
+    QStringListModel *listModel;
 };
 
 #endif // WORLDCREATORANIMALSWIDGET_H
