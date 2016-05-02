@@ -287,6 +287,7 @@ void MainWindow::openWorldCreator(bool pauseDuringLoad)
     if(pause)
         worldWidget.suspendSimulation();
 
+    worldCreator.show();
     /*
      * include code here
      */

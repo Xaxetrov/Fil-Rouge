@@ -9,6 +9,7 @@
 //#include "EntityViewWidget.h"
 #include "EntityFrame.h"
 #include "World.h"
+#include "WorldCreator.h"
 
 namespace Ui {
 class MainWindow;
@@ -59,6 +60,9 @@ private:
     QAction * saveNeuralNetworkAction;
     QAction * loadNeuralNetworkAction;
     QAction * openWorldCreatorAction;
+
+    //World Creator
+    WorldCreator worldCreator;
 
     World world;
     std::weak_ptr<Animal> selectedAnimal;

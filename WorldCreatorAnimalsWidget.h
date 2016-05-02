@@ -2,6 +2,7 @@
 #define WORLDCREATORANIMALSWIDGET_H
 
 #include <QWidget>
+#include <QStringListModel>
 
 namespace Ui {
 class WorldCreatorAnimalsWidget;
@@ -17,6 +18,8 @@ public:
 
     void addToHerbivoreList(QString path);
     void addToCarnivoreList(QString path);
+    void removeFromHerbivoreList(int index);
+    void removeFromCarnivoreList(int index);
 
     bool isHerbivoreChecked();
     bool isCarnivoreChecked();
@@ -24,9 +27,19 @@ public:
     unsigned getNumberOfHerbivore();
     unsigned getNumberOfCarnivore();
 
+public slots:
+    void addHerbivore();
+    void addCarnivore();
+    //void removeSelectedHerbivore();
+    //void removeSelectedCarnivore();
+
 private:
     Ui::WorldCreatorAnimalsWidget *ui;
-    //QStringListModel *listModel;
+    QStringListModel *herbivoreListModel;
+    QStringListModel *carnivoreListModel;
+    QStringList herbivoreList;
+    QStringList carnivoreList;
+
 };
 
 #endif // WORLDCREATORANIMALSWIDGET_H
