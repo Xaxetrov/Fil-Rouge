@@ -39,6 +39,7 @@ private:
     QStringListModel *carnivoreListModel;
     QStringList herbivoreList;
     QStringList carnivoreList;
+
 };
 
 #endif // WORLDCREATORANIMALSWIDGET_H
