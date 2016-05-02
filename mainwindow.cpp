@@ -51,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fileExitAction = fileMenu->addAction(tr("Exit"));
     saveWorldAction = fileMenu->addAction(tr("Save world as..."));
     loadWorldAction = fileMenu->addAction(tr("Load world"));
+    openWorldCreatorAction = fileMenu->addAction(tr("Open World Creator tool"));
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
     saveNeuralNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
     loadNeuralNetworkAction = animalMenu->addAction(tr("Load neural network"));
@@ -67,12 +68,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(loadNeuralNetworkAction, SIGNAL(triggered(bool)),this, SLOT(loadNeuralNetwork()));
     QObject::connect(saveWorldAction, SIGNAL(triggered(bool)),this, SLOT(saveWorld()));
     QObject::connect(loadWorldAction, SIGNAL(triggered(bool)),this, SLOT(loadWorldSave()));
+    QObject::connect(openWorldCreatorAction, SIGNAL(triggered(bool)), this, SLOT(openWorldCreator()));
 }
 
+//custom load for debug
 void MainWindow::loadWorld()
 {
-    const QString worldSave("../save/world.xml");
-    loadXML(worldSave);
+    const QString savingPath("../save/world.xml");
+    SaveManager saveManager;
+    world = saveManager.loadWorld(savingPath);
 
   /*  Animal * animal0 = new Animal(130,278,10,50,&world);
     Animal * animal1 = new Animal(160,278,10,50,&world);
@@ -130,267 +134,6 @@ world.addEntity(animal);*/
 
 }
 
-void MainWindow::loadXML(QString worldSave)
-{
-   QFile* xmlFile = new QFile(worldSave);
-   if(!xmlFile->exists())
-   {
-     std::cout << "file does not exist" << std::endl;
-   }
-
-   if(!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
-   { //error
-     std::cout << "Can't open the file" << std::endl;
-   }
-   QXmlStreamReader reader(xmlFile);
-
-   while(!reader.atEnd() && !reader.hasError())
-   {
-     QXmlStreamReader::TokenType token = reader.readNext();
-     if(token == QXmlStreamReader::StartDocument)
-     { continue;
-     }
-
-     if(token == QXmlStreamReader::StartElement)
-     {
-      if(reader.name() == "World")
-      {
-         this->parseWorld(reader);
-      }
-     }
-   }
-   if(reader.hasError())
-   { std::cout << "Error in reading XML in constructor" << std::endl;
-   }
-   delete xmlFile;
-}
-
-void MainWindow::parseWorld(QXmlStreamReader& reader)
-{
-  int xWorld, yWorld;
-  unsigned ageWorld;
-
-  if(reader.tokenType() != QXmlStreamReader::StartElement &&
-     reader.name() != "World")
-  { // error
-    std::cout << "Error in reading Wolrd" << std::endl;
-  }
-  reader.readNext();
-  while(!(reader.tokenType() == QXmlStreamReader::EndElement &&
-         reader.name() == "World"))
-  {
-    if(reader.tokenType() == QXmlStreamReader::StartElement)
-    {
-      if(reader.name() == "Entity")
-      {
-        this->parseEntity(reader);
-      }
-      else if(reader.name() == "x")
-      {
-        xWorld = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "y")
-      {
-        yWorld = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "age")
-      {
-        ageWorld = reader.readElementText().toUInt();
-      }
-      else
-      { //error
-        std::cout << "Unknown Token" << std::endl;
-      }
-    }
-    reader.readNext();
-  }
-  world.setSize(xWorld,yWorld);
-  world.setWorldAge(ageWorld);
-}
-
-void MainWindow::parseEntity(QXmlStreamReader& reader)
-{
-  QString type;
-  double xEntity=0.0, yEntity=0.0, radiusEntity=INITIAL_RADIUS;
-  double angle = 0.0;
-  int maxSpeed = MAX_SPEED;
-  double attack = -2;
-  double energy = DEFAULT_ENERGY;
-  bool sex = true;
-  NeuralNetwork * nn = nullptr;
-  int mating = 0;
-  int age = 0;
-  int quantity = 0, maxQuantity = 0;
-  int hunger = 0;
-  int thirst = 0;
-  int health = MAX_HEALTH;
-
-  if(!reader.tokenType() == QXmlStreamReader::StartElement &&
-      reader.name() == "Entity")
-  { //error
-  }
-
-  QXmlStreamAttributes attributes = reader.attributes();
-  if(attributes.hasAttribute("type"))
-  {
-    type = attributes.value("type").toString();
-  }
-  else
-  { //error
-    std::cout << "No Attribute type" << std::endl;
-  }
-
-  reader.readNext();
-  while(!(reader.tokenType() == QXmlStreamReader::EndElement &&
-         reader.name() == "Entity"))
-  {
-    if(reader.tokenType() == QXmlStreamReader::StartElement)
-    {
-      if(reader.name() == "x")
-      {
-          xEntity = reader.readElementText().toDouble();
-      }
-      else if(reader.name() == "y")
-      {
-          yEntity = reader.readElementText().toDouble();
-      }
-      else if(reader.name() == "radius")
-      {
-          radiusEntity = reader.readElementText().toDouble();
-      }
-      else if(reader.name() == "angle")
-      {
-          angle = reader.readElementText().toDouble();
-      }
-      else if(reader.name() == "attack")
-      {
-          attack = reader.readElementText().toDouble();
-      }
-      else if(reader.name() == "energy")
-      {
-          energy = reader.readElementText().toDouble();
-      }
-      else if(reader.name() == "sex")
-      {
-          sex = (reader.readElementText().toLower()=="true");
-      }
-      else if(reader.name() == "maxSpeed")
-      {
-          maxSpeed = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "NeuralNetwork")
-      {
-          SaveManager savManager;
-          nn = savManager.LoadNetwork(reader);
-      }
-      else if(reader.name() == "mating")
-      {
-          mating = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "age")
-      {
-          age = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "quantity")
-      {
-          quantity = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "maxQuantity")
-      {
-          maxQuantity = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "hunger")
-      {
-          hunger = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "thirst")
-      {
-          thirst = reader.readElementText().toInt();
-      }
-      else if(reader.name() == "health")
-      {
-          health = reader.readElementText().toInt();
-      }
-      else
-      { //error
-      }
-    }
-    reader.readNext();
-  }
-
-  if(type == "Vegetal")
-  {
-    if(maxQuantity==0)
-        maxQuantity=VEGETAL_MAXQUANTITY;
-    if(quantity==0)
-        quantity=maxQuantity;
-    std::shared_ptr<Vegetal> entity( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, maxQuantity));
-    entity->setCurrantQuantity(quantity);
-    world.addEntity(entity);
-  }
-  else if(type == "Water")
-  {
-      if(maxQuantity==0)
-          maxQuantity=WATER_MAXQUANTITY;
-      if(quantity==0)
-          quantity=maxQuantity;
-    std::shared_ptr<Water> entity( std::make_shared<Water>(xEntity, yEntity, radiusEntity, maxQuantity));
-    entity->setCurrantQuantity(quantity);
-    world.addEntity(entity);
-  }
-  else if(type == "Meat")
-  {
-    std::shared_ptr<Meat> entity( std::make_shared<Meat>(xEntity, yEntity, radiusEntity, maxQuantity));
-    entity->setCurrantQuantity(quantity);
-    world.addEntity(entity);
-  }
-  else if(type == "Herbivore")
-  {
-      if(nn == nullptr)
-      {
-          std::vector<unsigned int> layerSizes;
-          for(unsigned int i = 0; i < NB_LAYERS; i++)
-          {
-            layerSizes.push_back(LAYER_SIZES[i]);
-          }
-          nn = new NeuralNetwork(layerSizes);
-      }
-      if(attack==-2)
-          attack = ATTACK_HERBIVORE;
-      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
-      entity->setSex(sex);
-      entity->setAge(age);
-      entity->setAngle(angle);
-      entity->setHunger(hunger);
-      entity->setThirst(thirst);
-      entity->setHealth(health);
-      world.addEntity(entity);
-  }
-  else if(type == "Carnivore")
-  {
-      if(nn == nullptr)
-      {
-          std::vector<unsigned int> layerSizes;
-          for(unsigned int i = 0; i < NB_LAYERS; i++)
-          {
-            layerSizes.push_back(LAYER_SIZES[i]);
-          }
-          nn = new NeuralNetwork(layerSizes);
-      }
-      if(attack==-2)
-          attack = ATTACK_CARNIVORE;
-      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
-      entity->setSex(sex);
-      entity->setAge(age);
-      entity->setAngle(angle);
-      entity->setHunger(hunger);
-      entity->setThirst(thirst);
-      entity->setHealth(health);
-      world.addEntity(entity);
-  }
-
-
-}
 
 MainWindow::~MainWindow()
 {
@@ -528,9 +271,25 @@ void MainWindow::loadWorldSave(bool pauseDuringLoad)
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
                                                     filter,&defaultFilter);
-    world = World();
-    loadXML(filePath);
+    SaveManager saveManager;
+    world = saveManager.loadWorld(filePath);
     worldWidget.setWorld(&world);
+
+    if(pause)
+        worldWidget.startSimulation();
+}
+
+void MainWindow::openWorldCreator(bool pauseDuringLoad)
+{
+    bool pause = false;
+    if(pauseDuringLoad && worldWidget.isSimulationRunning())
+        pause = true;
+    if(pause)
+        worldWidget.suspendSimulation();
+
+    /*
+     * include code here
+     */
 
     if(pause)
         worldWidget.startSimulation();

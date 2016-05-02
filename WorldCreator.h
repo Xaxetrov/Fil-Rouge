@@ -4,8 +4,11 @@
 #include <QMainWindow>
 #include <QTabWidget>
 
+#include <list>
+
 #include "WorldCreatorAnimalsWidget.h"
 #include "WorldCreatorResourcesWidget.h"
+#include "World.h"
 
 namespace Ui {
 class WorldCreator;
@@ -19,10 +22,21 @@ public:
     explicit WorldCreator(QWidget *parent = 0);
     ~WorldCreator();
 
+public slots:
+    void loadWorld();
+    void finish();
+    void addHerbivoreBrain();
+    void addCarnivoreBrain();
+
 private:
     Ui::WorldCreator *ui;
     WorldCreatorAnimalsWidget animalWidget;
     WorldCreatorResourcesWidget resourceWidget;
+    World world;
+
+    std::list<QString> herbivores;
+    std::list<QString> carnivores;
+
 };
 
 #endif // WORLDCREATOR_H
