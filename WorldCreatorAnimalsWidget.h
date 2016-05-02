@@ -21,6 +21,9 @@ public:
     bool isHerbivoreChecked();
     bool isCarnivoreChecked();
 
+    unsigned getNumberOfHerbivore();
+    unsigned getNumberOfCarnivore();
+
 private:
     Ui::WorldCreatorAnimalsWidget *ui;
     QStringListModel *listModel;
