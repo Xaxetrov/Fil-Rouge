@@ -16,9 +16,16 @@ WorldCreator::WorldCreator(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setCentralWidget(&tabWidget); //replace with a clean one
+    QLayout *animalsLayout = new QGridLayout();
+    ui->tabAnimaux->setLayout(animalsLayout);
+    animalsLayout->addWidget(&animalWidget);
+
+    /*setCentralWidget(&tabWidget); //replace with a clean one
     tabWidget.addTab(&resourceWidget,tr("Resources"));
-    tabWidget.addTab(&animalWidget,tr("Animaux"));
+    tabWidget.addTab(&animalWidget,tr("Animaux"));*/
+
+    QObject::connect(ui->bt_ok,SIGNAL(clicked(bool)),this,SLOT(finish()));
+    QObject::connect(ui->bt_cancel,SIGNAL(clicked(bool)),this,SLOT(close()));
 }
 
 WorldCreator::~WorldCreator()

@@ -18,9 +18,13 @@ WorldCreatorAnimalsWidget::WorldCreatorAnimalsWidget(QWidget *parent) :
     herbivoreListModel->setStringList(herbivoreList);
     carnivoreListModel->setStringList(carnivoreList);
 
+    ui->lv_herbivore->setModel(herbivoreListModel);
+    ui->lv_carnivore->setModel(carnivoreListModel);
+
 
     QObject::connect(ui->bt_addHerbivore,SIGNAL(clicked(bool)),this,SLOT(addHerbivore()));
     QObject::connect(ui->bt_addCarnivore,SIGNAL(clicked(bool)),this,SLOT(addCarnivore()));
+    QObject::connect(ui->bt_removeHerbivore,SIGNAL(clicked(bool)),this,SLOT(removeSelectedHerbivore()));
 }
 
 WorldCreatorAnimalsWidget::~WorldCreatorAnimalsWidget()
@@ -52,20 +56,27 @@ void WorldCreatorAnimalsWidget::addCarnivore()
     }
 }
 
-/*void WorldCreatorAnimalsWidget::removeSelectedHerbivore()
+void WorldCreatorAnimalsWidget::removeSelectedHerbivore()
 {
+    QModelIndexList list = ui->lv_herbivore->selectionModel()->selectedIndexes();
 
-}*/
+    for(QModelIndex &index : list)
+    {
+        removeFromHerbivoreList(index.row());
+    }
+}
 
 
 void WorldCreatorAnimalsWidget::addToHerbivoreList(QString path)
 {
     herbivoreList << path;
+    herbivoreListModel->setStringList(herbivoreList);
 }
 
 void WorldCreatorAnimalsWidget::addToCarnivoreList(QString path)
 {
     carnivoreList << path;
+    carnivoreListModel->setStringList(carnivoreList);
 }
 
 void WorldCreatorAnimalsWidget::removeFromHerbivoreList(int index)

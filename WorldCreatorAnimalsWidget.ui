@@ -134,7 +134,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QListView" name="lv_Carnivore"/>
+         <widget class="QListView" name="lv_carnivore"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">

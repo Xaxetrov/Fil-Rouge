@@ -30,7 +30,7 @@ public:
 public slots:
     void addHerbivore();
     void addCarnivore();
-    //void removeSelectedHerbivore();
+    void removeSelectedHerbivore();
     //void removeSelectedCarnivore();
 
 private:
