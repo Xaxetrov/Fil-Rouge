@@ -169,9 +169,29 @@ void Animal::move(int speedPercentage)
 //    }
 }
 
-int Animal::computeScore() // /!\ update MAX_SCORE in config.h
+int Animal::computeScore()
+/* 100% health = 100% health score, 50% health = 75% health score and 0% health = 0% health score
+ * 0% hunger = 100% hunger score, 50% hunger = 75% hunger score, 100% hunger = 0% hunger score
+ * same things for thirst and fear
+ * Illustrate the fact that to get a little hungry does not have the same gravity as to starve !
+ */
 {
-    return m_health*100 - m_hunger*10 - m_thirst*10;// + m_fear*3;
+    double a = 1.125*MAX_SCORE;
+    double b = (0.5*MAX_HEALTH) / (log(a-0.75*MAX_SCORE)-log(a-MAX_SCORE));
+    double c = log(a);
+    double healthScore = a - exp(-m_health/b+c);
+
+    b = (0.5*MAX_HUNGER) / (log(a) - log(a-0.75*MAX_SCORE));
+    c = log(a-MAX_SCORE);
+    double hungerScore = a - exp(m_hunger/b+c);
+
+    b = (0.5*MAX_THIRST) / (log(a) - log(a-0.75*MAX_SCORE));
+    double thirstScore = a - exp(m_thirst/b+c);
+
+    b = (0.5*MAX_FEAR) / (log(a) - log(a-0.75*MAX_SCORE));
+    double fearScore = a - exp(m_fear/b+c);
+
+    return (2*healthScore+hungerScore+thirstScore+2*fearScore)/6; // Balance the various criteria
 }
 
 //TODO: TO FINISH
