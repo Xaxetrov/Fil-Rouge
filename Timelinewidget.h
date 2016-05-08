@@ -16,6 +16,7 @@ class TimelineWidget : public QTabWidget
 
 public:
     explicit TimelineWidget(QWidget *parent = 0);
+    void initView();
     void paintEvent(QPaintEvent *event);
     static void updatePopulation(int herbivoresPopulation, int carnivoresPopulation, unsigned int time);
     ~TimelineWidget();
@@ -25,8 +26,13 @@ public:
     static QVector<double> herbivoresPopulation;
     static QVector<double> carnivoresPopulation;
 
+public slots:
+    void updateView();
+
 private:
     Ui::TimelineWidget *ui;
+    QTimer * updateViewTimer;
+    bool isTimerStarted;
 };
 
 #endif // TIMELINEWIDGET_H
