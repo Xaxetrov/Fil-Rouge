@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
     saveWorldAction = fileMenu->addAction(tr("Save world as..."));
     loadWorldAction = fileMenu->addAction(tr("Load world"));
     openWorldCreatorAction = fileMenu->addAction(tr("Open World Creator tool"));
+    openTimelineAction = fileMenu->addAction(tr("Open timeline"));
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
     saveNeuralNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
     loadNeuralNetworkAction = animalMenu->addAction(tr("Load neural network"));
@@ -69,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(saveWorldAction, SIGNAL(triggered(bool)),this, SLOT(saveWorld()));
     QObject::connect(loadWorldAction, SIGNAL(triggered(bool)),this, SLOT(loadWorldSave()));
     QObject::connect(openWorldCreatorAction, SIGNAL(triggered(bool)), this, SLOT(openWorldCreator()));
+    QObject::connect(openTimelineAction, SIGNAL(triggered(bool)), this, SLOT(openTimeline()));
 }
 
 //custom load for debug
@@ -294,4 +296,9 @@ void MainWindow::openWorldCreator(bool pauseDuringLoad)
 
     if(pause)
         worldWidget.startSimulation();
+}
+
+void MainWindow::openTimeline()
+{
+    timeline.show();
 }

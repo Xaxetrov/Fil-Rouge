@@ -5,6 +5,7 @@
 #include "Carnivore.h"
 #include "Meat.h"
 #include "config/config.h"
+#include "Timelinewidget.h"
 
 #include <algorithm>
 #include <iostream>
@@ -215,6 +216,9 @@ int World::tick()
     }
     //incremente the age of the world
     m_tickPassed++;
+
+    TimelineWidget::updatePopulation(m_numberOfHerbivore, m_numberOfCarnivore, m_tickPassed);
+    
     /*if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
     {
         feedWithRandomHerbivore(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);

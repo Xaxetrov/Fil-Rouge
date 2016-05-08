@@ -7,7 +7,7 @@
 QT       += core gui
 QT       += xml
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = SWAN2
 TEMPLATE = app
@@ -49,7 +49,9 @@ SOURCES += main.cpp\
     Carnivore.cpp \
     WorldCreator.cpp \
     WorldCreatorResourcesWidget.cpp \
-    WorldCreatorAnimalsWidget.cpp
+    WorldCreatorAnimalsWidget.cpp \
+    Timelinewidget.cpp \
+    qcustomplot.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -86,9 +88,12 @@ HEADERS  += mainwindow.h \
     Carnivore.h \
     WorldCreator.h \
     WorldCreatorResourcesWidget.h \
-    WorldCreatorAnimalsWidget.h
+    WorldCreatorAnimalsWidget.h \
+    Timelinewidget.h \
+    qcustomplot.h
 
 FORMS    += mainwindow.ui \
     WorldCreator.ui \
     WorldCreatorResourcesWidget.ui \
-    WorldCreatorAnimalsWidget.ui
+    WorldCreatorAnimalsWidget.ui \
+    Timelinewidget.ui
