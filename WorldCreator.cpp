@@ -63,6 +63,9 @@ void WorldCreator::finish()
     if(world==nullptr)
         return;
     SaveManager saveManager;
+    *world = World();
+
+    //TODO add code for ressources generation here
 
     //set neuralnets to entities & create entities
     unsigned numH(animalWidget.getNumberOfHerbivore()), numC(animalWidget.getNumberOfCarnivore());
@@ -113,6 +116,12 @@ void WorldCreator::finish()
 
     //put World in a predefined xmlFile
     QString path("../save/worldByWC.xml");
-    saveManager.saveWorld(world,path);
+    saveManager.saveWorld(*world,path);
     this->close();
+}
+
+void WorldCreator::close()
+{
+    emit actionFinished();
+    QMainWindow::close();
 }

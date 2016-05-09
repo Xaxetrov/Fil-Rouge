@@ -27,6 +27,10 @@ public:
 public slots:
     void loadWorld();
     void finish();
+    void close();
+
+signals:
+    void actionFinished();
 
 private:
     Ui::WorldCreator *ui;
