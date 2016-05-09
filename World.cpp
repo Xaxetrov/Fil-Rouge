@@ -297,7 +297,7 @@ void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
     }
 }
 
-double World::computeScore(Animal *animal)
+double World::computeScore(shared_ptr<Animal> animal)
 /* 100% health = 100% health score, 50% health = 75% health score and 0% health = 0% health score
  * 0% hunger = 100% hunger score, 50% hunger = 75% hunger score, 100% hunger = 0% hunger score
  * same things for thirst and fear
@@ -331,15 +331,17 @@ NeuralNetwork * World::determineBestNN ()
 {   double diffScore = 0;
     double diffScoreMax = 0;
     NeuralNetwork *bestNN;
-    std::list<std::shared_ptr<Entity>>::iterator it;
-    for ( it = m_entities.begin(); it != m_entities.end() ; it++)
-    {   // TO DEBUG
-        //    diffScore = -1 * (*it)->getScore();
-        //    (*it)->setScore(this->computeScore(*it));
-        //    diffScore += (*it)->getScore();
-        //    if (diffScore > diffScoreMax || (*it)->getScore() == MAX_SCORE)
-        //    {   bestNN = (*it)->getBrain();
-        //    }
+    for(std::list<std::shared_ptr<Entity>>::iterator it=m_entities.begin() ; it!=m_entities.end() ; ++it)
+    {
+        if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*it))
+        {
+            diffScore = -1 * animal->getScore();
+            animal->setScore(this->computeScore(animal));
+            diffScore += animal->getScore();
+            if (diffScore > diffScoreMax || animal->getScore() == MAX_SCORE)
+            {   bestNN = animal->evolveNN();
+            }
+        }
     }
     return bestNN;
 }
