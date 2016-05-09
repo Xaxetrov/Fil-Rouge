@@ -67,7 +67,7 @@ void WorldCreator::finish()
     if(animalWidget.isHerbivoreChecked())
     {
         QStringList herbivores = animalWidget.getHerbivoreList();
-        std::list<QString>::iterator iteReseaux = herbivores.begin();
+        QStringList::iterator iteReseaux = herbivores.begin();
         for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
         {
             if(std::shared_ptr<Herbivore> herbivore = std::dynamic_pointer_cast<Herbivore>(*e))
@@ -89,7 +89,7 @@ void WorldCreator::finish()
     if(animalWidget.isCarnivoreChecked())
     {
         QStringList carnivores = animalWidget.getCarnivoreList();
-        std::list<QString>::iterator iteReseaux = carnivores.begin();
+        QStringList::iterator iteReseaux = carnivores.begin();
         for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
         {
             if(std::shared_ptr<Carnivore> carnivore = std::dynamic_pointer_cast<Carnivore>(*e))
@@ -110,4 +110,5 @@ void WorldCreator::finish()
     //put World in a predefined xmlFile
     QString path("../save/worldByWC.xml");
     saveManager.saveWorld(world,path);
+    this->close();
 }
