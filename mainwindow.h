@@ -10,6 +10,7 @@
 #include "EntityFrame.h"
 #include "World.h"
 #include "WorldCreator.h"
+#include "Timelinewidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -33,6 +34,7 @@ public slots:
     void setSelectedAnimal(std::weak_ptr<Animal> a);
     void updateStatusBar();
     void openWorldCreator(bool pauseDuringLoad=true);
+    void openTimeline();
 
     void saveWorld(bool pauseDuringSave=true);
     void loadWorldSave(bool pauseDuringLoad=true);
@@ -60,9 +62,11 @@ private:
     QAction * saveNeuralNetworkAction;
     QAction * loadNeuralNetworkAction;
     QAction * openWorldCreatorAction;
+    QAction * openTimelineAction;
 
     //World Creator
     WorldCreator worldCreator;
+    TimelineWidget timeline;
 
     World world;
     std::weak_ptr<Animal> selectedAnimal;

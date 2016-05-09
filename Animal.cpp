@@ -169,11 +169,6 @@ void Animal::move(int speedPercentage)
 //    }
 }
 
-int Animal::computeScore() // /!\ update MAX_SCORE in config.h
-{
-    return m_health*100 - m_hunger*10 - m_thirst*10;// + m_fear*3;
-}
-
 //TODO: TO FINISH
 void Animal::mappageInput()
 {
@@ -353,40 +348,32 @@ void Animal::attack()
     }
 }
 
-void Animal::evolve()
-/**
- * Modify the neuronal network of the animal if the evolution of its score is negative
- */
+void Animal::evolve(NeuralNetwork *bestNN)
+// Modify the neuronal network of the animal closer to the best one
 {
-    int newScore =  computeScore();
-    int diffScore = (newScore > m_score)/(MAX_SCORE*5); // modification of the coefficients lower or equal at 0.2
-    if (diffScore < 0)
+    NeuralNetwork* NN = evolveNN();
+
+    std::vector<NeuronLayer> layers = NN->getL();
+    std::vector<NeuronLayer> bestLayers = bestNN->getL();
+    const unsigned int layersNum=layers.size();
+    //for each layer
+    for (unsigned int layer=0; layer<layersNum; layer++)
     {
-        const NeuralNetwork *nn = getBrain();
+        std::vector<Neuron> neurons = layers.at(layer).getN();
+        std::vector<Neuron> bestNeurons = bestLayers.at(layer).getN();
+        const unsigned int neuronsNum = neurons.size();
 
-        // recuperation de quelqes informations sur le réseau de neurones
-        const std::vector<NeuronLayer> layers = nn->getLayers();
-        const unsigned int workingLayersNum=layers.size(); //nombre de couches cachées (en plus de l'input et de l'output)
-
-        //for each layer
-        for (unsigned int layer=1; layer<=workingLayersNum; layer++)
+        //for each neuron
+        for (unsigned int neuron=0; neuron<neuronsNum; neuron++)
         {
-            const std::vector<Neuron> neurons = layers.at(layer-1).getNeurons();
-            unsigned int neuronsNum = neurons.size();
-
-            //for each neuron
-            for (unsigned int neuron=0; neuron<neuronsNum; neuron++)
-            {
-                const std::vector<double> weights = neurons.at(neuron).getWeights();
-                if(weights.size()!=0)
-                {
-                    //for each weight
-                    for(unsigned int w=1; w<weights.size(); w++)
-                    {
-                        // TODO coeff+=diffScore;
-                    }
-                }
+            const std::vector<double> weights = neurons.at(neuron).getWeights();
+            const std::vector<double> bestWeights = bestNeurons.at(neuron).getWeights();
+            std::vector<double> newWeights;
+            //for each weight
+            for(unsigned int w=0; w<weights.size(); w++)
+            {   newWeights.push_back(weights.at(neuron)+(bestWeights.at(neuron)-weights.at(neuron))*0.1);
             }
+            neurons.at(neuron).setWeights(newWeights);
         }
     }
 }
@@ -503,6 +490,11 @@ int Animal::getEnergy() const
    return m_energy;
 }
 
+double Animal::getScore() const
+{
+    return m_score;
+}
+
 double Animal::getDamage() const
 {
     return m_damage;
@@ -519,6 +511,11 @@ const Vision * Animal::getVision() const
 }
 
 const NeuralNetwork * Animal::getBrain() const
+{
+   return m_brain;
+}
+
+NeuralNetwork *Animal::evolveNN()
 {
    return m_brain;
 }

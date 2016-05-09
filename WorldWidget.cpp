@@ -2,6 +2,9 @@
 #include <QWheelEvent>
 #include <QFileDialog>
 #include <iostream>
+#include <QPainter>
+#include <QImage>
+#include <QGraphicsPixmapItem>
 
 #include "WorldWidget.h"
 #include "Animal.h"
@@ -195,6 +198,16 @@ void WorldWidget::drawAnimal(const std::shared_ptr<Animal> animal, QPoint pos)
     else
         animalPen = colors.getEntityPen(animal);
     drawAnimal(pos,animal->getRadius(),animal->getAngle(),colors.getEntityBrush(animal),animalPen);
+
+    /*QImage image("../Fil-Rouge/sprites/pig30.png");
+    QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
+    double scale = ((double)animal->getRadius()) / ((double)image.width()) * 3;
+    item->setScale(scale);
+    item->setTransformOriginPoint(((double)image.width()) / 2, ((double)image.height()) / 2);
+    item->setRotation(animal->getAngle() * (180.0 / 3.141592));
+    //item->setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    m_scene->addItem(item);
+    item->setPos(pos.x() - ((double)image.width()) / 2, pos.y() - ((double)image.height()) / 2);*/
 }
 
 void WorldWidget::drawBasicEntity(QPoint pos, double radius, QBrush brush, QPen pen)
