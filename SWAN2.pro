@@ -51,7 +51,8 @@ SOURCES += main.cpp\
     WorldCreatorResourcesWidget.cpp \
     WorldCreatorAnimalsWidget.cpp \
     Timelinewidget.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    WorldEditor.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -90,7 +91,8 @@ HEADERS  += mainwindow.h \
     WorldCreatorResourcesWidget.h \
     WorldCreatorAnimalsWidget.h \
     Timelinewidget.h \
-    qcustomplot.h
+    qcustomplot.h \
+    WorldEditor.h
 
 FORMS    += mainwindow.ui \
     WorldCreator.ui \
