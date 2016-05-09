@@ -29,12 +29,14 @@ public:
     int getFear() const;
     int getMating() const;
     int getEnergy() const;
+    virtual double getScore() const;
     double getSpeed() const;
     double getRotation() const;
     double getDamage() const;
     double getAngle() const;
     const Vision * getVision() const;
     const NeuralNetwork * getBrain() const;
+    NeuralNetwork *evolveNN();
     bool isDead() const;
     bool isFemale() const;
     virtual unsigned int getTypeId() const { return ID_ANIMAL; }
@@ -52,6 +54,7 @@ public:
     void setHunger(int hunger) {m_hunger = hunger;}
     void setThirst(int thirst) {m_thirst = thirst;}
     void setHealth(int health) {m_health = health;}
+    void setScore(double score) {m_score = score;}
 
     //basic methods
     void die();
@@ -61,14 +64,13 @@ public:
     void eat();
     void mate();
     void attack();
-    void evolve();
+    void evolve(NeuralNetwork *bestNN);
     void loseLive(unsigned liveToLose);
     void addEntityInListCollision(std::weak_ptr<Entity> e);
     void clearEntityListCollision();
 
     //game methods
     virtual int play();
-    virtual int computeScore();
     virtual void mappageInput();
     virtual void mappageOutput();
 

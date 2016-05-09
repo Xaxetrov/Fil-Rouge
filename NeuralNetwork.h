@@ -32,6 +32,7 @@ public:
     //returns a const reference to layers
     const std::vector<NeuronLayer>& getLayers() const { return m_layers; }
 
+    std::vector<NeuronLayer>& getL() { return m_layers; }
 
     //replaces the weights with new ones
     void putWeights(std::vector<double> &weights);

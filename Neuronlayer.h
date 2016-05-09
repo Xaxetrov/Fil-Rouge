@@ -12,6 +12,7 @@ public:
 
     int getNeuronNum() const{return m_neuronNum;}
     std::vector<Neuron> getNeurons() const{return m_neurons;}
+    std::vector<Neuron>& getN() {return m_neurons;} // can we modify getNeurons to get a unique method ?
 
     std::vector<double> run(std::vector<double> inputs);
 

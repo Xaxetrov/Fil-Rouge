@@ -297,6 +297,53 @@ void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
     }
 }
 
+double World::computeScore(Animal *animal)
+/* 100% health = 100% health score, 50% health = 75% health score and 0% health = 0% health score
+ * 0% hunger = 100% hunger score, 50% hunger = 75% hunger score, 100% hunger = 0% hunger score
+ * same things for thirst and fear
+ * Illustrate the fact that to get a little hungry does not have the same gravity as to starve !
+ */
+{
+    double a = 1.125*MAX_SCORE;
+    double b = (0.5*MAX_HEALTH) / (log(a-0.75*MAX_SCORE)-log(a-MAX_SCORE));
+    double c = log(a);
+    double healthScore = a - exp(-animal->getHealth()/b+c);
+
+    b = (0.5*MAX_HUNGER) / (log(a) - log(a-0.75*MAX_SCORE));
+    c = log(a-MAX_SCORE);
+    double hungerScore = a - exp(animal->getHunger()/b+c);
+
+    b = (0.5*MAX_THIRST) / (log(a) - log(a-0.75*MAX_SCORE));
+    double thirstScore = a - exp(animal->getThirst()/b+c);
+
+    b = (0.5*MAX_FEAR) / (log(a) - log(a-0.75*MAX_SCORE));
+    double fearScore = a - exp(animal->getFear()/b+c);
+
+    return (2*healthScore+hungerScore+thirstScore+2*fearScore)/6; // Balance the various criteria
+}
+
+NeuralNetwork * World::determineBestNN ()
+/* allows to determine the animal of which the neural network has been the most effective recently :
+ * it score has increased most during last tics
+ * OR
+ * it score is max
+ */
+{   double diffScore = 0;
+    double diffScoreMax = 0;
+    NeuralNetwork *bestNN;
+    std::list<std::shared_ptr<Entity>>::iterator it;
+    for ( it = m_entities.begin(); it != m_entities.end() ; it++)
+    {   // TO DEBUG
+        //    diffScore = -1 * (*it)->getScore();
+        //    (*it)->setScore(this->computeScore(*it));
+        //    diffScore += (*it)->getScore();
+        //    if (diffScore > diffScoreMax || (*it)->getScore() == MAX_SCORE)
+        //    {   bestNN = (*it)->getBrain();
+        //    }
+    }
+    return bestNN;
+}
+
 unsigned World::getNumberOfLiving() const
 {
     return m_numberOfLiving;

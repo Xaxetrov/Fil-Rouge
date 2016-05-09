@@ -61,6 +61,8 @@ private:
     //Privates methods
     bool isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<Entity> e2) const;
     void saveNeuralNetwork(std::shared_ptr<Animal> a);
+    double computeScore(Animal *animal);
+    NeuralNetwork * determineBestNN();
 
     //Private attributes
     unsigned m_tickPassed; //How old that world is ?

@@ -169,31 +169,6 @@ void Animal::move(int speedPercentage)
 //    }
 }
 
-int Animal::computeScore()
-/* 100% health = 100% health score, 50% health = 75% health score and 0% health = 0% health score
- * 0% hunger = 100% hunger score, 50% hunger = 75% hunger score, 100% hunger = 0% hunger score
- * same things for thirst and fear
- * Illustrate the fact that to get a little hungry does not have the same gravity as to starve !
- */
-{
-    double a = 1.125*MAX_SCORE;
-    double b = (0.5*MAX_HEALTH) / (log(a-0.75*MAX_SCORE)-log(a-MAX_SCORE));
-    double c = log(a);
-    double healthScore = a - exp(-m_health/b+c);
-
-    b = (0.5*MAX_HUNGER) / (log(a) - log(a-0.75*MAX_SCORE));
-    c = log(a-MAX_SCORE);
-    double hungerScore = a - exp(m_hunger/b+c);
-
-    b = (0.5*MAX_THIRST) / (log(a) - log(a-0.75*MAX_SCORE));
-    double thirstScore = a - exp(m_thirst/b+c);
-
-    b = (0.5*MAX_FEAR) / (log(a) - log(a-0.75*MAX_SCORE));
-    double fearScore = a - exp(m_fear/b+c);
-
-    return (2*healthScore+hungerScore+thirstScore+2*fearScore)/6; // Balance the various criteria
-}
-
 //TODO: TO FINISH
 void Animal::mappageInput()
 {
@@ -366,40 +341,32 @@ void Animal::attack()
     }
 }
 
-void Animal::evolve()
-/**
- * Modify the neuronal network of the animal if the evolution of its score is negative
- */
+void Animal::evolve(NeuralNetwork *bestNN)
+// Modify the neuronal network of the animal closer to the best one
 {
-    int newScore =  computeScore();
-    int diffScore = (newScore > m_score)/(MAX_SCORE*5); // modification of the coefficients lower or equal at 0.2
-    if (diffScore < 0)
+    NeuralNetwork* NN = evolveNN();
+
+    std::vector<NeuronLayer> layers = NN->getL();
+    std::vector<NeuronLayer> bestLayers = bestNN->getL();
+    const unsigned int layersNum=layers.size();
+    //for each layer
+    for (unsigned int layer=0; layer<layersNum; layer++)
     {
-        const NeuralNetwork *nn = getBrain();
+        std::vector<Neuron> neurons = layers.at(layer).getN();
+        std::vector<Neuron> bestNeurons = bestLayers.at(layer).getN();
+        const unsigned int neuronsNum = neurons.size();
 
-        // recuperation de quelqes informations sur le réseau de neurones
-        const std::vector<NeuronLayer> layers = nn->getLayers();
-        const unsigned int workingLayersNum=layers.size(); //nombre de couches cachées (en plus de l'input et de l'output)
-
-        //for each layer
-        for (unsigned int layer=1; layer<=workingLayersNum; layer++)
+        //for each neuron
+        for (unsigned int neuron=0; neuron<neuronsNum; neuron++)
         {
-            const std::vector<Neuron> neurons = layers.at(layer-1).getNeurons();
-            unsigned int neuronsNum = neurons.size();
-
-            //for each neuron
-            for (unsigned int neuron=0; neuron<neuronsNum; neuron++)
-            {
-                const std::vector<double> weights = neurons.at(neuron).getWeights();
-                if(weights.size()!=0)
-                {
-                    //for each weight
-                    for(unsigned int w=1; w<weights.size(); w++)
-                    {
-                        // TODO coeff+=diffScore;
-                    }
-                }
+            const std::vector<double> weights = neurons.at(neuron).getWeights();
+            const std::vector<double> bestWeights = bestNeurons.at(neuron).getWeights();
+            std::vector<double> newWeights;
+            //for each weight
+            for(unsigned int w=0; w<weights.size(); w++)
+            {   newWeights.push_back(weights.at(neuron)+(bestWeights.at(neuron)-weights.at(neuron))*0.1);
             }
+            neurons.at(neuron).setWeights(newWeights);
         }
     }
 }
@@ -516,6 +483,11 @@ int Animal::getEnergy() const
    return m_energy;
 }
 
+double Animal::getScore() const
+{
+    return m_score;
+}
+
 double Animal::getDamage() const
 {
     return m_damage;
@@ -532,6 +504,11 @@ const Vision * Animal::getVision() const
 }
 
 const NeuralNetwork * Animal::getBrain() const
+{
+   return m_brain;
+}
+
+NeuralNetwork *Animal::evolveNN()
 {
    return m_brain;
 }
