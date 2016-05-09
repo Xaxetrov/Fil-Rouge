@@ -17,7 +17,10 @@ WorldCreator::WorldCreator(World *worldToChange, QWidget *parent) :
     ui->setupUi(this);
 
     QLayout *animalsLayout = new QGridLayout();
+    QLayout *resourcesLayout = new QGridLayout();
+    ui->tabResources->setLayout(resourcesLayout);
     ui->tabAnimaux->setLayout(animalsLayout);
+    resourcesLayout->addWidget(&resourceWidget);
     animalsLayout->addWidget(&animalWidget);
 
     /*setCentralWidget(&tabWidget); //replace with a clean one
@@ -41,6 +44,11 @@ void WorldCreator::finish()
     *world = World();
 
     //TODO add code for ressources generation here
+    std::list<std::shared_ptr<Resource>> resources = resourceWidget.getResources();
+    for(std::list<std::shared_ptr<Resource>>::iterator iteResources = resources.begin(); iteResources!=resources.end(); ++iteResources)
+    {
+        world->addEntity(*iteResources);
+    }
 
     //set neuralnets to entities & create entities
     unsigned numH(animalWidget.getNumberOfHerbivore()), numC(animalWidget.getNumberOfCarnivore());

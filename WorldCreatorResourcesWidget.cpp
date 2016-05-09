@@ -11,6 +11,8 @@ WorldCreatorResourcesWidget::WorldCreatorResourcesWidget(QWidget *parent) :
     ui(new Ui::WorldCreatorResourcesWidget)
 {
     ui->setupUi(this);
+
+    QObject::connect(ui->bt_loadWorld,SIGNAL(clicked(bool)),this,SLOT(loadWorld()));
 }
 
 WorldCreatorResourcesWidget::~WorldCreatorResourcesWidget()
@@ -37,4 +39,5 @@ void WorldCreatorResourcesWidget::loadWorld()
             resources.push_back(resource);
         }
     }
+    ui->lb_loadedWorld->setText(filePath);
 }
