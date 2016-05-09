@@ -201,6 +201,13 @@ void Animal::mappageInput()
 
 void Animal::mappageOutput()
 {
+#ifdef DEBUG
+    if(m_nnOutputs.size() == 3)
+    {
+        std::cerr << "incorect number of nn outputs" << std::endl;
+        exit(-1);
+    }
+#endif
     m_speed = m_nnOutputs[0]*7;
     m_rotation = m_nnOutputs[1]/5;
     m_fear = m_nnOutputs[2]*MAX_FEAR;

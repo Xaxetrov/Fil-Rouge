@@ -320,9 +320,8 @@ void SaveManager::parseWeights (QString weights, std::vector<double> &weightsArr
     }
 }
 
-World SaveManager::loadWorld(QString savingPath)
+void SaveManager::loadWorld(QString savingPath, World *newWorld)
 {
-    World world;
     QFile* xmlFile = new QFile(savingPath);
     if(!xmlFile->exists())
     {
@@ -346,7 +345,7 @@ World SaveManager::loadWorld(QString savingPath)
       {
        if(reader.name() == "World")
        {
-          this->parseWorld(world, reader);
+          this->parseWorld(newWorld, reader);
        }
       }
     }
@@ -354,10 +353,16 @@ World SaveManager::loadWorld(QString savingPath)
     { std::cout << "Error in reading XML in constructor" << std::endl;
     }
     delete xmlFile;
+}
+
+World SaveManager::loadWorld(QString savingPath)
+{
+    World world;
+    loadWorld(savingPath,&world);
     return world;
 }
 
-void SaveManager::parseWorld(World& world, QXmlStreamReader& reader)
+void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
 {
   int xWorld, yWorld;
   unsigned ageWorld;
@@ -396,17 +401,17 @@ void SaveManager::parseWorld(World& world, QXmlStreamReader& reader)
     }
     reader.readNext();
   }
-  world.setSize(xWorld,yWorld);
-  world.setWorldAge(ageWorld);
+  world->setSize(xWorld,yWorld);
+  world->setWorldAge(ageWorld);
 }
 
-void SaveManager::parseEntity(World& world, QXmlStreamReader& reader)
+void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
 {
   QString type;
   double xEntity=0.0, yEntity=0.0, radiusEntity=INITIAL_RADIUS;
   double angle = 0.0;
   int maxSpeed = MAX_SPEED;
-  double attack = -2;
+  double attack = -2.0;
   double energy = DEFAULT_ENERGY;
   bool sex = true;
   NeuralNetwork * nn = nullptr;
@@ -417,9 +422,10 @@ void SaveManager::parseEntity(World& world, QXmlStreamReader& reader)
   int thirst = 0;
   int health = MAX_HEALTH;
 
-  if(!reader.tokenType() == QXmlStreamReader::StartElement &&
-      reader.name() == "Entity")
+  if(reader.tokenType() != QXmlStreamReader::StartElement ||
+      reader.name() != "Entity")
   { //error
+      std::cout << "reader name is not a entity" << std::endl;
   }
 
   QXmlStreamAttributes attributes = reader.attributes();
@@ -430,6 +436,7 @@ void SaveManager::parseEntity(World& world, QXmlStreamReader& reader)
   else
   { //error
     std::cout << "No Attribute type" << std::endl;
+    return;
   }
 
   reader.readNext();
@@ -518,7 +525,7 @@ void SaveManager::parseEntity(World& world, QXmlStreamReader& reader)
         quantity=maxQuantity;
     std::shared_ptr<Vegetal> entity( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, maxQuantity));
     entity->setCurrantQuantity(quantity);
-    world.addEntity(entity);
+    world->addEntity(entity);
   }
   else if(type == "Water")
   {
@@ -528,13 +535,13 @@ void SaveManager::parseEntity(World& world, QXmlStreamReader& reader)
           quantity=maxQuantity;
     std::shared_ptr<Water> entity( std::make_shared<Water>(xEntity, yEntity, radiusEntity, maxQuantity));
     entity->setCurrantQuantity(quantity);
-    world.addEntity(entity);
+    world->addEntity(entity);
   }
   else if(type == "Meat")
   {
     std::shared_ptr<Meat> entity( std::make_shared<Meat>(xEntity, yEntity, radiusEntity, maxQuantity));
     entity->setCurrantQuantity(quantity);
-    world.addEntity(entity);
+    world->addEntity(entity);
   }
   else if(type == "Herbivore")
   {
@@ -549,14 +556,14 @@ void SaveManager::parseEntity(World& world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = ATTACK_HERBIVORE;
-      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
+      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
       entity->setAngle(angle);
       entity->setHunger(hunger);
       entity->setThirst(thirst);
       entity->setHealth(health);
-      world.addEntity(entity);
+      world->addEntity(entity);
   }
   else if(type == "Carnivore")
   {
@@ -571,14 +578,14 @@ void SaveManager::parseEntity(World& world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = ATTACK_CARNIVORE;
-      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, &world, nn, mating));
+      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
       entity->setAngle(angle);
       entity->setHunger(hunger);
       entity->setThirst(thirst);
       entity->setHealth(health);
-      world.addEntity(entity);
+      world->addEntity(entity);
   }
 
 

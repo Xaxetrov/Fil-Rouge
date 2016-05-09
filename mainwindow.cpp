@@ -210,7 +210,9 @@ void MainWindow::saveNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringSa
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),QDir::currentPath(),
                                                     filter,&defaultFilter);
-    saveManager.SaveNetwork(nn,filePath);
+    if(filePath!="")
+        saveManager.SaveNetwork(nn,filePath);
+
     if(pause)
         worldWidget.startSimulation();
 }
@@ -233,9 +235,13 @@ void MainWindow::loadNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringLo
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
                                                     filter,&defaultFilter);
-    SaveManager saveManager;
-    NeuralNetwork* newBrain = saveManager.LoadNetwork(filePath);
-    a->setBrain(newBrain);
+    if(filePath!="")
+    {
+        SaveManager saveManager;
+        NeuralNetwork* newBrain = saveManager.LoadNetwork(filePath);
+        a->setBrain(newBrain);
+    }
+
     if(pause)
         worldWidget.startSimulation();
 }
@@ -253,7 +259,8 @@ void MainWindow::saveWorld(bool pauseDuringSave)
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),QDir::currentPath(),
                                                     filter,&defaultFilter);
-    saveManager.saveWorld(world,filePath);
+    if(filePath != "")
+        saveManager.saveWorld(world,filePath);
 
     if(pause)
             worldWidget.startSimulation();
@@ -271,9 +278,14 @@ void MainWindow::loadWorldSave(bool pauseDuringLoad)
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
                                                     filter,&defaultFilter);
-    SaveManager saveManager;
-    world = saveManager.loadWorld(filePath);
-    worldWidget.setWorld(&world);
+    if(filePath != "")
+    {
+        SaveManager saveManager;
+        world = World();
+        saveManager.loadWorld(filePath,&world);
+        worldWidget.setWorld(&world);
+    }
+
 
     if(pause)
         worldWidget.startSimulation();

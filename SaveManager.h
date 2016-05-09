@@ -22,8 +22,9 @@ public:
     void saveResource(const std::shared_ptr<Resource> resource, QXmlStreamWriter & writer);
 
     World loadWorld(QString savingPath);
-    void parseWorld(World& world, QXmlStreamReader& reader);
-    void parseEntity(World& world, QXmlStreamReader& reader);
+    void loadWorld(QString savingPath, World * newWorld);
+    void parseWorld(World *world, QXmlStreamReader& reader);
+    void parseEntity(World *world, QXmlStreamReader& reader);
 
     NeuralNetwork *LoadNetwork(QString neuralNetworkName="temp");
     NeuralNetwork *LoadNetwork(QXmlStreamReader& reader);
