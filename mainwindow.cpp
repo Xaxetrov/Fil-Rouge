@@ -306,7 +306,7 @@ void MainWindow::openWorldCreator()
 
 void MainWindow::onWorldCreatorClosed()
 {
-    worldWidget.startSimulation();
+    //worldWidget.startSimulation();
 }
 
 void MainWindow::openTimeline()
