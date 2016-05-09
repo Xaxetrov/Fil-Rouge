@@ -66,6 +66,7 @@ void WorldCreator::finish()
     std::list<std::shared_ptr<Entity>> entities = world.getEntities();
     if(animalWidget.isHerbivoreChecked())
     {
+        QStringList herbivores = animalWidget.getHerbivoreList();
         std::list<QString>::iterator iteReseaux = herbivores.begin();
         for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
         {
@@ -86,6 +87,7 @@ void WorldCreator::finish()
     world.feedWithRandomCarnivore(numC);
     if(animalWidget.isCarnivoreChecked())
     {
+        QStringList carnivores = animalWidget.getCarnivoreList();
         std::list<QString>::iterator iteReseaux = carnivores.begin();
         for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
         {
@@ -107,22 +109,4 @@ void WorldCreator::finish()
     //put World in a predefined xmlFile
     QString path("../save/worldByWC.xml");
     saveManager.saveWorld(world,path);
-}
-
-void WorldCreator::addHerbivoreBrain()
-{
-    QString filter = "XML files (*.xml);;All files (*.*)";
-    QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a herbivore brain"),QDir::currentPath(),
-                                                    filter,&defaultFilter);
-    herbivores.push_back(filePath);
-}
-
-void WorldCreator::addCarnivoreBrain()
-{
-    QString filter = "XML files (*.xml);;All files (*.*)";
-    QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a carnivore brain"),QDir::currentPath(),
-                                                    filter,&defaultFilter);
-    carnivores.push_back(filePath);
 }
