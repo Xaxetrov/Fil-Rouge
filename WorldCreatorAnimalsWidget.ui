@@ -114,6 +114,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="bt_removeHerbivore">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="text">
              <string>-</string>
             </property>
@@ -162,7 +165,10 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="bt_rmHerbivore">
+           <widget class="QPushButton" name="bt_removeCarnivore">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="text">
              <string>-</string>
             </property>

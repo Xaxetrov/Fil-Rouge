@@ -34,7 +34,7 @@ public slots:
     void addHerbivore();
     void addCarnivore();
     void removeSelectedHerbivore();
-    //void removeSelectedCarnivore();
+    void removeSelectedCarnivore();
 
 private:
     Ui::WorldCreatorAnimalsWidget *ui;
