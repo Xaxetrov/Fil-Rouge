@@ -71,6 +71,7 @@ void WorldCreator::finish()
         {
             if(std::shared_ptr<Herbivore> herbivore = std::dynamic_pointer_cast<Herbivore>(*e))
             {
+                std::cout << iteReseaux->toStdString() << std::endl;
                 herbivore->setBrain(saveManager.LoadNetwork(*iteReseaux));
                 iteReseaux++;
                 if (iteReseaux == herbivores.end())
