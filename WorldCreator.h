@@ -27,7 +27,7 @@ public:
 public slots:
     void loadWorld();
     void finish();
-    void close();
+    void closeEvent(QCloseEvent *e);
 
 signals:
     void actionFinished();

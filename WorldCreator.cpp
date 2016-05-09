@@ -120,8 +120,8 @@ void WorldCreator::finish()
     this->close();
 }
 
-void WorldCreator::close()
+void WorldCreator::closeEvent(QCloseEvent *e)
 {
     emit actionFinished();
-    QMainWindow::close();
+    QMainWindow::closeEvent(e);
 }
