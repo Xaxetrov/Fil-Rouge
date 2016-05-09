@@ -33,31 +33,6 @@ WorldCreator::~WorldCreator()
     delete ui;
 }
 
-void WorldCreator::loadWorld()
-{
-    if(world == nullptr)
-        return;
-    QString filter = "XML files (*.xml);;All files (*.*)";
-    QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load the world of your dreams"),QDir::currentPath(),
-                                                    filter,&defaultFilter);
-    SaveManager saveManager;
-    saveManager.loadWorld(filePath, world);
-
-    //delete old animals
-    std::list<std::shared_ptr<Entity>> entities = world->getEntities();
-    for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
-    {
-        if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e))
-        {
-            std::list<std::shared_ptr<Entity>>::iterator sav = e;
-            sav--;
-            entities.erase(e);
-            e=sav;
-        }
-    }
-}
-
 void WorldCreator::finish()
 {
     if(world==nullptr)

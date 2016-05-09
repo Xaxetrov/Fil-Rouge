@@ -70,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(saveWorldAction, SIGNAL(triggered(bool)),this, SLOT(saveWorld()));
     QObject::connect(loadWorldAction, SIGNAL(triggered(bool)),this, SLOT(loadWorldSave()));
     QObject::connect(openWorldCreatorAction, SIGNAL(triggered(bool)), this, SLOT(openWorldCreator()));
+    QObject::connect(&worldCreator, SIGNAL(actionFinished()), this, SLOT(onWorldCreatorClosed()));
     QObject::connect(openTimelineAction, SIGNAL(triggered(bool)), this, SLOT(openTimeline()));
 }
 
@@ -293,21 +294,19 @@ void MainWindow::loadWorldSave(bool pauseDuringLoad)
         worldWidget.startSimulation();
 }
 
-void MainWindow::openWorldCreator(bool pauseDuringLoad)
+void MainWindow::openWorldCreator()
 {
-    bool pause = false;
-    if(pauseDuringLoad && worldWidget.isSimulationRunning())
-        pause = true;
-    if(pause)
-        worldWidget.suspendSimulation();
-
+    worldWidget.suspendSimulation();
+    worldCreator.setWorldPointer(&world);
     worldCreator.show();
     /*
      * include code here
      */
+}
 
-    if(pause)
-        worldWidget.startSimulation();
+void MainWindow::onWorldCreatorClosed()
+{
+    worldWidget.startSimulation();
 }
 
 void MainWindow::openTimeline()

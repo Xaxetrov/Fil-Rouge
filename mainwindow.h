@@ -33,7 +33,8 @@ public slots:
     void loadNeuralNetwork();
     void setSelectedAnimal(std::weak_ptr<Animal> a);
     void updateStatusBar();
-    void openWorldCreator(bool pauseDuringLoad=true);
+    void openWorldCreator();
+    void onWorldCreatorClosed();
     void openTimeline();
 
     void saveWorld(bool pauseDuringSave=true);
