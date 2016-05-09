@@ -17,7 +17,10 @@ WorldCreator::WorldCreator(World *worldToChange, QWidget *parent) :
     ui->setupUi(this);
 
     QLayout *animalsLayout = new QGridLayout();
+    QLayout *resourcesLayout = new QGridLayout();
+    ui->tabResources->setLayout(resourcesLayout);
     ui->tabAnimaux->setLayout(animalsLayout);
+    resourcesLayout->addWidget(&resourceWidget);
     animalsLayout->addWidget(&animalWidget);
 
     /*setCentralWidget(&tabWidget); //replace with a clean one
