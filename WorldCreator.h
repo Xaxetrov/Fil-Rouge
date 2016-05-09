@@ -27,8 +27,6 @@ public:
 public slots:
     void loadWorld();
     void finish();
-    void addHerbivoreBrain();
-    void addCarnivoreBrain();
 
 private:
     Ui::WorldCreator *ui;
@@ -36,9 +34,6 @@ private:
     WorldCreatorAnimalsWidget animalWidget;
     WorldCreatorResourcesWidget resourceWidget;
     World *world;
-
-    std::list<QString> herbivores;
-    std::list<QString> carnivores;
 
 };
 

@@ -70,7 +70,8 @@ void WorldCreator::finish()
     std::list<std::shared_ptr<Entity>> entities = world->getEntities();
     if(animalWidget.isHerbivoreChecked())
     {
-        std::list<QString>::iterator iteReseaux = herbivores.begin();
+        QStringList herbivores = animalWidget.getHerbivoreList();
+        QStringList::iterator iteReseaux = herbivores.begin();
         for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
         {
             if(std::shared_ptr<Herbivore> herbivore = std::dynamic_pointer_cast<Herbivore>(*e))
@@ -91,7 +92,8 @@ void WorldCreator::finish()
     world->feedWithRandomCarnivore(numC);
     if(animalWidget.isCarnivoreChecked())
     {
-        std::list<QString>::iterator iteReseaux = carnivores.begin();
+        QStringList carnivores = animalWidget.getCarnivoreList();
+        QStringList::iterator iteReseaux = carnivores.begin();
         for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
         {
             if(std::shared_ptr<Carnivore> carnivore = std::dynamic_pointer_cast<Carnivore>(*e))
@@ -111,23 +113,6 @@ void WorldCreator::finish()
 
     //put World in a predefined xmlFile
     QString path("../save/worldByWC.xml");
-    saveManager.saveWorld(*world,path);
-}
-
-void WorldCreator::addHerbivoreBrain()
-{
-    QString filter = "XML files (*.xml);;All files (*.*)";
-    QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a herbivore brain"),QDir::currentPath(),
-                                                    filter,&defaultFilter);
-    herbivores.push_back(filePath);
-}
-
-void WorldCreator::addCarnivoreBrain()
-{
-    QString filter = "XML files (*.xml);;All files (*.*)";
-    QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Choose a carnivore brain"),QDir::currentPath(),
-                                                    filter,&defaultFilter);
-    carnivores.push_back(filePath);
+    saveManager.saveWorld(world,path);
+    this->close();
 }
