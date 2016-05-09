@@ -1,4 +1,4 @@
 *.o
 build/moc_mainwindow.cpp
 build/moc_WorldWidget.cpp
-*.pro.usr
+*.pro.user
