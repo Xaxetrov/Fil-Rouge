@@ -24,8 +24,11 @@ public:
     bool isHerbivoreChecked();
     bool isCarnivoreChecked();
 
-    unsigned getNumberOfHerbivore();
-    unsigned getNumberOfCarnivore();
+    unsigned getNumberOfHerbivore() const;
+    unsigned getNumberOfCarnivore() const;
+
+    QStringList getHerbivoreList() const {return herbivoreList;}
+    QStringList getCarnivoreList() const {return carnivoreList;}
 
 public slots:
     void addHerbivore();

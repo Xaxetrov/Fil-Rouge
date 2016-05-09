@@ -82,11 +82,13 @@ void WorldCreatorAnimalsWidget::addToCarnivoreList(QString path)
 void WorldCreatorAnimalsWidget::removeFromHerbivoreList(int index)
 {
     herbivoreList.removeAt(index);
+    herbivoreListModel->setStringList(herbivoreList);
 }
 
 void WorldCreatorAnimalsWidget::removeFromCarnivoreList(int index)
 {
     carnivoreList.removeAt(index);
+    carnivoreListModel->setStringList(carnivoreList);
 }
 
 
@@ -100,12 +102,12 @@ bool WorldCreatorAnimalsWidget::isCarnivoreChecked()
     return ui->gb_carnivore->isChecked();
 }
 
-unsigned WorldCreatorAnimalsWidget::getNumberOfHerbivore()
+unsigned WorldCreatorAnimalsWidget::getNumberOfHerbivore() const
 {
     return ui->sb_herbivore->value();
 }
 
-unsigned WorldCreatorAnimalsWidget::getNumberOfCarnivore()
+unsigned WorldCreatorAnimalsWidget::getNumberOfCarnivore() const
 {
     return ui->sb_herbivore->value();
 }
