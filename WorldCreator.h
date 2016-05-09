@@ -25,7 +25,6 @@ public:
     void setWorldPointer(World *worldToChange) {world = worldToChange;}
 
 public slots:
-    void loadWorld();
     void finish();
     void closeEvent(QCloseEvent *e);
 
