@@ -12,6 +12,12 @@ WorldCreatorResourcesWidget::WorldCreatorResourcesWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    editorWidget.setResourcesList(&resources);
+
+    QHBoxLayout *creatorLayout = new QHBoxLayout();
+    ui->widget->setLayout(creatorLayout);
+    creatorLayout->addWidget(&editorWidget);
+
     QObject::connect(ui->bt_loadWorld,SIGNAL(clicked(bool)),this,SLOT(loadWorld()));
 }
 

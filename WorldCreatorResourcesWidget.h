@@ -5,6 +5,7 @@
 #include <list>
 #include <memory>
 #include "Resource.h"
+#include "WorldEditor.h"
 
 namespace Ui {
 class WorldCreatorResourcesWidget;
@@ -25,6 +26,8 @@ public slots:
 private:
     Ui::WorldCreatorResourcesWidget *ui;
     std::list<std::shared_ptr<Resource>> resources;
+
+    WorldEditor editorWidget;
 };
 
 #endif // WORLDCREATORRESOURCESWIDGET_H

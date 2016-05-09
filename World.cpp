@@ -207,7 +207,7 @@ int World::tick()
         }
         if((*e)->isDead())
         {
-            //work arround the fat that the currant cell will be deleted
+            //work arround the fact that the currant cell will be deleted
             std::list<std::shared_ptr<Entity>>::iterator sav = e;
             sav--;
             m_entities.erase(e);

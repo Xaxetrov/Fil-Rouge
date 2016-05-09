@@ -218,11 +218,11 @@ void WorldWidget::drawBasicEntity(QPoint pos, double radius, QBrush brush, QPen 
 
 void WorldWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    QPointF point = this->mapToScene(event->pos());
     for(std::shared_ptr<Entity> e:m_world->getEntities())
     {
         if(std::shared_ptr<Animal> living = std::dynamic_pointer_cast<Animal>(e))
         {
-            QPointF point = this->mapToScene(event->pos());
             if(point.x()<e->getX()+e->getRadius() && point.x()>e->getX()-e->getRadius() &&
                     point.y()<e->getY()+e->getRadius() && point.y()>e->getY()-e->getRadius())
             {

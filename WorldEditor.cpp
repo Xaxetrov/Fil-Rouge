@@ -1,8 +1,11 @@
 #include "WorldEditor.h"
 
+#include <QWheelEvent>
+
 #include "Water.h"
 #include "Vegetal.h"
 #include "Meat.h"
+#include "config/config.h"
 
 WorldEditor::WorldEditor(std::list<std::shared_ptr<Resource> > *resourcesList) :
     QGraphicsView(),
@@ -18,21 +21,24 @@ WorldEditor::WorldEditor(std::list<std::shared_ptr<Resource> > *resourcesList) :
     this->setScene(m_scene);
 
     //eneable map style navigation
-    this->setDragMode(QGraphicsView::ScrollHandDrag);
+    //this->setDragMode(QGraphicsView::ScrollHandDrag);
     //disable scroll bar as counter intuitive
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    if(resources != nullptr)
+        updateScene();
 }
 
 void WorldEditor::updateScene()
 {
     //clear the scene:
     m_scene->clear();
-    m_scene->setSceneRect(0,0,m_world->getSizeX(),m_world->getSizeY());
+    m_scene->setSceneRect(0,0,WORLD_SIZE_X,WORLD_SIZE_Y);
     m_scene->setBackgroundBrush(QBrush(Qt::gray));
-    m_scene->addRect(0,0,m_world->getSizeX(),m_world->getSizeY(),QPen(Qt::gray),colors.getBackgroundBrush());
+    m_scene->addRect(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,QPen(Qt::gray),colors.getBackgroundBrush());
     //add each entity to the scene one by one:
-    for(std::shared_ptr<Resource> r : resources)
+    for(auto r : *resources)
     {
         drawEntity(r);
     }
@@ -102,7 +108,7 @@ void WorldEditor::mouseReleaseEvent(QMouseEvent *e)
     if(e->button() != Qt::LeftButton && e->button() != Qt::RightButton)
         return;
 
-    QPointF point = this->mapToScene(event->pos());
+    QPointF point = this->mapToScene(e->pos());
 
     if(e->button() == Qt::LeftButton)
     {
@@ -115,13 +121,15 @@ void WorldEditor::mouseReleaseEvent(QMouseEvent *e)
 }
 
 
-void WorldEditor::tryToRemoveAt(QpointF pos)
+void WorldEditor::tryToRemoveAt(QPointF pos)
 {
-    for(auto resourcesIte = resources->begin() ; resourcesIte != resourcesIte.end() ; resourcesIte++ )
+    for(auto resourcesIte = resources->begin() ; resourcesIte != resources->end() ; resourcesIte++ )
     {
-        int radius = e->getRadius();
-        if(pos.x()<e->getX()+radius && pos.x()>e->getX()-radius &&
-                pos.y()<e->getY()+radius && pos.y()>e->getY()-radius)
+        double radius = (*resourcesIte)->getRadius();
+        double x = (*resourcesIte)->getX();
+        double y = (*resourcesIte)->getY();
+        if(pos.x()<x+radius && pos.x()>x-radius &&
+                pos.y()<y+radius && pos.y()>y-radius)
         {
             resources->erase(resourcesIte);
             updateScene();
@@ -135,20 +143,27 @@ void WorldEditor::addWithCurrantTool(QPointF pos)
     std::shared_ptr<Resource> toAdd;
     switch (currantTool) {
     case Tools::water:
-        toAdd(std::make_shared<Water>(pos.x(),pos.y(),currantRadius,currantMaxQuantity));
+        toAdd = std::make_shared<Water>(pos.x(),pos.y(),currantRadius,currantMaxQuantity);
         break;
     case Tools::vegetal:
-        toAdd(std::make_shared<Vegetal>(pos.x(),pos.y(),currantRadius,currantMaxQuantity));
+        toAdd = std::make_shared<Vegetal>(pos.x(),pos.y(),currantRadius,currantMaxQuantity);
         break;
     case Tools::meat:
-        toAdd(std::make_shared<Meat>(pos.x(),pos.y(),currantRadius,currantMaxQuantity));
+        toAdd = std::make_shared<Meat>(pos.x(),pos.y(),currantRadius,currantMaxQuantity);
         break;
     default:
         break;
     }
+    resources->push_back(toAdd);
+    updateScene();
 }
 
-
+void WorldEditor::setResourcesList(std::list<std::shared_ptr<Resource> > *resourcesList)
+{
+    resources = resourcesList;
+    if(resources != nullptr)
+        updateScene();
+}
 
 
 
