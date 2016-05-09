@@ -19,8 +19,10 @@ class WorldCreator : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit WorldCreator(QWidget *parent = 0);
+    explicit WorldCreator(World * worldToChange = nullptr,QWidget *parent = 0);
     ~WorldCreator();
+
+    void setWorldPointer(World *worldToChange) {world = worldToChange;}
 
 public slots:
     void loadWorld();
@@ -33,7 +35,7 @@ private:
     QTabWidget tabWidget;
     WorldCreatorAnimalsWidget animalWidget;
     WorldCreatorResourcesWidget resourceWidget;
-    World world;
+    World *world;
 
     std::list<QString> herbivores;
     std::list<QString> carnivores;

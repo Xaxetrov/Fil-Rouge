@@ -9,10 +9,10 @@
 #include "Herbivore.h"
 #include "Carnivore.h"
 
-WorldCreator::WorldCreator(QWidget *parent) :
+WorldCreator::WorldCreator(World *worldToChange, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::WorldCreator),
-    world(World())
+    world(worldToChange)
 {
     ui->setupUi(this);
 
@@ -35,15 +35,17 @@ WorldCreator::~WorldCreator()
 
 void WorldCreator::loadWorld()
 {
+    if(world == nullptr)
+        return;
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getOpenFileName(this,tr("Load the world of your dreams"),QDir::currentPath(),
                                                     filter,&defaultFilter);
     SaveManager saveManager;
-    world = saveManager.loadWorld(filePath);
+    saveManager.loadWorld(filePath, world);
 
     //delete old animals
-    std::list<std::shared_ptr<Entity>> entities = world.getEntities();
+    std::list<std::shared_ptr<Entity>> entities = world->getEntities();
     for(std::list<std::shared_ptr<Entity>>::iterator e=entities.begin() ; e!=entities.end() ; ++e)
     {
         if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e))
@@ -58,12 +60,14 @@ void WorldCreator::loadWorld()
 
 void WorldCreator::finish()
 {
+    if(world==nullptr)
+        return;
     SaveManager saveManager;
 
     //set neuralnets to entities & create entities
     unsigned numH(animalWidget.getNumberOfHerbivore()), numC(animalWidget.getNumberOfCarnivore());
-    world.feedWithRandomHerbivore(numH);
-    std::list<std::shared_ptr<Entity>> entities = world.getEntities();
+    world->feedWithRandomHerbivore(numH);
+    std::list<std::shared_ptr<Entity>> entities = world->getEntities();
     if(animalWidget.isHerbivoreChecked())
     {
         std::list<QString>::iterator iteReseaux = herbivores.begin();
@@ -84,7 +88,7 @@ void WorldCreator::finish()
     else
     {
     }
-    world.feedWithRandomCarnivore(numC);
+    world->feedWithRandomCarnivore(numC);
     if(animalWidget.isCarnivoreChecked())
     {
         std::list<QString>::iterator iteReseaux = carnivores.begin();
@@ -107,7 +111,7 @@ void WorldCreator::finish()
 
     //put World in a predefined xmlFile
     QString path("../save/worldByWC.xml");
-    saveManager.saveWorld(world,path);
+    saveManager.saveWorld(*world,path);
 }
 
 void WorldCreator::addHerbivoreBrain()
