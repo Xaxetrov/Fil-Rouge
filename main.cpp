@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     s.LoadNetwork(saveName);
 */
 
-
+    config(); // Load constants
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
@@ -61,5 +61,3 @@ int main(int argc, char *argv[])
 
     return 0;
 }
-
-

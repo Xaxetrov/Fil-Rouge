@@ -24,15 +24,15 @@ void Carnivore::tryToEat(std::shared_ptr<Entity> food)
     {
        if(m_hunger > 0)
        {
-           int quantity = std::min(EAT_MAX_MEAT_QUANTITY,(unsigned)m_hunger);
+           int quantity = std::min(config::EAT_MAX_MEAT_QUANTITY,(unsigned)m_hunger);
            double eatenQuantity = meat->eat(quantity);
            m_hunger -= eatenQuantity;
-           m_radius += FATNESS_CARNIVORE * eatenQuantity;
+           m_radius += config::FATNESS_CARNIVORE * eatenQuantity;
        }
        //heal himself
-       if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
+       if(m_health < config::MAX_HEALTH && m_thirst < config::MAX_THIRST*3/4)
        {
-           m_health += std::min(EAT_MAX_HEALING_VALUE,(unsigned)(MAX_HEALTH-m_health));
+           m_health += std::min(config::EAT_MAX_HEALING_VALUE,(unsigned)(config::MAX_HEALTH-m_health));
        }
     }
 }
@@ -45,10 +45,10 @@ bool Carnivore::tryToMate(std::shared_ptr<Entity> carnivoreEntity)
        if(m_female && !carnivoreToMate->isFemale())
        {
            //both carnivore are ready to mate
-          if(m_mating == MAX_MATING && carnivoreToMate->getMating() == MAX_MATING)
+          if(m_mating == config::MAX_MATING && carnivoreToMate->getMating() == config::MAX_MATING)
           {
               //this carnivore (female) is neither hungry nor thirsty
-              if(m_thirst < (MAX_THIRST*3/4) && m_hunger < (MAX_HUNGER*3/4))
+              if(m_thirst < (config::MAX_THIRST*3/4) && m_hunger < (config::MAX_HUNGER*3/4))
               {
                   reproduce(carnivoreToMate);
                   return true;

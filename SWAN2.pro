@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     WorldCreatorAnimalsWidget.cpp \
     Timelinewidget.cpp \
     qcustomplot.cpp \
-    WorldEditor.cpp
+    WorldEditor.cpp \
+    config/config.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \

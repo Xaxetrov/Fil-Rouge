@@ -30,7 +30,7 @@ WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //set timer:
-    timer.setInterval(UPDATE_TIMER_INTERVALE);
+    timer.setInterval(config::UPDATE_TIMER_INTERVALE);
 
     //signal and slot connection
     QObject::connect(&timer,SIGNAL(timeout()),this,SLOT(tick()));
@@ -67,7 +67,7 @@ void WorldWidget::updateScene()
 
 void WorldWidget::resizeEvent(QResizeEvent *e)
 {
-    this->fitInView(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,Qt::KeepAspectRatio);
+    this->fitInView(0,0,config::WORLD_SIZE_X,config::WORLD_SIZE_Y,Qt::KeepAspectRatio);
     QGraphicsView::resizeEvent(e);
 }
 
@@ -116,19 +116,19 @@ void WorldWidget::drawEntity(const std::shared_ptr<Entity> e)
    positions.push_back(QPoint(x,y));
    if(x<radius)
    {
-       positions.push_back(QPoint(x+WORLD_SIZE_X,y));
+       positions.push_back(QPoint(x+config::WORLD_SIZE_X,y));
    }
-   else if(x>WORLD_SIZE_X-radius)
+   else if(x>config::WORLD_SIZE_X-radius)
    {
-       positions.push_back(QPoint(x-WORLD_SIZE_X,y));
+       positions.push_back(QPoint(x-config::WORLD_SIZE_X,y));
    }
    if(y<radius)
    {
-       positions.push_back(QPoint(x,y+WORLD_SIZE_Y));
+       positions.push_back(QPoint(x,y+config::WORLD_SIZE_Y));
    }
-   else if(y>WORLD_SIZE_Y-radius)
+   else if(y>config::WORLD_SIZE_Y-radius)
    {
-       positions.push_back(QPoint(x,y-WORLD_SIZE_Y));
+       positions.push_back(QPoint(x,y-config::WORLD_SIZE_Y));
    }
 
    if(const std::shared_ptr<Animal> living = std::dynamic_pointer_cast<Animal>(e))

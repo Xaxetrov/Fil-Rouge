@@ -18,10 +18,10 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
     m_hunger = 0;
     m_thirst = 0;
     m_speed = 0;
-    m_health = MAX_HEALTH;
+    m_health = config::MAX_HEALTH;
     dead = false;
     m_fear = 0;
-    m_mating = MAX_MATING;
+    m_mating = config::MAX_MATING;
     m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
 
     //Determine if Animal is female or not (1/2 chance)
@@ -61,9 +61,9 @@ int Animal::play()
 {
     m_age++;
 
-    m_energy += ENERGY_RECUP;
-    if(m_energy > DEFAULT_ENERGY)
-      m_energy = DEFAULT_ENERGY;
+    m_energy += config::ENERGY_RECUP;
+    if(m_energy > config::DEFAULT_ENERGY)
+      m_energy = config::DEFAULT_ENERGY;
 
     if(m_health <= 0 || dead)
     {
@@ -77,12 +77,12 @@ int Animal::play()
       m_thirst++;
     }
 
-    if(m_hunger >= MAX_HUNGER)
+    if(m_hunger >= config::MAX_HUNGER)
     {
         m_health -= 10;
-        m_hunger = MAX_HUNGER;
+        m_hunger = config::MAX_HUNGER;
     }
-    else if(m_hunger > MAX_HUNGER*3/4)
+    else if(m_hunger > config::MAX_HUNGER*3/4)
     {
         m_health--;
     }
@@ -91,12 +91,12 @@ int Animal::play()
         m_hunger = 0;
     }
 
-    if(m_thirst >= MAX_THIRST)
+    if(m_thirst >= config::MAX_THIRST)
     {
         m_health -= 10;
-        m_thirst = MAX_THIRST;
+        m_thirst = config::MAX_THIRST;
     }
-    else if(m_thirst > MAX_THIRST*3/4)
+    else if(m_thirst > config::MAX_THIRST*3/4)
     {
       m_health--;
     }
@@ -105,7 +105,7 @@ int Animal::play()
         m_thirst = 0;
     }
 
-    if(m_mating != MAX_MATING)
+    if(m_mating != config::MAX_MATING)
     {
       m_mating++;
     }
@@ -146,9 +146,9 @@ int Animal::play()
 void Animal::move(int speedPercentage)
 {
     m_speed = speedPercentage * m_maxSpeed / 100.0;
-    if(m_speed * MOVE_ENERGY_LOSS > m_energy)
-      m_speed = m_energy / MOVE_ENERGY_LOSS / 2;
-    m_energy -= m_speed * MOVE_ENERGY_LOSS / 2;
+    if(m_speed * config::MOVE_ENERGY_LOSS > m_energy)
+      m_speed = m_energy / config::MOVE_ENERGY_LOSS / 2;
+    m_energy -= m_speed * config::MOVE_ENERGY_LOSS / 2;
     setCoordinate(getX() + cos(m_angle) * m_speed, getY() + sin(m_angle) * m_speed);
     m_world->updateListCollision(this->shared_from_this());
     vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
@@ -173,10 +173,10 @@ void Animal::move(int speedPercentage)
 void Animal::mappageInput()
 {
     m_nnInputs.clear();
-    m_nnInputs.push_back((double)m_hunger / (double)MAX_HUNGER);
-    m_nnInputs.push_back((double)m_thirst / (double)MAX_THIRST);
-    m_nnInputs.push_back((double)m_health / (double)MAX_HEALTH);
-    m_nnInputs.push_back((double)m_mating / (double)MAX_MATING);
+    m_nnInputs.push_back((double)m_hunger / (double)config::MAX_HUNGER);
+    m_nnInputs.push_back((double)m_thirst / (double)config::MAX_THIRST);
+    m_nnInputs.push_back((double)m_health / (double)config::MAX_HEALTH);
+    m_nnInputs.push_back((double)m_mating / (double)config::MAX_MATING);
     vector<std::shared_ptr<Percepted> > percepted = m_vision->getPercepted();
     for(std::shared_ptr<Percepted> p:percepted)
     {
@@ -205,14 +205,14 @@ void Animal::mappageOutput()
 #endif
     m_speed = m_nnOutputs[0]*7;
     m_rotation = m_nnOutputs[1]/5;
-    m_fear = m_nnOutputs[2]*MAX_FEAR;
+    m_fear = m_nnOutputs[2]*config::MAX_FEAR;
 }
 
 void Animal::turn(double angle)
 {
-  if(fabs(angle) * TURN_ENERGY_LOSS > m_energy)
-    angle = m_energy / TURN_ENERGY_LOSS / 2;
-  m_energy -= fabs(angle) * TURN_ENERGY_LOSS / 2;
+  if(fabs(angle) * config::TURN_ENERGY_LOSS > m_energy)
+    angle = m_energy / config::TURN_ENERGY_LOSS / 2;
+  m_energy -= fabs(angle) * config::TURN_ENERGY_LOSS / 2;
 
   m_angle += angle;
   m_angle = Coordinate::modulo2PI(m_angle);
@@ -222,7 +222,7 @@ void Animal::turn(double angle)
 // The animal drink one time for each pool it is on
 void Animal::drink()
 {
-    if(m_speed <= MAX_SPEED_TO_EAT)
+    if(m_speed <= config::MAX_SPEED_TO_EAT)
     {
         vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
         for (weak_ptr<Entity> weakWater:waterCollisionList)
@@ -251,7 +251,7 @@ void Animal::drink()
 // The animal drink one time for each pool it is on
 void Animal::eat()
 {
-    if(m_speed <= MAX_SPEED_TO_EAT)
+    if(m_speed <= config::MAX_SPEED_TO_EAT)
     {
         vector<weak_ptr<Entity>> foodCollisionList = getSubListResourceCollision();
         for (weak_ptr<Entity> weakFood:foodCollisionList)
@@ -276,13 +276,13 @@ void Animal::tryToEat(std::shared_ptr<Entity> food)
     {
        if(m_hunger > 0)
        {
-           int quantity = std::min(EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
+           int quantity = std::min(config::EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
            m_hunger -= vegetal->eat(quantity);
        }
        //heal himself
-       if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
+       if(m_health < config::MAX_HEALTH && m_thirst < config::MAX_THIRST*3/4)
        {
-           m_health += std::min(EAT_MAX_HEALING_VALUE,(unsigned)(MAX_HEALTH-m_health));
+           m_health += std::min(config::EAT_MAX_HEALING_VALUE,(unsigned)(config::MAX_HEALTH-m_health));
        }
     }
 }
@@ -310,7 +310,7 @@ bool Animal::tryToMate(std::shared_ptr<Entity> animalEntity)
        // this Animal is the female
        if(m_female && !animalToMate->isFemale())
        {
-          if(m_mating == MAX_MATING && animalToMate->getMating() == MAX_MATING)
+          if(m_mating == config::MAX_MATING && animalToMate->getMating() == config::MAX_MATING)
           {
              this->reproduce(animalToMate);
              return true;
@@ -336,7 +336,7 @@ void Animal::attack()
            if(animalEntity->getTypeId() != this->getTypeId())
            {
                double angle = Coordinate::getAngle(this->getCoordinate(),animalEntity->getCoordinate())-m_angle;
-               if(std::abs(angle)<=MAX_ATTACK_ANGLE)
+               if(std::abs(angle)<=config::MAX_ATTACK_ANGLE)
                {
                     if(shared_ptr<Animal> a=dynamic_pointer_cast<Animal>(animalEntity))
                     {

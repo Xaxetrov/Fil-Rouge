@@ -57,10 +57,10 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
     bernoulli_distribution distribution(0.5);
 
     static mt19937 modificationGenerator(random_device{}());
-    bernoulli_distribution modificationDistribution(NN_WEIGHT_CHANGE_PROBABILITY); // % chance to change one weight of a neurone
+    bernoulli_distribution modificationDistribution(config::NN_WEIGHT_CHANGE_PROBABILITY); // % chance to change one weight of a neurone
     static mt19937 randomChangeGenerator(random_device{}());
-    normal_distribution<double> randomChangeDistribution(NN_WEIGHT_CHANGE_AVERAGE_VALUE,
-                                                         NN_WEIGHT_CHANGE_SDANTARD_DEVIATION); // change on weight are of average 0 and standart variation 0,1 (addition)
+    normal_distribution<double> randomChangeDistribution(config::NN_WEIGHT_CHANGE_AVERAGE_VALUE,
+                                                         config::NN_WEIGHT_CHANGE_SDANTARD_DEVIATION); // change on weight are of average 0 and standart variation 0,1 (addition)
     for(unsigned i = 0; i < father.m_layers.size(); i++)
     {
         const auto& fatherLayer = father.m_layers[i];

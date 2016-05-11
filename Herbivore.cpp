@@ -24,15 +24,15 @@ void Herbivore::tryToEat(std::shared_ptr<Entity> food)
     {
        if(m_hunger > 0)
        {
-           int quantity = std::min(EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
+           int quantity = std::min(config::EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
            double eatenQuantity = vegetal->eat(quantity);
            m_hunger -= eatenQuantity;
-           m_radius += FATNESS_HERBIVORE * eatenQuantity;
+           m_radius += config::FATNESS_HERBIVORE * eatenQuantity;
        }
        //heal himself
-       if(m_health < MAX_HEALTH && m_thirst < MAX_THIRST*3/4)
+       if(m_health < config::MAX_HEALTH && m_thirst < config::MAX_THIRST*3/4)
        {
-           m_health += std::min(EAT_MAX_HEALING_VALUE,(unsigned)(MAX_HEALTH-m_health));
+           m_health += std::min(config::EAT_MAX_HEALING_VALUE,(unsigned)(config::MAX_HEALTH-m_health));
        }
     }
 }
@@ -45,10 +45,10 @@ bool Herbivore::tryToMate(std::shared_ptr<Entity> herbivoreEntity)
        if(m_female && !herbivoreToMate->isFemale())
        {
             //both herbivore are ready to mate
-          if(m_mating == MAX_MATING && herbivoreToMate->getMating() == MAX_MATING)
+          if(m_mating == config::MAX_MATING && herbivoreToMate->getMating() == config::MAX_MATING)
           {
               //this herbivore (female) is neither hungry nor thirsty
-              if(m_thirst < (MAX_THIRST*3/4) && m_hunger < (MAX_HUNGER*3/4))
+              if(m_thirst < (config::MAX_THIRST*3/4) && m_hunger < (config::MAX_HUNGER*3/4))
               {
                  reproduce(herbivoreToMate);
                  return true;
