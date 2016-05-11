@@ -30,7 +30,13 @@ void TimelineWidget::paintEvent(QPaintEvent *event)
     if(!isTimerStarted)
     {
       updateView();
-      updateViewTimer->start(1000);
+
+      // Refresh frequency is high at the begining and then slower.
+      if(population.size() < 1000)
+        updateViewTimer->start(200);
+      else
+        updateViewTimer->start(5000);
+
       isTimerStarted = true;
     }
 }
@@ -88,10 +94,40 @@ void TimelineWidget::updateView()
       isTimerStarted = false;
       return;
     }
+    // Slow down refresh frequency
+    if(population.size() == 1000)
+    {
+      updateViewTimer->stop();
+      updateViewTimer->start(5000);
+    }
 
-    ui->customPlot->graph(0)->setData(time, population);
-    ui->customPlot->graph(1)->setData(time, herbivoresPopulation);
-    ui->customPlot->graph(2)->setData(time, carnivoresPopulation);
+    // If the number of points is greater than 1000, we only take the 1000 last.
+    if(population.size() < 1000)
+    {
+      ui->customPlot->graph(0)->setData(time, population);
+      ui->customPlot->graph(1)->setData(time, herbivoresPopulation);
+      ui->customPlot->graph(2)->setData(time, carnivoresPopulation);
+    }
+    else
+    {
+      QVector<double> time_displayed;
+      QVector<double> population_displayed;
+      QVector<double> herbivoresPopulation_displayed;
+      QVector<double> carnivoresPopulation_displayed;
+
+      int size = population.size();
+      for(int i = 0; i < 1000; i++)
+      {
+        time_displayed.append(time[i + size - 1000]);
+        population_displayed.append(population[i + size - 1000]);
+        herbivoresPopulation_displayed.append(herbivoresPopulation[i + size - 1000]);
+        carnivoresPopulation_displayed.append(carnivoresPopulation[i + size - 1000]);
+      }
+
+      ui->customPlot->graph(0)->setData(time_displayed, population_displayed);
+      ui->customPlot->graph(1)->setData(time_displayed, herbivoresPopulation_displayed);
+      ui->customPlot->graph(2)->setData(time_displayed, carnivoresPopulation_displayed);
+    }
 
     ui->customPlot->graph(0)->rescaleAxes();
     ui->customPlot->graph(1)->rescaleAxes(true);
@@ -102,10 +138,14 @@ void TimelineWidget::updateView()
 
 void TimelineWidget::updatePopulation(int herbivoresPopulation, int carnivoresPopulation, unsigned int time)
 {
-    TimelineWidget::time.append(time);
-    TimelineWidget::population.append(herbivoresPopulation + carnivoresPopulation);
-    TimelineWidget::herbivoresPopulation.append(herbivoresPopulation);
-    TimelineWidget::carnivoresPopulation.append(carnivoresPopulation);
+    // The data are updated very often at the beginning, then less.
+    if(population.size() < 1000 || time % 300 == 0)
+    {
+      TimelineWidget::time.append(time);
+      TimelineWidget::population.append(herbivoresPopulation + carnivoresPopulation);
+      TimelineWidget::herbivoresPopulation.append(herbivoresPopulation);
+      TimelineWidget::carnivoresPopulation.append(carnivoresPopulation);
+    }
 }
 
 TimelineWidget::~TimelineWidget()
