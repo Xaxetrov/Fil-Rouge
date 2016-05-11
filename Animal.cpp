@@ -352,7 +352,6 @@ void Animal::evolve(NeuralNetwork *bestNN)
 // Modify the neuronal network of the animal closer to the best one
 {
     NeuralNetwork* NN = evolveNN();
-
     std::vector<NeuronLayer> layers = NN->getL();
     std::vector<NeuronLayer> bestLayers = bestNN->getL();
     const unsigned int layersNum=layers.size();

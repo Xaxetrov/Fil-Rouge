@@ -218,6 +218,19 @@ int World::tick()
     m_tickPassed++;
 
     TimelineWidget::updatePopulation(m_numberOfHerbivore, m_numberOfCarnivore, m_tickPassed);
+
+    // TO DEBUG
+    /*NeuralNetwork *bestNeuralNetwork = determineBestNN();
+    if (m_tickPassed % 1000 == 0)
+    {   for(std::list<std::shared_ptr<Entity>>::iterator it=m_entities.begin() ; it!=m_entities.end() ; ++it)
+        {
+            if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*it))
+            {
+                animal->evolve(bestNeuralNetwork);
+            }
+        }
+    }*/
+
     
     /*if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
     {
@@ -330,7 +343,7 @@ NeuralNetwork * World::determineBestNN ()
  */
 {   double diffScore = 0;
     double diffScoreMax = 0;
-    NeuralNetwork *bestNN;
+    NeuralNetwork *bestNN = nullptr;
     for(std::list<std::shared_ptr<Entity>>::iterator it=m_entities.begin() ; it!=m_entities.end() ; ++it)
     {
         if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*it))
