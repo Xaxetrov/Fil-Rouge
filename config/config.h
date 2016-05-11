@@ -39,11 +39,7 @@ const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISION
 class config
 {
 public:
-
-  config();
-  virtual ~config();
-
-  // General staticants
+  // General constants
   static double PI;
 
   // World

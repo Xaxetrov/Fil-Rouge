@@ -58,13 +58,3 @@ unsigned short config::MIN_NUMBER_OF_HERBVORE = 10;
 unsigned short config::MIN_NUMBER_OF_CARNIVORE = 0;
 unsigned short config::MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 unsigned short config::MAX_NUMBER_CARNIVORE_CHAMPION = 0;
-
-config::config()
-{
-
-}
-
-config::~config()
-{
-
-}
