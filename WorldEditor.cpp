@@ -34,9 +34,9 @@ void WorldEditor::updateScene()
 {
     //clear the scene:
     m_scene->clear();
-    m_scene->setSceneRect(0,0,WORLD_SIZE_X,WORLD_SIZE_Y);
+    m_scene->setSceneRect(0,0,config::WORLD_SIZE_X,config::WORLD_SIZE_Y);
     m_scene->setBackgroundBrush(QBrush(Qt::gray));
-    m_scene->addRect(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,QPen(Qt::gray),colors.getBackgroundBrush());
+    m_scene->addRect(0,0,config::WORLD_SIZE_X,config::WORLD_SIZE_Y,QPen(Qt::gray),colors.getBackgroundBrush());
     //add each entity to the scene one by one:
     for(auto r : *resources)
     {
@@ -47,7 +47,7 @@ void WorldEditor::updateScene()
 
 void WorldEditor::resizeEvent(QResizeEvent *e)
 {
-    this->fitInView(0,0,WORLD_SIZE_X,WORLD_SIZE_Y,Qt::KeepAspectRatio);
+    this->fitInView(0,0,config::WORLD_SIZE_X,config::WORLD_SIZE_Y,Qt::KeepAspectRatio);
     QGraphicsView::resizeEvent(e);
 }
 
@@ -66,19 +66,19 @@ void WorldEditor::drawEntity(const std::shared_ptr<Entity> e)
    positions.push_back(QPoint(x,y));
    if(x<radius)
    {
-       positions.push_back(QPoint(x+WORLD_SIZE_X,y));
+       positions.push_back(QPoint(x+config::config::WORLD_SIZE_X,y));
    }
-   else if(x>WORLD_SIZE_X-radius)
+   else if(x>config::WORLD_SIZE_X-radius)
    {
-       positions.push_back(QPoint(x-WORLD_SIZE_X,y));
+       positions.push_back(QPoint(x-config::config::WORLD_SIZE_X,y));
    }
    if(y<radius)
    {
-       positions.push_back(QPoint(x,y+WORLD_SIZE_Y));
+       positions.push_back(QPoint(x,y+config::config::WORLD_SIZE_Y));
    }
-   else if(y>WORLD_SIZE_Y-radius)
+   else if(y>config::WORLD_SIZE_Y-radius)
    {
-       positions.push_back(QPoint(x,y-WORLD_SIZE_Y));
+       positions.push_back(QPoint(x,y-config::config::WORLD_SIZE_Y));
    }
 
 

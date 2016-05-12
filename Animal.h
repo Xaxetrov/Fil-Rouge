@@ -119,16 +119,16 @@ void Animal::reproduce(std::shared_ptr<Living> father)
 {
     // Use a normal distribution to determine the number of children of litter
     static std::mt19937 generator(std::random_device{}());
-    std::normal_distribution<double> distribution(MAX_CHILD_PER_ANIMAL/2, 1.5);
+    std::normal_distribution<double> distribution(config::MAX_CHILD_PER_ANIMAL/2, 1.5);
     int numberChild = (int)distribution(generator);
 
     // Normalize in the possible range
     if(numberChild < 0) numberChild = 0;
-    else if(numberChild > MAX_CHILD_PER_ANIMAL) numberChild = MAX_CHILD_PER_ANIMAL;
+    else if(numberChild > config::MAX_CHILD_PER_ANIMAL) numberChild = config::MAX_CHILD_PER_ANIMAL;
 
     // Create the new entity around the mother (in a circle)
     int child = 0;
-    double angleIntervalle = (2*PI)/(double)numberChild;
+    double angleIntervalle = (2*config::PI)/(double)numberChild;
     double baseAngle = 0;
     double baseRadius = 4*getRadius();
 
@@ -138,7 +138,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
     //cout << "MOTHER BRAIN\n" << endl;
     //this->getBrain()->printNetwork();
 
-    std::uniform_real_distribution<double> distributionReal(-PI/6.0, PI/6.0);
+    std::uniform_real_distribution<double> distributionReal(-config::PI/6.0, config::PI/6.0);
 
     while(child < numberChild)
     {
@@ -149,7 +149,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, INITIAL_RADIUS, 50, 2, DEFAULT_ENERGY, m_world, childBrain) );
+        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, config::INITIAL_RADIUS, 50, 2, config::DEFAULT_ENERGY, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));

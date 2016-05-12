@@ -16,8 +16,8 @@ World::World()
 {
     //don't work: aply a modulus by WORLD_SIZE so always 0...
     //m_size.set(WORLD_SIZE_X,WORLD_SIZE_Y);
-    m_size_x = WORLD_SIZE_X;
-    m_size_y = WORLD_SIZE_Y;
+    m_size_x = config::WORLD_SIZE_X;
+    m_size_y = config::WORLD_SIZE_Y;
     m_tickPassed = 0;
 }
 
@@ -73,9 +73,9 @@ void World::feedWithRandomAnimal(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
-      int x = rand() % WORLD_SIZE_X;
-      int y = rand() % WORLD_SIZE_Y;
-      shared_ptr<Animal> animal(make_shared<Animal>(x, y, INITIAL_RADIUS, MAX_SPEED, ATTACK_ANIMAL, DEFAULT_ENERGY, this));
+      int x = rand() % config::WORLD_SIZE_X;
+      int y = rand() % config::WORLD_SIZE_Y;
+      shared_ptr<Animal> animal(make_shared<Animal>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_ANIMAL, config::DEFAULT_ENERGY, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -85,9 +85,9 @@ void World::feedWithRandomHerbivore(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
-      int x = rand() % WORLD_SIZE_X;
-      int y = rand() % WORLD_SIZE_Y;
-      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, INITIAL_RADIUS, MAX_SPEED, ATTACK_HERBIVORE, DEFAULT_ENERGY, this));
+      int x = rand() % config::WORLD_SIZE_X;
+      int y = rand() % config::WORLD_SIZE_Y;
+      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -101,8 +101,8 @@ void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
     }
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
-      int x = rand() % WORLD_SIZE_X;
-      int y = rand() % WORLD_SIZE_Y;
+      int x = rand() % config::WORLD_SIZE_X;
+      int y = rand() % config::WORLD_SIZE_Y;
       //generate a brain from the one of the last best herbivore
       //pick one brain randomly
       auto ite = bestHerbivore.begin();
@@ -115,7 +115,7 @@ void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
       //mixe them up
       NeuralNetwork *nn = new NeuralNetwork(n1,n2);
       //make a new Herbivore from that brain
-      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, INITIAL_RADIUS, MAX_SPEED, ATTACK_HERBIVORE, DEFAULT_ENERGY, this,nn,MAX_MATING));
+      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -125,9 +125,9 @@ void World::feedWithRandomCarnivore(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
-      int x = rand() % WORLD_SIZE_X;
-      int y = rand() % WORLD_SIZE_Y;
-      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, INITIAL_RADIUS, MAX_SPEED, ATTACK_CARNIVORE, DEFAULT_ENERGY, this));
+      int x = rand() % config::WORLD_SIZE_X;
+      int y = rand() % config::WORLD_SIZE_Y;
+      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -141,8 +141,8 @@ void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
     }
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
-      int x = rand() % WORLD_SIZE_X;
-      int y = rand() % WORLD_SIZE_Y;
+      int x = rand() % config::WORLD_SIZE_X;
+      int y = rand() % config::WORLD_SIZE_Y;
       //generate a brain from the one of the last best carnivore
       //pick one brain randomly
       auto ite = bestCarnivore.begin();
@@ -155,7 +155,7 @@ void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
       //mixe them up
       NeuralNetwork *nn = new NeuralNetwork(n1,n2);
       //make a new Carnivore from that brain
-      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, INITIAL_RADIUS, MAX_SPEED, ATTACK_CARNIVORE, DEFAULT_ENERGY, this,nn,MAX_MATING));
+      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -187,7 +187,7 @@ int World::tick()
 #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
                 saveNeuralNetwork(animal);
 #endif
-                int meatQuantity = MAX_HUNGER - animal->getHunger();
+                int meatQuantity = config::MAX_HUNGER - animal->getHunger();
                 m_entities.push_back(make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
             }
             else
@@ -236,20 +236,20 @@ int World::tick()
     {
         feedWithRandomHerbivore(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);
     }*/
-    if(m_numberOfCarnivore < MIN_NUMBER_OF_CARNIVORE)
+    if(m_numberOfCarnivore < config::MIN_NUMBER_OF_CARNIVORE)
     {
         #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
-            feedWithChildOfChampionCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+            feedWithChildOfChampionCarnivore(config::MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
         #else
-            feedWithRandomCarnivore(MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
+            feedWithRandomCarnivore(config::MIN_NUMBER_OF_CARNIVORE-m_numberOfCarnivore);
         #endif
     }
-    if(m_numberOfHerbivore < MIN_NUMBER_OF_HERBVORE)
+    if(m_numberOfHerbivore < config::MIN_NUMBER_OF_HERBVORE)
     {
-        #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
-            feedWithChildOfChampionHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
+        #ifdef config::FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+            feedWithChildOfChampionHerbivore(config::MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
         #else
-            feedWithRandomHerbivore(MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
+            feedWithRandomHerbivore(config::MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
         #endif
     }
     return entityErrorsNum;
@@ -292,7 +292,7 @@ void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
         {
             bestHerbivore.insert(std::pair<int,NeuralNetwork>(age,*(h->getBrain())) );
         }
-        if(bestHerbivore.size() > MAX_NUMBER_HERBIVORE_CHAMPION)
+        if(bestHerbivore.size() > config::MAX_NUMBER_HERBIVORE_CHAMPION)
         {
             bestHerbivore.erase(bestHerbivore.begin());
         }
@@ -303,7 +303,7 @@ void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
         {
             bestCarnivore.insert(std::pair<int,NeuralNetwork>(age,*(c->getBrain())) );
         }
-        if(bestCarnivore.size() > MAX_NUMBER_HERBIVORE_CHAMPION)
+        if(bestCarnivore.size() > config::MAX_NUMBER_HERBIVORE_CHAMPION)
         {
             bestCarnivore.erase(bestCarnivore.begin());
         }
@@ -317,19 +317,19 @@ double World::computeScore(shared_ptr<Animal> animal)
  * Illustrate the fact that to get a little hungry does not have the same gravity as to starve !
  */
 {
-    double a = 1.125*MAX_SCORE;
-    double b = (0.5*MAX_HEALTH) / (log(a-0.75*MAX_SCORE)-log(a-MAX_SCORE));
+    double a = 1.125*config::MAX_SCORE;
+    double b = (0.5*config::MAX_HEALTH) / (log(a-0.75*config::MAX_SCORE)-log(a-config::MAX_SCORE));
     double c = log(a);
     double healthScore = a - exp(-animal->getHealth()/b+c);
 
-    b = (0.5*MAX_HUNGER) / (log(a) - log(a-0.75*MAX_SCORE));
-    c = log(a-MAX_SCORE);
+    b = (0.5*config::MAX_HUNGER) / (log(a) - log(a-0.75*config::MAX_SCORE));
+    c = log(a-config::MAX_SCORE);
     double hungerScore = a - exp(animal->getHunger()/b+c);
 
-    b = (0.5*MAX_THIRST) / (log(a) - log(a-0.75*MAX_SCORE));
+    b = (0.5*config::MAX_THIRST) / (log(a) - log(a-0.75*config::MAX_SCORE));
     double thirstScore = a - exp(animal->getThirst()/b+c);
 
-    b = (0.5*MAX_FEAR) / (log(a) - log(a-0.75*MAX_SCORE));
+    b = (0.5*config::MAX_FEAR) / (log(a) - log(a-0.75*config::MAX_SCORE));
     double fearScore = a - exp(animal->getFear()/b+c);
 
     return (2*healthScore+hungerScore+thirstScore+2*fearScore)/6; // Balance the various criteria
@@ -351,7 +351,7 @@ NeuralNetwork * World::determineBestNN ()
             diffScore = -1 * animal->getScore();
             animal->setScore(this->computeScore(animal));
             diffScore += animal->getScore();
-            if (diffScore > diffScoreMax || animal->getScore() == MAX_SCORE)
+            if (diffScore > diffScoreMax || animal->getScore() == config::MAX_SCORE)
             {   bestNN = animal->evolveNN();
             }
         }

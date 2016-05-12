@@ -1,10 +1,10 @@
 #include "Meat.h"
 
-Meat::Meat(double x, double y, double radius, int quantity) : Resource(x, y, radius, quantity, EVOLUTION_MEAT)
+Meat::Meat(double x, double y, double radius, int quantity) : Resource(x, y, radius, quantity, config::EVOLUTION_MEAT)
 {
 }
 
-Meat::Meat(Coordinate c, double radius, int quantity) : Resource(c,radius,quantity, EVOLUTION_MEAT)
+Meat::Meat(Coordinate c, double radius, int quantity) : Resource(c,radius,quantity, config::EVOLUTION_MEAT)
 {
 }
 

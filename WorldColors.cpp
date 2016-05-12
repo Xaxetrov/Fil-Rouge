@@ -45,7 +45,7 @@ QBrush WorldColors::getEntityBrush(const std::shared_ptr<Entity> entity)
     }
     else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
     {
-        alpha = a->getHealth()*255 / MAX_HEALTH;
+        alpha = a->getHealth()*255 / config::MAX_HEALTH;
         if(alpha < 120)
             alpha = 120;
     }
@@ -115,7 +115,7 @@ QPen WorldColors::getEntityPen(const std::shared_ptr<Entity> entity)
     }
     else if(auto a = std::dynamic_pointer_cast<Animal>(entity))
     {
-        alpha = a->getHealth()*255 / MAX_HEALTH;
+        alpha = a->getHealth()*255 / config::MAX_HEALTH;
         if(alpha < 120)
             alpha = 120;
     }

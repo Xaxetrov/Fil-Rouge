@@ -1,3 +1,4 @@
+#include "config/config.h"
 #include "Vision.h"
 #include "VisionSector_Living.h"
 #include "VisionSector_NonLiving.h"

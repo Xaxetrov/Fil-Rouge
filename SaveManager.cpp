@@ -408,11 +408,11 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
 void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
 {
   QString type;
-  double xEntity=0.0, yEntity=0.0, radiusEntity=INITIAL_RADIUS;
+  double xEntity=0.0, yEntity=0.0, radiusEntity=config::INITIAL_RADIUS;
   double angle = 0.0;
-  int maxSpeed = MAX_SPEED;
+  int maxSpeed = config::MAX_SPEED;
   double attack = -2.0;
-  double energy = DEFAULT_ENERGY;
+  double energy = config::DEFAULT_ENERGY;
   bool sex = true;
   NeuralNetwork * nn = nullptr;
   int mating = 0;
@@ -420,7 +420,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
   int quantity = 0, maxQuantity = 0;
   int hunger = 0;
   int thirst = 0;
-  int health = MAX_HEALTH;
+  int health = config::MAX_HEALTH;
 
   if(reader.tokenType() != QXmlStreamReader::StartElement ||
       reader.name() != "Entity")
@@ -520,7 +520,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
   if(type == "Vegetal")
   {
     if(maxQuantity==0)
-        maxQuantity=VEGETAL_MAXQUANTITY;
+        maxQuantity=config::VEGETAL_MAXQUANTITY;
     if(quantity==0)
         quantity=maxQuantity;
     std::shared_ptr<Vegetal> entity( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, maxQuantity));
@@ -530,7 +530,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
   else if(type == "Water")
   {
       if(maxQuantity==0)
-          maxQuantity=WATER_MAXQUANTITY;
+          maxQuantity=config::WATER_MAXQUANTITY;
       if(quantity==0)
           quantity=maxQuantity;
     std::shared_ptr<Water> entity( std::make_shared<Water>(xEntity, yEntity, radiusEntity, maxQuantity));
@@ -555,7 +555,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
           nn = new NeuralNetwork(layerSizes);
       }
       if(attack==-2)
-          attack = ATTACK_HERBIVORE;
+          attack = config::ATTACK_HERBIVORE;
       std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
@@ -577,7 +577,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
           nn = new NeuralNetwork(layerSizes);
       }
       if(attack==-2)
-          attack = ATTACK_CARNIVORE;
+          attack = config::ATTACK_CARNIVORE;
       std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);

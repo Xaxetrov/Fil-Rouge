@@ -16,8 +16,8 @@ void Coordinate::set(double x, double y)
     int intY = (int) y;
     double fracY = y - intY;
 
-    m_x = (intX % WORLD_SIZE_X + WORLD_SIZE_X) % WORLD_SIZE_X + fracX; // x % y return a value btw -y + 1 and y - 1.
-    m_y = (intY % WORLD_SIZE_Y + WORLD_SIZE_Y) % WORLD_SIZE_Y + fracY; // x % y + y return a value btw 1 and 2y - 1
+    m_x = (intX % config::WORLD_SIZE_X + config::WORLD_SIZE_X) % config::WORLD_SIZE_X + fracX; // x % y return a value btw -y + 1 and y - 1.
+    m_y = (intY % config::WORLD_SIZE_Y + config::WORLD_SIZE_Y) % config::WORLD_SIZE_Y + fracY; // x % y + y return a value btw 1 and 2y - 1
                                                                        // (x % y + y) % y return a value btw 0 and y - 1
 }
 
@@ -48,8 +48,8 @@ double Coordinate::getDistanceCarre(const Coordinate &c1, const Coordinate &c2)
 {
     double deltaX = std::abs(c1.getX() - c2.getX());
     double deltaY = std::abs(c1.getY() - c2.getY());
-    double deltaXTore = std::min(deltaX, WORLD_SIZE_X - deltaX);
-    double deltaYTore = std::min(deltaY, WORLD_SIZE_Y - deltaY);
+    double deltaXTore = std::min(deltaX, config::WORLD_SIZE_X - deltaX);
+    double deltaYTore = std::min(deltaY, config::WORLD_SIZE_Y - deltaY);
     return deltaXTore * deltaXTore + deltaYTore * deltaYTore;
 }
 
@@ -58,22 +58,22 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
     double deltaX = c2.getX() - c1.getX();
     double deltaY = c2.getY() - c1.getY();
 
-    if(deltaX > WORLD_SIZE_X/2.0)
+    if(deltaX > config::WORLD_SIZE_X/2.0)
     {
-        deltaX += -WORLD_SIZE_X;
+        deltaX += -config::WORLD_SIZE_X;
     }
-    else if(deltaX < -WORLD_SIZE_X/2.0)
+    else if(deltaX < -config::WORLD_SIZE_X/2.0)
     {
-        deltaX += WORLD_SIZE_X;
+        deltaX += config::WORLD_SIZE_X;
     }
 
-    if(deltaY > WORLD_SIZE_Y/2.0)
+    if(deltaY > config::WORLD_SIZE_Y/2.0)
     {
-        deltaY += -WORLD_SIZE_Y;
+        deltaY += -config::WORLD_SIZE_Y;
     }
-    else if(deltaY < -WORLD_SIZE_Y/2.0)
+    else if(deltaY < -config::WORLD_SIZE_Y/2.0)
     {
-        deltaY += WORLD_SIZE_Y;
+        deltaY += config::WORLD_SIZE_Y;
     }
     return std::atan2(deltaY,deltaX); //atan2 return value in [-pi;pi]
 /*
@@ -113,13 +113,13 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
 
 double Coordinate::modulo2PI(double angle)
 {
-  while(angle >= PI)
+  while(angle >= config::PI)
   {
-    angle -= 2*PI;
+    angle -= 2*config::PI;
   }
-  while(angle < -1 * PI)
+  while(angle < -1 * config::PI)
   {
-    angle += 2*PI;
+    angle += 2*config::PI;
   }
   return angle;
 }

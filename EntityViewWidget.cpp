@@ -51,7 +51,7 @@ QPolygonF EntityViewWidget::generateVisionSector(double angle1, double angle2, i
     double angle = angle1;
     for(double i=0 ; i<numberOfPoint ; i++)
     {
-        ret.push_back(QPoint(depth*cos(angle-PI/2.0),depth*sin(angle-PI/2.0)));
+        ret.push_back(QPoint(depth*cos(angle-config::PI/2.0),depth*sin(angle-config::PI/2.0)));
         angle += deltaAngle;
     }
     return ret;
