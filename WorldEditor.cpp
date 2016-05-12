@@ -13,7 +13,7 @@ WorldEditor::WorldEditor(std::list<std::shared_ptr<Resource> > *resourcesList) :
 {
     //setup default tools
     currantTool = Tools::water;
-    currantRadius = 100;
+    currantRadius = 10;
     currantMaxQuantity = 4000;
 
     //setup a new scene

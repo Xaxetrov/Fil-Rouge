@@ -61,9 +61,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="bt_grass">
+        <widget class="QRadioButton" name="bt_vegetal">
          <property name="text">
-          <string>Add grass</string>
+          <string>Add vegetal</string>
          </property>
         </widget>
        </item>
