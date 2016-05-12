@@ -48,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     fileMenu = this->menuBar()->addMenu(tr("File"));
     simulationMenu = this->menuBar()->addMenu(tr("Simulation"));
     animalMenu = this->menuBar()->addMenu(tr("Animal"));
+    settingsMenu = this->menuBar()->addMenu(tr("Settings"));
     fileExitAction = fileMenu->addAction(tr("Exit"));
     saveWorldAction = fileMenu->addAction(tr("Save world as..."));
     loadWorldAction = fileMenu->addAction(tr("Load world"));
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     simmulationStartStopAction = simulationMenu->addAction(tr("Start simulation"));
     saveNeuralNetworkAction = animalMenu->addAction(tr("Save neural network as..."));
     loadNeuralNetworkAction = animalMenu->addAction(tr("Load neural network"));
+    setParameters = settingsMenu->addAction(tr("Parameters"));
     animalMenu->setEnabled(false);
 
     //event managment
@@ -72,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(openWorldCreatorAction, SIGNAL(triggered(bool)), this, SLOT(openWorldCreator()));
     QObject::connect(&worldCreator, SIGNAL(actionFinished()), this, SLOT(onWorldCreatorClosed()));
     QObject::connect(openTimelineAction, SIGNAL(triggered(bool)), this, SLOT(openTimeline()));
+    QObject::connect(setParameters, SIGNAL(triggered(bool)), this, SLOT(openParametersWidget()));
 }
 
 //custom load for debug
@@ -312,4 +315,9 @@ void MainWindow::onWorldCreatorClosed()
 void MainWindow::openTimeline()
 {
     timeline.show();
+}
+
+void MainWindow::openParametersWidget()
+{
+    parameterswidget.show();
 }
