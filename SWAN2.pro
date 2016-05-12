@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     Timelinewidget.cpp \
     qcustomplot.cpp \
     WorldEditor.cpp \
-    config/config.cpp
+    config/config.cpp \
+    ParametersWidget.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -93,10 +94,12 @@ HEADERS  += mainwindow.h \
     WorldCreatorAnimalsWidget.h \
     Timelinewidget.h \
     qcustomplot.h \
-    WorldEditor.h
+    WorldEditor.h \
+    ParametersWidget.h
 
 FORMS    += mainwindow.ui \
     WorldCreator.ui \
     WorldCreatorResourcesWidget.ui \
     WorldCreatorAnimalsWidget.ui \
-    Timelinewidget.ui
+    Timelinewidget.ui \
+    ParametersWidget.ui

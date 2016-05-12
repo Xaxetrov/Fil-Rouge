@@ -11,6 +11,7 @@
 #include "World.h"
 #include "WorldCreator.h"
 #include "Timelinewidget.h"
+#include "ParametersWidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +37,7 @@ public slots:
     void openWorldCreator();
     void onWorldCreatorClosed();
     void openTimeline();
+    void openParametersWidget();
 
     void saveWorld(bool pauseDuringSave=true);
     void loadWorldSave(bool pauseDuringLoad=true);
@@ -58,16 +60,19 @@ private:
     QAction * loadWorldAction;
     QMenu * simulationMenu;
     QMenu * animalMenu;
+    QMenu * settingsMenu;
     QAction * simmulationStartStopAction;
     QAction * fileExitAction;
     QAction * saveNeuralNetworkAction;
     QAction * loadNeuralNetworkAction;
     QAction * openWorldCreatorAction;
     QAction * openTimelineAction;
+    QAction * setParameters;
 
     //World Creator
     WorldCreator worldCreator;
     TimelineWidget timeline;
+    ParametersWidget parameterswidget;
 
     World world;
     std::weak_ptr<Animal> selectedAnimal;
