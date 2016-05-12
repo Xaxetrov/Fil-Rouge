@@ -1,6 +1,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// General constants
+const double PI =  3.1415926535897932;
+
 // Neural network Entity id
 const int NN_ID_ANIMAL = 2;
 const int NN_ID_HERBIVORE = 1;
@@ -21,15 +24,16 @@ const unsigned int ID_MEAT = 13;
 // Vision
 const int NB_VISIONSECTORS_LIVING = 3;
 const int NB_VISIONSECTORS_NONLIVING = 3;
+const int MAX_RANGE_OF_VISION = 100;
 const double VISIONSECTORS_LIVING[NB_VISIONSECTORS_LIVING][3] = {
-   {-0.40, 0.40, 100}, /* numbers represent angle1, angle2 and range */
-   {-1.5, -0.40, 70} ,
-   {0.40, 1.5, 70}
+   {-0.40, 0.40, MAX_RANGE_OF_VISION}, /* numbers represent angle1, angle2 and range */
+   {-1.5, -0.40, 0.7 * MAX_RANGE_OF_VISION} ,
+   {0.40, 1.5, 0.7 * MAX_RANGE_OF_VISION}
 };
 const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
-   {-0.40, 0.40, 100}, /* numbers represent angle1, angle2 and range */
-   {-1.5, -0.40, 70} ,
-   {0.40, 1.5, 70}
+   {-0.40, 0.40, MAX_RANGE_OF_VISION}, /* numbers represent angle1, angle2 and range */
+   {-1.5, -0.40, 0.7 * MAX_RANGE_OF_VISION} ,
+   {0.40, 1.5, 0.7 * MAX_RANGE_OF_VISION}
 };
 
 // Neural network
@@ -39,12 +43,15 @@ const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISION
 class config
 {
 public:
-  // General constants
-  static double PI;
 
   // World
   static int WORLD_SIZE_X;
   static int WORLD_SIZE_Y;
+  static unsigned short MIN_NUMBER_OF_ANIMAL; //unused
+  static unsigned short MIN_NUMBER_OF_HERBVORE;
+  static unsigned short MIN_NUMBER_OF_CARNIVORE;
+  static unsigned short MAX_NUMBER_HERBIVORE_CHAMPION;
+  static unsigned short MAX_NUMBER_CARNIVORE_CHAMPION;
 
   // Neurale network weight modification probability
   static double NN_WEIGHT_CHANGE_PROBABILITY; // 10% chance of change by weight
@@ -58,6 +65,14 @@ public:
   static int EVOLUTION_WATER;
   static int EVOLUTION_MEAT;
   static int EVOLUTION_VEGETAL;
+  static unsigned int VEGETAL_MAXQUANTITY;
+  static unsigned int WATER_MAXQUANTITY;
+
+  // Animal eating parameters
+  static unsigned int EAT_MAX_VEGETAL_QUANTITY; // the max is not the used value if hunger is 0
+  static unsigned int EAT_MAX_MEAT_QUANTITY; // the max is not the used value if hunger is 0
+  static unsigned int EAT_MAX_HEALING_VALUE; //the max is not the used value if life is full
+  static unsigned int DRINK_MAX_VALUE; // the max is not the used value if thrist is 0
 
   // Animal Parameters
   static double INITIAL_RADIUS;
@@ -82,21 +97,7 @@ public:
   static unsigned int ATTACK_ANIMAL;
   static unsigned int ATTACK_HERBIVORE;
   static unsigned int ATTACK_CARNIVORE;
-  // Animal eating parameters
-  static unsigned int EAT_MAX_VEGETAL_QUANTITY; // the max is not the used value if hunger is 0
-  static unsigned int EAT_MAX_MEAT_QUANTITY; // the max is not the used value if hunger is 0
-  static unsigned int EAT_MAX_HEALING_VALUE; //the max is not the used value if life is full
-  static unsigned int VEGETAL_MAXQUANTITY;
-  static unsigned int WATER_MAXQUANTITY;
-  // Animal drinking parameters
-  static unsigned int DRINK_MAX_VALUE; // the max is not the used value if thrist is 0
 
-  // World Parameters
-  static unsigned short MIN_NUMBER_OF_ANIMAL; //unused
-  static unsigned short MIN_NUMBER_OF_HERBVORE;
-  static unsigned short MIN_NUMBER_OF_CARNIVORE;
-  static unsigned short MAX_NUMBER_HERBIVORE_CHAMPION;
-  static unsigned short MAX_NUMBER_CARNIVORE_CHAMPION;
 };
 
 #endif // CONFIG_H

@@ -57,7 +57,7 @@ void WorldWidget::updateScene()
     m_scene->setBackgroundBrush(QBrush(Qt::gray));
     m_scene->addRect(0,0,m_world->getSizeX(),m_world->getSizeY(),QPen(Qt::gray),colors.getBackgroundBrush());
     //add each entity to the scene one by one:
-    std::list<std::shared_ptr<Entity>> & entities = m_world->getEntities();
+    const std::list<std::shared_ptr<Entity>> & entities = m_world->getEntities();
     for(std::shared_ptr<Entity> ite : entities)
     {
         drawEntity(ite);

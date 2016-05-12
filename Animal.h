@@ -10,6 +10,7 @@
 #include "NeuralNetwork.h"
 #include "Vision.h"
 
+class Vision;
 
 class Animal : public Solid, public std::enable_shared_from_this<Animal>
 {
@@ -44,6 +45,8 @@ public:
     std::vector<std::weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
     std::vector<std::weak_ptr<Entity> > getSubListSolidCollision();
     std::vector<std::weak_ptr<Entity> > getSubListResourceCollision();
+    int getCurrentCellX() const;
+    int getCurrentCellY() const;
 
     //setters
     void setMating();
@@ -128,7 +131,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
 
     // Create the new entity around the mother (in a circle)
     int child = 0;
-    double angleIntervalle = (2*config::PI)/(double)numberChild;
+    double angleIntervalle = (2*PI)/(double)numberChild;
     double baseAngle = 0;
     double baseRadius = 4*getRadius();
 
@@ -138,7 +141,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
     //cout << "MOTHER BRAIN\n" << endl;
     //this->getBrain()->printNetwork();
 
-    std::uniform_real_distribution<double> distributionReal(-config::PI/6.0, config::PI/6.0);
+    std::uniform_real_distribution<double> distributionReal(-PI/6.0, PI/6.0);
 
     while(child < numberChild)
     {

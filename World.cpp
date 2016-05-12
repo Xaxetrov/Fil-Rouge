@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
-using namespace std;
 
 World::World()
 {
@@ -19,22 +18,34 @@ World::World()
     m_size_x = config::WORLD_SIZE_X;
     m_size_y = config::WORLD_SIZE_Y;
     m_tickPassed = 0;
+
+    createGridOfEntities();
 }
 
-std::list<shared_ptr<Entity>> &World::getEntities()
+const std::list<std::shared_ptr<Entity>> &World::getEntities() const
 {
     return m_entities;
 }
 
-std::list<shared_ptr<Entity>> World::getCopyOfEntities() const
+std::list<std::shared_ptr<Entity>> World::getCopyOfEntities() const
 {
     return m_entities;
 }
 
-/*Coordinate & World::getSize()
+const std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> & World::getGridOfEntities() const
 {
-    return m_size;
-}*/
+    return m_gridOfEntities;
+}
+
+int World::getCellSizeX() const
+{
+    return m_cellSizeX;
+}
+
+int World::getCellSizeY() const
+{
+    return m_cellSizeY;
+}
 
 int World::getSizeX() const
 {
@@ -50,12 +61,18 @@ void World::setSize(int size_x, int size_y)
 {
    m_size_x = size_x;
    m_size_y = size_y;
+   config::WORLD_SIZE_X = size_x;
+   config::WORLD_SIZE_Y = size_y;
+
+   createGridOfEntities();
+   synchronizedListAndGridOfEntities();
+
 }
 
-void World::updateListCollision(shared_ptr<Animal> a) const
+void World::updateListCollision(std::shared_ptr<Animal> a) const
 {
     a->clearEntityListCollision();
-    for(shared_ptr<Entity> currentEntity : m_entities)
+    for(std::shared_ptr<Entity> currentEntity : m_entities)
     {
         if(a!=currentEntity && isCollision(a, currentEntity))
         {
@@ -64,9 +81,24 @@ void World::updateListCollision(shared_ptr<Animal> a) const
     }
 }
 
-void World::addEntity(shared_ptr<Entity> entity)
+void World::updateGridOfEntities(std::shared_ptr<Animal> a, int oldX, int oldY, int newX, int newY)
+{
+    int oldCellX = oldX / m_cellSizeX;
+    int newCellX = newX / m_cellSizeX;
+    int oldCellY = oldY / m_cellSizeY;
+    int newCellY = newY / m_cellSizeY;
+
+    if (oldCellX != newCellX || oldCellY != newCellY)
+    {
+        m_gridOfEntities[oldCellX][oldCellY].erase(find(m_gridOfEntities[oldCellX][oldCellY].begin(), m_gridOfEntities[oldCellX][oldCellY].end(), a));
+        m_gridOfEntities[newCellX][newCellY].push_back(a);
+    }
+}
+
+void World::addEntity(std::shared_ptr<Entity> entity)
 {
     m_entities.push_back(entity);
+    m_gridOfEntities[entity->getX() / m_cellSizeX][entity->getY() / m_cellSizeY].push_back(entity);
 }
 
 void World::feedWithRandomAnimal(unsigned short numberOfEntityToAdd)
@@ -75,7 +107,7 @@ void World::feedWithRandomAnimal(unsigned short numberOfEntityToAdd)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      shared_ptr<Animal> animal(make_shared<Animal>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_ANIMAL, config::DEFAULT_ENERGY, this));
+      std::shared_ptr<Animal> animal(std::make_shared<Animal>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_ANIMAL, config::DEFAULT_ENERGY, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -87,7 +119,7 @@ void World::feedWithRandomHerbivore(unsigned short numberOfEntityToAdd)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this));
+      std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -115,7 +147,7 @@ void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
       //mixe them up
       NeuralNetwork *nn = new NeuralNetwork(n1,n2);
       //make a new Herbivore from that brain
-      shared_ptr<Herbivore> animal(make_shared<Herbivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
+      std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -127,7 +159,7 @@ void World::feedWithRandomCarnivore(unsigned short numberOfEntityToAdd)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this));
+      std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -155,7 +187,7 @@ void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
       //mixe them up
       NeuralNetwork *nn = new NeuralNetwork(n1,n2);
       //make a new Carnivore from that brain
-      shared_ptr<Carnivore> animal(make_shared<Carnivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
+      std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::INITIAL_RADIUS, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -170,7 +202,7 @@ int World::tick()
     m_numberOfHerbivore = 0;
     //for(unsigned j = 0; j < m_entities.size(); j++)
     //for(shared_ptr<Entity> e:m_entities)
-    for(std::list<std::shared_ptr<Entity>>::iterator e=m_entities.begin() ; e!=m_entities.end() ; ++e)
+    for(std::list<std::shared_ptr<Entity>>::iterator e = m_entities.begin(); e != m_entities.end(); ++e)
     {
         //shared_ptr<Entity> e = m_entities[j];
         if((*e)->play())
@@ -180,7 +212,7 @@ int World::tick()
             entityErrorsNum++;
         }
         i++;
-        if(shared_ptr<Animal> animal = dynamic_pointer_cast<Animal>(*e))
+        if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e))
         {
             if(animal->isDead())
             {
@@ -188,7 +220,8 @@ int World::tick()
                 saveNeuralNetwork(animal);
 #endif
                 int meatQuantity = config::MAX_HUNGER - animal->getHunger();
-                m_entities.push_back(make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
+                m_entities.push_back(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
+                m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(*(--m_entities.end()));
             }
             else
             {
@@ -209,8 +242,10 @@ int World::tick()
         {
             //work arround the fact that the currant cell will be deleted
             std::list<std::shared_ptr<Entity>>::iterator sav = e;
-            sav--;
             m_entities.erase(e);
+            m_gridOfEntities[(*sav)->getX() / m_cellSizeX][(*sav)->getY() / m_cellSizeY].erase(find(m_gridOfEntities[(*sav)->getX() / m_cellSizeX]
+                    [(*sav)->getY() / m_cellSizeY].begin(), m_gridOfEntities[(*sav)->getX() / m_cellSizeX][(*sav)->getY() / m_cellSizeY].end(),*sav));
+            sav--;
             e=sav;
         }
     }
@@ -267,14 +302,16 @@ int World::tick(int ticNum)
     return 0;
 }
 
-void World::killEntity(shared_ptr<Entity> e)
+void World::killEntity(std::shared_ptr<Entity> e)
 {
     m_entities.erase(find(m_entities.begin(),m_entities.end(),e)); //RIP
+    m_gridOfEntities[e->getX() / m_cellSizeX][e->getY() / m_cellSizeY].erase(find(m_gridOfEntities[e->getX() / m_cellSizeX]
+            [e->getY() / m_cellSizeY].begin(), m_gridOfEntities[e->getX() / m_cellSizeX][e->getY() / m_cellSizeY].end(), e));
 }
 
 // private methods
 
-bool World::isCollision(const shared_ptr<Entity> e1, const shared_ptr<Entity> e2) const
+bool World::isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<Entity> e2) const
 {
     const Coordinate & c1 = e1->getCoordinate();
     const Coordinate & c2 = e2->getCoordinate();
@@ -286,7 +323,7 @@ bool World::isCollision(const shared_ptr<Entity> e1, const shared_ptr<Entity> e2
 void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
 {
     int age = getWorldAge() - a->getCreationDate();
-    if(shared_ptr<Herbivore> h = dynamic_pointer_cast<Herbivore>(a))
+    if(std::shared_ptr<Herbivore> h = std::dynamic_pointer_cast<Herbivore>(a))
     {
         if(bestHerbivore.size()==0 || bestHerbivore.rbegin()->first < age )
         {
@@ -297,7 +334,7 @@ void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
             bestHerbivore.erase(bestHerbivore.begin());
         }
     }
-    else if(shared_ptr<Carnivore> c = dynamic_pointer_cast<Carnivore>(a))
+    else if(std::shared_ptr<Carnivore> c = std::dynamic_pointer_cast<Carnivore>(a))
     {
         if(bestCarnivore.size()==0 || bestCarnivore.rbegin()->first < age )
         {
@@ -310,7 +347,7 @@ void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
     }
 }
 
-double World::computeScore(shared_ptr<Animal> animal)
+double World::computeScore(std::shared_ptr<Animal> animal)
 /* 100% health = 100% health score, 50% health = 75% health score and 0% health = 0% health score
  * 0% hunger = 100% hunger score, 50% hunger = 75% hunger score, 100% hunger = 0% hunger score
  * same things for thirst and fear
@@ -357,6 +394,33 @@ NeuralNetwork * World::determineBestNN ()
         }
     }
     return bestNN;
+}
+
+void World::createGridOfEntities()
+{
+    for (m_cellSizeX = MAX_RANGE_OF_VISION; m_size_x % m_cellSizeX; m_cellSizeX++); // m_cellSizeX prend le plus petit diviseur de m_size_x supérieur a MAX_RANGE_OF_VISION
+    for (m_cellSizeY = MAX_RANGE_OF_VISION; m_size_y % m_cellSizeY; m_cellSizeY++); // Idem
+
+    m_gridOfEntities.clear();
+    // Create an empty grid of the right size.
+    std::vector<std::list<std::shared_ptr<Entity>>> standartElementDimension1;
+    std::list<std::shared_ptr<Entity>> standartElementDimension2;
+    for (unsigned int i = 0; i < m_size_x / m_cellSizeX; i++)
+    {
+        m_gridOfEntities.push_back(standartElementDimension1);
+        for (unsigned int j = 0; j < m_size_y / m_cellSizeY; j++)
+        {
+            m_gridOfEntities[i].push_back(standartElementDimension2);
+        }
+    }
+}
+
+void World::synchronizedListAndGridOfEntities()
+{
+    for (std::shared_ptr<Entity> entity : m_entities)
+    {
+        m_gridOfEntities[entity->getX() / m_cellSizeX][entity->getY() / m_cellSizeY].push_back(entity);
+    }
 }
 
 unsigned World::getNumberOfLiving() const

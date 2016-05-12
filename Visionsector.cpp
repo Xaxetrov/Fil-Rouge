@@ -8,9 +8,8 @@ using namespace std;
 #include <ctime>
 #include <list>
 
-VisionSector::VisionSector(const Coordinate &center, const double &animalAngle, const double &angle1, const double &angle2, int range,
-                           std::list<std::shared_ptr<Entity>> &entities) :
-    m_center(center), m_animalAngle(animalAngle), m_angle1(angle1), m_angle2(angle2), m_range(range), m_entities(entities)
+VisionSector::VisionSector(const Coordinate &center, const double &animalAngle, const double &angle1, const double &angle2, int range) :
+    m_center(center), m_animalAngle(animalAngle), m_angle1(angle1), m_angle2(angle2), m_range(range)
 {
     m_nearestPercepted = std::make_shared<Percepted>();
 }
