@@ -34,7 +34,7 @@ private:
 
     //sigmoid response curve
     //double Sigmoid(double x){return 1/(1+exp(-x));}
-    double Sigmoid(double x){return atan(x)*(2/config::PI);} //to get negative number in [-1,1]
+    double Sigmoid(double x){return atan(x)*(2/PI);} //to get negative number in [-1,1]
     //Random generator
     double RandomWeight();
 };

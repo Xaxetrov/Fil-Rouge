@@ -11,7 +11,7 @@
 class VisionSector
 {
     public:
-        VisionSector(const Coordinate & center, const double & animalAngle, const double & angle1, const double & angle2, int range, std::list<std::shared_ptr<Entity> > &entities);
+        VisionSector(const Coordinate & center, const double & animalAngle, const double & angle1, const double & angle2, int range);
         virtual ~VisionSector();
 
         virtual void see(const std::vector<std::shared_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities) = 0;
@@ -31,8 +31,6 @@ class VisionSector
         double m_angle1;
         double m_angle2;
         int m_range;
-        //shared_ptr that way a dead entity can still be seen if died just after vision
-        std::list<std::shared_ptr<Entity>>& m_entities;
 };
 
 #endif // VISIONSECTOR_H

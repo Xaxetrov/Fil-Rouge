@@ -113,13 +113,13 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
 
 double Coordinate::modulo2PI(double angle)
 {
-  while(angle >= config::PI)
+  while(angle >= PI)
   {
-    angle -= 2*config::PI;
+    angle -= 2*PI;
   }
-  while(angle < -1 * config::PI)
+  while(angle < -1 * PI)
   {
-    angle += 2*config::PI;
+    angle += 2*PI;
   }
   return angle;
 }

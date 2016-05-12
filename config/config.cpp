@@ -1,11 +1,13 @@
 #include "config.h"
 
-// General constants
-double config::PI = 3.1415926535897932;
-
 // World
 int config::WORLD_SIZE_X = 500;
 int config::WORLD_SIZE_Y = 500;
+unsigned short config::MIN_NUMBER_OF_ANIMAL = 10; //unused
+unsigned short config::MIN_NUMBER_OF_HERBVORE = 10;
+unsigned short config::MIN_NUMBER_OF_CARNIVORE = 0;
+unsigned short config::MAX_NUMBER_HERBIVORE_CHAMPION = 10;
+unsigned short config::MAX_NUMBER_CARNIVORE_CHAMPION = 0;
 
 // Neurale network weight modification probability
 double config::NN_WEIGHT_CHANGE_PROBABILITY = 0.1; // 10% chance of change by weight
@@ -19,6 +21,14 @@ unsigned int config::UPDATE_TIMER_INTERVALE = 10; //ms
 int config::EVOLUTION_WATER = 5;
 int config::EVOLUTION_MEAT = -1;
 int config::EVOLUTION_VEGETAL = 5;
+unsigned int config::VEGETAL_MAXQUANTITY = 5000;
+unsigned int config::WATER_MAXQUANTITY = 5000;
+
+// Animal eating parameters
+unsigned int config::EAT_MAX_VEGETAL_QUANTITY = 100; // the max is not the used value if hunger is 0
+unsigned int config::EAT_MAX_MEAT_QUANTITY = 100; // the max is not the used value if hunger is 0
+unsigned int config::EAT_MAX_HEALING_VALUE = 10; //the max is not the used value if life is full
+unsigned int config::DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
 // Animal Parameters
 double config::INITIAL_RADIUS = 8;
@@ -43,18 +53,3 @@ double config::MAX_ATTACK_ANGLE = PI/2; //attack angle is [-MAX_ATTACK_ANGLE ; M
 unsigned int config::ATTACK_ANIMAL = 100;
 unsigned int config::ATTACK_HERBIVORE = 20;
 unsigned int config::ATTACK_CARNIVORE = 100;
-// Animal eating parameters
-unsigned int config::EAT_MAX_VEGETAL_QUANTITY = 100; // the max is not the used value if hunger is 0
-unsigned int config::EAT_MAX_MEAT_QUANTITY = 100; // the max is not the used value if hunger is 0
-unsigned int config::EAT_MAX_HEALING_VALUE = 10; //the max is not the used value if life is full
-unsigned int config::VEGETAL_MAXQUANTITY = 5000;
-unsigned int config::WATER_MAXQUANTITY = 5000;
-// Animal drinking parameters
-unsigned int config::DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
-
-// World Parameters
-unsigned short config::MIN_NUMBER_OF_ANIMAL = 10; //unused
-unsigned short config::MIN_NUMBER_OF_HERBVORE = 10;
-unsigned short config::MIN_NUMBER_OF_CARNIVORE = 0;
-unsigned short config::MAX_NUMBER_HERBIVORE_CHAMPION = 10;
-unsigned short config::MAX_NUMBER_CARNIVORE_CHAMPION = 0;

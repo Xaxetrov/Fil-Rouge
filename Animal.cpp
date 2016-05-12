@@ -22,7 +22,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
     dead = false;
     m_fear = 0;
     m_mating = config::MAX_MATING;
-    m_vision = new Vision(getCoordinate(), m_angle, world->getEntities());
+    m_vision = new Vision(*this, m_angle, world->getGridOfEntities());
 
     //Determine if Animal is female or not (1/2 chance)
     static std::mt19937 generator(random_device{}());
@@ -149,23 +149,20 @@ void Animal::move(int speedPercentage)
     if(m_speed * config::MOVE_ENERGY_LOSS > m_energy)
       m_speed = m_energy / config::MOVE_ENERGY_LOSS / 2;
     m_energy -= m_speed * config::MOVE_ENERGY_LOSS / 2;
-    setCoordinate(getX() + cos(m_angle) * m_speed, getY() + sin(m_angle) * m_speed);
-    m_world->updateListCollision(this->shared_from_this());
-    vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
-    if(animalCollisionList.size() != 0)
-    {
-        //Colision disabled !!!
-        //setCoordinate(getX() - cos(m_angle)*m_speed, getY() - sin(m_angle)*m_speed);
-    }
 
-//    if (m_world->isCollision(this))
+    int oldX = getX();
+    int oldY = getY();
+    setCoordinate(getX() + cos(m_angle) * m_speed, getY() + sin(m_angle) * m_speed);
+    m_world->updateGridOfEntities(this->shared_from_this(), oldX, oldY, getX(), getY());
+
+    m_world->updateListCollision(this->shared_from_this());
+
+    //Colision disabled !!!
+//    vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
+//    if(animalCollisionList.size() != 0)
 //    {
-//        setCoordinate(getX() + cos(m_angle + PI) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle + PI) * speedPercentage * m_maxSpeed / 100);
-//        //setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
-//    }
-//    else
-//    {
-//      setCoordinate(getX() + cos(m_angle) * speedPercentage * m_maxSpeed / 100, getY() + sin(m_angle) * speedPercentage * m_maxSpeed / 100);
+
+//        //setCoordinate(getX() - cos(m_angle)*m_speed, getY() - sin(m_angle)*m_speed);
 //    }
 }
 
@@ -548,4 +545,14 @@ void Animal::setBrain(NeuralNetwork *newBrain)
 void Animal::setSex(bool sex)
 {
     m_female = sex;
+}
+
+int Animal::getCurrentCellX() const
+{
+    return getX() / m_world->getCellSizeX();
+}
+
+int Animal::getCurrentCellY() const
+{
+    return getY() / m_world->getCellSizeY();
 }

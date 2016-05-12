@@ -3,7 +3,8 @@
 #include <fstream>
 using namespace std;
 
-VisionSector_NonLiving::VisionSector_NonLiving(const Coordinate & center, double & animalAngle, const double & angle1, const double & angle2, int range, std::list<shared_ptr<Entity>> &entities): VisionSector(center, animalAngle, angle1, angle2, range, entities)
+VisionSector_NonLiving::VisionSector_NonLiving(const Coordinate & center, double & animalAngle, const double & angle1, const double & angle2, int range)
+    : VisionSector(center, animalAngle, angle1, angle2, range)
 {}
 
 void VisionSector_NonLiving::see(const std::vector<std::shared_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities)

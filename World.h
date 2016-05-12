@@ -23,8 +23,9 @@ public:
     World();
 
     //Do you wanna get my entities ?
-    std::list<std::shared_ptr<Entity> > &getEntities();
+    const std::list<std::shared_ptr<Entity> > &getEntities() const;
     std::list<std::shared_ptr<Entity> >  getCopyOfEntities() const;
+    const std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> & getGridOfEntities() const;
 
     unsigned getNumberOfLiving() const;
 
@@ -34,6 +35,8 @@ public:
     int getSizeX() const;
     //You sir are hopeless...
     int getSizeY() const;
+    int getCellSizeX() const;
+    int getCellSizeY() const;
 
     //I'm as wise as the world. Oh wait...
     unsigned getWorldAge() const {return m_tickPassed;}
@@ -42,6 +45,7 @@ public:
     void setSize(int size_x, int size_y);
 
     void updateListCollision(std::shared_ptr<Animal> a) const;
+    void updateGridOfEntities(std::shared_ptr<Animal> a, int oldX, int oldY, int newX, int newY);
 
     //More ! Give me more of them !
     void addEntity(std::shared_ptr<Entity> entity);
@@ -63,6 +67,8 @@ private:
     void saveNeuralNetwork(std::shared_ptr<Animal> a);
     double computeScore(std::shared_ptr<Animal> animal);
     NeuralNetwork * determineBestNN();
+    void createGridOfEntities();
+    void synchronizedListAndGridOfEntities();
 
     //Private attributes
     unsigned m_tickPassed; //How old that world is ?
@@ -73,6 +79,9 @@ private:
     std::multimap<int,NeuralNetwork> bestCarnivore;
 
     //My loves, my life
+    unsigned int m_cellSizeX;
+    unsigned int m_cellSizeY;
+    std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> m_gridOfEntities;
     std::list<std::shared_ptr<Entity>> m_entities;
     int m_size_x;
     int m_size_y;
