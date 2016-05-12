@@ -13,7 +13,17 @@ class ParametersWidget : public QTabWidget
 
 public:
     explicit ParametersWidget(QWidget *parent = 0);
+    void showEvent( QShowEvent* event );
     ~ParametersWidget();
+
+public slots:
+    void updateUIParam();
+    void updateWorldParam();
+    void updateResourcesParam();
+    void updateAnimalsParam();
+    void updateHerbivoresParam();
+    void updateCarnivoresParam();
+    void updateNeuralNetworksParam();
 
 private:
     Ui::ParametersWidget *ui;

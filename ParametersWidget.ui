@@ -7,20 +7,20 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>365</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Parameters</string>
   </property>
   <property name="currentIndex">
-   <number>6</number>
+   <number>2</number>
   </property>
   <widget class="QWidget" name="tab">
    <attribute name="title">
     <string>User interface</string>
    </attribute>
-   <widget class="QLineEdit" name="lineEdit_6">
+   <widget class="QLineEdit" name="updateInterval">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -30,7 +30,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>caca</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
@@ -78,6 +78,19 @@
      <string>Update interval (ms)</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="buttonUI">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>84</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QWidget" name="tab">
    <attribute name="title">
@@ -96,7 +109,7 @@
      <string>Min number of herbivores</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="worldWidth">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -167,7 +180,7 @@
      <string>Width</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="worldHeight">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -180,7 +193,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="minNumberHerbivores">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -193,7 +206,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="minNumberCarnivores">
     <property name="geometry">
      <rect>
       <x>190</x>
@@ -219,17 +232,30 @@
      <string>Min number of carnivores</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="buttonWorld">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>84</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QWidget" name="tab_2">
    <attribute name="title">
     <string>Resources</string>
    </attribute>
-   <widget class="QLineEdit" name="lineEdit_7">
+   <widget class="QLineEdit" name="vegetalMaxQuantity">
     <property name="geometry">
      <rect>
       <x>140</x>
       <y>60</y>
-      <width>41</width>
+      <width>61</width>
       <height>31</height>
      </rect>
     </property>
@@ -240,7 +266,7 @@
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>220</x>
       <y>110</y>
       <width>171</width>
       <height>18</height>
@@ -248,32 +274,6 @@
     </property>
     <property name="text">
      <string>Water evolution</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>150</y>
-      <width>131</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Meat max quantity</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit_12">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>140</y>
-      <width>41</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="label_10">
@@ -308,10 +308,10 @@
      <string>Resources</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_9">
+   <widget class="QLineEdit" name="vegetalEvolution">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>330</x>
       <y>60</y>
       <width>41</width>
       <height>31</height>
@@ -321,10 +321,10 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_11">
+   <widget class="QLineEdit" name="meatEvolution">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>330</x>
       <y>140</y>
       <width>41</width>
       <height>31</height>
@@ -347,10 +347,10 @@
      <string>Vegetal max quantity</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_10">
+   <widget class="QLineEdit" name="waterEvolution">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>330</x>
       <y>100</y>
       <width>41</width>
       <height>31</height>
@@ -360,12 +360,12 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_8">
+   <widget class="QLineEdit" name="waterMaxQantity">
     <property name="geometry">
      <rect>
       <x>140</x>
       <y>100</y>
-      <width>41</width>
+      <width>61</width>
       <height>31</height>
      </rect>
     </property>
@@ -373,10 +373,10 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_12">
+   <widget class="QLabel" name="label_25">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>220</x>
       <y>70</y>
       <width>171</width>
       <height>18</height>
@@ -399,10 +399,10 @@
      <string>Water max quantity</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_15">
+   <widget class="QLabel" name="label_28">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>220</x>
       <y>150</y>
       <width>171</width>
       <height>18</height>
@@ -410,6 +410,19 @@
     </property>
     <property name="text">
      <string>Meat evolution</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonResources">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>84</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply</string>
     </property>
    </widget>
   </widget>
@@ -430,7 +443,7 @@
      <string>Max fear</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_18">
+   <widget class="QLineEdit" name="maxMating">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -443,7 +456,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_25">
+   <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -469,7 +482,7 @@
      <string>Initial radius</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_20">
+   <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -482,7 +495,7 @@
      <string>Energy recuperation</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_20">
+   <widget class="QLineEdit" name="maxHealth">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -495,7 +508,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_24">
+   <widget class="QLineEdit" name="energyRecup">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -508,7 +521,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_23">
+   <widget class="QLineEdit" name="maxSpeedEating">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -534,7 +547,7 @@
      <string>Attack angle</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_21">
+   <widget class="QLineEdit" name="maxThirst">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -547,7 +560,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_19">
+   <widget class="QLineEdit" name="defaultEnergy">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -560,7 +573,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_27">
+   <widget class="QLineEdit" name="attackAngle">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -573,7 +586,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_17">
+   <widget class="QLineEdit" name="maxFear">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -612,7 +625,7 @@
      <string>Max speed to eat/drink</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_15">
+   <widget class="QLineEdit" name="animalMaxSpeed">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -664,7 +677,7 @@
      <string>Max hunger</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_16">
+   <widget class="QLineEdit" name="maxHunger">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -709,7 +722,7 @@
      <string>Animals</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_14">
+   <widget class="QLineEdit" name="initialRadius">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -722,7 +735,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
+   <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -735,7 +748,7 @@
      <string>Max speed</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_22">
+   <widget class="QLineEdit" name="maxChildren">
     <property name="geometry">
      <rect>
       <x>320</x>
@@ -759,6 +772,19 @@
     </property>
     <property name="text">
      <string>Default energy</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonAnimals">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>84</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply</string>
     </property>
    </widget>
   </widget>
@@ -824,7 +850,7 @@
      <string>Fatness evolution</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_36">
+   <widget class="QLineEdit" name="herbivoreFatnessEvolution">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -837,7 +863,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_28">
+   <widget class="QLineEdit" name="herbivoreAttack">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -850,12 +876,25 @@
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="buttonHerbivores">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>84</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QWidget" name="tab_5">
    <attribute name="title">
     <string>Carnivores</string>
    </attribute>
-   <widget class="QLineEdit" name="lineEdit_35">
+   <widget class="QLineEdit" name="carnivoreFatnessEvolution">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -868,7 +907,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_26">
+   <widget class="QLineEdit" name="carnivoreAttack">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -894,7 +933,7 @@
      <string>Fatness evolution</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_28">
+   <widget class="QLabel" name="label_20">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -937,6 +976,19 @@
     </property>
     <property name="text">
      <string>Carnivores</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonCarnivores">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>84</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply</string>
     </property>
    </widget>
   </widget>
@@ -1002,7 +1054,7 @@
      <string>Neural networks</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_13">
+   <widget class="QLineEdit" name="weightChangeProbability">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -1015,7 +1067,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_29">
+   <widget class="QLineEdit" name="weightChangeStandartDeviation">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -1028,7 +1080,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_25">
+   <widget class="QLineEdit" name="weightChangeAverageValue">
     <property name="geometry">
      <rect>
       <x>230</x>
@@ -1054,8 +1106,49 @@
      <string>Weight change standart deviation</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="buttonNN">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>280</y>
+      <width>84</width>
+      <height>34</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Apply</string>
+    </property>
+   </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>weightChangeProbability</tabstop>
+  <tabstop>weightChangeAverageValue</tabstop>
+  <tabstop>weightChangeStandartDeviation</tabstop>
+  <tabstop>carnivoreFatnessEvolution</tabstop>
+  <tabstop>carnivoreAttack</tabstop>
+  <tabstop>herbivoreFatnessEvolution</tabstop>
+  <tabstop>herbivoreAttack</tabstop>
+  <tabstop>initialRadius</tabstop>
+  <tabstop>attackAngle</tabstop>
+  <tabstop>animalMaxSpeed</tabstop>
+  <tabstop>maxHealth</tabstop>
+  <tabstop>maxHunger</tabstop>
+  <tabstop>maxThirst</tabstop>
+  <tabstop>maxFear</tabstop>
+  <tabstop>maxChildren</tabstop>
+  <tabstop>maxMating</tabstop>
+  <tabstop>maxSpeedEating</tabstop>
+  <tabstop>defaultEnergy</tabstop>
+  <tabstop>energyRecup</tabstop>
+  <tabstop>minNumberHerbivores</tabstop>
+  <tabstop>minNumberCarnivores</tabstop>
+  <tabstop>vegetalEvolution</tabstop>
+  <tabstop>meatEvolution</tabstop>
+  <tabstop>vegetalMaxQuantity</tabstop>
+  <tabstop>waterMaxQantity</tabstop>
+  <tabstop>waterEvolution</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
