@@ -266,7 +266,7 @@ int World::tick()
         }
     }*/
 
-    
+
     /*if(m_numberOfLiving < MIN_NUMBER_OF_ANIMAL)
     {
         feedWithRandomHerbivore(MIN_NUMBER_OF_ANIMAL-m_numberOfLiving);

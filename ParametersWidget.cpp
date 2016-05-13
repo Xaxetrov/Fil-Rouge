@@ -20,6 +20,12 @@ ParametersWidget::ParametersWidget(QWidget *parent) :
     QObject::connect(ui->buttonNN,SIGNAL(clicked(bool)),this,SLOT(updateNeuralNetworksParam()));
 }
 
+void ParametersWidget::set(World * world, WorldWidget * worldWidget)
+{
+  m_world = world;
+  m_worldWidget = worldWidget;
+}
+
 // When the user opens the window, the constants are read.
 void ParametersWidget::showEvent( QShowEvent* event ) {
     QWidget::showEvent( event );
@@ -59,13 +65,18 @@ void ParametersWidget::showEvent( QShowEvent* event ) {
 void ParametersWidget::updateUIParam()
 {
   config::UPDATE_TIMER_INTERVALE = ui->updateInterval->text().toDouble();
+  m_worldWidget->updateTimerInterval();
 }
 
 // Tab "World"
 void ParametersWidget::updateWorldParam()
 {
-  config::WORLD_SIZE_X = ui->worldWidth->text().toDouble();
-  config::WORLD_SIZE_Y = ui->worldHeight->text().toDouble();
+  if(config::WORLD_SIZE_X != ui->worldWidth->text().toDouble() || config::WORLD_SIZE_Y != ui->worldHeight->text().toDouble())
+  {
+    config::WORLD_SIZE_X = ui->worldWidth->text().toDouble();
+    config::WORLD_SIZE_Y = ui->worldHeight->text().toDouble();
+    m_world->setSize(config::WORLD_SIZE_X, config::WORLD_SIZE_Y);
+  }
   config::MIN_NUMBER_OF_HERBVORE = ui->minNumberHerbivores->text().toDouble();
   config::MIN_NUMBER_OF_CARNIVORE = ui->minNumberCarnivores->text().toDouble();
 }

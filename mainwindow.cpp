@@ -60,6 +60,8 @@ MainWindow::MainWindow(QWidget *parent) :
     setParameters = settingsMenu->addAction(tr("Parameters"));
     animalMenu->setEnabled(false);
 
+    parameterswidget.set(&world, &worldWidget);
+
     //event managment
     QObject::connect(&worldWidget,SIGNAL(animalSelected(std::weak_ptr<Animal>)),&entityWidget,SLOT(setAnimal(std::weak_ptr<Animal>)));
     QObject::connect(&worldWidget,SIGNAL(animalSelected(std::weak_ptr<Animal>)),this,SLOT(setSelectedAnimal(std::weak_ptr<Animal>)) );

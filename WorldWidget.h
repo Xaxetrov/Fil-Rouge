@@ -19,6 +19,8 @@ public:
     WorldWidget(World * world = 0);
     virtual ~WorldWidget();
 
+    void updateTimerInterval();
+
     WorldColors & getColors();
 
     void setWorld(World * world);

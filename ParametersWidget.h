@@ -2,6 +2,8 @@
 #define PARAMETERSWIDGET_H
 
 #include <QTabWidget>
+#include "World.h"
+#include "WorldWidget.h"
 
 namespace Ui {
 class ParametersWidget;
@@ -13,6 +15,7 @@ class ParametersWidget : public QTabWidget
 
 public:
     explicit ParametersWidget(QWidget *parent = 0);
+    void set(World * world, WorldWidget * worldWidget);
     void showEvent( QShowEvent* event );
     ~ParametersWidget();
 
@@ -27,6 +30,8 @@ public slots:
 
 private:
     Ui::ParametersWidget *ui;
+    World * m_world;
+    WorldWidget * m_worldWidget;
 };
 
 #endif // PARAMETERSWIDGET_H

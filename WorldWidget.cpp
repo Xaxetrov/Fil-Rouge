@@ -30,7 +30,7 @@ WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     //set timer:
-    timer.setInterval(config::UPDATE_TIMER_INTERVALE);
+    updateTimerInterval();
 
     //signal and slot connection
     QObject::connect(&timer,SIGNAL(timeout()),this,SLOT(tick()));
@@ -39,6 +39,11 @@ WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
 WorldWidget::~WorldWidget()
 {
     delete m_scene;
+}
+
+void WorldWidget::updateTimerInterval()
+{
+  timer.setInterval(config::UPDATE_TIMER_INTERVALE);
 }
 
 void WorldWidget::setWorld(World *world)
