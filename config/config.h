@@ -44,6 +44,9 @@ class config
 {
 public:
 
+  // Threads
+  static unsigned short NB_THREADS;
+
   // World
   static int WORLD_SIZE_X;
   static int WORLD_SIZE_Y;

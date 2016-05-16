@@ -224,13 +224,20 @@ int World::tick()
     int entitiesCount = 0;
     std::list<std::shared_ptr<Entity>>::iterator it = m_entities.begin();
 
-    for(int i = 0; i < nbPlayThreads; i++)
+    if(nbPlayThreads > 0)
     {
-      threads[i] = std::thread(playAnimals, &it, &entitiesCount, m_entities.size(), &mutexGridOfEntities, &mutexListEntities, &mutexEntities, &mutexAttributes, &mutexCollisionList, &deadList);
+      for(int i = 0; i < nbPlayThreads; i++)
+      {
+        threads[i] = std::thread(playAnimals, &it, &entitiesCount, m_entities.size(), &mutexGridOfEntities, &mutexListEntities, &mutexEntities, &mutexAttributes, &mutexCollisionList, &deadList);
+      }
+      for(int i = 0; i < nbPlayThreads; i++)
+      {
+        threads[i].join();
+      }
     }
-    for(int i = 0; i < nbPlayThreads; i++)
+    else
     {
-      threads[i].join();
+      playAnimals(&it, &entitiesCount, m_entities.size(), &mutexGridOfEntities, &mutexListEntities, &mutexEntities, &mutexAttributes, &mutexCollisionList, &deadList);
     }
 
     // Erase all the dead entities

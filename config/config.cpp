@@ -1,5 +1,8 @@
 #include "config.h"
 
+// Threads
+unsigned short config::NB_THREADS = 4;
+
 // World
 int config::WORLD_SIZE_X = 500;
 int config::WORLD_SIZE_Y = 500;
@@ -15,7 +18,7 @@ double config::NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to
 double config::NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.05; // the value added to a weight as a standart deviation of 0.05
 
 // User Interface
-unsigned int config::UPDATE_TIMER_INTERVALE = 10; //ms
+unsigned int config::UPDATE_TIMER_INTERVALE = 2; //ms
 
 // Resource evolution (proportional to the resource surface)
 int config::EVOLUTION_WATER = 5;

@@ -114,7 +114,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Nb threads [2-n]</string>
+     <string>Nb threads [1-n]</string>
     </property>
    </widget>
   </widget>
