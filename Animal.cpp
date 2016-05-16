@@ -57,7 +57,7 @@ Animal::~Animal()
     //delete m_collisionList;
 }
 
-int Animal::play()
+int Animal::play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList)
 {
     m_age++;
 
@@ -111,10 +111,14 @@ int Animal::play()
     }
 
     // The animal looks around itself
+    mutexEntities->lock();
+    mutexGridOfEntities->lock();
     m_vision->see();
+    mutexGridOfEntities->unlock();
+    mutexEntities->unlock();
 
     // get mapping of inputs
-    mappageInput();
+    mappageInput(mutexEntities);
     // The animal decides what to do
     m_nnOutputs = m_brain->run(m_nnInputs);
     // get mapping of outputs
@@ -128,17 +132,29 @@ int Animal::play()
     }
     if(m_speed > 0)
     {
+      mutexCollisionList->lock();
+      mutexGridOfEntities->lock();
       move(m_speed);
+      mutexCollisionList->unlock();
+      mutexGridOfEntities->unlock();
     }
     else // calcul of collisionList hasn't been effectuated
     {
+        mutexCollisionList->lock();
+        mutexEntities->lock();
+        mutexListEntities->lock();
         m_world->updateListCollision(this->shared_from_this());
+        mutexListEntities->unlock();
+        mutexEntities->unlock();
+        mutexCollisionList->unlock();
     }
 
+    mutexEntities->lock();
     attack();
     eat();
     drink();
     mate();
+    mutexEntities->unlock();
 
     return 0;
 }
@@ -167,7 +183,7 @@ void Animal::move(int speedPercentage)
 }
 
 //TODO: TO FINISH
-void Animal::mappageInput()
+void Animal::mappageInput(std::mutex * mutexEntities)
 {
     m_nnInputs.clear();
     m_nnInputs.push_back((double)m_hunger / (double)config::MAX_HUNGER);
@@ -180,8 +196,10 @@ void Animal::mappageInput()
         shared_ptr<Entity> e = p->getEntity();
         if(e != nullptr)
         {
+            mutexEntities->lock();
             m_nnInputs.push_back(p->getEntity()->getNeralNetworkId());
             m_nnInputs.push_back(p->getDistance() / (double)p->getVisionRange());
+            mutexEntities->unlock();
         }
         else //if nothing is percepted
         {

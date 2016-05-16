@@ -4,6 +4,7 @@
 #include <memory>
 #include <list>
 #include <random>
+#include <mutex>
 
 #include "Solid.h"
 #include "World.h"
@@ -73,8 +74,8 @@ public:
     void clearEntityListCollision();
 
     //game methods
-    virtual int play();
-    virtual void mappageInput();
+    virtual int play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList);
+    virtual void mappageInput(std::mutex * mutexEntities);
     virtual void mappageOutput();
 
 protected:

@@ -63,6 +63,7 @@ void WorldWidget::updateScene()
     m_scene->addRect(0,0,m_world->getSizeX(),m_world->getSizeY(),QPen(Qt::gray),colors.getBackgroundBrush());
     //add each entity to the scene one by one:
     const std::list<std::shared_ptr<Entity>> & entities = m_world->getEntities();
+    int i = 0;
     for(std::shared_ptr<Entity> ite : entities)
     {
         drawEntity(ite);
@@ -109,8 +110,6 @@ bool WorldWidget::isSimulationRunning() const
 {
     return timer.isActive();
 }
-
-
 
 void WorldWidget::drawEntity(const std::shared_ptr<Entity> e)
 {

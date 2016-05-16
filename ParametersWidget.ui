@@ -18,13 +18,13 @@
   </property>
   <widget class="QWidget" name="tab">
    <attribute name="title">
-    <string>User interface</string>
+    <string>Application</string>
    </attribute>
    <widget class="QLineEdit" name="updateInterval">
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>60</y>
+      <y>70</y>
       <width>113</width>
       <height>31</height>
      </rect>
@@ -62,14 +62,14 @@
      </font>
     </property>
     <property name="text">
-     <string>User Interface</string>
+     <string>Application</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>70</y>
+      <y>80</y>
       <width>121</width>
       <height>18</height>
      </rect>
@@ -89,6 +89,32 @@
     </property>
     <property name="text">
      <string>Apply</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="nbThreads">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>120</y>
+      <width>113</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>130</y>
+      <width>121</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Nb threads [2-n]</string>
     </property>
    </widget>
   </widget>

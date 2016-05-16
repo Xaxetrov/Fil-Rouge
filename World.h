@@ -5,6 +5,8 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <thread>
+#include <mutex>
 
 #include "NeuralNetwork.h"
 
@@ -69,20 +71,25 @@ private:
     NeuralNetwork * determineBestNN();
     void createGridOfEntities();
     void synchronizedListAndGridOfEntities();
+    static int playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities,
+      std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexCollisionList,
+      std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList
+    );
 
     //Private attributes
     unsigned m_tickPassed; //How old that world is ?
-    unsigned m_numberOfLiving;
-    unsigned m_numberOfHerbivore;
-    unsigned m_numberOfCarnivore;
+    static unsigned m_numberOfLiving;
+    static unsigned m_numberOfHerbivore;
+    static unsigned m_numberOfCarnivore;
     std::multimap<int,NeuralNetwork> bestHerbivore;
     std::multimap<int,NeuralNetwork> bestCarnivore;
 
     //My loves, my life
-    unsigned int m_cellSizeX;
-    unsigned int m_cellSizeY;
-    std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> m_gridOfEntities;
-    std::list<std::shared_ptr<Entity>> m_entities;
+    static unsigned int m_cellSizeX;
+    static unsigned int m_cellSizeY;
+    static std::list<std::shared_ptr<Entity>> m_entities;
+    static std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> m_gridOfEntities;
+
     int m_size_x;
     int m_size_y;
 };

@@ -10,6 +10,17 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
+#include <thread>
+
+// Declare static attributes
+unsigned World::m_numberOfLiving;
+unsigned World::m_numberOfHerbivore;
+unsigned World::m_numberOfCarnivore;
+unsigned int World::m_cellSizeX;
+unsigned int World::m_cellSizeY;
+std::list<std::shared_ptr<Entity>> World::m_entities;
+std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> World::m_gridOfEntities;
+
 
 World::World()
 {
@@ -24,7 +35,7 @@ World::World()
 
 const std::list<std::shared_ptr<Entity>> &World::getEntities() const
 {
-    return m_entities;
+    return World::m_entities;
 }
 
 std::list<std::shared_ptr<Entity>> World::getCopyOfEntities() const
@@ -196,60 +207,41 @@ void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
 int World::tick()
 {
     int entityErrorsNum = 0;
-    int i=0;
     m_numberOfLiving = 0;
     m_numberOfCarnivore = 0;
     m_numberOfHerbivore = 0;
-    //for(unsigned j = 0; j < m_entities.size(); j++)
-    //for(shared_ptr<Entity> e:m_entities)
-    for(std::list<std::shared_ptr<Entity>>::iterator e = m_entities.begin(); e != m_entities.end(); ++e)
+
+    unsigned short nbPlayThreads = config::NB_THREADS - 1;
+    std::thread threads[nbPlayThreads];
+
+    std::mutex mutexEntities;
+    std::mutex mutexAttributes;
+    std::mutex mutexGridOfEntities;
+    std::mutex mutexListEntities;
+    std::mutex mutexCollisionList;
+
+    std::list<std::list<std::shared_ptr<Entity>>::iterator> deadList;
+    int entitiesCount = 0;
+    std::list<std::shared_ptr<Entity>>::iterator it = m_entities.begin();
+
+    for(int i = 0; i < nbPlayThreads; i++)
     {
-        //shared_ptr<Entity> e = m_entities[j];
-        if((*e)->play())
-        {
-            //TODO : manage entities errors
-            std::cerr << "Entity no " << i << " failed to play" << std::endl;
-            entityErrorsNum++;
-        }
-        i++;
-        if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e))
-        {
-            if(animal->isDead())
-            {
-#ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
-                saveNeuralNetwork(animal);
-#endif
-                int meatQuantity = config::MAX_HUNGER - animal->getHunger();
-                m_entities.push_back(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
-                m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(*(--m_entities.end()));
-            }
-            else
-            {
-                m_numberOfLiving++;
-                switch (animal->getTypeId()) {
-                case ID_CARNIVORE:
-                    m_numberOfCarnivore++;
-                    break;
-                case ID_HERBIVORE:
-                    m_numberOfHerbivore++;
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
-        if((*e)->isDead())
-        {
-            //work arround the fact that the currant cell will be deleted
-            std::list<std::shared_ptr<Entity>>::iterator sav = e;
-            m_entities.erase(e);
-            m_gridOfEntities[(*sav)->getX() / m_cellSizeX][(*sav)->getY() / m_cellSizeY].erase(find(m_gridOfEntities[(*sav)->getX() / m_cellSizeX]
-                    [(*sav)->getY() / m_cellSizeY].begin(), m_gridOfEntities[(*sav)->getX() / m_cellSizeX][(*sav)->getY() / m_cellSizeY].end(),*sav));
-            sav--;
-            e=sav;
-        }
+      threads[i] = std::thread(playAnimals, &it, &entitiesCount, m_entities.size(), &mutexGridOfEntities, &mutexListEntities, &mutexEntities, &mutexAttributes, &mutexCollisionList, &deadList);
     }
-    //incremente the age of the world
+    for(int i = 0; i < nbPlayThreads; i++)
+    {
+      threads[i].join();
+    }
+
+    // Erase all the dead entities
+    for(std::list<std::list<std::shared_ptr<Entity>>::iterator>::iterator i = deadList.begin(); i != deadList.end(); i++)
+    {
+      m_gridOfEntities[(**i)->getX() / m_cellSizeX][(**i)->getY() / m_cellSizeY].erase(find(m_gridOfEntities[(**i)->getX() / m_cellSizeX]
+              [(**i)->getY() / m_cellSizeY].begin(), m_gridOfEntities[(**i)->getX() / m_cellSizeX][(**i)->getY() / m_cellSizeY].end(),**i));
+      m_entities.erase(*i);
+    }
+
+    //increment the age of the world
     m_tickPassed++;
 
     TimelineWidget::updatePopulation(m_numberOfHerbivore, m_numberOfCarnivore, m_tickPassed);
@@ -300,6 +292,86 @@ int World::tick(int ticNum)
         }
     }
     return 0;
+}
+
+int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities,
+  std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexCollisionList,
+  std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+{
+    int entityErrorsNum = 0;
+
+    while(true)
+    {
+        std::list<std::shared_ptr<Entity>>::iterator e;
+
+        mutexEntities->lock();
+        if(*entitiesCount < nbEntities)
+        {
+            e = *it;
+            (*it) ++;
+            (*entitiesCount) ++;
+            mutexEntities->unlock();
+        }
+        else
+        {
+            mutexEntities->unlock();
+            break;
+        }
+
+        if((*e)->play(mutexEntities, mutexAttributes, mutexGridOfEntities, mutexListEntities, mutexCollisionList))
+        {
+            //TODO : manage entities errors
+            std::cerr << "Entity failed to play" << std::endl;
+            entityErrorsNum++;
+        }
+
+        mutexEntities->lock();
+        std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e);
+        mutexEntities->unlock();
+
+        if(animal)
+        {
+            if(animal->isDead())
+            {
+    #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+                saveNeuralNetwork(animal);
+    #endif
+                int meatQuantity = config::MAX_HUNGER - animal->getHunger() + 100;
+
+                mutexListEntities->lock();
+                m_entities.push_back(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
+
+                mutexGridOfEntities->lock();
+                m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(*(--m_entities.end()));
+                mutexGridOfEntities->unlock();
+                mutexListEntities->unlock();
+            }
+            else
+            {
+                mutexAttributes->lock();
+                m_numberOfLiving++;
+                switch (animal->getTypeId()) {
+                case ID_CARNIVORE:
+                    m_numberOfCarnivore++;
+                    break;
+                case ID_HERBIVORE:
+                    m_numberOfHerbivore++;
+                    break;
+                default:
+                    break;
+                }
+                mutexAttributes->unlock();
+            }
+        }
+        if((*e)->isDead())
+        {
+            mutexEntities->lock();
+            deadList->push_back(e);
+            mutexEntities->unlock();
+        }
+    }
+
+    //return entityErrorsNum;
 }
 
 void World::killEntity(std::shared_ptr<Entity> e)

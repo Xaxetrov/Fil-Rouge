@@ -43,7 +43,7 @@ void Resource::setMaxQuantity(int maxQuantity)
     m_maxQuantity = maxQuantity;
 }
 
-int Resource::play()
+int Resource::play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList)
 {
     m_quantity += std::min(m_quantityEvolution,m_maxQuantity-m_quantity);
     return 0;

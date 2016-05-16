@@ -31,6 +31,7 @@ void ParametersWidget::showEvent( QShowEvent* event ) {
     QWidget::showEvent( event );
 
     ui->updateInterval->setText(QString::number(config::UPDATE_TIMER_INTERVALE));
+    ui->nbThreads->setText(QString::number(config::NB_THREADS));
     ui->worldWidth->setText(QString::number(config::WORLD_SIZE_X));
     ui->worldHeight->setText(QString::number(config::WORLD_SIZE_Y));
     ui->minNumberHerbivores->setText(QString::number(config::MIN_NUMBER_OF_HERBVORE));
@@ -65,6 +66,7 @@ void ParametersWidget::showEvent( QShowEvent* event ) {
 void ParametersWidget::updateUIParam()
 {
   config::UPDATE_TIMER_INTERVALE = ui->updateInterval->text().toDouble();
+  config::NB_THREADS = ui->nbThreads->text().toDouble();
   m_worldWidget->updateTimerInterval();
 }
 

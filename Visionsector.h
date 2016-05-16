@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <list>
+#include <mutex>
 #include <cmath>
 #include "Entity.h"
 #include "Percepted.h"

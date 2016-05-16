@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <list>
+#include <mutex>
 
 #include "Entity.h"
 #include "Coordinate.h"
