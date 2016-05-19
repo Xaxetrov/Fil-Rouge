@@ -38,7 +38,7 @@ void WorldCreatorResourcesWidget::loadWorld()
     World world = World();
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load the world of your dreams"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load the world of your dreams"),"../save",
                                                     filter,&defaultFilter);
     SaveManager saveManager;
     saveManager.loadWorld(filePath, &world);
