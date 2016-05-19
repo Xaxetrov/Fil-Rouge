@@ -19,18 +19,18 @@ public:
     //ctor, dtor
     Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world);
     Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex);
-    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, int mating = 0);
+    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating = 0);
     ~Animal();
 
     //getters
-    int getAge() const;
-    int getMaxSpeed() const;
+    unsigned int getAge() const;
+    unsigned int getMaxSpeed() const;
     int getHealth() const;
-    int getHunger() const;
-    int getThirst() const;
+    unsigned int getHunger() const;
+    unsigned int getThirst() const;
     int getFear() const;
-    int getMating() const;
-    int getEnergy() const;
+    unsigned int getMating() const;
+    unsigned int getEnergy() const;
     virtual double getScore() const;
     double getSpeed() const;
     double getRotation() const;
@@ -53,16 +53,16 @@ public:
     void setMating();
     void setBrain(NeuralNetwork * newBrain);
     void setSex(bool sex);
-    void setAge(int age) {m_age = age;}
+    void setAge(unsigned int age) {m_age = age;}
     void setAngle(double angle) {m_angle = angle;}
-    void setHunger(int hunger) {m_hunger = hunger;}
-    void setThirst(int thirst) {m_thirst = thirst;}
+    void setHunger(unsigned int hunger) {m_hunger = hunger;}
+    void setThirst(unsigned int thirst) {m_thirst = thirst;}
     void setHealth(int health) {m_health = health;}
     void setScore(double score) {m_score = score;}
 
     //basic methods
     void die();
-    void move(int speedPercentage);
+    void move(unsigned int speedPercentage);
     void turn(double angle);
     void drink();
     void eat();
@@ -85,17 +85,17 @@ protected:
     template <class Living> void reproduce(std::shared_ptr<Living> father);
 
     int m_health;
-    int m_hunger;
-    int m_thirst;
+    unsigned int m_hunger;
+    unsigned int m_thirst;
     bool m_female;
-    int m_mating;
+    unsigned int m_mating;
     double m_speed;
     double m_energy;
     double m_score;
 
 private :
-    int m_age;
-    int m_maxSpeed;
+    unsigned int m_age;
+    unsigned int m_maxSpeed;
     double m_damage;
     double m_angle; // m_angle in rad
     int m_fear;

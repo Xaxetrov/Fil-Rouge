@@ -86,12 +86,12 @@ public:
   static double MOVE_ENERGY_LOSS;
   static double TURN_ENERGY_LOSS;
   static double MAX_SPEED_TO_EAT;
-  static int MAX_SPEED;
+  static unsigned int MAX_SPEED;
   static int MAX_HEALTH;
-  static int MAX_HUNGER;
-  static int MAX_THIRST;
-  static int MAX_SCORE;
-  static unsigned int MAX_FEAR;
+  static unsigned int MAX_HUNGER;
+  static unsigned int MAX_THIRST;
+  static unsigned int MAX_SCORE;
+  static int MAX_FEAR;
   static unsigned int MAX_MATING;
   static unsigned int MAX_CHILD_PER_ANIMAL;
   static unsigned int DEFAULT_HUNGER;
