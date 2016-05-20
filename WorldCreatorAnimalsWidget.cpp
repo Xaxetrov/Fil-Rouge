@@ -37,7 +37,7 @@ void WorldCreatorAnimalsWidget::addHerbivore()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load herbivore neural network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load herbivore neural network"),"../save",
                                                     filter,&defaultFilter);
     if(filePath != "")
     {
@@ -49,7 +49,7 @@ void WorldCreatorAnimalsWidget::addCarnivore()
 {
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load carnivore neural network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load carnivore neural network"),"../save",
                                                     filter,&defaultFilter);
     if(filePath != "")
     {

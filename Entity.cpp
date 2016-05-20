@@ -4,7 +4,7 @@ Entity::Entity(double x, double y, int radius, int creationDate) : Entity(Coordi
 {
 }
 
-Entity::Entity(Coordinate c, int radius, int creationDate) : m_coordinate(c), m_radius(radius), m_creationDate(creationDate)
+Entity::Entity(Coordinate c, int radius, int creationDate) : m_radius(radius), m_coordinate(c), m_creationDate(creationDate)
 {
 }
 

@@ -12,7 +12,7 @@
 using namespace std;
 
 Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world) :
-    Solid(x, y, radius), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world), m_age(0), m_energy(energy)
+    Solid(x, y, radius), m_energy(energy), m_age(0), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 0;
@@ -43,7 +43,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
     m_female = sex;
 }
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, int mating) :
+Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating) :
     Animal(x,y,radius,maxSpeed,damage,energy,world)
 {
     m_mating = mating;
@@ -242,7 +242,7 @@ void Animal::drink()
                 {
                    if(m_thirst > 0)
                    {
-                       int quantity = std::min(100,m_thirst); //don't drink more than needed (no negative thirst)
+                       int quantity = std::min(100,(int)m_thirst); //don't drink more than needed (no negative thirst)
                        World::mutexDrink.lock();
                        m_thirst -= water->drink(quantity); //drink as much as possible on the water source
                        World::mutexDrink.unlock();
@@ -456,12 +456,12 @@ vector<weak_ptr<Entity>> Animal::getSubListResourceCollision()
     return subListCollision;
 }
 
-int Animal::getAge() const
+unsigned int Animal::getAge() const
 {
     return m_age;
 }
 
-int Animal::getMaxSpeed() const
+unsigned int Animal::getMaxSpeed() const
 {
     return m_maxSpeed;
 }
@@ -471,12 +471,12 @@ int Animal::getHealth() const
     return m_health;
 }
 
-int Animal::getHunger() const
+unsigned int Animal::getHunger() const
 {
     return m_hunger;
 }
 
-int Animal::getThirst() const
+unsigned int Animal::getThirst() const
 {
     return m_thirst;
 }
@@ -486,17 +486,12 @@ int Animal::getFear() const
     return m_fear;
 }
 
-int Animal::getMating() const
+unsigned int Animal::getMating() const
 {
    return m_mating;
 }
 
-void Animal::setMating()
-{
-   m_mating = 0;
-}
-
-int Animal::getEnergy() const
+unsigned int Animal::getEnergy() const
 {
    return m_energy;
 }
@@ -549,6 +544,11 @@ double Animal::getSpeed() const
 double Animal::getRotation() const
 {
     return m_rotation;
+}
+
+void Animal::setMating()
+{
+   m_mating = 0;
 }
 
 void Animal::setBrain(NeuralNetwork *newBrain)

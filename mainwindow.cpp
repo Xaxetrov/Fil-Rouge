@@ -216,7 +216,7 @@ void MainWindow::saveNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringSa
     fileDialog.setDefaultSuffix("xml");*/
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),"../save",
                                                     filter,&defaultFilter);
     if(filePath!="")
         saveManager.SaveNetwork(nn,filePath);
@@ -241,7 +241,7 @@ void MainWindow::loadNeuralNetwork(std::shared_ptr<Animal> a, bool pauseDuringLo
 
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),"../save",
                                                     filter,&defaultFilter);
     if(filePath!="")
     {
@@ -265,7 +265,7 @@ void MainWindow::saveWorld(bool pauseDuringSave)
     SaveManager saveManager;
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),"../save",
                                                     filter,&defaultFilter);
     if(filePath != "")
         saveManager.saveWorld(world,filePath);
@@ -284,7 +284,7 @@ void MainWindow::loadWorldSave(bool pauseDuringLoad)
 
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
-    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),QDir::currentPath(),
+    QString filePath = QFileDialog::getOpenFileName(this,tr("Load animal Neural Network"),"../save",
                                                     filter,&defaultFilter);
     if(filePath != "")
     {
