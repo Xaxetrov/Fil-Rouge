@@ -13,10 +13,11 @@
 class Entity;
 class Animal;
 class Herbivore;
+class Carnivore;
 /*
  * The world is... the world
  */
-class World
+class World : public std::enable_shared_from_this<Animal>
 {
 public:
     //Public methods
@@ -47,6 +48,10 @@ public:
     void setSize(int size_x, int size_y);
 
     void updateListCollision(std::shared_ptr<Animal> a) const;
+    void updateAttackList(std::shared_ptr<Animal> a, double damage);
+
+    void updateMateList(Animal * female, std::shared_ptr<Animal> male);
+
     void updateGridOfEntities(std::shared_ptr<Animal> a, int oldX, int oldY, int newX, int newY);
 
     //More ! Give me more of them !
@@ -63,6 +68,19 @@ public:
 
     void killEntity(std::shared_ptr<Entity> e); // MOUHAHAHAHAHAAAAAAAAAAAAAAAAA
 
+    // Mutex - protect access while multithreading
+    static std::mutex mutexGetEntity;
+    static std::mutex mutexAttributes;
+    static std::mutex mutexGridOfEntities;
+    static std::mutex mutexListEntities;
+    static std::mutex mutexCollisionList;
+    static std::mutex mutexDeadList;
+    static std::mutex mutexAttackList;
+    static std::mutex mutexMateList;
+    static std::mutex mutexDrink;
+    static std::mutex mutexVegetal;
+    static std::mutex mutexMeat;
+
 private:
     //Privates methods
     bool isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<Entity> e2) const;
@@ -70,11 +88,13 @@ private:
     double computeScore(std::shared_ptr<Animal> animal);
     NeuralNetwork * determineBestNN();
     void createGridOfEntities();
+    void makeMoves();
+    void makeAttacks();
+    void makeMatings();
     void synchronizedListAndGridOfEntities();
-    static int playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities,
-      std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexCollisionList,
-      std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList
-    );
+
+    static void startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
+    static int playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList, int id);
 
     //Private attributes
     unsigned m_tickPassed; //How old that world is ?
@@ -83,6 +103,9 @@ private:
     static unsigned m_numberOfCarnivore;
     std::multimap<int,NeuralNetwork> bestHerbivore;
     std::multimap<int,NeuralNetwork> bestCarnivore;
+    std::list<std::pair<std::shared_ptr<Animal>,double>> m_attackList;
+    std::list<std::pair<Herbivore*,std::shared_ptr<Herbivore>>> m_mateListHerbivores;
+    std::list<std::pair<Carnivore*,std::shared_ptr<Carnivore>>> m_mateListCarnivores;
 
     //My loves, my life
     static unsigned int m_cellSizeX;

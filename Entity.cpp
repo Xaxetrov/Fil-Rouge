@@ -13,7 +13,7 @@ Entity::~Entity()
 
 }
 
-int Entity::play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList)
+int Entity::play(int id)
 {
     return 0;
 }

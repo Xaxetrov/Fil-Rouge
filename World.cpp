@@ -12,6 +12,8 @@
 #include <map>
 #include <thread>
 
+using namespace std;
+
 // Declare static attributes
 unsigned World::m_numberOfLiving;
 unsigned World::m_numberOfHerbivore;
@@ -21,6 +23,17 @@ unsigned int World::m_cellSizeY;
 std::list<std::shared_ptr<Entity>> World::m_entities;
 std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> World::m_gridOfEntities;
 
+std::mutex World::mutexGetEntity;
+std::mutex World::mutexAttributes;
+std::mutex World::mutexGridOfEntities;
+std::mutex World::mutexListEntities;
+std::mutex World::mutexCollisionList;
+std::mutex World::mutexDeadList;
+std::mutex World::mutexAttackList;
+std::mutex World::mutexMateList;
+std::mutex World::mutexDrink;
+std::mutex World::mutexVegetal;
+std::mutex World::mutexMeat;
 
 World::World()
 {
@@ -211,34 +224,18 @@ int World::tick()
     m_numberOfCarnivore = 0;
     m_numberOfHerbivore = 0;
 
-    unsigned short nbPlayThreads = config::NB_THREADS - 1;
-    std::thread threads[nbPlayThreads];
-
-    std::mutex mutexEntities;
-    std::mutex mutexAttributes;
-    std::mutex mutexGridOfEntities;
-    std::mutex mutexListEntities;
-    std::mutex mutexCollisionList;
-
     std::list<std::list<std::shared_ptr<Entity>>::iterator> deadList;
     int entitiesCount = 0;
+
     std::list<std::shared_ptr<Entity>>::iterator it = m_entities.begin();
 
-    if(nbPlayThreads > 0)
-    {
-      for(int i = 0; i < nbPlayThreads; i++)
-      {
-        threads[i] = std::thread(playAnimals, &it, &entitiesCount, m_entities.size(), &mutexGridOfEntities, &mutexListEntities, &mutexEntities, &mutexAttributes, &mutexCollisionList, &deadList);
-      }
-      for(int i = 0; i < nbPlayThreads; i++)
-      {
-        threads[i].join();
-      }
-    }
-    else
-    {
-      playAnimals(&it, &entitiesCount, m_entities.size(), &mutexGridOfEntities, &mutexListEntities, &mutexEntities, &mutexAttributes, &mutexCollisionList, &deadList);
-    }
+    std::thread threadStart(startThreads, &it, &entitiesCount, m_entities.size(), &deadList);
+    playAnimals(&it, &entitiesCount, m_entities.size(), &deadList, 0);
+    threadStart.join();
+
+    makeMoves();
+    makeMatings(); // Make Love, Not War
+    makeAttacks();
 
     // Erase all the dead entities
     for(std::list<std::list<std::shared_ptr<Entity>>::iterator>::iterator i = deadList.begin(); i != deadList.end(); i++)
@@ -286,6 +283,7 @@ int World::tick()
             feedWithRandomHerbivore(config::MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
         #endif
     }
+
     return entityErrorsNum;
 }
 
@@ -301,9 +299,22 @@ int World::tick(int ticNum)
     return 0;
 }
 
-int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities,
-  std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexCollisionList,
-  std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+{
+  unsigned short nbPlayThreads = config::NB_THREADS - 1;
+  std::thread threads[nbPlayThreads];
+
+  for(int i = 0; i < nbPlayThreads; i++)
+  {
+    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList, i+1);
+  }
+  for(int i = 0; i < nbPlayThreads; i++)
+  {
+    threads[i].join();
+  }
+}
+
+int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList, int id)
 {
     int entityErrorsNum = 0;
 
@@ -311,51 +322,51 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
     {
         std::list<std::shared_ptr<Entity>>::iterator e;
 
-        mutexEntities->lock();
+        World::mutexGetEntity.lock();
+        //std::cout << id << " : allocation" << endl;
         if(*entitiesCount < nbEntities)
         {
             e = *it;
             (*it) ++;
             (*entitiesCount) ++;
-            mutexEntities->unlock();
+            World::mutexGetEntity.unlock();
         }
         else
         {
-            mutexEntities->unlock();
+            World::mutexGetEntity.unlock();
             break;
         }
 
-        if((*e)->play(mutexEntities, mutexAttributes, mutexGridOfEntities, mutexListEntities, mutexCollisionList))
+        if((*e)->play(id))
         {
             //TODO : manage entities errors
             std::cerr << "Entity failed to play" << std::endl;
             entityErrorsNum++;
         }
 
-        mutexEntities->lock();
         std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e);
-        mutexEntities->unlock();
 
         if(animal)
         {
             if(animal->isDead())
             {
+                //std::cout << id << " : dead1" << endl;
     #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
                 saveNeuralNetwork(animal);
     #endif
                 int meatQuantity = config::MAX_HUNGER - animal->getHunger() + 100;
 
-                mutexListEntities->lock();
+                World::mutexListEntities.lock();
                 m_entities.push_back(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
+                World::mutexListEntities.unlock();
 
-                mutexGridOfEntities->lock();
+                World::mutexGridOfEntities.lock();
                 m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(*(--m_entities.end()));
-                mutexGridOfEntities->unlock();
-                mutexListEntities->unlock();
+                World::mutexGridOfEntities.unlock();
             }
             else
             {
-                mutexAttributes->lock();
+                World::mutexAttributes.lock();
                 m_numberOfLiving++;
                 switch (animal->getTypeId()) {
                 case ID_CARNIVORE:
@@ -367,14 +378,15 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
                 default:
                     break;
                 }
-                mutexAttributes->unlock();
+                World::mutexAttributes.unlock();
             }
         }
         if((*e)->isDead())
         {
-            mutexEntities->lock();
+          //std::cout << id << " : dead2" << endl;
+            World::mutexDeadList.lock();
             deadList->push_back(e);
-            mutexEntities->unlock();
+            World::mutexDeadList.unlock();
         }
     }
 
@@ -492,6 +504,62 @@ void World::createGridOfEntities()
             m_gridOfEntities[i].push_back(standartElementDimension2);
         }
     }
+}
+
+void World::updateMateList(Animal * female, std::shared_ptr<Animal> male)
+{
+    if(shared_ptr<Herbivore> animalToMate = dynamic_pointer_cast<Herbivore>(male))
+    {
+      Herbivore * a = dynamic_cast<Herbivore *>(female);
+      std::pair<Herbivore*,std::shared_ptr<Herbivore>> pair(a, animalToMate);
+      m_mateListHerbivores.push_back(pair);
+    }
+    else if(shared_ptr<Carnivore> animalToMate = dynamic_pointer_cast<Carnivore>(male))
+    {
+      Carnivore * a = dynamic_cast<Carnivore *>(female);
+      std::pair<Carnivore*,std::shared_ptr<Carnivore>> pair(a, animalToMate);
+      m_mateListCarnivores.push_back(pair);
+    }
+}
+
+void World::makeMoves()
+{
+    for(std::shared_ptr<Entity> entity : m_entities)
+    {
+        if(std::shared_ptr<Animal> animal = dynamic_pointer_cast<Animal>(entity))
+        {
+            animal->move();
+        }
+    }
+}
+
+void World::makeMatings()
+{
+    for(std::pair<Herbivore*,std::shared_ptr<Herbivore>> mating : m_mateListHerbivores)
+    {
+        mating.first->reproduce(mating.second);
+    }
+    m_mateListHerbivores.clear();
+    for(std::pair<Carnivore*,std::shared_ptr<Carnivore>> mating : m_mateListCarnivores)
+    {
+        mating.first->reproduce(mating.second);
+    }
+    m_mateListCarnivores.clear();
+}
+
+void World::updateAttackList(std::shared_ptr<Animal> a, double damage)
+{
+    std::pair<std::shared_ptr<Animal>,double> pair(a, damage);
+    m_attackList.push_back(pair);
+}
+
+void World::makeAttacks()
+{
+    for(std::pair<std::shared_ptr<Animal>,double> attack : m_attackList)
+    {
+        attack.first->loseLive(attack.second);
+    }
+    m_attackList.clear();
 }
 
 void World::synchronizedListAndGridOfEntities()

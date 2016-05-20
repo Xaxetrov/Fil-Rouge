@@ -10,7 +10,7 @@ NonSolid::NonSolid(Coordinate c, double radius) : Entity(c, radius)
 
 }
 
-int NonSolid::play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList)
+int NonSolid::play(int id)
 {
     return 0;
 }

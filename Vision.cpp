@@ -62,14 +62,22 @@ void Vision::scan()
     int animalCellX = m_animal.getCurrentCellX();
     int animalCellY = m_animal.getCurrentCellY();
 
+    World::mutexGridOfEntities.lock();
+    unsigned int gridEntitySize1 = m_gridOfEntities.size();
+    unsigned int gridEntitySize2 = m_gridOfEntities[0].size();
+    World::mutexGridOfEntities.unlock();
+
     for (int i = -1; i <= 1; i++)
     {
-        int currentCellX = (animalCellX + i + m_gridOfEntities.size()) % m_gridOfEntities.size();
+        int currentCellX = (animalCellX + i + gridEntitySize1) % gridEntitySize1;
         for (int j = -1; j <= 1; j++)
         {
-            int currentCellY = (animalCellY + j + m_gridOfEntities[0].size()) % m_gridOfEntities[0].size();
+            int currentCellY = (animalCellY + j + gridEntitySize2) % gridEntitySize2;
 
-            for(std::shared_ptr<Entity> e : m_gridOfEntities[currentCellX][currentCellY])
+            World::mutexGridOfEntities.lock();
+            std::list<std::shared_ptr<Entity>> cell = m_gridOfEntities[currentCellX][currentCellY];
+            World::mutexGridOfEntities.unlock();
+            for(std::shared_ptr<Entity> e : cell)
             {
                 if(e->getX() == m_animal.getX() && e->getY() == m_animal.getY())
                   continue;

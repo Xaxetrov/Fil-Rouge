@@ -98,7 +98,7 @@ void WorldCreator::finish()
     }
 
     //put World in a predefined xmlFile
-    QString path("../save/worldByWC.xml");
+    QString path(".");
     saveManager.saveWorld(*world,path);
     this->close();
 }

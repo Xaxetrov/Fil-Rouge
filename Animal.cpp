@@ -57,7 +57,7 @@ Animal::~Animal()
     //delete m_collisionList;
 }
 
-int Animal::play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList)
+int Animal::play(int id)
 {
     m_age++;
 
@@ -111,14 +111,10 @@ int Animal::play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::
     }
 
     // The animal looks around itself
-    mutexEntities->lock();
-    mutexGridOfEntities->lock();
     m_vision->see();
-    mutexGridOfEntities->unlock();
-    mutexEntities->unlock();
 
     // get mapping of inputs
-    mappageInput(mutexEntities);
+    mappageInput();
     // The animal decides what to do
     m_nnOutputs = m_brain->run(m_nnInputs);
     // get mapping of outputs
@@ -130,47 +126,41 @@ int Animal::play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::
     {
       turn(m_rotation);
     }
-    if(m_speed > 0)
+    /*if(m_speed > 0)
     {
-      mutexCollisionList->lock();
-      mutexGridOfEntities->lock();
-      move(m_speed);
-      mutexCollisionList->unlock();
-      mutexGridOfEntities->unlock();
+      World::mutexCollisionList.lock();
+      World::mutexGridOfEntities.lock();
+      move();
+      World::mutexCollisionList.unlock();
+      World::mutexGridOfEntities.unlock();
     }
     else // calcul of collisionList hasn't been effectuated
     {
-        mutexCollisionList->lock();
-        mutexEntities->lock();
-        mutexListEntities->lock();
         m_world->updateListCollision(this->shared_from_this());
-        mutexListEntities->unlock();
-        mutexEntities->unlock();
-        mutexCollisionList->unlock();
-    }
+    }*/
 
-    mutexEntities->lock();
     attack();
     eat();
     drink();
     mate();
-    mutexEntities->unlock();
 
     return 0;
 }
 
-void Animal::move(int speedPercentage)
+void Animal::move()
 {
-    m_speed = speedPercentage * m_maxSpeed / 100.0;
-    if(m_speed * config::MOVE_ENERGY_LOSS > m_energy)
-      m_speed = m_energy / config::MOVE_ENERGY_LOSS / 2;
-    m_energy -= m_speed * config::MOVE_ENERGY_LOSS / 2;
+    if(m_speedPercentage > 0)
+    {
+      m_speed = m_speedPercentage * m_maxSpeed / 100.0;
+      if(m_speed * config::MOVE_ENERGY_LOSS > m_energy)
+        m_speed = m_energy / config::MOVE_ENERGY_LOSS / 2;
+      m_energy -= m_speed * config::MOVE_ENERGY_LOSS / 2;
 
-    int oldX = getX();
-    int oldY = getY();
-    setCoordinate(getX() + cos(m_angle) * m_speed, getY() + sin(m_angle) * m_speed);
-    m_world->updateGridOfEntities(this->shared_from_this(), oldX, oldY, getX(), getY());
-
+      int oldX = getX();
+      int oldY = getY();
+      setCoordinate(getX() + cos(m_angle) * m_speed, getY() + sin(m_angle) * m_speed);
+      m_world->updateGridOfEntities(this->shared_from_this(), oldX, oldY, getX(), getY());
+    }
     m_world->updateListCollision(this->shared_from_this());
 
     //Colision disabled !!!
@@ -183,7 +173,7 @@ void Animal::move(int speedPercentage)
 }
 
 //TODO: TO FINISH
-void Animal::mappageInput(std::mutex * mutexEntities)
+void Animal::mappageInput()
 {
     m_nnInputs.clear();
     m_nnInputs.push_back((double)m_hunger / (double)config::MAX_HUNGER);
@@ -196,10 +186,8 @@ void Animal::mappageInput(std::mutex * mutexEntities)
         shared_ptr<Entity> e = p->getEntity();
         if(e != nullptr)
         {
-            mutexEntities->lock();
             m_nnInputs.push_back(p->getEntity()->getNeralNetworkId());
             m_nnInputs.push_back(p->getDistance() / (double)p->getVisionRange());
-            mutexEntities->unlock();
         }
         else //if nothing is percepted
         {
@@ -218,7 +206,7 @@ void Animal::mappageOutput()
         exit(-1);
     }
 #endif
-    m_speed = m_nnOutputs[0]*7;
+    m_speedPercentage = m_nnOutputs[0]*7;
     m_rotation = m_nnOutputs[1]/5;
     m_fear = m_nnOutputs[2]*config::MAX_FEAR;
 }
@@ -255,7 +243,9 @@ void Animal::drink()
                    if(m_thirst > 0)
                    {
                        int quantity = std::min(100,m_thirst); //don't drink more than needed (no negative thirst)
+                       World::mutexDrink.lock();
                        m_thirst -= water->drink(quantity); //drink as much as possible on the water source
+                       World::mutexDrink.unlock();
                    }
                 }
             }
@@ -292,7 +282,9 @@ void Animal::tryToEat(std::shared_ptr<Entity> food)
        if(m_hunger > 0)
        {
            int quantity = std::min(config::EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
+           World::mutexVegetal.lock();
            m_hunger -= vegetal->eat(quantity);
+           World::mutexVegetal.unlock();
        }
        //heal himself
        if(m_health < config::MAX_HEALTH && m_thirst < config::MAX_THIRST*3/4)
@@ -327,8 +319,11 @@ bool Animal::tryToMate(std::shared_ptr<Entity> animalEntity)
        {
           if(m_mating == config::MAX_MATING && animalToMate->getMating() == config::MAX_MATING)
           {
-             this->reproduce(animalToMate);
-             return true;
+              World::mutexMateList.lock();
+              m_world->updateMateList(this, animalToMate);
+              World::mutexMateList.unlock();
+              //this->reproduce(animalToMate);
+              return true;
           }
        }
     }
@@ -355,7 +350,9 @@ void Animal::attack()
                {
                     if(shared_ptr<Animal> a=dynamic_pointer_cast<Animal>(animalEntity))
                     {
-                        a->loseLive(m_damage);
+                        World::mutexAttackList.lock();
+                        m_world->updateAttackList(a, m_damage);
+                        World::mutexAttackList.unlock();
                     }
                }
            }

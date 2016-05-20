@@ -9,7 +9,7 @@ class Resource : public NonSolid
 public:
     Resource(double x, double y, double radius, int quantityPerUnit, int quantityEvolutionPerUnit);
     Resource(Coordinate c, double radius, int quantityPerUnit, int quantityEvolutionPerUnit);
-    int play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList);
+    int play(int id);
 
     int getQuantity() const;
     int getMaxQuantity() const;

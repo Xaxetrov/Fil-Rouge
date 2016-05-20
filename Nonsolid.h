@@ -10,7 +10,7 @@ public:
     NonSolid(double x, double y, double radius);
     NonSolid(Coordinate c, double radius);
 
-    virtual int play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList);
+    virtual int play(int id);
 
     bool isLiving() { return false; } // Temporary
 };

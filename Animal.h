@@ -62,7 +62,7 @@ public:
 
     //basic methods
     void die();
-    void move(int speedPercentage);
+    void move();
     void turn(double angle);
     void drink();
     void eat();
@@ -73,16 +73,16 @@ public:
     void addEntityInListCollision(std::weak_ptr<Entity> e);
     void clearEntityListCollision();
 
+    template <class Living> void reproduce(std::shared_ptr<Living> father);
+
     //game methods
-    virtual int play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList);
-    virtual void mappageInput(std::mutex * mutexEntities);
+    virtual int play(int id);
+    virtual void mappageInput();
     virtual void mappageOutput();
 
 protected:
     virtual void tryToEat(std::shared_ptr<Entity> food);
     virtual bool tryToMate(std::shared_ptr<Entity> animalEntity);
-
-    template <class Living> void reproduce(std::shared_ptr<Living> father);
 
     int m_health;
     int m_hunger;
@@ -92,6 +92,8 @@ protected:
     double m_speed;
     double m_energy;
     double m_score;
+    double m_speedPercentage;
+    World * m_world;
 
 private :
     int m_age;
@@ -106,7 +108,6 @@ private :
     std::vector<double> m_nnInputs;
     std::vector<double> m_nnOutputs;
     Vision * m_vision;
-    World * m_world;
 
     //private methods
 

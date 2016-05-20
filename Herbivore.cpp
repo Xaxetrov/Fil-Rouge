@@ -25,7 +25,9 @@ void Herbivore::tryToEat(std::shared_ptr<Entity> food)
        if(m_hunger > 0)
        {
            int quantity = std::min(config::EAT_MAX_VEGETAL_QUANTITY,(unsigned)m_hunger);
+           World::mutexVegetal.lock();
            double eatenQuantity = vegetal->eat(quantity);
+           World::mutexVegetal.unlock();
            m_hunger -= eatenQuantity;
            m_radius += config::FATNESS_HERBIVORE * eatenQuantity;
        }
@@ -50,8 +52,10 @@ bool Herbivore::tryToMate(std::shared_ptr<Entity> herbivoreEntity)
               //this herbivore (female) is neither hungry nor thirsty
               if(m_thirst < (config::MAX_THIRST*3/4) && m_hunger < (config::MAX_HUNGER*3/4))
               {
-                 reproduce(herbivoreToMate);
-                 return true;
+                  World::mutexMateList.lock();
+                  m_world->updateMateList(this, herbivoreToMate);
+                  World::mutexMateList.unlock();
+                  return true;
               }
           }
        }

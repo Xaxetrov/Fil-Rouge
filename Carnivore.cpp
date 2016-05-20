@@ -25,7 +25,9 @@ void Carnivore::tryToEat(std::shared_ptr<Entity> food)
        if(m_hunger > 0)
        {
            int quantity = std::min(config::EAT_MAX_MEAT_QUANTITY,(unsigned)m_hunger);
+           World::mutexMeat.lock();
            double eatenQuantity = meat->eat(quantity);
+           World::mutexMeat.unlock();
            m_hunger -= eatenQuantity;
            m_radius += config::FATNESS_CARNIVORE * eatenQuantity;
        }
@@ -50,7 +52,9 @@ bool Carnivore::tryToMate(std::shared_ptr<Entity> carnivoreEntity)
               //this carnivore (female) is neither hungry nor thirsty
               if(m_thirst < (config::MAX_THIRST*3/4) && m_hunger < (config::MAX_HUNGER*3/4))
               {
-                  reproduce(carnivoreToMate);
+                  World::mutexMateList.lock();
+                  m_world->updateMateList(this, carnivoreToMate);
+                  World::mutexMateList.unlock();
                   return true;
               }
           }
