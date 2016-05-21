@@ -13,6 +13,10 @@
 
 class Vision;
 
+/*
+ * An animal is an entity with special caracteristics (speed, lifePoints, etc...)
+ * It has a vision and a brain
+ */
 class Animal : public Solid, public std::enable_shared_from_this<Animal>
 {
 public:
@@ -74,16 +78,33 @@ public:
     void clearEntityListCollision();
 
     template <class Living> void reproduce(std::shared_ptr<Living> father);
+    /*
+     * Method used to reproduce a living object with another with the consequence of creating new child living objects
+     * Reproducing with a living of a different class is not guaranteed to succeed
+     */
 
     //game methods
     virtual int play(int id);
+    /*
+     * Method usually called by a world tick method. Overload to make the animal play.
+     * will make the animal brain run to choose actions.
+     */
     virtual void mappageInput();
+    /*
+     * Maps animal attributes and parameters to the inputs of the animal neural network
+     * If you change it, don't foget to change corresponding parameters in config.h
+     */
     virtual void mappageOutput();
+    /*
+     * Maps the outputs of the animal neural network to animal attribute
+     * If you change it, don't foget to change corresponding parameters in config.h
+     */
 
 protected:
+    //protected methods
     virtual void tryToEat(std::shared_ptr<Entity> food);
     virtual bool tryToMate(std::shared_ptr<Entity> animalEntity);
-
+    //protected attributes
     int m_health;
     unsigned int m_hunger;
     unsigned int m_thirst;
