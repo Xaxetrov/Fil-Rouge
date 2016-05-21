@@ -92,9 +92,29 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="lb_slider">
+        <widget class="QLabel" name="lb_slider_size">
          <property name="text">
           <string>Tool size</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="sl_toolQuantity">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lb_slider_quantity">
+         <property name="text">
+          <string>Tool quantity</string>
          </property>
         </widget>
        </item>

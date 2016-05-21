@@ -25,6 +25,7 @@ WorldCreatorResourcesWidget::WorldCreatorResourcesWidget(QWidget *parent) :
     QObject::connect(ui->bt_vegetal, SIGNAL(clicked(bool)), this, SLOT(chooseTool()));
     QObject::connect(ui->bt_meat, SIGNAL(clicked(bool)), this, SLOT(chooseTool()));
     QObject::connect(ui->sl_toolSize, SIGNAL(valueChanged(int)), this, SLOT(setRadius(int)));
+    QObject::connect(ui->sl_toolQuantity, SIGNAL(valueChanged(int)), this, SLOT(setQuantity(int)));
 
 }
 
@@ -68,4 +69,9 @@ void WorldCreatorResourcesWidget::chooseTool()
 void WorldCreatorResourcesWidget::setRadius(int radius)
 {
     editorWidget.setCurrantRadius(radius);
+}
+
+void WorldCreatorResourcesWidget::setQuantity(int quantity)
+{
+    editorWidget.setCurrantMaxQuantity(quantity);
 }

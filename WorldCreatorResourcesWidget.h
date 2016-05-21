@@ -24,6 +24,7 @@ public slots:
     void loadWorld();
     void chooseTool();
     void setRadius(int radius);
+    void setQuantity(int quantity);
 
 private:
     Ui::WorldCreatorResourcesWidget *ui;
