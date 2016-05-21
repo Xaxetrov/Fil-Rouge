@@ -13,13 +13,17 @@
 
 class Vision;
 
+/*
+ * An animal is an entity with special caracteristics (speed, lifePoints, etc...)
+ * It has a vision and a brain
+ */
 class Animal : public Solid, public std::enable_shared_from_this<Animal>
 {
 public:
     //ctor, dtor
-    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world);
-    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex);
-    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating = 0);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating = 0);
     ~Animal();
 
     //getters
@@ -50,7 +54,7 @@ public:
     int getCurrentCellY() const;
 
     //setters
-    void setMating();
+    void resetMating();
     void setBrain(NeuralNetwork * newBrain);
     void setSex(bool sex);
     void setAge(unsigned int age) {m_age = age;}
@@ -74,16 +78,33 @@ public:
     void clearEntityListCollision();
 
     template <class Living> void reproduce(std::shared_ptr<Living> father);
+    /*
+     * Method used to reproduce a living object with another with the consequence of creating new child living objects
+     * Reproducing with a living of a different class is not guaranteed to succeed
+     */
 
     //game methods
     virtual int play();
+    /*
+     * Method usually called by a world tick method. Overload to make the animal play.
+     * will make the animal brain run to choose actions.
+     */
     virtual void mappageInput();
+    /*
+     * Maps animal attributes and parameters to the inputs of the animal neural network
+     * If you change it, don't foget to change corresponding parameters in config.h
+     */
     virtual void mappageOutput();
+    /*
+     * Maps the outputs of the animal neural network to animal attribute
+     * If you change it, don't foget to change corresponding parameters in config.h
+     */
 
 protected:
+    //protected methods
     virtual void tryToEat(std::shared_ptr<Entity> food);
     virtual bool tryToMate(std::shared_ptr<Entity> animalEntity);
-
+    //protected attributes
     int m_health;
     unsigned int m_hunger;
     unsigned int m_thirst;
@@ -93,6 +114,7 @@ protected:
     double m_energy;
     double m_score;
     double m_speedPercentage;
+    double m_eatenQuantity;
     World * m_world;
 
 private :
@@ -154,7 +176,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, config::INITIAL_RADIUS, 50, 2, config::DEFAULT_ENERGY, m_world, childBrain) );
+        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::DEFAULT_ENERGY, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));
@@ -163,7 +185,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         child++;
     }
     m_mating = 0;
-    father->setMating();
+    father->resetMating();
 }
 
 #endif // ANIMAL_H

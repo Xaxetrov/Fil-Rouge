@@ -35,8 +35,8 @@ unsigned int config::DRINK_MAX_VALUE = 100; // the max is not the used value if 
 
 // Animal Parameters
 double config::INITIAL_RADIUS = 8;
-double config::FATNESS_HERBIVORE = 0.0003; // the greater the constant is, the quicker the animals become fat...
-double config::FATNESS_CARNIVORE = 0.0003;
+double config::FATNESS_HERBIVORE = 1; // the greater the constant is, the quicker the animals become fat...
+double config::FATNESS_CARNIVORE = 1;
 double config::DEFAULT_ENERGY = 100;
 double config::ENERGY_RECUP = 1;
 double config::MOVE_ENERGY_LOSS = 0.5;
