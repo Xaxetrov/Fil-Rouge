@@ -76,7 +76,7 @@ public:
     template <class Living> void reproduce(std::shared_ptr<Living> father);
 
     //game methods
-    virtual int play(int id);
+    virtual int play();
     virtual void mappageInput();
     virtual void mappageOutput();
 

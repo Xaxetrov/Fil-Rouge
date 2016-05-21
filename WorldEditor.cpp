@@ -26,6 +26,8 @@ WorldEditor::WorldEditor(std::list<std::shared_ptr<Resource> > *resourcesList) :
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    //this->setMouseTracking(true);
+
     if(resources != nullptr)
         updateScene();
 }
@@ -165,6 +167,14 @@ void WorldEditor::setResourcesList(std::list<std::shared_ptr<Resource> > *resour
         updateScene();
 }
 
+void WorldEditor::onWorldSizeChanged()
+{
+    if(resources != nullptr)
+    {
+        resources->clear();
+        updateScene();
+    }
+}
 
 
 

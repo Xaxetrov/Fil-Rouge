@@ -6,6 +6,7 @@
 #include <memory>
 #include "Resource.h"
 #include "WorldEditor.h"
+#include "WorldEditorToolBox.h"
 
 namespace Ui {
 class WorldCreatorResourcesWidget;
@@ -30,6 +31,7 @@ private:
     std::list<std::shared_ptr<Resource>> resources;
 
     WorldEditor editorWidget;
+    WorldEditorToolBox toolBox;
 };
 
 #endif // WORLDCREATORRESOURCESWIDGET_H

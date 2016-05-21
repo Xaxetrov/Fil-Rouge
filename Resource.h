@@ -9,7 +9,7 @@ class Resource : public NonSolid
 public:
     Resource(double x, double y, double radius, int quantityPerUnit, int quantityEvolutionPerUnit);
     Resource(Coordinate c, double radius, int quantityPerUnit, int quantityEvolutionPerUnit);
-    int play(int id);
+    int play();
 
     int getQuantity() const;
     int getMaxQuantity() const;

@@ -13,7 +13,7 @@ Entity::~Entity()
 
 }
 
-int Entity::play(int id)
+int Entity::play()
 {
     return 0;
 }

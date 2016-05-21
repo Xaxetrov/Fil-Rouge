@@ -57,7 +57,7 @@ Animal::~Animal()
     //delete m_collisionList;
 }
 
-int Animal::play(int id)
+int Animal::play()
 {
     m_age++;
 

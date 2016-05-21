@@ -19,10 +19,10 @@ class WorldCreator : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit WorldCreator(World * worldToChange = nullptr,QWidget *parent = 0);
+    explicit WorldCreator(/*World * worldToChange = nullptr,*/QWidget *parent = 0);
     ~WorldCreator();
 
-    void setWorldPointer(World *worldToChange) {world = worldToChange;}
+    /*void setWorldPointer(World *worldToChange) {world = worldToChange;}*/
 
 public slots:
     void finish();
@@ -30,13 +30,14 @@ public slots:
 
 signals:
     void actionFinished();
+    void newWorldGenerated(QString pathToXmlWorld);
 
 private:
     Ui::WorldCreator *ui;
     QTabWidget tabWidget;
     WorldCreatorAnimalsWidget animalWidget;
     WorldCreatorResourcesWidget resourceWidget;
-    World *world;
+    //World *world;
 
 };
 

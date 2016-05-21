@@ -103,18 +103,16 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>50</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_editor">
+     <item>
+      <widget class="QDockWidget" name="dockWidget">
+       <property name="features">
+        <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+       </property>
+       <widget class="QWidget" name="dockWidgetContents"/>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

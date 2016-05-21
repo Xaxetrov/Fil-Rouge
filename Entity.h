@@ -24,7 +24,7 @@ public:
     double getRadius() const {return m_radius;}
     int getCreationDate() const {return m_creationDate;}
 
-    virtual int play(int id);
+    virtual int play();
     virtual bool isDead() const =0;
     virtual unsigned int getTypeId() const = 0; //?
     virtual int getNeralNetworkId() const = 0;

@@ -43,7 +43,7 @@ void Resource::setMaxQuantity(int maxQuantity)
     m_maxQuantity = maxQuantity;
 }
 
-int Resource::play(int id)
+int Resource::play()
 {
     m_quantity += std::min(m_quantityEvolution,m_maxQuantity-m_quantity);
     return 0;
