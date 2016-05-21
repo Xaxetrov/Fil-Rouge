@@ -17,9 +17,9 @@ class Animal : public Solid, public std::enable_shared_from_this<Animal>
 {
 public:
     //ctor, dtor
-    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world);
-    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex);
-    Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating = 0);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating = 0);
     ~Animal();
 
     //getters
@@ -50,7 +50,7 @@ public:
     int getCurrentCellY() const;
 
     //setters
-    void setMating();
+    void resetMating();
     void setBrain(NeuralNetwork * newBrain);
     void setSex(bool sex);
     void setAge(unsigned int age) {m_age = age;}
@@ -93,6 +93,7 @@ protected:
     double m_energy;
     double m_score;
     double m_speedPercentage;
+    double m_eatenQuantity;
     World * m_world;
 
 private :
@@ -154,7 +155,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, config::INITIAL_RADIUS, 50, 2, config::DEFAULT_ENERGY, m_world, childBrain) );
+        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::DEFAULT_ENERGY, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));
@@ -163,7 +164,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         child++;
     }
     m_mating = 0;
-    father->setMating();
+    father->resetMating();
 }
 
 #endif // ANIMAL_H

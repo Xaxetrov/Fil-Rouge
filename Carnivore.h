@@ -6,9 +6,9 @@
 class Carnivore : public Animal
 {
 public:
-    Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world);
-    Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex);
-    Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, int mating = 0);
+    Carnivore(double x, double y, int maxSpeed, double damage, double energy, World * world);
+    Carnivore(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex);
+    Carnivore(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, int mating = 0);
 
     virtual unsigned int getTypeId() const { return ID_CARNIVORE; }
     virtual int getNeralNetworkId() const { return NN_ID_CARNIVORE; }

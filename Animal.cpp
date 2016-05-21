@@ -11,8 +11,8 @@
 
 using namespace std;
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world) :
-    Solid(x, y, radius), m_energy(energy), m_age(0), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world) :
+    Solid(x, y, config::INITIAL_RADIUS), m_energy(energy), m_age(0), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 0;
@@ -22,6 +22,7 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
     dead = false;
     m_fear = 0;
     m_mating = config::MAX_MATING;
+    m_eatenQuantity = 1;
     m_vision = new Vision(*this, m_angle, world->getGridOfEntities());
 
     //Determine if Animal is female or not (1/2 chance)
@@ -38,13 +39,13 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
     setCreationDate(world->getWorldAge());
 }
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, energy, world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex) : Animal(x, y, maxSpeed, damage, energy, world)
 {
     m_female = sex;
 }
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating) :
-    Animal(x,y,radius,maxSpeed,damage,energy,world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating) :
+    Animal(x,y,maxSpeed,damage,energy,world)
 {
     m_mating = mating;
     m_brain = brain;
@@ -546,7 +547,7 @@ double Animal::getRotation() const
     return m_rotation;
 }
 
-void Animal::setMating()
+void Animal::resetMating()
 {
    m_mating = 0;
 }
