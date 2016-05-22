@@ -358,11 +358,10 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
 
                 World::mutexListEntities.lock();
                 m_entities.push_back(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
-                World::mutexListEntities.unlock();
-
                 World::mutexGridOfEntities.lock();
                 m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(*(--m_entities.end()));
                 World::mutexGridOfEntities.unlock();
+                World::mutexListEntities.unlock();
             }
             else
             {
@@ -381,12 +380,12 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
                 World::mutexAttributes.unlock();
             }
         }
+
         if((*e)->isDead())
         {
-          //std::cout << id << " : dead2" << endl;
-            World::mutexDeadList.lock();
-            deadList->push_back(e);
-            World::mutexDeadList.unlock();
+          World::mutexDeadList.lock();
+          deadList->push_back(e);
+          World::mutexDeadList.unlock();
         }
     }
 

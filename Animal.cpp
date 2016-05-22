@@ -112,7 +112,6 @@ int Animal::play(int id)
 
     // The animal looks around itself
     m_vision->see();
-
     // get mapping of inputs
     mappageInput();
     // The animal decides what to do
