@@ -93,7 +93,6 @@ protected:
     double m_energy;
     double m_score;
     double m_speedPercentage;
-    double m_eatenQuantity;
     World * m_world;
 
 private :

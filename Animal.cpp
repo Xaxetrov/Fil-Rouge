@@ -22,7 +22,6 @@ Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, W
     dead = false;
     m_fear = 0;
     m_mating = config::MAX_MATING;
-    m_eatenQuantity = 1;
     m_vision = new Vision(*this, m_angle, world->getGridOfEntities());
 
     //Determine if Animal is female or not (1/2 chance)
@@ -144,6 +143,8 @@ int Animal::play(int id)
     eat();
     drink();
     mate();
+
+    m_radius = log(m_age) * config::FATNESS_ANIMAL + config::INITIAL_RADIUS;
 
     return 0;
 }

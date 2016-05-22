@@ -81,6 +81,7 @@ public:
   static double INITIAL_RADIUS;
   static double FATNESS_HERBIVORE; // the greater the staticant is, the quicker the animals become fat...
   static double FATNESS_CARNIVORE;
+  static double FATNESS_ANIMAL;
   static double DEFAULT_ENERGY;
   static double ENERGY_RECUP;
   static double MOVE_ENERGY_LOSS;

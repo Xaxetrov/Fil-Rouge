@@ -30,8 +30,6 @@ void Carnivore::tryToEat(std::shared_ptr<Entity> food)
            World::mutexMeat.unlock();
            m_hunger -= eatenQuantity;
            //m_radius += config::FATNESS_CARNIVORE * eatenQuantity;
-           m_eatenQuantity += eatenQuantity;
-           m_radius = std::log(m_eatenQuantity) * config::FATNESS_CARNIVORE + config::INITIAL_RADIUS;
        }
        //heal himself
        if(m_health < config::MAX_HEALTH && m_thirst < config::MAX_THIRST*3/4)
