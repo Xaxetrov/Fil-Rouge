@@ -92,9 +92,29 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="lb_slider">
+        <widget class="QLabel" name="lb_slider_size">
          <property name="text">
           <string>Tool size</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="sl_toolQuantity">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lb_slider_quantity">
+         <property name="text">
+          <string>Tool quantity</string>
          </property>
         </widget>
        </item>
@@ -103,18 +123,16 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
-     <widget class="QTableWidget" name="tableWidget">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>50</y>
-        <width>256</width>
-        <height>192</height>
-       </rect>
-      </property>
-     </widget>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_editor">
+     <item>
+      <widget class="QDockWidget" name="dockWidget">
+       <property name="features">
+        <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+       </property>
+       <widget class="QWidget" name="dockWidgetContents"/>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

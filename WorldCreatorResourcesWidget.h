@@ -6,6 +6,7 @@
 #include <memory>
 #include "Resource.h"
 #include "WorldEditor.h"
+#include "WorldEditorToolBox.h"
 
 namespace Ui {
 class WorldCreatorResourcesWidget;
@@ -24,12 +25,14 @@ public slots:
     void loadWorld();
     void chooseTool();
     void setRadius(int radius);
+    void setQuantity(int quantity);
 
 private:
     Ui::WorldCreatorResourcesWidget *ui;
     std::list<std::shared_ptr<Resource>> resources;
 
     WorldEditor editorWidget;
+    WorldEditorToolBox toolBox;
 };
 
 #endif // WORLDCREATORRESOURCESWIDGET_H

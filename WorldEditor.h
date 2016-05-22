@@ -21,16 +21,17 @@ public:
 
     void setResourcesList(std::list<std::shared_ptr<Resource>> *resourcesList);
 
-    void setCurrantTool(Tools tool) {currantTool=tool;}
-    void setCurrantRadius(int radius) {currantRadius=radius;}
-    void setCurrantMaxQuantity(int maxQuantity) {currantMaxQuantity=maxQuantity;}
-
 public slots:
     void updateScene();
     //event
     void resizeEvent(QResizeEvent *e);
     void wheelEvent(QWheelEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
+    void onWorldSizeChanged();
+
+    void setCurrantTool(WorldEditor::Tools tool) {currantTool=tool;}
+    void setCurrantRadius(int radius) {currantRadius=radius;}
+    void setCurrantMaxQuantity(int maxQuantity) {currantMaxQuantity=maxQuantity;}
 
 signals:
     void sceneUpdated();

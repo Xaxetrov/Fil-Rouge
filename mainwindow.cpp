@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(loadWorldAction, SIGNAL(triggered(bool)),this, SLOT(loadWorldSave()));
     QObject::connect(openWorldCreatorAction, SIGNAL(triggered(bool)), this, SLOT(openWorldCreator()));
     QObject::connect(&worldCreator, SIGNAL(actionFinished()), this, SLOT(onWorldCreatorClosed()));
+    QObject::connect(&worldCreator, SIGNAL(newWorldGenerated(QString)), this, SLOT(onWorldCreatorNewWorldGenerated(QString)));
     QObject::connect(openTimelineAction, SIGNAL(triggered(bool)), this, SLOT(openTimeline()));
     QObject::connect(setParameters, SIGNAL(triggered(bool)), this, SLOT(openParametersWidget()));
 }
@@ -302,7 +303,7 @@ void MainWindow::loadWorldSave(bool pauseDuringLoad)
 void MainWindow::openWorldCreator()
 {
     worldWidget.suspendSimulation();
-    worldCreator.setWorldPointer(&world);
+    //worldCreator.setWorldPointer(&world);
     worldCreator.show();
     /*
      * include code here
@@ -312,6 +313,17 @@ void MainWindow::openWorldCreator()
 void MainWindow::onWorldCreatorClosed()
 {
     //worldWidget.startSimulation();
+}
+
+void MainWindow::onWorldCreatorNewWorldGenerated(QString path)
+{
+    if(path != "")
+    {
+        SaveManager saveManager;
+        world = World();
+        saveManager.loadWorld(path,&world);
+        worldWidget.setWorld(&world);
+    }
 }
 
 void MainWindow::openTimeline()
