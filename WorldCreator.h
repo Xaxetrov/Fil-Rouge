@@ -14,29 +14,36 @@ namespace Ui {
 class WorldCreator;
 }
 
+/*
+ * The World creator is the containing class for a tool which creates a world with personal parameters
+ */
 class WorldCreator : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit WorldCreator(World * worldToChange = nullptr,QWidget *parent = 0);
+    explicit WorldCreator(/*World * worldToChange = nullptr,*/QWidget *parent = 0);
     ~WorldCreator();
 
-    void setWorldPointer(World *worldToChange) {world = worldToChange;}
+    /*void setWorldPointer(World *worldToChange) {world = worldToChange;}*/
+
 
 public slots:
+    //"slot" methods
     void finish();
     void closeEvent(QCloseEvent *e);
 
 signals:
+    //"signal" methods
     void actionFinished();
+    void newWorldGenerated(QString pathToXmlWorld);
 
 private:
     Ui::WorldCreator *ui;
     QTabWidget tabWidget;
     WorldCreatorAnimalsWidget animalWidget;
     WorldCreatorResourcesWidget resourceWidget;
-    World *world;
+    //World *world;
 
 };
 

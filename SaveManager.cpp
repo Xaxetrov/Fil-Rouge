@@ -556,7 +556,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = config::ATTACK_HERBIVORE;
-      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, world, nn, mating));
+      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity,maxSpeed, attack, energy, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
       entity->setAngle(angle);
@@ -578,7 +578,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = config::ATTACK_CARNIVORE;
-      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity, radiusEntity,maxSpeed, attack, energy, world, nn, mating));
+      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity,maxSpeed, attack, energy, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
       entity->setAngle(angle);

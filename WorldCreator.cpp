@@ -9,10 +9,10 @@
 #include "Herbivore.h"
 #include "Carnivore.h"
 
-WorldCreator::WorldCreator(World *worldToChange, QWidget *parent) :
+WorldCreator::WorldCreator(/*World *worldToChange,*/ QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::WorldCreator),
-    world(worldToChange)
+    ui(new Ui::WorldCreator)/*,
+    world(worldToChange)*/
 {
     ui->setupUi(this);
 
@@ -38,22 +38,20 @@ WorldCreator::~WorldCreator()
 
 void WorldCreator::finish()
 {
-    if(world==nullptr)
-        return;
     SaveManager saveManager;
-    *world = World();
+    World world;
 
     //TODO add code for ressources generation here
     std::list<std::shared_ptr<Resource>> resources = resourceWidget.getResources();
     for(std::list<std::shared_ptr<Resource>>::iterator iteResources = resources.begin(); iteResources!=resources.end(); ++iteResources)
     {
-        world->addEntity(*iteResources);
+        world.addEntity(*iteResources);
     }
 
     //set neuralnets to entities & create entities
     unsigned numH(animalWidget.getNumberOfHerbivore()), numC(animalWidget.getNumberOfCarnivore());
-    world->feedWithRandomHerbivore(numH);
-    std::list<std::shared_ptr<Entity>> entities = world->getEntities();
+    world.feedWithRandomHerbivore(numH);
+    std::list<std::shared_ptr<Entity>> entities = world.getEntities();
     if(animalWidget.isHerbivoreChecked())
     {
         QStringList herbivores = animalWidget.getHerbivoreList();
@@ -75,7 +73,7 @@ void WorldCreator::finish()
     else
     {
     }
-    world->feedWithRandomCarnivore(numC);
+    world.feedWithRandomCarnivore(numC);
     if(animalWidget.isCarnivoreChecked())
     {
         QStringList carnivores = animalWidget.getCarnivoreList();
@@ -98,8 +96,9 @@ void WorldCreator::finish()
     }
 
     //put World in a predefined xmlFile
-    QString path(".");
-    saveManager.saveWorld(*world,path);
+    QString path(".worldCreatorGenerated.xml");
+    saveManager.saveWorld(world,path);
+    emit newWorldGenerated(path);
     this->close();
 }
 

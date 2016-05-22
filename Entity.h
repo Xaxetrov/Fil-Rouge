@@ -5,7 +5,7 @@
 #include "Coordinate.h"
 
 /*
- * A Entity is something, anything
+ * A Entity is something, anything that is in the world
  */
 class Entity
 {
@@ -17,20 +17,29 @@ public:
     virtual ~Entity();
 
     //attributes accessors
+    //getters
     const Coordinate & getCoordinate() const {return m_coordinate;}
-    void setCoordinate(double x, double y) {m_coordinate.set(x, y);}
     double getX() const {return m_coordinate.getX();}
     double getY() const {return m_coordinate.getY();}
     double getRadius() const {return m_radius;}
     int getCreationDate() const {return m_creationDate;}
 
-    virtual int play(int id);
     virtual bool isDead() const =0;
-    virtual unsigned int getTypeId() const = 0; //?
+    virtual unsigned int getTypeId() const = 0; ///?
     virtual int getNeralNetworkId() const = 0;
+    //setters
+    void setCoordinate(double x, double y) {m_coordinate.set(x, y);}
+
+    //game methods
+    virtual int play();
+    /*
+     * method usually called by the tick of a world. Overload to make the entity play
+     */
 
 protected:
+    //protected methods
     void setCreationDate(int creationDate){m_creationDate=creationDate;}
+    //protected attributes
     double m_radius;
 
 private:

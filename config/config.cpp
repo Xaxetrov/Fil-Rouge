@@ -1,14 +1,14 @@
 #include "config.h"
 
 // Threads
-unsigned short config::NB_THREADS = 4;
+unsigned short config::NB_THREADS = 1;
 
 // World
 int config::WORLD_SIZE_X = 500;
 int config::WORLD_SIZE_Y = 500;
 unsigned short config::MIN_NUMBER_OF_ANIMAL = 10; //unused
 unsigned short config::MIN_NUMBER_OF_HERBVORE = 10;
-unsigned short config::MIN_NUMBER_OF_CARNIVORE = 10;
+unsigned short config::MIN_NUMBER_OF_CARNIVORE = 0;
 unsigned short config::MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 unsigned short config::MAX_NUMBER_CARNIVORE_CHAMPION = 0;
 
@@ -34,9 +34,10 @@ unsigned int config::EAT_MAX_HEALING_VALUE = 10; //the max is not the used value
 unsigned int config::DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
 // Animal Parameters
-double config::INITIAL_RADIUS = 8;
-double config::FATNESS_HERBIVORE = 0.0003; // the greater the constant is, the quicker the animals become fat...
-double config::FATNESS_CARNIVORE = 0.0003;
+double config::INITIAL_RADIUS = 2;
+double config::FATNESS_ANIMAL = 0.9;
+double config::FATNESS_HERBIVORE = 1; // the greater the constant is, the quicker the animals become fat...
+double config::FATNESS_CARNIVORE = 1;
 double config::DEFAULT_ENERGY = 100;
 double config::ENERGY_RECUP = 1;
 double config::MOVE_ENERGY_LOSS = 0.5;

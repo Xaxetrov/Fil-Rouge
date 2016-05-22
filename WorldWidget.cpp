@@ -32,6 +32,9 @@ WorldWidget::WorldWidget(World *world) : QGraphicsView(), m_world(world)
     //set timer:
     updateTimerInterval();
 
+    //set last scene update value
+    ftime(&lastSceneUpdate);
+
     //signal and slot connection
     QObject::connect(&timer,SIGNAL(timeout()),this,SLOT(tick()));
 }
@@ -55,6 +58,18 @@ void WorldWidget::setWorld(World *world)
 }
 
 void WorldWidget::updateScene()
+{
+    struct timeb tp;
+    ftime(&tp);
+    //update scene only every 20 ms (50 fps max)
+    if(tp.time > lastSceneUpdate.time || tp.millitm > lastSceneUpdate.millitm+20)
+    {
+        forcedSceneUpdate();
+        lastSceneUpdate = tp;
+    }
+}
+
+void WorldWidget::forcedSceneUpdate()
 {
     //clear the scene:
     m_scene->clear();

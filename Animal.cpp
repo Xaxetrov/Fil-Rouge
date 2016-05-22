@@ -11,8 +11,8 @@
 
 using namespace std;
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world) :
-    Solid(x, y, radius), m_energy(energy), m_age(0), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world) :
+    Solid(x, y, config::INITIAL_RADIUS), m_energy(energy), m_age(0), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
 {
     m_angle = 0; //initialize angle here
     m_hunger = 0;
@@ -38,13 +38,13 @@ Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, doub
     setCreationDate(world->getWorldAge());
 }
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, bool sex) : Animal(x, y ,radius, maxSpeed, damage, energy, world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex) : Animal(x, y, maxSpeed, damage, energy, world)
 {
     m_female = sex;
 }
 
-Animal::Animal(double x, double y, int radius, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating) :
-    Animal(x,y,radius,maxSpeed,damage,energy,world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating) :
+    Animal(x,y,maxSpeed,damage,energy,world)
 {
     m_mating = mating;
     m_brain = brain;
@@ -57,7 +57,7 @@ Animal::~Animal()
     //delete m_collisionList;
 }
 
-int Animal::play(int id)
+int Animal::play()
 {
     m_age++;
 
@@ -143,6 +143,8 @@ int Animal::play(int id)
     drink();
     mate();
 
+    m_radius = log(m_age) * config::FATNESS_ANIMAL + config::INITIAL_RADIUS;
+
     return 0;
 }
 
@@ -224,7 +226,7 @@ void Animal::turn(double angle)
 // The animal drink one time for each pool it is on
 void Animal::drink()
 {
-    if(m_speed <= config::MAX_SPEED_TO_EAT)
+    if(m_speedPercentage * m_maxSpeed / 100.0 <= config::MAX_SPEED_TO_EAT)
     {
         vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
         for (weak_ptr<Entity> weakWater:waterCollisionList)
@@ -255,7 +257,7 @@ void Animal::drink()
 // The animal drink one time for each pool it is on
 void Animal::eat()
 {
-    if(m_speed <= config::MAX_SPEED_TO_EAT)
+    if(m_speedPercentage * m_maxSpeed / 100.0 <= config::MAX_SPEED_TO_EAT)
     {
         vector<weak_ptr<Entity>> foodCollisionList = getSubListResourceCollision();
         for (weak_ptr<Entity> weakFood:foodCollisionList)
@@ -545,7 +547,7 @@ double Animal::getRotation() const
     return m_rotation;
 }
 
-void Animal::setMating()
+void Animal::resetMating()
 {
    m_mating = 0;
 }

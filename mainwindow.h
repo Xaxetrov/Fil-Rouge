@@ -36,6 +36,7 @@ public slots:
     void updateStatusBar();
     void openWorldCreator();
     void onWorldCreatorClosed();
+    void onWorldCreatorNewWorldGenerated(QString path);
     void openTimeline();
     void openParametersWidget();
 

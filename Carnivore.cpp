@@ -2,17 +2,17 @@
 #include "Meat.h"
 
 
-Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world):
-    Animal(x,y,radius,maxSpeed,damage,energy,world)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, World *world):
+    Animal(x,y,maxSpeed,damage,energy,world)
 {
 }
-Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, bool sex):
-    Animal(x,y,radius,maxSpeed,damage,energy,world, sex)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, World *world, bool sex):
+    Animal(x,y,maxSpeed,damage,energy,world, sex)
 {
 }
 
-Carnivore::Carnivore(double x, double y, int radius, int maxSpeed, double damage, double energy, World *world, NeuralNetwork * brain, int mating):
-    Animal(x,y,radius,maxSpeed,damage,energy,world, brain, mating)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, World *world, NeuralNetwork * brain, int mating):
+    Animal(x,y,maxSpeed,damage,energy,world, brain, mating)
 {
 }
 
@@ -29,7 +29,7 @@ void Carnivore::tryToEat(std::shared_ptr<Entity> food)
            double eatenQuantity = meat->eat(quantity);
            World::mutexMeat.unlock();
            m_hunger -= eatenQuantity;
-           m_radius += config::FATNESS_CARNIVORE * eatenQuantity;
+           //m_radius += config::FATNESS_CARNIVORE * eatenQuantity;
        }
        //heal himself
        if(m_health < config::MAX_HEALTH && m_thirst < config::MAX_THIRST*3/4)

@@ -6,6 +6,8 @@
 #include <QGraphicsScene>
 #include <QTimer>
 
+#include <sys/timeb.h>
+
 #include "WorldColors.h"
 #include "World.h"
 #include "Entity.h"
@@ -48,6 +50,7 @@ private:
     void drawAnimal(const std::shared_ptr<Animal> animal);
     void drawAnimal(const std::shared_ptr<Animal> animal, QPoint pos);
     void drawBasicEntity(QPoint pos,double radius, QBrush brush, QPen pen);
+    void forcedSceneUpdate();
 
 private:
     QGraphicsScene * m_scene;
@@ -56,6 +59,8 @@ private:
     std::weak_ptr<Animal> selectedAnimal;
     //timer
     QTimer timer;
+
+    struct timeb lastSceneUpdate;
 
 public: //Public const:
     //static const int UNIT_SIZE = 10;
