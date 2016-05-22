@@ -227,7 +227,7 @@ void Animal::turn(double angle)
 // The animal drink one time for each pool it is on
 void Animal::drink()
 {
-    if(m_speed <= config::MAX_SPEED_TO_EAT)
+    if(m_speedPercentage * m_maxSpeed / 100.0 <= config::MAX_SPEED_TO_EAT)
     {
         vector<weak_ptr<Entity>> waterCollisionList = getSubListCollision(ID_WATER);
         for (weak_ptr<Entity> weakWater:waterCollisionList)
@@ -258,7 +258,7 @@ void Animal::drink()
 // The animal drink one time for each pool it is on
 void Animal::eat()
 {
-    if(m_speed <= config::MAX_SPEED_TO_EAT)
+    if(m_speedPercentage * m_maxSpeed / 100.0 <= config::MAX_SPEED_TO_EAT)
     {
         vector<weak_ptr<Entity>> foodCollisionList = getSubListResourceCollision();
         for (weak_ptr<Entity> weakFood:foodCollisionList)

@@ -1,5 +1,7 @@
 #include "EntityAttributeWidget.h"
 
+#include <iostream>
+
 EntityAttributeWidget::EntityAttributeWidget()
 {
    //animal = weak_ptr<Animal>(); // Avoid random crashes
@@ -12,6 +14,7 @@ EntityAttributeWidget::EntityAttributeWidget()
    fearLabel = new QLabel();
    matingLabel = new QLabel();
    sexLabel = new QLabel();
+   ageLabel = new QLabel();
 
    layout = new QVBoxLayout();
    layout->addWidget(defaultLabel);
@@ -21,6 +24,7 @@ EntityAttributeWidget::EntityAttributeWidget()
    layout->addWidget(fearLabel);
    layout->addWidget(sexLabel);
    layout->addWidget(matingLabel);
+   layout->addWidget(ageLabel);
 
    healthLabel->setVisible(false);
    hungerLabel->setVisible(false);
@@ -28,6 +32,7 @@ EntityAttributeWidget::EntityAttributeWidget()
    fearLabel->setVisible(false);
    sexLabel->setVisible(false);
    matingLabel->setVisible(false);
+   ageLabel->setVisible(false);
 
    this->setLayout(layout);
 }
@@ -42,6 +47,7 @@ EntityAttributeWidget::~EntityAttributeWidget()
    delete fearLabel;
    delete sexLabel;
    delete matingLabel;
+   delete ageLabel;
 }
 
 void EntityAttributeWidget::setAnimal(std::weak_ptr<Animal> a)
@@ -62,6 +68,7 @@ void EntityAttributeWidget::update()
       fearLabel->setVisible(false);
       matingLabel->setVisible(false);
       sexLabel->setVisible(false);
+      ageLabel->setVisible(false);
    }
    else
    {
@@ -72,6 +79,7 @@ void EntityAttributeWidget::update()
       fearLabel->setVisible(true);
       matingLabel->setVisible(true);
       sexLabel->setVisible(true);
+      ageLabel->setVisible(true);
 
       healthLabel->setText(healthText + QString::number(sharedAnimal->getHealth()));
       hungerLabel->setText(hungerText + QString::number(sharedAnimal->getHunger()));
@@ -79,5 +87,17 @@ void EntityAttributeWidget::update()
       fearLabel->setText(fearText + QString::number(sharedAnimal->getFear()));
       sexLabel->setText(sexText + (sharedAnimal->isFemale() ? "Female" : "Male") );
       matingLabel->setText(matingText + QString::number(sharedAnimal->getMating()));
+      ageLabel->setText(ageText + QString::number(sharedAnimal->getAge()));
+
+      std::vector<std::weak_ptr<Entity> > ressourcesCollision = sharedAnimal->getSubListResourceCollision();
+      std::cout << std::endl << "Ressources en collision avec l'animal: " << std::endl;
+      for (std::weak_ptr<Entity> weakRessource : ressourcesCollision)
+      {
+          std::shared_ptr<Entity> foodEntity = weakRessource.lock();
+          if(foodEntity)
+          {
+              std::cout << foodEntity->getTypeId() << std::endl;
+          }
+      }
    }
 }

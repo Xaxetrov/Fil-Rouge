@@ -1,7 +1,7 @@
 #include "config.h"
 
 // Threads
-unsigned short config::NB_THREADS = 4;
+unsigned short config::NB_THREADS = 1;
 
 // World
 int config::WORLD_SIZE_X = 500;
@@ -34,8 +34,8 @@ unsigned int config::EAT_MAX_HEALING_VALUE = 10; //the max is not the used value
 unsigned int config::DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
 // Animal Parameters
-double config::INITIAL_RADIUS = 8;
-double config::FATNESS_ANIMAL = 0.5;
+double config::INITIAL_RADIUS = 2;
+double config::FATNESS_ANIMAL = 0.9;
 double config::FATNESS_HERBIVORE = 1; // the greater the constant is, the quicker the animals become fat...
 double config::FATNESS_CARNIVORE = 1;
 double config::DEFAULT_ENERGY = 100;

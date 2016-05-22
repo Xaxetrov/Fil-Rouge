@@ -41,6 +41,9 @@ protected:
    const QString matingText = "Mating: ";
    QLabel * matingLabel;
 
+   const QString ageText = "Age: ";
+   QLabel * ageLabel;
+
 };
 
 #endif //ENTITY_ATTRIBUTE_WIDGET_H
