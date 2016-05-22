@@ -34,9 +34,9 @@ unsigned int config::EAT_MAX_HEALING_VALUE = 10; //the max is not the used value
 unsigned int config::DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
 // Animal Parameters
-double config::INITIAL_RADIUS = 2;
-double config::FATNESS_ANIMAL = 0.9;
-double config::FATNESS_HERBIVORE = 1; // the greater the constant is, the quicker the animals become fat...
+double config::INITIAL_RADIUS = 7;
+double config::FATNESS_ANIMAL = 0.1;
+double config::FATNESS_HERBIVORE = 0.05; // the greater the constant is, the quicker the animals become fat...
 double config::FATNESS_CARNIVORE = 1;
 double config::DEFAULT_ENERGY = 100;
 double config::ENERGY_RECUP = 1;

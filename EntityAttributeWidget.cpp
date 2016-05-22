@@ -88,16 +88,5 @@ void EntityAttributeWidget::update()
       sexLabel->setText(sexText + (sharedAnimal->isFemale() ? "Female" : "Male") );
       matingLabel->setText(matingText + QString::number(sharedAnimal->getMating()));
       ageLabel->setText(ageText + QString::number(sharedAnimal->getAge()));
-
-      std::vector<std::weak_ptr<Entity> > ressourcesCollision = sharedAnimal->getSubListResourceCollision();
-      std::cout << std::endl << "Ressources en collision avec l'animal: " << std::endl;
-      for (std::weak_ptr<Entity> weakRessource : ressourcesCollision)
-      {
-          std::shared_ptr<Entity> foodEntity = weakRessource.lock();
-          if(foodEntity)
-          {
-              std::cout << foodEntity->getTypeId() << std::endl;
-          }
-      }
    }
 }

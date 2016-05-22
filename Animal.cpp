@@ -144,7 +144,7 @@ int Animal::play()
     drink();
     mate();
 
-    m_radius = log(m_age) * config::FATNESS_ANIMAL + config::INITIAL_RADIUS;
+    m_radius = sqrt(m_age) * config::FATNESS_HERBIVORE + config::INITIAL_RADIUS; // TODO: used FATNESS_ANIMAL, and put it in the parametersWidget
 
     return 0;
 }
