@@ -21,11 +21,7 @@ WorldCreatorResourcesWidget::WorldCreatorResourcesWidget(QWidget *parent) :
     ui->sl_toolSize->setRange(10,100);
 
     QObject::connect(ui->bt_loadWorld,SIGNAL(clicked(bool)),this,SLOT(loadWorld()));
-    QObject::connect(ui->bt_water, SIGNAL(clicked(bool)), this, SLOT(chooseTool()));
-    QObject::connect(ui->bt_vegetal, SIGNAL(clicked(bool)), this, SLOT(chooseTool()));
-    QObject::connect(ui->bt_meat, SIGNAL(clicked(bool)), this, SLOT(chooseTool()));
-    QObject::connect(ui->sl_toolSize, SIGNAL(valueChanged(int)), this, SLOT(setRadius(int)));
-    QObject::connect(ui->sl_toolQuantity, SIGNAL(valueChanged(int)), this, SLOT(setQuantity(int)));
+
 
     QObject::connect(&toolBox, SIGNAL(brushSizeChanged(int)),&editorWidget, SLOT(setCurrantRadius(int)));
     QObject::connect(&toolBox,SIGNAL(brushTypeChanged(WorldEditor::Tools)),&editorWidget,SLOT(setCurrantTool(WorldEditor::Tools)));
