@@ -73,6 +73,8 @@ void WorldCreator::finish()
     else
     {
     }
+
+
     world.feedWithRandomCarnivore(numC);
     if(animalWidget.isCarnivoreChecked())
     {
