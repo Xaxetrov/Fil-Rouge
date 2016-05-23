@@ -366,6 +366,7 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
 {
   int xWorld, yWorld;
   unsigned ageWorld;
+  bool sizeXfound=false, sizeYfound=false;
 
   if(reader.tokenType() != QXmlStreamReader::StartElement &&
      reader.name() != "World")
@@ -385,10 +386,16 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
       else if(reader.name() == "x")
       {
         xWorld = reader.readElementText().toInt();
+        sizeXfound = true;
+        if(sizeXfound && sizeYfound)
+            world->setSize(xWorld,yWorld);
       }
       else if(reader.name() == "y")
       {
         yWorld = reader.readElementText().toInt();
+        sizeYfound = true;
+        if(sizeXfound && sizeYfound)
+            world->setSize(xWorld,yWorld);
       }
       else if(reader.name() == "age")
       {
@@ -401,7 +408,7 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
     }
     reader.readNext();
   }
-  world->setSize(xWorld,yWorld);
+
   world->setWorldAge(ageWorld);
 }
 

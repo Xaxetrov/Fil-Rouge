@@ -18,14 +18,12 @@ WorldCreatorResourcesWidget::WorldCreatorResourcesWidget(QWidget *parent) :
 
     ui->dockWidget->setWidget(&toolBox);
 
-    ui->sl_toolSize->setRange(10,100);
-
     QObject::connect(ui->bt_loadWorld,SIGNAL(clicked(bool)),this,SLOT(loadWorld()));
-
 
     QObject::connect(&toolBox, SIGNAL(brushSizeChanged(int)),&editorWidget, SLOT(setCurrantRadius(int)));
     QObject::connect(&toolBox,SIGNAL(brushTypeChanged(WorldEditor::Tools)),&editorWidget,SLOT(setCurrantTool(WorldEditor::Tools)));
     QObject::connect(&toolBox, SIGNAL(worldSizeChanged()),&editorWidget, SLOT(onWorldSizeChanged()));
+    QObject::connect(&toolBox, SIGNAL(brushQuantityChanged(int)),&editorWidget, SLOT(setCurrantMaxQuantity(int)));
 }
 
 WorldCreatorResourcesWidget::~WorldCreatorResourcesWidget()
@@ -54,16 +52,7 @@ void WorldCreatorResourcesWidget::loadWorld()
     }
     ui->lb_loadedWorld->setText(filePath);
     editorWidget.updateScene();
-}
-
-void WorldCreatorResourcesWidget::chooseTool()
-{
-    if(ui->bt_water->isChecked())
-        editorWidget.setCurrantTool(WorldEditor::Tools::water);
-    else if(ui->bt_vegetal->isChecked())
-        editorWidget.setCurrantTool(WorldEditor::Tools::vegetal);
-    else if(ui->bt_meat->isChecked())
-        editorWidget.setCurrantTool(WorldEditor::Tools::meat);
+    toolBox.setWorldSize(config::WORLD_SIZE_X,config::WORLD_SIZE_Y);
 }
 
 void WorldCreatorResourcesWidget::setRadius(int radius)

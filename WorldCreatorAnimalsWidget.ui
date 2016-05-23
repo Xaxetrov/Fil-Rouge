@@ -30,7 +30,17 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="sb_herbivore"/>
+         <widget class="QSpinBox" name="sb_herbivore">
+          <property name="maximum">
+           <number>500</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+          <property name="value">
+           <number>10</number>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_2">
@@ -40,7 +50,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="sb_carnivore"/>
+         <widget class="QSpinBox" name="sb_carnivore">
+          <property name="maximum">
+           <number>500</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
