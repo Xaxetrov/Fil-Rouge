@@ -13,11 +13,11 @@ cd Fil-Rouge/bin
 qmake ../SAWN2.pro
 make
 ```
-You will need a Linux tool chain as well as a Qt tool chain.
+You will need a Linux tool chain as well as a Qt tool chain as well as git.
 
 For example on Ubuntu you can install all you need with:
 ```
-sudo apt-get install build-essential qt5-default 
+sudo apt-get install build-essential qt5-default git
 ```
 
 ##Team
