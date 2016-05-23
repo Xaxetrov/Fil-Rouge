@@ -13,7 +13,7 @@ cd Fil-Rouge/bin
 qmake ../SAWN2.pro
 make
 '''
-You will need a linux tool chain as well as a Qt tool chain.
+You will need a Linux tool chain as well as a Qt tool chain.
 
 For example on Ubuntu you can install all you need with:
 '''
