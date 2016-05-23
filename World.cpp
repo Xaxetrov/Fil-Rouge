@@ -284,7 +284,7 @@ int World::tick()
     }
     if(m_numberOfHerbivore < config::MIN_NUMBER_OF_HERBVORE)
     {
-        #ifdef config::FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+        #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
             feedWithChildOfChampionHerbivore(config::MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
         #else
             feedWithRandomHerbivore(config::MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
@@ -313,7 +313,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
 
   for(int i = 0; i < nbPlayThreads; i++)
   {
-    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList, i+1);
+    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList);
   }
   for(int i = 0; i < nbPlayThreads; i++)
   {
@@ -321,7 +321,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
   }
 }
 
-int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList, int id)
+int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
     int entityErrorsNum = 0;
 
