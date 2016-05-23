@@ -33,7 +33,7 @@ double Neuron::run(std::vector<double> inputs)
     }
     m_lastInputs = inputs;
     //sums the weights * inputs
-    for(unsigned int i=0; i< weightsSize; i++)
+    for(int i=0; i< weightsSize; i++)
     {
         sum += m_weights[i] * inputs[i];
     }

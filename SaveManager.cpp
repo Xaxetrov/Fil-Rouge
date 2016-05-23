@@ -88,6 +88,7 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QXmlStreamWriter & writer)
         writer.writeEndElement();
     }
     writer.writeEndElement();//NeuraleNetwork
+    return 0;
 }
 
 void SaveManager::saveWorld(const World& world, QString savingPath)

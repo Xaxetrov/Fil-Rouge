@@ -333,7 +333,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
 
   for(int i = 0; i < nbPlayThreads; i++)
   {
-    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList, i+1);
+    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList);
   }
   for(int i = 0; i < nbPlayThreads; i++)
   {
@@ -341,7 +341,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
   }
 }
 
-int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList, int id)
+int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
     int entityErrorsNum = 0;
 

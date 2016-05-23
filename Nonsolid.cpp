@@ -10,7 +10,7 @@ NonSolid::NonSolid(Coordinate c, double radius) : Entity(c, radius)
 
 }
 
-int NonSolid::play(int id)
+int NonSolid::play()
 {
     return 0;
 }

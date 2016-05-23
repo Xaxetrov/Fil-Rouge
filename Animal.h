@@ -122,7 +122,7 @@ private :
     double m_damage;
     double m_angle; // m_angle in rad
     int m_fear;
-    bool dead;
+    bool m_dead;
     double m_rotation;
     std::list<std::weak_ptr<Entity>> m_collisionList;
     NeuralNetwork* m_brain;
@@ -150,7 +150,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
 
     // Normalize in the possible range
     if(numberChild < 0) numberChild = 0;
-    else if(numberChild > config::MAX_CHILD_PER_ANIMAL) numberChild = config::MAX_CHILD_PER_ANIMAL;
+    else if((unsigned)numberChild > config::MAX_CHILD_PER_ANIMAL) numberChild = (int)config::MAX_CHILD_PER_ANIMAL;
 
     // Create the new entity around the mother (in a circle)
     int child = 0;
