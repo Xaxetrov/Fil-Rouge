@@ -7,21 +7,21 @@ to discover unsupervised neural network possibilities.
 ##Installation
 ###Linux
 install from command line:
-'''
+```
 git clone https://github.com/Xaxetrov/Fil-Rouge.git
 cd Fil-Rouge/bin
 qmake ../SAWN2.pro
 make
-'''
+```
 You will need a Linux tool chain as well as a Qt tool chain.
 
 For example on Ubuntu you can install all you need with:
-'''
+```
 sudo apt-get install build-essential qt5-default 
-'''
+```
 
 ##Team
-Sebastien Di-Giovanin
+Sebastien Di Giovanni
 
 Bruno Godefroy
 
