@@ -11,6 +11,7 @@ unsigned short config::MIN_NUMBER_OF_HERBVORE = 10;
 unsigned short config::MIN_NUMBER_OF_CARNIVORE = 0;
 unsigned short config::MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 unsigned short config::MAX_NUMBER_CARNIVORE_CHAMPION = 0;
+unsigned short config::PROBABILITY_TO_BE_CHILD_OF_CHAMPION = 50; //between 0 and 100
 
 // Neurale network weight modification probability
 double config::NN_WEIGHT_CHANGE_PROBABILITY = 0.1; // 10% chance of change by weight
