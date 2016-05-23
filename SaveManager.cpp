@@ -245,7 +245,7 @@ NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
 int SaveManager::parseNeuralNetwork(QXmlStreamReader& reader, std::vector<std::vector<std::vector<double> > > &neuronWeights)
 {   QString weights;
     QXmlStreamAttributes attributes;
-    int inputsNum;
+    int inputsNum=0;
 
     if (reader.tokenType() != QXmlStreamReader::StartElement || reader.name() != "NeuralNetwork")
     {   std::cout << "Error in reading NeuralNetwork" << std::endl;

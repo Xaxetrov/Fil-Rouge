@@ -12,11 +12,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = SWAN2
 TEMPLATE = app
 
-#DESTDIR=bin
-#OBJECTS_DIR = build
-#MOC_DIR = build
-
+#right std call
 QMAKE_CXXFLAGS += -std=c++11
+
+#release optimizations
+QMAKE_CXXFLAGS_RELEASE -= -O1
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
 
 SOURCES += main.cpp\
         mainwindow.cpp \
