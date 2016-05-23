@@ -80,11 +80,12 @@ public:
     static std::mutex mutexDrink;
     static std::mutex mutexVegetal;
     static std::mutex mutexMeat;
+    static std::mutex mutexChampionSaving;
 
 private:
     //Privates methods
     bool isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<Entity> e2) const;
-    void saveNeuralNetwork(std::shared_ptr<Animal> a);
+    static void saveNeuralNetwork(std::shared_ptr<Animal> a);
     double computeScore(std::shared_ptr<Animal> animal);
     NeuralNetwork * determineBestNN();
     void createGridOfEntities();
@@ -97,12 +98,12 @@ private:
     static int playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
 
     //Private attributes
-    unsigned m_tickPassed; //How old that world is ?
+    static unsigned m_tickPassed; //How old that world is ?
     static unsigned m_numberOfLiving;
     static unsigned m_numberOfHerbivore;
     static unsigned m_numberOfCarnivore;
-    std::multimap<int,NeuralNetwork> bestHerbivore;
-    std::multimap<int,NeuralNetwork> bestCarnivore;
+    static std::multimap<int,NeuralNetwork> bestHerbivore;
+    static std::multimap<int,NeuralNetwork> bestCarnivore;
     std::list<std::pair<std::shared_ptr<Animal>,double>> m_attackList;
     std::list<std::pair<Herbivore*,std::shared_ptr<Herbivore>>> m_mateListHerbivores;
     std::list<std::pair<Carnivore*,std::shared_ptr<Carnivore>>> m_mateListCarnivores;

@@ -10,7 +10,7 @@
 #include "EntityFrame.h"
 #include "World.h"
 #include "WorldCreator.h"
-#include "Timelinewidget.h"
+#include "TimeLineWidget.h"
 #include "ParametersWidget.h"
 
 namespace Ui {

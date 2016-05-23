@@ -40,6 +40,9 @@ const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 const unsigned int NB_LAYERS = 3;
 const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4, 12, 3};
 
+// Reproduction
+#define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+
 class config
 {
 public:
@@ -55,6 +58,7 @@ public:
   static unsigned short MIN_NUMBER_OF_CARNIVORE;
   static unsigned short MAX_NUMBER_HERBIVORE_CHAMPION;
   static unsigned short MAX_NUMBER_CARNIVORE_CHAMPION;
+  static unsigned short PROBABILITY_TO_BE_CHILD_OF_CHAMPION; //between 0 and 100
 
   // Neurale network weight modification probability
   static double NN_WEIGHT_CHANGE_PROBABILITY; // 10% chance of change by weight

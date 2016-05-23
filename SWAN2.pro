@@ -52,12 +52,12 @@ SOURCES += main.cpp\
     WorldCreator.cpp \
     WorldCreatorResourcesWidget.cpp \
     WorldCreatorAnimalsWidget.cpp \
-    Timelinewidget.cpp \
-    qcustomplot.cpp \
+    lib/qcustomplot.cpp \
     WorldEditor.cpp \
     config/config.cpp \
     ParametersWidget.cpp \
-    WorldEditorToolBox.cpp
+    WorldEditorToolBox.cpp \
+    TimeLineWidget.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -95,11 +95,11 @@ HEADERS  += mainwindow.h \
     WorldCreator.h \
     WorldCreatorResourcesWidget.h \
     WorldCreatorAnimalsWidget.h \
-    Timelinewidget.h \
-    qcustomplot.h \
+    lib/qcustomplot.h \
     WorldEditor.h \
     ParametersWidget.h \
-    WorldEditorToolBox.h
+    WorldEditorToolBox.h \
+    TimeLineWidget.h
 
 FORMS    += mainwindow.ui \
     WorldCreator.ui \
