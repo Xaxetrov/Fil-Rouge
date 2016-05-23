@@ -174,6 +174,7 @@ void WorldEditor::onWorldSizeChanged()
         resources->clear();
         updateScene();
     }
+    this->fitInView(0,0,config::WORLD_SIZE_X,config::WORLD_SIZE_Y,Qt::KeepAspectRatio);
 }
 
 
