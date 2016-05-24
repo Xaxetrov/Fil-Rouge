@@ -88,6 +88,7 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QXmlStreamWriter & writer)
         writer.writeEndElement();
     }
     writer.writeEndElement();//NeuraleNetwork
+    return 0;
 }
 
 void SaveManager::saveWorld(const World& world, QString savingPath)
@@ -244,7 +245,7 @@ NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
 int SaveManager::parseNeuralNetwork(QXmlStreamReader& reader, std::vector<std::vector<std::vector<double> > > &neuronWeights)
 {   QString weights;
     QXmlStreamAttributes attributes;
-    int inputsNum;
+    int inputsNum=0;
 
     if (reader.tokenType() != QXmlStreamReader::StartElement || reader.name() != "NeuralNetwork")
     {   std::cout << "Error in reading NeuralNetwork" << std::endl;
@@ -366,6 +367,7 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
 {
   int xWorld, yWorld;
   unsigned ageWorld;
+  bool sizeXfound=false, sizeYfound=false;
 
   if(reader.tokenType() != QXmlStreamReader::StartElement &&
      reader.name() != "World")
@@ -385,10 +387,16 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
       else if(reader.name() == "x")
       {
         xWorld = reader.readElementText().toInt();
+        sizeXfound = true;
+        if(sizeXfound && sizeYfound)
+            world->setSize(xWorld,yWorld);
       }
       else if(reader.name() == "y")
       {
         yWorld = reader.readElementText().toInt();
+        sizeYfound = true;
+        if(sizeXfound && sizeYfound)
+            world->setSize(xWorld,yWorld);
       }
       else if(reader.name() == "age")
       {
@@ -401,7 +409,7 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
     }
     reader.readNext();
   }
-  world->setSize(xWorld,yWorld);
+
   world->setWorldAge(ageWorld);
 }
 

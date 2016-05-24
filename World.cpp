@@ -5,7 +5,7 @@
 #include "Carnivore.h"
 #include "Meat.h"
 #include "config/config.h"
-#include "Timelinewidget.h"
+#include "TimeLineWidget.h"
 
 #include <algorithm>
 #include <iostream>
@@ -22,6 +22,9 @@ unsigned int World::m_cellSizeX;
 unsigned int World::m_cellSizeY;
 std::list<std::shared_ptr<Entity>> World::m_entities;
 std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> World::m_gridOfEntities;
+std::multimap<int,NeuralNetwork> World::bestHerbivore;
+std::multimap<int,NeuralNetwork> World::bestCarnivore;
+unsigned World::m_tickPassed;
 
 std::mutex World::mutexGetEntity;
 std::mutex World::mutexAttributes;
@@ -34,6 +37,7 @@ std::mutex World::mutexMateList;
 std::mutex World::mutexDrink;
 std::mutex World::mutexVegetal;
 std::mutex World::mutexMeat;
+std::mutex World::mutexChampionSaving;
 
 World::World()
 {
@@ -44,6 +48,8 @@ World::World()
     m_tickPassed = 0;
 
     //Initialise static variables
+    bestCarnivore.clear();
+    bestHerbivore.clear();
     m_numberOfCarnivore = 0;
     m_numberOfHerbivore = 0;
     m_numberOfLiving = 0;
@@ -158,27 +164,35 @@ void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
 {
     if(bestHerbivore.size() == 0)
     {
+        feedWithRandomHerbivore(numberOfEntityToAdd);
         return;
     }
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
-      int x = rand() % config::WORLD_SIZE_X;
-      int y = rand() % config::WORLD_SIZE_Y;
-      //generate a brain from the one of the last best herbivore
-      //pick one brain randomly
-      auto ite = bestHerbivore.begin();
-      std::advance(ite,rand() % bestHerbivore.size());
-      NeuralNetwork n1 = ite->second;
-      //pick an other one randomly (they can be the same...)
-      ite = bestHerbivore.begin();
-      std::advance(ite,rand() % bestHerbivore.size());
-      NeuralNetwork n2 = ite->second;
-      //mixe them up
-      NeuralNetwork *nn = new NeuralNetwork(n1,n2);
-      //make a new Herbivore from that brain
-      std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
-      animal->turn( (double)(rand()%628)/100.0);
-      addEntity(animal);
+        if(rand() % 100 < config::PROBABILITY_TO_BE_CHILD_OF_CHAMPION)
+        {
+              int x = rand() % config::WORLD_SIZE_X;
+              int y = rand() % config::WORLD_SIZE_Y;
+              //generate a brain from the one of the last best herbivore
+              //pick one brain randomly
+              auto ite = bestHerbivore.begin();
+              std::advance(ite,rand() % bestHerbivore.size());
+              NeuralNetwork n1 = ite->second;
+              //pick an other one randomly (they can be the same...)
+              ite = bestHerbivore.begin();
+              std::advance(ite,rand() % bestHerbivore.size());
+              NeuralNetwork n2 = ite->second;
+              //mixe them up
+              NeuralNetwork *nn = new NeuralNetwork(n1,n2);
+              //make a new Herbivore from that brain
+              std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
+              animal->turn( (double)(rand()%628)/100.0);
+              addEntity(animal);
+        }
+        else
+        {
+            feedWithRandomHerbivore(1);
+        }
     }
 }
 
@@ -198,27 +212,35 @@ void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
 {
     if(bestCarnivore.size() == 0)
     {
+        feedWithRandomCarnivore(numberOfEntityToAdd);
         return;
     }
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
-      int x = rand() % config::WORLD_SIZE_X;
-      int y = rand() % config::WORLD_SIZE_Y;
-      //generate a brain from the one of the last best carnivore
-      //pick one brain randomly
-      auto ite = bestCarnivore.begin();
-      std::advance(ite,rand() % bestCarnivore.size());
-      NeuralNetwork n1 = ite->second;
-      //pick an other one randomly (they can be the same...)
-      ite = bestCarnivore.begin();
-      std::advance(ite,rand() % bestCarnivore.size());
-      NeuralNetwork n2 = ite->second;
-      //mixe them up
-      NeuralNetwork *nn = new NeuralNetwork(n1,n2);
-      //make a new Carnivore from that brain
-      std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
-      animal->turn( (double)(rand()%628)/100.0);
-      addEntity(animal);
+        if(rand() % 100 < config::PROBABILITY_TO_BE_CHILD_OF_CHAMPION)
+        {
+            int x = rand() % config::WORLD_SIZE_X;
+            int y = rand() % config::WORLD_SIZE_Y;
+            //generate a brain from the one of the last best carnivore
+            //pick one brain randomly
+            auto ite = bestCarnivore.begin();
+            std::advance(ite,rand() % bestCarnivore.size());
+            NeuralNetwork n1 = ite->second;
+            //pick an other one randomly (they can be the same...)
+            ite = bestCarnivore.begin();
+            std::advance(ite,rand() % bestCarnivore.size());
+            NeuralNetwork n2 = ite->second;
+            //mixe them up
+            NeuralNetwork *nn = new NeuralNetwork(n1,n2);
+            //make a new Carnivore from that brain
+            std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, this,nn,config::MAX_MATING));
+            animal->turn( (double)(rand()%628)/100.0);
+            addEntity(animal);
+        }
+        else
+        {
+            feedWithRandomCarnivore(1);
+        }
     }
 }
 
@@ -284,7 +306,7 @@ int World::tick()
     }
     if(m_numberOfHerbivore < config::MIN_NUMBER_OF_HERBVORE)
     {
-        #ifdef config::FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+        #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
             feedWithChildOfChampionHerbivore(config::MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
         #else
             feedWithRandomHerbivore(config::MIN_NUMBER_OF_HERBVORE-m_numberOfHerbivore);
@@ -313,7 +335,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
 
   for(int i = 0; i < nbPlayThreads; i++)
   {
-    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList, i+1);
+    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList);
   }
   for(int i = 0; i < nbPlayThreads; i++)
   {
@@ -321,7 +343,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
   }
 }
 
-int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList, int id)
+int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
     int entityErrorsNum = 0;
 
@@ -351,25 +373,24 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
             entityErrorsNum++;
         }
 
-        std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e);
-
-        if(animal)
+        if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e))
         {
             if(animal->isDead())
             {
                 //std::cout << id << " : dead1" << endl;
                 #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
+                    mutexChampionSaving.lock();
                     saveNeuralNetwork(animal);
+                    mutexChampionSaving.unlock();
                 #endif
                 int meatQuantity = config::MAX_HUNGER - animal->getHunger() + 100;
 
                 World::mutexListEntities.lock();
                 m_entities.push_back(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
-                World::mutexListEntities.unlock();
-
                 World::mutexGridOfEntities.lock();
                 m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(*(--m_entities.end()));
                 World::mutexGridOfEntities.unlock();
+                World::mutexListEntities.unlock();
             }
             else
             {
@@ -389,12 +410,12 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
                 World::mutexAttributes.unlock();
             }
         }
+
         if((*e)->isDead())
         {
-          //std::cout << id << " : dead2" << endl;
-            World::mutexDeadList.lock();
-            deadList->push_back(e);
-            World::mutexDeadList.unlock();
+          World::mutexDeadList.lock();
+          deadList->push_back(e);
+          World::mutexDeadList.unlock();
         }
     }
     return 0;
@@ -420,7 +441,7 @@ bool World::isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<
 
 void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
 {
-    int age = getWorldAge() - a->getCreationDate();
+    int age = m_tickPassed - a->getCreationDate();
     if(std::shared_ptr<Herbivore> h = std::dynamic_pointer_cast<Herbivore>(a))
     {
         if(bestHerbivore.size()==0 || bestHerbivore.rbegin()->first < age )

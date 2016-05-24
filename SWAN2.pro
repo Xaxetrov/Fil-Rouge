@@ -12,11 +12,17 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = SWAN2
 TEMPLATE = app
 
-#DESTDIR=bin
-#OBJECTS_DIR = build
-#MOC_DIR = build
-
+#right std call
 QMAKE_CXXFLAGS += -std=c++11
+
+#release optimizations
+QMAKE_CXXFLAGS_RELEASE -= -O1
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
+QMAKE_LFLAGS_RELEASE -= -O1
+QMAKE_LFLAGS_RELEASE -= -O2
+QMAKE_LFLAGS_RELEASE += -O3
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -50,12 +56,12 @@ SOURCES += main.cpp\
     WorldCreator.cpp \
     WorldCreatorResourcesWidget.cpp \
     WorldCreatorAnimalsWidget.cpp \
-    Timelinewidget.cpp \
-    qcustomplot.cpp \
+    lib/qcustomplot.cpp \
     WorldEditor.cpp \
     config/config.cpp \
     ParametersWidget.cpp \
-    WorldEditorToolBox.cpp
+    WorldEditorToolBox.cpp \
+    TimeLineWidget.cpp
 
 HEADERS  += mainwindow.h \
     Entity.h \
@@ -93,11 +99,11 @@ HEADERS  += mainwindow.h \
     WorldCreator.h \
     WorldCreatorResourcesWidget.h \
     WorldCreatorAnimalsWidget.h \
-    Timelinewidget.h \
-    qcustomplot.h \
+    lib/qcustomplot.h \
     WorldEditor.h \
     ParametersWidget.h \
-    WorldEditorToolBox.h
+    WorldEditorToolBox.h \
+    TimeLineWidget.h
 
 FORMS    += mainwindow.ui \
     WorldCreator.ui \

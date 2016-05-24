@@ -83,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //custom load for debug
 void MainWindow::loadWorld()
 {
-    const QString savingPath("../save/world.xml");
+    const QString savingPath("../save/World/world.xml");
     SaveManager saveManager;
     world = saveManager.loadWorld(savingPath);
 

@@ -12,18 +12,22 @@
 using namespace std;
 
 Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world) :
-    Solid(x, y, config::INITIAL_RADIUS), m_energy(energy), m_age(0), m_maxSpeed(maxSpeed), m_damage(damage), m_world(world)
+    Solid(x, y, config::INITIAL_RADIUS),
+    m_health(config::MAX_HEALTH),
+    m_hunger(0),
+    m_thirst(0),
+    m_mating(0),
+    m_speed(0),
+    m_energy(energy),
+    m_world(world),
+    m_age(0),
+    m_maxSpeed(maxSpeed),
+    m_damage(damage),
+    m_angle(0),
+    m_fear(0),
+    m_dead(false),
+    m_vision(new Vision(*this, m_angle, world->getGridOfEntities()))
 {
-    m_angle = 0; //initialize angle here
-    m_hunger = 0;
-    m_thirst = 0;
-    m_speed = 0;
-    m_health = config::MAX_HEALTH;
-    dead = false;
-    m_fear = 0;
-    m_mating = config::MAX_MATING;
-    m_vision = new Vision(*this, m_angle, world->getGridOfEntities());
-
     //Determine if Animal is female or not (1/2 chance)
     static std::mt19937 generator(random_device{}());
     bernoulli_distribution distribution(0.5);
@@ -65,9 +69,9 @@ int Animal::play()
     if(m_energy > config::DEFAULT_ENERGY)
       m_energy = config::DEFAULT_ENERGY;
 
-    if(m_health <= 0 || dead)
+    if(m_health <= 0 || m_dead)
     {
-      dead = true;
+      m_dead = true;
       return 0;// if dead no need to continue playing.
       //m_world->killEntity(this); // RIP
     }
@@ -86,10 +90,6 @@ int Animal::play()
     {
         m_health--;
     }
-    else if(m_hunger < 0)
-    {
-        m_hunger = 0;
-    }
 
     if(m_thirst >= config::MAX_THIRST)
     {
@@ -100,10 +100,6 @@ int Animal::play()
     {
       m_health--;
     }
-    else if(m_thirst < 0)
-    {
-        m_thirst = 0;
-    }
 
     if(m_mating != config::MAX_MATING)
     {
@@ -112,7 +108,6 @@ int Animal::play()
 
     // The animal looks around itself
     m_vision->see();
-
     // get mapping of inputs
     mappageInput();
     // The animal decides what to do
@@ -530,7 +525,7 @@ NeuralNetwork *Animal::evolveNN()
 
 bool Animal::isDead() const
 {
-   return dead;
+   return m_dead;
 }
 
 bool Animal::isFemale() const

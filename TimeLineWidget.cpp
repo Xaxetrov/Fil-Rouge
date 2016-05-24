@@ -1,4 +1,4 @@
-#include "Timelinewidget.h"
+#include "TimeLineWidget.h"
 #include "ui_Timelinewidget.h"
 #include "WorldColors.h"
 #include <QPainter>

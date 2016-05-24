@@ -4,7 +4,7 @@
 #include <QTabWidget>
 #include <QPaintEvent>
 #include <QVector>
-#include "qcustomplot.h"
+#include "lib/qcustomplot.h"
 
 namespace Ui {
 class TimelineWidget;

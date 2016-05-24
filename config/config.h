@@ -24,7 +24,7 @@ const unsigned int ID_MEAT = 13;
 // Vision
 const int NB_VISIONSECTORS_LIVING = 3;
 const int NB_VISIONSECTORS_NONLIVING = 3;
-const int MAX_RANGE_OF_VISION = 100;
+const int MAX_RANGE_OF_VISION = 200;
 const double VISIONSECTORS_LIVING[NB_VISIONSECTORS_LIVING][3] = {
    {-0.40, 0.40, MAX_RANGE_OF_VISION}, /* numbers represent angle1, angle2 and range */
    {-1.5, -0.40, 0.7 * MAX_RANGE_OF_VISION} ,
@@ -38,7 +38,10 @@ const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 
 // Neural network
 const unsigned int NB_LAYERS = 3;
-const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4, 12, 3};
+const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4, 5, 3};
+
+// Reproduction
+#define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
 
 class config
 {
@@ -55,6 +58,7 @@ public:
   static unsigned short MIN_NUMBER_OF_CARNIVORE;
   static unsigned short MAX_NUMBER_HERBIVORE_CHAMPION;
   static unsigned short MAX_NUMBER_CARNIVORE_CHAMPION;
+  static unsigned short PROBABILITY_TO_BE_CHILD_OF_CHAMPION; //between 0 and 100
 
   // Neurale network weight modification probability
   static double NN_WEIGHT_CHANGE_PROBABILITY; // 10% chance of change by weight

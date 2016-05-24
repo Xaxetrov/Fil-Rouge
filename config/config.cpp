@@ -1,7 +1,7 @@
 #include "config.h"
 
 // Threads
-unsigned short config::NB_THREADS = 1;
+unsigned short config::NB_THREADS = 4;
 
 // World
 int config::WORLD_SIZE_X = 500;
@@ -11,6 +11,7 @@ unsigned short config::MIN_NUMBER_OF_HERBVORE = 10;
 unsigned short config::MIN_NUMBER_OF_CARNIVORE = 0;
 unsigned short config::MAX_NUMBER_HERBIVORE_CHAMPION = 10;
 unsigned short config::MAX_NUMBER_CARNIVORE_CHAMPION = 0;
+unsigned short config::PROBABILITY_TO_BE_CHILD_OF_CHAMPION = 50; //between 0 and 100
 
 // Neurale network weight modification probability
 double config::NN_WEIGHT_CHANGE_PROBABILITY = 0.1; // 10% chance of change by weight
@@ -18,7 +19,7 @@ double config::NN_WEIGHT_CHANGE_AVERAGE_VALUE = 0; // the average value added to
 double config::NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.05; // the value added to a weight as a standart deviation of 0.05
 
 // User Interface
-unsigned int config::UPDATE_TIMER_INTERVALE = 2; //ms
+unsigned int config::UPDATE_TIMER_INTERVALE = 1; //ms
 
 // Resource evolution (proportional to the resource surface)
 int config::EVOLUTION_WATER = 5;

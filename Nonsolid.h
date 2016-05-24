@@ -10,7 +10,7 @@ public:
     NonSolid(double x, double y, double radius);
     NonSolid(Coordinate c, double radius);
 
-    virtual int play(int id);
+    virtual int play();
 
     bool isLiving() { return false; } // Temporary
 };

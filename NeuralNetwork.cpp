@@ -40,12 +40,16 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
             || father.getLayers().size() != mother.getLayers().size())
     {
             cerr << "error, mother and father NN of different sizes" << endl;
+            cerr << "error in numbers of layers" << endl;
+            cerr << father.getLayers().size() << " " << mother.getLayers().size() << endl;
     }
     for(unsigned int i=0; i<father.getLayers().size(); i++)
     {
         if (father.getLayers()[i].getNeurons().size() != mother.getLayers()[i].getNeurons().size())
         {
             cerr << "error, mother and father NN of different sizes" << endl;
+            cerr << "error in layers " << i << endl;
+            cerr << father.getLayers()[i].getNeurons().size() << " " << mother.getLayers()[i].getNeurons().size() << endl;
         }
     }
     m_inputNum = father.getInputNum();
