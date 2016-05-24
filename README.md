@@ -6,14 +6,16 @@ As it's a optional project we can choose what ever subject we wanted, so we deci
 to discover unsupervised neural network possibilities.
 ##Installation
 ###Linux
-install from command line:
+to install from command line just run:
 ```
 git clone https://github.com/Xaxetrov/Fil-Rouge.git
 cd Fil-Rouge/bin
 qmake ../SAWN2.pro
 make
 ```
-You will need a Linux tool chain as well as a Qt tool chain as well as git.
+Then you just have to run the `SWAN2` file that you can found in your `Fil-Rouge/bin` folder.
+
+You will need a Linux and Qt tool chain as well as git.
 
 For example on Ubuntu you can install all you need with:
 ```
