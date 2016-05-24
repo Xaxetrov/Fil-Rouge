@@ -173,6 +173,7 @@ void Animal::move()
 void Animal::mappageInput()
 {
     m_nnInputs.clear();
+    m_nnInputs.push_back((double) m_fear / (double) config::MAX_FEAR);
     m_nnInputs.push_back((double)m_hunger / (double)config::MAX_HUNGER);
     m_nnInputs.push_back((double)m_thirst / (double)config::MAX_THIRST);
     m_nnInputs.push_back((double)m_health / (double)config::MAX_HEALTH);
