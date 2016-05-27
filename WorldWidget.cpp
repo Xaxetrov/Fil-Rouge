@@ -62,7 +62,7 @@ void WorldWidget::updateScene()
     struct timeb tp;
     ftime(&tp);
     //update scene only every 20 ms (50 fps max)
-    if(tp.time > lastSceneUpdate.time || tp.millitm > lastSceneUpdate.millitm+33)//30fps
+    if(tp.time > lastSceneUpdate.time || tp.millitm > lastSceneUpdate.millitm+(1000.0/config::FPS))//30fps
     {
         forcedSceneUpdate();
         lastSceneUpdate = tp;

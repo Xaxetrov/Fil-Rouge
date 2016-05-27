@@ -46,7 +46,7 @@ const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 
 // Neural network
 const unsigned int NB_LAYERS = 4;
-const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+5, 16, 12, 3};
+const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4+3, 16, 12, 3};
 
 // Reproduction
 #define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
@@ -75,6 +75,7 @@ public:
 
   // User Interface
   static unsigned UPDATE_TIMER_INTERVALE; //ms
+  static unsigned FPS; //ms
 
   // Resource evolution (proportional to the resource surface)
   static double EVOLUTION_WATER;

@@ -31,6 +31,7 @@ void ParametersWidget::showEvent( QShowEvent* event ) {
     QWidget::showEvent( event );
 
     ui->updateInterval->setText(QString::number(config::UPDATE_TIMER_INTERVALE));
+    ui->FPS->setText(QString::number(config::FPS));
     ui->nbThreads->setText(QString::number(config::NB_THREADS));
     ui->worldWidth->setText(QString::number(config::WORLD_SIZE_X));
     ui->worldHeight->setText(QString::number(config::WORLD_SIZE_Y));
@@ -66,6 +67,7 @@ void ParametersWidget::showEvent( QShowEvent* event ) {
 void ParametersWidget::updateUIParam()
 {
   config::UPDATE_TIMER_INTERVALE = ui->updateInterval->text().toDouble();
+  config::FPS = ui->FPS->text().toDouble();
   config::NB_THREADS = ui->nbThreads->text().toDouble();
   m_worldWidget->updateTimerInterval();
 }

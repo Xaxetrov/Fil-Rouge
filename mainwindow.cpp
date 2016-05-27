@@ -194,7 +194,7 @@ void MainWindow::setSelectedAnimal(std::weak_ptr<Animal> a)
 
 void MainWindow::updateStatusBar()
 {
-    QString message = tr("Number of living: %1   |   Age of the World: %2 ticks   |   Generation %3").arg(world.getNumberOfLiving()).arg(world.getWorldAge()).arg(world.getGenerationNumber());
+    QString message = tr("Number of living: %1   |   Age of the World: %2 ticks   |   Generation %3").arg(world.getNumberOfLiving()).arg(world.getWorldAge()).arg((world.getGenerationNumber()+1));
     this->statusBar()->showMessage(message);
 }
 

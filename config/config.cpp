@@ -20,6 +20,7 @@ double config::NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.05; // the value added to
 
 // User Interface
 unsigned int config::UPDATE_TIMER_INTERVALE = 1; //ms
+unsigned int config::FPS = 30; //ms
 
 // Resource evolution (proportional to the resource surface)
 double config::EVOLUTION_WATER = 5;

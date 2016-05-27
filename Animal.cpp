@@ -174,11 +174,11 @@ void Animal::move()
 void Animal::mappageInput()
 {
     m_nnInputs.clear();
-    m_nnInputs.push_back((double) m_fear / (double) config::MAX_FEAR);
     m_nnInputs.push_back((double)m_hunger / (double)config::MAX_HUNGER);
     m_nnInputs.push_back((double)m_thirst / (double)config::MAX_THIRST);
     m_nnInputs.push_back((double)m_health / (double)config::MAX_HEALTH);
     m_nnInputs.push_back((double)m_mating / (double)config::MAX_MATING);
+
     vector<std::shared_ptr<Percepted> > percepted = m_vision->getPercepted();
     for(std::shared_ptr<Percepted> p:percepted)
     {
@@ -194,6 +194,11 @@ void Animal::mappageInput()
             m_nnInputs.push_back(1);//if nothing is seen the max distance is send
         }
     }
+
+    // Memory of the last tick
+    m_nnInputs.push_back(m_speedPercentage/7);
+    m_nnInputs.push_back(m_rotation*5);
+    m_nnInputs.push_back((double)m_fear / (double)config::MAX_FEAR);
 }
 
 void Animal::mappageOutput()
@@ -205,6 +210,7 @@ void Animal::mappageOutput()
         exit(-1);
     }
 #endif
+
     m_speedPercentage = m_nnOutputs[0]*7;
     m_rotation = m_nnOutputs[1]/5;
     m_fear = m_nnOutputs[2]*config::MAX_FEAR;
