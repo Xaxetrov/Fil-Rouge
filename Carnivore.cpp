@@ -2,17 +2,17 @@
 #include "Meat.h"
 
 
-Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, World *world):
-    Animal(x,y,maxSpeed,damage,energy,world)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world):
+    Animal(x,y,maxSpeed,damage,energy,generationNumber,world)
 {
 }
-Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, World *world, bool sex):
-    Animal(x,y,maxSpeed,damage,energy,world, sex)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world, bool sex):
+    Animal(x,y,maxSpeed,damage,energy,generationNumber,world, sex)
 {
 }
 
-Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, World *world, NeuralNetwork * brain, int mating):
-    Animal(x,y,maxSpeed,damage,energy,world, brain, mating)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world, NeuralNetwork * brain, int mating):
+    Animal(x,y,maxSpeed,damage,energy,generationNumber,world, brain, mating)
 {
 }
 

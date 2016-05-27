@@ -109,8 +109,8 @@ void MainWindow::loadWorld()
 //
     srand(std::time(0));
     //world.feedWithRandomAnimal(40);
-    world.feedWithRandomHerbivore(20);
-    world.feedWithRandomCarnivore(7);
+    //world.feedWithRandomHerbivore(20);
+    //world.feedWithRandomCarnivore(7);
 
     /*shared_ptr<Animal> male(make_shared<Animal>(100, 250, 10, 50, 2, &world, false) );
     shared_ptr<Animal> female(make_shared<Animal>(300, 250, 10, 50, 2, &world, true) );
@@ -194,7 +194,7 @@ void MainWindow::setSelectedAnimal(std::weak_ptr<Animal> a)
 
 void MainWindow::updateStatusBar()
 {
-    QString message = tr("number of living: %1 Age of the World: %2 ticks").arg(world.getNumberOfLiving()).arg(world.getWorldAge());
+    QString message = tr("Number of living: %1   |   Age of the World: %2 ticks   |   Generation %3").arg(world.getNumberOfLiving()).arg(world.getWorldAge()).arg(world.getGenerationNumber());
     this->statusBar()->showMessage(message);
 }
 

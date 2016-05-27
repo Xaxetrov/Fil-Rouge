@@ -2,17 +2,17 @@
 #include "Vegetal.h"
 
 
-Herbivore::Herbivore(double x, double y, int maxSpeed, double damage, double energy, World *world):
-    Animal(x,y,maxSpeed,damage,energy,world)
+Herbivore::Herbivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world):
+    Animal(x,y,maxSpeed,damage,energy,generationNumber,world)
 {
 }
-Herbivore::Herbivore(double x, double y, int maxSpeed, double damage, double energy, World *world, bool sex):
-    Animal(x,y,maxSpeed,damage,energy,world, sex)
+Herbivore::Herbivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world, bool sex):
+    Animal(x,y,maxSpeed,damage,energy,generationNumber,world, sex)
 {
 }
 
-Herbivore::Herbivore(double x, double y, int maxSpeed, double damage, double energy, World *world, NeuralNetwork * brain, int mating):
-    Animal(x,y,maxSpeed,damage,energy,world, brain, mating)
+Herbivore::Herbivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world, NeuralNetwork * brain, int mating):
+    Animal(x,y,maxSpeed,damage,energy,generationNumber,world, brain, mating)
 {
 }
 

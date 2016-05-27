@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world) :
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world) :
     Solid(x, y, config::INITIAL_RADIUS),
     m_health(config::MAX_HEALTH),
     m_hunger(0),
@@ -19,6 +19,7 @@ Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, W
     m_mating(0),
     m_speed(0),
     m_energy(energy),
+    m_generationNumber(generationNumber),
     m_world(world),
     m_age(0),
     m_maxSpeed(maxSpeed),
@@ -42,13 +43,13 @@ Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, W
     setCreationDate(world->getWorldAge());
 }
 
-Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex) : Animal(x, y, maxSpeed, damage, energy, world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, bool sex) : Animal(x, y, maxSpeed, damage, energy, generationNumber, world)
 {
     m_female = sex;
 }
 
-Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating) :
-    Animal(x,y,maxSpeed,damage,energy,world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, NeuralNetwork * brain, unsigned int mating) :
+    Animal(x,y,maxSpeed,damage,energy,generationNumber,world)
 {
     m_mating = mating;
     m_brain = brain;

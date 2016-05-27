@@ -21,9 +21,9 @@ class Animal : public Solid, public std::enable_shared_from_this<Animal>
 {
 public:
     //ctor, dtor
-    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world);
-    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex);
-    Animal(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, unsigned int mating = 0);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, bool sex);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, NeuralNetwork * brain, unsigned int mating = 0);
     ~Animal();
 
     //getters
@@ -52,6 +52,7 @@ public:
     std::vector<std::weak_ptr<Entity> > getSubListResourceCollision();
     int getCurrentCellX() const;
     int getCurrentCellY() const;
+    unsigned int getGenerationNumber() const { return m_generationNumber; };
 
     //setters
     void resetMating();
@@ -114,6 +115,7 @@ protected:
     double m_energy;
     double m_score;
     double m_speedPercentage;
+    unsigned int m_generationNumber;
     World * m_world;
 
 private :
@@ -152,6 +154,14 @@ void Animal::reproduce(std::shared_ptr<Living> father)
     if(numberChild < 0) numberChild = 0;
     else if((unsigned)numberChild > config::MAX_CHILD_PER_ANIMAL) numberChild = (int)config::MAX_CHILD_PER_ANIMAL;
 
+    if(numberChild > 0)
+    {
+        if((this->getGenerationNumber() + 1) > m_world->getGenerationNumber())
+            m_world->setGenerationNumber(this->getGenerationNumber() + 1);
+        else if((father->getGenerationNumber() + 1) > m_world->getGenerationNumber())
+            m_world->setGenerationNumber(father->getGenerationNumber() + 1);
+    }
+
     // Create the new entity around the mother (in a circle)
     int child = 0;
     double angleIntervalle = (2*PI)/(double)numberChild;
@@ -175,7 +185,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::DEFAULT_ENERGY, m_world, childBrain) );
+        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::DEFAULT_ENERGY, getGenerationNumber() + 1, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));

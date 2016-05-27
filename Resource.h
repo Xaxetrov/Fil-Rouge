@@ -11,8 +11,8 @@ class Resource : public NonSolid
 {
 public:
     //ctors, dtors
-    Resource(double x, double y, double radius, int quantityPerUnit, int quantityEvolutionPerUnit);
-    Resource(Coordinate c, double radius, int quantityPerUnit, int quantityEvolutionPerUnit);
+    Resource(double x, double y, double radius, int quantityPerUnit, double quantityEvolutionPerUnit);
+    Resource(Coordinate c, double radius, int quantityPerUnit, double quantityEvolutionPerUnit);
 
     //getters
     int getQuantity() const;
@@ -30,8 +30,8 @@ public:
      */
 
 protected :
-    int m_quantity;
-    int m_quantityEvolution;
+    double m_quantity;
+    double m_quantityEvolution;
     int m_maxQuantity;
 };
 

@@ -22,23 +22,31 @@ const unsigned int ID_VEGETAL = 12;
 const unsigned int ID_MEAT = 13;
 
 // Vision
-const int NB_VISIONSECTORS_LIVING = 3;
-const int NB_VISIONSECTORS_NONLIVING = 3;
+const int NB_VISIONSECTORS_LIVING = 7;
+const int NB_VISIONSECTORS_NONLIVING = 7;
 const int MAX_RANGE_OF_VISION = 200;
 const double VISIONSECTORS_LIVING[NB_VISIONSECTORS_LIVING][3] = {
-   {-0.40, 0.40, MAX_RANGE_OF_VISION}, /* numbers represent angle1, angle2 and range */
-   {-1.5, -0.40, 0.7 * MAX_RANGE_OF_VISION} ,
-   {0.40, 1.5, 0.7 * MAX_RANGE_OF_VISION}
+   {-1.4, -0.7, 0.6 * MAX_RANGE_OF_VISION},
+   {-0.7, -0.3, 0.75 * MAX_RANGE_OF_VISION} ,
+   {-0.3, -0.06, 0.9 * MAX_RANGE_OF_VISION},
+   {-0.06, 0.06, MAX_RANGE_OF_VISION},
+   {0.06, 0.3, 0.9 * MAX_RANGE_OF_VISION},
+   {0.3, 0.7, 0.75 * MAX_RANGE_OF_VISION} ,
+   {0.7, 1.4, 0.6 * MAX_RANGE_OF_VISION}
 };
 const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
-   {-0.40, 0.40, MAX_RANGE_OF_VISION}, /* numbers represent angle1, angle2 and range */
-   {-1.5, -0.40, 0.7 * MAX_RANGE_OF_VISION} ,
-   {0.40, 1.5, 0.7 * MAX_RANGE_OF_VISION}
+  {-1.4, -0.7, 0.6 * MAX_RANGE_OF_VISION},
+  {-0.7, -0.3, 0.75 * MAX_RANGE_OF_VISION} ,
+  {-0.3, -0.06, 0.9 * MAX_RANGE_OF_VISION},
+  {-0.06, 0.06, MAX_RANGE_OF_VISION},
+  {0.06, 0.3, 0.9 * MAX_RANGE_OF_VISION},
+  {0.3, 0.7, 0.75 * MAX_RANGE_OF_VISION} ,
+  {0.7, 1.4, 0.6 * MAX_RANGE_OF_VISION}
 };
 
 // Neural network
-const unsigned int NB_LAYERS = 3;
-const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4, 5, 3};
+const unsigned int NB_LAYERS = 4;
+const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4, 16, 12, 3};
 
 // Reproduction
 #define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
@@ -69,9 +77,9 @@ public:
   static unsigned UPDATE_TIMER_INTERVALE; //ms
 
   // Resource evolution (proportional to the resource surface)
-  static int EVOLUTION_WATER;
-  static int EVOLUTION_MEAT;
-  static int EVOLUTION_VEGETAL;
+  static double EVOLUTION_WATER;
+  static double EVOLUTION_MEAT;
+  static double EVOLUTION_VEGETAL;
   static unsigned int VEGETAL_MAXQUANTITY;
   static unsigned int WATER_MAXQUANTITY;
 

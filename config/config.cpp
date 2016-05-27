@@ -22,9 +22,9 @@ double config::NN_WEIGHT_CHANGE_SDANTARD_DEVIATION = 0.05; // the value added to
 unsigned int config::UPDATE_TIMER_INTERVALE = 1; //ms
 
 // Resource evolution (proportional to the resource surface)
-int config::EVOLUTION_WATER = 5;
-int config::EVOLUTION_MEAT = -1;
-int config::EVOLUTION_VEGETAL = 5;
+double config::EVOLUTION_WATER = 5;
+double config::EVOLUTION_MEAT = -0.2;
+double config::EVOLUTION_VEGETAL = 5;
 unsigned int config::VEGETAL_MAXQUANTITY = 5000;
 unsigned int config::WATER_MAXQUANTITY = 5000;
 

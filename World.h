@@ -41,11 +41,14 @@ public:
     int getCellSizeX() const;
     int getCellSizeY() const;
 
+    unsigned int getGenerationNumber() const { return m_generationNumber; };
+
     //I'm as wise as the world. Oh wait...
     unsigned getWorldAge() const {return m_tickPassed;}
 
     void setWorldAge(unsigned tickPassed) {m_tickPassed = tickPassed;}
     void setSize(int size_x, int size_y);
+    void setGenerationNumber(unsigned generationNumber) {m_generationNumber = generationNumber;}
 
     void updateListCollision(std::shared_ptr<Animal> a) const;
     void updateAttackList(std::shared_ptr<Animal> a, double damage);
@@ -65,8 +68,6 @@ public:
     //I'm also almost the master of the time, I can make the world tic for you !
     int tick();
     int tick(int ticsNum);
-
-    void killEntity(std::shared_ptr<Entity> e); // MOUHAHAHAHAHAAAAAAAAAAAAAAAAA
 
     // Mutex - protect access while multithreading
     static std::mutex mutexGetEntity;
@@ -102,6 +103,7 @@ private:
     static unsigned m_numberOfLiving;
     static unsigned m_numberOfHerbivore;
     static unsigned m_numberOfCarnivore;
+    unsigned int m_generationNumber;
     static std::multimap<int,NeuralNetwork> bestHerbivore;
     static std::multimap<int,NeuralNetwork> bestCarnivore;
     std::list<std::pair<std::shared_ptr<Animal>,double>> m_attackList;

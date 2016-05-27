@@ -9,9 +9,9 @@ class World;
 class Herbivore : public Animal
 {
 public:
-    Herbivore(double x, double y, int maxSpeed, double damage, double energy, World * world);
-    Herbivore(double x, double y, int maxSpeed, double damage, double energy, World * world, bool sex);
-    Herbivore(double x, double y, int maxSpeed, double damage, double energy, World * world, NeuralNetwork * brain, int mating = 0);
+    Herbivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world);
+    Herbivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, bool sex);
+    Herbivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, NeuralNetwork * brain, int mating = 0);
 
     virtual unsigned int getTypeId() const { return ID_HERBIVORE; }
     virtual int getNeralNetworkId() const { return NN_ID_HERBIVORE; }

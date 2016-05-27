@@ -14,7 +14,7 @@ public:
     Solid(int x, int y, int radius, int creationDate=0);
 
     //game methods
-    virtual int play(std::mutex * mutexEntities, std::mutex * mutexAttributes, std::mutex * mutexGridOfEntities, std::mutex * mutexListEntities, std::mutex * mutexCollisionList);
+    virtual int play();
     /*
      * Called usually by a tick method. Overload to make your solid play
      */

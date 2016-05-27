@@ -112,6 +112,7 @@ void SaveManager::saveWorld(const World& world, QString savingPath)
     writer.writeTextElement("x", QString::number(world.getSizeX()));
     writer.writeTextElement("y", QString::number(world.getSizeY()));
     writer.writeTextElement("age", QString::number(world.getWorldAge()));
+    writer.writeTextElement("generationNumber", QString::number(world.getGenerationNumber()));
 
     for(auto entity:world.getCopyOfEntities())
     {
@@ -366,7 +367,7 @@ World SaveManager::loadWorld(QString savingPath)
 void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
 {
   int xWorld, yWorld;
-  unsigned ageWorld;
+  unsigned ageWorld, generationNumberWorld = 0;
   bool sizeXfound=false, sizeYfound=false;
 
   if(reader.tokenType() != QXmlStreamReader::StartElement &&
@@ -402,6 +403,10 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
       {
         ageWorld = reader.readElementText().toUInt();
       }
+      else if(reader.name() == "generationNumber")
+      {
+        generationNumberWorld = reader.readElementText().toUInt();
+      }
       else
       { //error
         std::cout << "Unknown Token" << std::endl;
@@ -411,6 +416,7 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
   }
 
   world->setWorldAge(ageWorld);
+  world->setGenerationNumber(generationNumberWorld);
 }
 
 void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
@@ -564,7 +570,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = config::ATTACK_HERBIVORE;
-      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity,maxSpeed, attack, energy, world, nn, mating));
+      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity,maxSpeed, attack, energy, 0, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
       entity->setAngle(angle);
@@ -586,7 +592,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = config::ATTACK_CARNIVORE;
-      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity,maxSpeed, attack, energy, world, nn, mating));
+      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity,maxSpeed, attack, energy, 0, world, nn, mating));
       entity->setSex(sex);
       entity->setAge(age);
       entity->setAngle(angle);

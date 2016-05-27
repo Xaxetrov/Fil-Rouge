@@ -6,7 +6,7 @@ Vegetal::Vegetal(double x, double y, double radius, int quantity) : Resource(x, 
 
 int Vegetal::eat(int quantity)
 {
-    int eated = std::min(quantity,m_quantity);
+    int eated = std::min(quantity,(int)m_quantity);
     m_quantity -= eated;
     return eated;
 }
