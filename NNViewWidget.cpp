@@ -36,13 +36,25 @@ void NNViewWidget::updateView()
         {
           if(inputs.size() == LAYER_SIZES[i-1])
           {
-            double color = 171.0-171.0*inputs[k];
-            if(color < 20)
-              color = 20;
-            else if(color > 171)
-              color = 171;
-
-            connexionPen.setBrush(QColor(171, color, color));
+            double color;
+            if(inputs[k] >= 0)
+            {
+              color = 171.0-171.0*inputs[k];
+              if(color < 20)
+                color = 20;
+              else if(color > 171)
+                color = 171;
+              connexionPen.setBrush(QColor(171, color, color));
+            }
+            else
+            {
+              color = 171.0+140.0*inputs[k];
+              if(color < 65)
+                color = 65;
+              else if(color > 171)
+                color = 171;
+              connexionPen.setBrush(QColor(color, color, 160));
+            }
           }
           else
           {
@@ -82,14 +94,28 @@ void NNViewWidget::updateView()
           neuronActivation = sharedAnimal->getBrain()->getLayers().at(0).getNeurons().at(0).getLastInputs().at(j);
         }
 
-        double color = 171.0-171.0*neuronActivation;
-        if(color < 20)
-          color = 20;
-        else if(color > 171)
-          color = 171;
-        QColor neuronColor(QColor(171, color, color));
+        QColor * neuronColor;
+        if(neuronActivation >= 0)
+        {
+          double color = 171.0-171.0*neuronActivation;
+          if(color < 20)
+            color = 20;
+          else if(color > 171)
+            color = 171;
+          neuronColor = new QColor(QColor(171, color, color));
+        }
+        else
+        {
+          double color = 171.0+140.0*neuronActivation;
+          if(color < 65)
+            color = 65;
+          else if(color > 171)
+            color = 171;
+          neuronColor = new QColor(QColor(color, color, 160));
+        }
         QRect baseSquare(x-1.5, y-1.8, 3, 3);
-        scene.addEllipse(baseSquare,borderPen,neuronColor);
+        scene.addEllipse(baseSquare,borderPen,*neuronColor);
+        delete(neuronColor);
       }
     }
   }
