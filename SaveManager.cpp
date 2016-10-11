@@ -14,9 +14,6 @@
 #include <QString>
 #include <iostream>
 
-SaveManager::SaveManager()
-{
-}
 
 int SaveManager::SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName)
 {
@@ -89,6 +86,42 @@ int SaveManager::SaveNetwork(const NeuralNetwork& nn, QXmlStreamWriter & writer)
     }
     writer.writeEndElement();//NeuraleNetwork
     return 0;
+}
+
+
+
+NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)
+{
+    const QString fileXmlName = neuralNetworkName; //savePath+neuralNetworkName+".xml"; NE FONCTIONNE PAS CHEZ MOI
+    QFile* xmlFile = new QFile(fileXmlName);
+    if (!xmlFile->exists())
+    {   std::cout << "file does not exist" << std::endl;
+        return nullptr;
+    }
+    else if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
+    {   std::cout << "Can't open the file" << std::endl;
+        return nullptr;
+    }
+    QXmlStreamReader reader(xmlFile);
+
+    while (!reader.atEnd())
+    {   QXmlStreamReader::TokenType token = reader.readNext();
+        if (token==QXmlStreamReader::StartDocument)
+        {   continue;
+        }
+
+        if (token==QXmlStreamReader::StartElement)
+        {   if (reader.name()=="NeuralNetwork")
+            {   return LoadNetwork(reader);
+            }
+        }
+    }
+
+    if (reader.hasError())
+    {   std::cout << "Error in reading XML" << std::endl;
+    }
+
+    return nullptr;
 }
 
 void SaveManager::saveWorld(const World& world, QString savingPath)
@@ -198,46 +231,12 @@ void SaveManager::saveResource(const std::shared_ptr<Resource> resource, QXmlStr
     writer.writeEndElement();//Entity
 }
 
-NeuralNetwork* SaveManager::LoadNetwork(QString neuralNetworkName)
-{
-    const QString fileXmlName = neuralNetworkName; //savePath+neuralNetworkName+".xml"; NE FONCTIONNE PAS CHEZ MOI
-    QFile* xmlFile = new QFile(fileXmlName);
-    if (!xmlFile->exists())
-    {   std::cout << "file does not exist" << std::endl;
-        return nullptr;
-    }
-    else if (!xmlFile->open(QIODevice::ReadOnly | QIODevice::Text))
-    {   std::cout << "Can't open the file" << std::endl;
-        return nullptr;
-    }
-    QXmlStreamReader reader(xmlFile);
-
-    while (!reader.atEnd())
-    {   QXmlStreamReader::TokenType token = reader.readNext();
-        if (token==QXmlStreamReader::StartDocument)
-        {   continue;
-        }
-
-        if (token==QXmlStreamReader::StartElement)
-        {   if (reader.name()=="NeuralNetwork")
-            {   return LoadNetwork(reader);
-            }
-        }
-    }
-
-    if (reader.hasError())
-    {   std::cout << "Error in reading XML" << std::endl;
-    }
-
-    return nullptr;
-}
-
 NeuralNetwork* SaveManager::LoadNetwork(QXmlStreamReader & reader)
 {
     std::vector<std::vector<std::vector<double> > > neuronWeights;
     int inputsNum;
     //read the neural network
-    inputsNum=this->parseNeuralNetwork(reader,neuronWeights);
+    inputsNum=parseNeuralNetwork(reader,neuronWeights);
     //create a neural network
     NeuralNetwork * n = new NeuralNetwork(inputsNum,neuronWeights);
     return n;
@@ -347,7 +346,7 @@ void SaveManager::loadWorld(QString savingPath, World *newWorld)
       {
        if(reader.name() == "World")
        {
-          this->parseWorld(newWorld, reader);
+          SaveManager::parseWorld(newWorld, reader);
        }
       }
     }
@@ -383,7 +382,7 @@ void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
     {
       if(reader.name() == "Entity")
       {
-        this->parseEntity(world, reader);
+        SaveManager::parseEntity(world, reader);
       }
       else if(reader.name() == "x")
       {
@@ -601,6 +600,5 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
       entity->setHealth(health);
       world->addEntity(entity);
   }
-
-
 }
+

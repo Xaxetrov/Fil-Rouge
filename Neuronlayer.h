@@ -16,6 +16,8 @@ public:
 
     std::vector<double> run(std::vector<double> inputs);
 
+    void randomise();
+
     void printLayer() const;
 private :
     int m_neuronNum;

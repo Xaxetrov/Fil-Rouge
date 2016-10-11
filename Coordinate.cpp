@@ -2,6 +2,11 @@
 #include <cmath>
 #include <algorithm>
 
+#ifdef USE_INTEL_IPP
+    #include <ipp.h>
+    #include <ippvm.h>
+#endif
+
 Coordinate::Coordinate(double x, double y)
 {
     set(x,y);
@@ -75,7 +80,19 @@ double Coordinate::getAngle(const Coordinate &c1, const Coordinate &c2)
     {
         deltaY += config::WORLD_SIZE_Y;
     }
+#ifndef USE_INTEL_IPP
     return std::atan2(deltaY,deltaX); //atan2 return value in [-pi;pi]
+#else
+    Ipp32f ippDeltaX = static_cast<Ipp32f>(deltaX);
+    Ipp32f ippDeltaY = static_cast<Ipp32f>(deltaY);
+    Ipp32f result;
+    //use poor pressition IPP atan2 function for fast calculation
+    //A11 garantee 11 bits corect (more than 3 decimal digit)
+    //for beter presition A24 can be used (or if switched to 64f
+    //up to A53) cf: intel doc ( https://software.intel.com/en-us/node/503292 )
+    ippsAtan2_32f_A11(&ippDeltaY,&ippDeltaX,&result,1);
+    return static_cast<double>(result);
+#endif
 /*
     double x1 = c1.getX();
     double x2 = c2.getX();

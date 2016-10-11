@@ -2,6 +2,14 @@
 #include <random>
 #include <algorithm>
 #include <iomanip>
+#include "config/config.h"
+#include <cstdlib>
+#include <ctime>
+
+#ifdef USE_INTEL_IPP
+    #include <ipp.h>
+    #include <ipps.h>
+#endif
 
 Neuron::Neuron(int inputNum) : m_inputNum(inputNum)
 {
@@ -57,4 +65,36 @@ void Neuron::printNeuron() const
     {
         std::cout << m_weights[i] << " ";
     }
+}
+
+void Neuron::randomise()
+{
+    static std::mt19937 modificationGenerator(std::random_device{}());
+    std::bernoulli_distribution modificationDistribution(config::NN_WEIGHT_CHANGE_PROBABILITY); // % chance to change one weight of a neurone
+    static std::mt19937 randomChangeGenerator(std::random_device{}());
+    std::normal_distribution<double> randomChangeDistribution(config::NN_WEIGHT_CHANGE_AVERAGE_VALUE,
+                                                         config::NN_WEIGHT_CHANGE_SDANTARD_DEVIATION); // change on weight are of average 0 and standart variation 0,1 (addition)
+
+    double weight;
+    for(unsigned i=0 ; i<m_weights.size() ; i++)
+    {
+        if(modificationDistribution(modificationGenerator))
+        {
+            weight = m_weights.at(i);
+            weight += randomChangeDistribution(randomChangeGenerator);
+            m_weights[i] = weight;
+        }
+    }
+}
+
+double Neuron::Sigmoid(const double &x)
+{
+#ifndef USE_INTEL_IPP
+    return atan(x)*(2.0/PI); //to get negative number in [-1,1]
+#else
+    Ipp64f ret = static_cast<Ipp64f>(x);
+    ippsArctan_64f_I( &ret, 1);
+    ret*=(2.0/PI);
+    return static_cast<double>(ret);
+#endif
 }

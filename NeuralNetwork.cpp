@@ -5,6 +5,7 @@
 #include <random>
 using namespace std;
 
+
 NeuralNetwork::NeuralNetwork(std::vector<unsigned int> layerSizes)
 {
     if (layerSizes.size()!=0)
@@ -33,7 +34,7 @@ NeuralNetwork::NeuralNetwork(int inputsNum, const std::vector<std::vector<std::v
 }
 
 //TO FINISH
-NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& mother)
+NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& mother, bool addRandomChange)
 {
     //checks if sizes correspond
     if(father.getInputNum() != mother.getInputNum()
@@ -60,11 +61,6 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
     static mt19937 generator(random_device{}());
     bernoulli_distribution distribution(0.5);
 
-    static mt19937 modificationGenerator(random_device{}());
-    bernoulli_distribution modificationDistribution(config::NN_WEIGHT_CHANGE_PROBABILITY); // % chance to change one weight of a neurone
-    static mt19937 randomChangeGenerator(random_device{}());
-    normal_distribution<double> randomChangeDistribution(config::NN_WEIGHT_CHANGE_AVERAGE_VALUE,
-                                                         config::NN_WEIGHT_CHANGE_SDANTARD_DEVIATION); // change on weight are of average 0 and standart variation 0,1 (addition)
     for(unsigned i = 0; i < father.m_layers.size(); i++)
     {
         const auto& fatherLayer = father.m_layers[i];
@@ -83,19 +79,13 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& m
             {
                 childNeurons.push_back(fatherNeurons[j]);
             }
-            std::vector<double> weight = childNeurons.at(j).getWeights();
-            for(double val:weight)
-            {
-                if(modificationDistribution(modificationGenerator))
-                {
-                    val += randomChangeDistribution(randomChangeGenerator);
-                }
-            }
-            childNeurons.at(j).setWeights(weight);
         }
         m_layers.push_back(childNeurons);
         childNeurons.clear();
-
+    }
+    if(addRandomChange)
+    {
+        randomiseWeight();
     }
 }
 
@@ -151,6 +141,14 @@ vector<double> NeuralNetwork::run(std::vector<double> &inputs)
     #endif
 
     return outputs;
+}
+
+void NeuralNetwork::randomiseWeight()
+{
+    for(unsigned i=0 ; i<m_layers.size() ; i++)
+    {
+        m_layers[i].randomise();
+    }
 }
 
 void NeuralNetwork::improve(int score)

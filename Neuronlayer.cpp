@@ -47,3 +47,11 @@ void NeuronLayer::printLayer() const
         std::cout << std::endl;
     }
 }
+
+void NeuronLayer::randomise()
+{
+    for(unsigned i=0 ; i<m_neurons.size() ; i++)
+    {
+        m_neurons[i].randomise();
+    }
+}

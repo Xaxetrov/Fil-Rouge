@@ -10,10 +10,9 @@ class NeuralNetwork
 public:
 
     // --- CONSTRUCTION ---
-
     NeuralNetwork(std::vector<unsigned int> layerSizes); // sending [3,5,2] means 3 input neurons, 5 hiddens and 2 outputs with equal weights
     NeuralNetwork(int inputsNum,const std::vector<std::vector<std::vector<double>>>& neuronWeights);
-    NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& mother);
+    NeuralNetwork(const NeuralNetwork& father, const NeuralNetwork& mother, bool addRandomChange = true);
 
     // --- GETTERS ---
 
@@ -36,6 +35,9 @@ public:
 
     //replaces the weights with new ones
     void putWeights(std::vector<double> &weights);
+
+    //add variation to neuron weight acording to config class
+    void randomiseWeight();
 
     //calculates the outputs from a set of inputs
     std::vector<double> run(std::vector<double> &inputs);

@@ -22,6 +22,8 @@ public:
     double getLastOutput() const { return m_lastOutput; }
     void setWeights(std::vector<double> weights) {m_weights = weights;}
 
+    void randomise();
+
     double run(std::vector<double> inputs);
 
     void printNeuron() const;
@@ -34,7 +36,7 @@ private:
 
     //sigmoid response curve
     //double Sigmoid(double x){return 1/(1+exp(-x));}
-    double Sigmoid(double x){return atan(x)*(2/PI);} //to get negative number in [-1,1]
+    double Sigmoid(const double &x);
     //Random generator
     double RandomWeight();
 };

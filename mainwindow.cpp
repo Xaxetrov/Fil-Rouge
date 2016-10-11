@@ -84,8 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::loadWorld()
 {
     const QString savingPath("../save/World/world.xml");
-    SaveManager saveManager;
-    world = saveManager.loadWorld(savingPath);
+    world = SaveManager::loadWorld(savingPath);
 
   /*  Animal * animal0 = new Animal(130,278,10,50,&world);
     Animal * animal1 = new Animal(160,278,10,50,&world);
@@ -263,13 +262,12 @@ void MainWindow::saveWorld(bool pauseDuringSave)
     if(pause)
         worldWidget.suspendSimulation();
 
-    SaveManager saveManager;
     QString filter = "XML files (*.xml);;All files (*.*)";
     QString defaultFilter = "XML files (*.xml)";
     QString filePath = QFileDialog::getSaveFileName(this,tr("Save animal Neurale Network"),"../save",
                                                     filter,&defaultFilter);
     if(filePath != "")
-        saveManager.saveWorld(world,filePath);
+        SaveManager::saveWorld(world,filePath);
 
     if(pause)
             worldWidget.startSimulation();
@@ -289,9 +287,8 @@ void MainWindow::loadWorldSave(bool pauseDuringLoad)
                                                     filter,&defaultFilter);
     if(filePath != "")
     {
-        SaveManager saveManager;
         world = World();
-        saveManager.loadWorld(filePath,&world);
+        SaveManager::loadWorld(filePath,&world);
         worldWidget.setWorld(&world);
     }
 
@@ -319,9 +316,8 @@ void MainWindow::onWorldCreatorNewWorldGenerated(QString path)
 {
     if(path != "")
     {
-        SaveManager saveManager;
         world = World();
-        saveManager.loadWorld(path,&world);
+        SaveManager::loadWorld(path,&world);
         worldWidget.setWorld(&world);
     }
 }

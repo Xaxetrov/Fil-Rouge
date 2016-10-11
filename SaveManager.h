@@ -18,30 +18,27 @@ static const QString savePath("../save/");
 class SaveManager
 {
 public:
-    // constructor
-    SaveManager();
-
     //Network operations
-    int SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName="temp");
-    int SaveNetwork(const NeuralNetwork& nn, QXmlStreamWriter & writer);
-    NeuralNetwork *LoadNetwork(QString neuralNetworkName="temp");
-    NeuralNetwork *LoadNetwork(QXmlStreamReader& reader);
+    static int SaveNetwork(const NeuralNetwork& nn, QString neuralNetworkName="temp");
+    static int SaveNetwork(const NeuralNetwork& nn, QXmlStreamWriter & writer);
+    static NeuralNetwork *LoadNetwork(QString neuralNetworkName="temp");
+    static NeuralNetwork *LoadNetwork(QXmlStreamReader& reader);
 
     //World operations
-    void saveWorld(const World& world, QString savingPath);
-    World loadWorld(QString savingPath);
-    void loadWorld(QString savingPath, World * newWorld);
+    static void saveWorld(const World& world, QString savingPath);
+    static World loadWorld(QString savingPath);
+    static void loadWorld(QString savingPath, World * newWorld);
 
     //Other operations
-    void saveAnimal(const std::shared_ptr<Animal> animal, QXmlStreamWriter & writer);
-    void saveResource(const std::shared_ptr<Resource> resource, QXmlStreamWriter & writer);
+    static void saveAnimal(const std::shared_ptr<Animal> animal, QXmlStreamWriter & writer);
+    static void saveResource(const std::shared_ptr<Resource> resource, QXmlStreamWriter & writer);
 
 private:
     //Parsers
-    void parseWorld(World *world, QXmlStreamReader& reader);
-    void parseEntity(World *world, QXmlStreamReader& reader);
-    int parseNeuralNetwork(QXmlStreamReader& reader, std::vector<std::vector<std::vector<double> > > &neuronWeights);
-    void parseWeights(QString weights, std::vector<double> &weightsArray);
+    static void parseWorld(World *world, QXmlStreamReader& reader);
+    static void parseEntity(World *world, QXmlStreamReader& reader);
+    static int parseNeuralNetwork(QXmlStreamReader& reader, std::vector<std::vector<std::vector<double> > > &neuronWeights);
+    static void parseWeights(QString weights, std::vector<double> &weightsArray);
 };
 
 #endif // SAVEMANAGER_H

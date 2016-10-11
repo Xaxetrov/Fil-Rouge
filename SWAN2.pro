@@ -112,3 +112,8 @@ FORMS    += mainwindow.ui \
     Timelinewidget.ui \
     ParametersWidget.ui \
     WorldEditorToolBox.ui
+
+LIBS += -I/opt/intel/ipp/include -L/opt/intel/ipp/lib/intel64 -lippi -lipps -lippvm -lippcore -lm -lpthread
+
+INCLUDEPATH += /opt/intel/ipp/include
+DEPENDPATH += /opt/intel/ipp/include
