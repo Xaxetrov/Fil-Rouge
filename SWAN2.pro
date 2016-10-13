@@ -113,7 +113,19 @@ FORMS    += mainwindow.ui \
     ParametersWidget.ui \
     WorldEditorToolBox.ui
 
-LIBS += -I/opt/intel/ipp/include -L/opt/intel/ipp/lib/intel64 -lippi -lipps -lippvm -lippcore -lm -lpthread
+#comment to disable Intel IPP
+CONFIG += IPP
 
-INCLUDEPATH += /opt/intel/ipp/include
-DEPENDPATH += /opt/intel/ipp/include
+#to build using IPP
+IPP {
+    #add a define to use IPP function in SWANN sources
+    DEFINES += USE_INTEL_IPP
+    #add build path to IPP (using default IPP Linux path)
+    unix:!macx {
+        LIBS += -I/opt/intel/ipp/include -L/opt/intel/ipp/lib/intel64 -lippi -lipps -lippvm -lippcore -lm -lpthread
+
+        INCLUDEPATH += /opt/intel/ipp/include
+        DEPENDPATH += /opt/intel/ipp/include
+    }
+    #TODO: add build option for other OSs
+}
