@@ -41,10 +41,16 @@ double Neuron::run(std::vector<double> inputs)
     }
     m_lastInputs = inputs;
     //sums the weights * inputs
+#ifndef USE_INTEL_IPP
     for(int i=0; i< weightsSize; i++)
     {
         sum += m_weights[i] * inputs[i];
     }
+#else
+    Ipp64f productVector[weightsSize];
+    ippsMul_64f(m_weights.data(),inputs.data(),productVector,weightsSize); // multiply input and weight into productVector
+    ippsSum_64f(productVector,weightsSize,&sum); // sum product vector element
+#endif
     //adds in the bias
     sum += m_weights[weightsSize];
     //goes through the sigmoid and returns;
