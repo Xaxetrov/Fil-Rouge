@@ -24,6 +24,8 @@ Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, u
     m_age(0),
     m_maxSpeed(maxSpeed),
     m_damage(damage),
+    m_rotation(0),
+    m_speedPercentage(0),
     m_angle(0),
     m_fear(0),
     m_dead(false),
