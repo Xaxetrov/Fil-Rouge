@@ -114,7 +114,7 @@ FORMS    += mainwindow.ui \
     WorldEditorToolBox.ui
 
 #comment to disable Intel IPP
-CONFIG += IPP
+#CONFIG += IPP
 
 #to build using IPP
 IPP {

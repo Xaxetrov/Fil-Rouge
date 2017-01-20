@@ -14,3 +14,8 @@ int Meat::eat(int quantity)
     m_quantity -= eated;
     return eated;
 }
+
+bool Meat::isDead() const
+{
+    return m_quantity<=0;
+}

@@ -20,19 +20,26 @@ VisionSector::~VisionSector()
     clearPercepted();
 }
 
-void VisionSector::scan(const std::vector<std::shared_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities)
+void VisionSector::scan(const std::vector<std::weak_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities)
 {
     clearPercepted();
     for(unsigned int i=0; i<entitiesInRangeOfVision.size(); i++)
     {
         if (distanceOfEntities.at(i) < m_range)
         {
-            shared_ptr<Entity> e = entitiesInRangeOfVision.at(i);
-            double angle = Coordinate::getAngle(m_center, e->getCoordinate()) - m_animalAngle; // modulo2PI is moved insigned of getAngle
-
-            if(angle >= m_angle1 && angle < m_angle2)
+            weak_ptr<Entity> eWeak = entitiesInRangeOfVision.at(i);
+            if (shared_ptr<Entity> e = eWeak.lock())
             {
-                m_percepted.push_back(std::make_shared<Percepted>(e, distanceOfEntities.at(i), m_range));
+                double angle = Coordinate::getAngle(m_center, e->getCoordinate()) - m_animalAngle; // modulo2PI is moved insigned of getAngle
+
+                if(angle >= m_angle1 && angle < m_angle2)
+                {
+                    m_percepted.push_back(std::make_shared<Percepted>(e, distanceOfEntities.at(i), m_range));
+                }
+            }
+            else
+            {
+                std::cout << "Entity " << e << " has expired (VisionSector::scan)" << std::endl;
             }
         }
     }

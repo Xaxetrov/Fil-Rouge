@@ -66,7 +66,6 @@ public:
     void setScore(double score) {m_score = score;}
 
     //basic methods
-    void die();
     void move();
     void turn(double angle);
     void drink();
@@ -185,11 +184,11 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::DEFAULT_ENERGY, getGenerationNumber() + 1, m_world, childBrain) );
+        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::MAX_ENERGY, getGenerationNumber() + 1, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));
-        m_world->addEntity(animal);
+        m_world->addAnimal(animal);
         baseAngle += angleIntervalle;
         child++;
     }

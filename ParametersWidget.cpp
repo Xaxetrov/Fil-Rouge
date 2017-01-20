@@ -47,7 +47,7 @@ void ParametersWidget::showEvent( QShowEvent* event ) {
     ui->maxHunger->setText(QString::number(config::MAX_HUNGER));
     ui->maxFear->setText(QString::number(config::MAX_FEAR));
     ui->maxMating->setText(QString::number(config::MAX_MATING));
-    ui->defaultEnergy->setText(QString::number(config::DEFAULT_ENERGY));
+    ui->defaultEnergy->setText(QString::number(config::MAX_ENERGY));
     ui->attackAngle->setText(QString::number(config::MAX_ATTACK_ANGLE));
     ui->maxHealth->setText(QString::number(config::MAX_HEALTH));
     ui->maxThirst->setText(QString::number(config::MAX_THIRST));
@@ -103,7 +103,7 @@ void ParametersWidget::updateAnimalsParam()
   config::MAX_HUNGER = ui->maxHunger->text().toDouble();
   config::MAX_FEAR = ui->maxFear->text().toDouble();
   config::MAX_MATING = ui->maxMating->text().toDouble();
-  config::DEFAULT_ENERGY = ui->defaultEnergy->text().toDouble();
+  config::MAX_ENERGY = ui->defaultEnergy->text().toDouble();
   config::MAX_ATTACK_ANGLE = ui->attackAngle->text().toDouble();
   config::MAX_HEALTH = ui->maxHealth->text().toDouble();
   config::MAX_THIRST = ui->maxThirst->text().toDouble();

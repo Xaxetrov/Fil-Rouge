@@ -28,7 +28,7 @@ unsigned World::m_tickPassed;
 
 std::mutex World::mutexGetEntity;
 std::mutex World::mutexAttributes;
-std::mutex World::mutexGridOfEntities;
+std::mutex World::mutexGridOfEntities;  // If listEntities and gridEntities must be block together, listEntites should be block before.
 std::mutex World::mutexListEntities;
 std::mutex World::mutexCollisionList;
 std::mutex World::mutexDeadList;
@@ -131,10 +131,28 @@ void World::updateGridOfEntities(std::shared_ptr<Animal> a, int oldX, int oldY, 
     }
 }
 
-void World::addEntity(std::shared_ptr<Entity> entity)
+void World::addAnimal(std::shared_ptr<Animal> animal)
 {
-    m_entities.push_back(entity);
-    m_gridOfEntities[entity->getX() / m_cellSizeX][entity->getY() / m_cellSizeY].push_back(entity);
+    m_entities.push_back(animal);
+    m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(animal);
+}
+
+void World::addResource(std::shared_ptr<Resource> resource)
+{
+    m_entities.push_front(resource);
+    m_gridOfEntities[resource->getX() / m_cellSizeX][resource->getY() / m_cellSizeY].push_front(resource);
+}
+
+/*
+ * it: an iterator on m_entities list of the entity to remove
+ */
+void World::removeEntity(std::list<std::shared_ptr<Entity>>::iterator it)
+{
+    int gridX = (*it)->getX() / m_cellSizeX;
+    int gridY = (*it)->getY() / m_cellSizeY;
+    std::list<std::shared_ptr<Entity>> & caseList = m_gridOfEntities[gridX][gridY];
+    caseList.erase(find(caseList.begin(), caseList.end(),*it));
+    m_entities.erase(it);
 }
 
 void World::feedWithRandomAnimal(unsigned short numberOfEntityToAdd)
@@ -143,9 +161,9 @@ void World::feedWithRandomAnimal(unsigned short numberOfEntityToAdd)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      std::shared_ptr<Animal> animal(std::make_shared<Animal>(x, y, config::MAX_SPEED, config::ATTACK_ANIMAL, config::DEFAULT_ENERGY, 0, this));
+      std::shared_ptr<Animal> animal(std::make_shared<Animal>(x, y, config::MAX_SPEED, config::ATTACK_ANIMAL, config::MAX_ENERGY, 0, this));
       animal->turn( (double)(rand()%628)/100.0);
-      addEntity(animal);
+      addAnimal(animal);
     }
 }
 
@@ -155,9 +173,9 @@ void World::feedWithRandomHerbivore(unsigned short numberOfEntityToAdd)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, 0, this));
-      animal->turn( (double)(rand()%628)/100.0);
-      addEntity(animal);
+      std::shared_ptr<Herbivore> herbivore(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::MAX_ENERGY, 0, this));
+      herbivore->turn( (double)(rand()%628)/100.0);
+      addAnimal(herbivore);
     }
 }
 
@@ -186,9 +204,9 @@ void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
               //mixe them up
               NeuralNetwork *nn = new NeuralNetwork(n1,n2);
               //make a new Herbivore from that brain
-              std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, 0, this,nn,config::MAX_MATING));
+              std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::MAX_ENERGY, 0, this,nn,config::MAX_MATING));
               animal->turn( (double)(rand()%628)/100.0);
-              addEntity(animal);
+              addAnimal(animal);
         }
         else
         {
@@ -203,9 +221,9 @@ void World::feedWithRandomCarnivore(unsigned short numberOfEntityToAdd)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, 0, this));
+      std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::MAX_ENERGY, 0, this));
       animal->turn( (double)(rand()%628)/100.0);
-      addEntity(animal);
+      addAnimal(animal);
     }
 }
 
@@ -234,9 +252,9 @@ void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
             //mixe them up
             NeuralNetwork *nn = new NeuralNetwork(n1,n2);
             //make a new Carnivore from that brain
-            std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, 0, this,nn,config::MAX_MATING));
+            std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::MAX_ENERGY, 0, this,nn,config::MAX_MATING));
             animal->turn( (double)(rand()%628)/100.0);
-            addEntity(animal);
+            addAnimal(animal);
         }
         else
         {
@@ -253,26 +271,21 @@ int World::tick()
     m_numberOfHerbivore = 0;
 
     std::list<std::list<std::shared_ptr<Entity>>::iterator> deadList;
-    int entitiesCount = 0;
 
     std::list<std::shared_ptr<Entity>>::iterator it = m_entities.begin();
 
-    std::thread threadStart(startThreads, &it, &entitiesCount, m_entities.size(), &deadList);
+    std::thread threadStart(startThreads, &it, m_entities.size(), &deadList);
     //wait for the thread launcher to finish
-    threadStart.join();
+    threadStart.join(); // Entity::play is called for each Entity
 
     makeMoves();
-    makeMatings(); // Make Love, Not War
+    makeMatings();
     makeAttacks();
 
     // Erase all the dead entities
-    for(std::list<std::list<std::shared_ptr<Entity>>::iterator>::iterator i = deadList.begin(); i != deadList.end(); i++)
+    for(std::list<std::list<std::shared_ptr<Entity>>::iterator>::iterator it = deadList.begin(); it != deadList.end(); it++)
     {
-        int gridX = (**i)->getX() / m_cellSizeX;
-        int gridY = (**i)->getY() / m_cellSizeY;
-        std::list<std::shared_ptr<Entity>> & caseList = m_gridOfEntities[gridX][gridY];
-        caseList.erase(find(caseList.begin(), caseList.end(),**i));
-        m_entities.erase(*i);
+       removeEntity(*it);
     }
 
     //increment the age of the world
@@ -329,14 +342,15 @@ int World::tick(int ticNum)
     return 0;
 }
 
-void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
   unsigned short nbPlayThreads = config::NB_THREADS; //TODO: check in UI that NB_THREADS > 0
   std::thread threads[nbPlayThreads];
+  int * numberOfEntitiesWhoHaveAlreadyPlayed = 0;
 
   for(int i = 0; i < nbPlayThreads; i++)
   {
-    threads[i] = std::thread(playAnimals, it, entitiesCount, nbEntities, deadList);
+    threads[i] = std::thread(playAnimals, it, numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
   }
   for(int i = 0; i < nbPlayThreads; i++)
   {
@@ -344,7 +358,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
   }
 }
 
-int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
     int entityErrorsNum = 0;
 
@@ -354,11 +368,11 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
 
         //std::cout << id << " : allocation" << endl;
         World::mutexGetEntity.lock();
-        if(*entitiesCount < nbEntities)
+        if(*numberOfEntitiesWhoHaveAlreadyPlayed < nbEntities)
         {
             e = *it;
             (*it) ++;
-            (*entitiesCount) ++;
+            (*numberOfEntitiesWhoHaveAlreadyPlayed) ++;
             World::mutexGetEntity.unlock();
         }
         else
@@ -367,7 +381,7 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
             break; // stop the loop
         }
 
-        if((*e)->play())
+        if((*e)->play() != 0)
         {
             //TODO : manage entities errors
             std::cerr << "Entity failed to play" << std::endl;
@@ -381,15 +395,14 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
                 //std::cout << id << " : dead1" << endl;
                 #ifdef FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
                     mutexChampionSaving.lock();
-                    saveNeuralNetwork(animal);
+                    saveNeuralNetworkIfNeeded(animal);
                     mutexChampionSaving.unlock();
                 #endif
                 int meatQuantity = config::MAX_HUNGER - animal->getHunger() + 100;
 
                 World::mutexListEntities.lock();
-                m_entities.push_back(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
                 World::mutexGridOfEntities.lock();
-                m_gridOfEntities[animal->getX() / m_cellSizeX][animal->getY() / m_cellSizeY].push_back(*(--m_entities.end()));
+                addResource(std::make_shared<Meat>(animal->getCoordinate(),animal->getRadius(),meatQuantity));
                 World::mutexGridOfEntities.unlock();
                 World::mutexListEntities.unlock();
             }
@@ -433,7 +446,7 @@ bool World::isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<
     return (Coordinate::getDistanceCarre(c1,c2) < (r1 + r2) * (r1 + r2));
 }
 
-void World::saveNeuralNetwork(std::shared_ptr<Animal> a)
+void World::saveNeuralNetworkIfNeeded(std::shared_ptr<Animal> a)
 {
     int age = m_tickPassed - a->getCreationDate();
     if(std::shared_ptr<Herbivore> h = std::dynamic_pointer_cast<Herbivore>(a))

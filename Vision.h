@@ -28,7 +28,7 @@ private:
     void getNeighbour(int cellX, int cellY, std::list<gridOfEntities&> rtn);
 
     int m_maxRangeVision;
-    std::vector<std::shared_ptr<Entity> > m_entitiesInRangeOfVision;
+    std::vector<std::weak_ptr<Entity> > m_entitiesInRangeOfVision;
     std::vector<double> m_distanceOfEntities;
     const Animal & m_animal;
     const double & m_angle;

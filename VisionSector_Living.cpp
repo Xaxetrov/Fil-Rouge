@@ -5,7 +5,7 @@ VisionSector_Living::VisionSector_Living(const Coordinate & center, double & ani
     : VisionSector(center, animalAngle, angle1, angle2, range)
 {}
 
-void VisionSector_Living::see(const std::vector<std::shared_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities)
+void VisionSector_Living::see(const std::vector<std::weak_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities)
 {
     scan(entitiesInRangeOfVision, distanceOfEntities);
 

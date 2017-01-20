@@ -69,14 +69,13 @@ int Animal::play()
     m_age++;
 
     m_energy += config::ENERGY_RECUP;
-    if(m_energy > config::DEFAULT_ENERGY)
-      m_energy = config::DEFAULT_ENERGY;
+    if(m_energy > config::MAX_ENERGY)
+      m_energy = config::MAX_ENERGY;
 
     if(m_health <= 0 || m_dead)
     {
       m_dead = true;
       return 0;// if dead no need to continue playing.
-      //m_world->killEntity(this); // RIP
     }
     else
     {
@@ -124,6 +123,8 @@ int Animal::play()
     {
       turn(m_rotation);
     }
+
+    // Moves are done by the world itself
     /*if(m_speed > 0)
     {
       World::mutexCollisionList.lock();
@@ -142,7 +143,7 @@ int Animal::play()
     drink();
     mate();
 
-    m_radius = sqrt(m_age) * config::FATNESS_HERBIVORE + config::INITIAL_RADIUS; // TODO: used FATNESS_ANIMAL, and put it in the parametersWidget
+    m_radius = sqrt(m_age) * config::FATNESS_HERBIVORE + config::INITIAL_RADIUS; // TODO: use FATNESS_ANIMAL, and put it in the parametersWidget
 
     return 0;
 }

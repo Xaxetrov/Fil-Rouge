@@ -425,7 +425,7 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
   double angle = 0.0;
   int maxSpeed = config::MAX_SPEED;
   double attack = -2.0;
-  double energy = config::DEFAULT_ENERGY;
+  double energy = config::MAX_ENERGY;
   bool sex = true;
   NeuralNetwork * nn = nullptr;
   int mating = 0;
@@ -536,9 +536,9 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
         maxQuantity=config::VEGETAL_MAXQUANTITY;
     if(quantity==0)
         quantity=maxQuantity;
-    std::shared_ptr<Vegetal> entity( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, maxQuantity));
-    entity->setCurrantQuantity(quantity);
-    world->addEntity(entity);
+    std::shared_ptr<Vegetal> vegetal( std::make_shared<Vegetal>(xEntity, yEntity, radiusEntity, maxQuantity));
+    vegetal->setCurrantQuantity(quantity);
+    world->addResource(vegetal);
   }
   else if(type == "Water")
   {
@@ -546,15 +546,15 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
           maxQuantity=config::WATER_MAXQUANTITY;
       if(quantity==0)
           quantity=maxQuantity;
-    std::shared_ptr<Water> entity( std::make_shared<Water>(xEntity, yEntity, radiusEntity, maxQuantity));
-    entity->setCurrantQuantity(quantity);
-    world->addEntity(entity);
+    std::shared_ptr<Water> water( std::make_shared<Water>(xEntity, yEntity, radiusEntity, maxQuantity));
+    water->setCurrantQuantity(quantity);
+    world->addResource(water);
   }
   else if(type == "Meat")
   {
-    std::shared_ptr<Meat> entity( std::make_shared<Meat>(xEntity, yEntity, radiusEntity, maxQuantity));
-    entity->setCurrantQuantity(quantity);
-    world->addEntity(entity);
+    std::shared_ptr<Meat> meat( std::make_shared<Meat>(xEntity, yEntity, radiusEntity, maxQuantity));
+    meat->setCurrantQuantity(quantity);
+    world->addResource(meat);
   }
   else if(type == "Herbivore")
   {
@@ -569,14 +569,14 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = config::ATTACK_HERBIVORE;
-      std::shared_ptr<Herbivore> entity( std::make_shared<Herbivore>(xEntity, yEntity,maxSpeed, attack, energy, 0, world, nn, mating));
-      entity->setSex(sex);
-      entity->setAge(age);
-      entity->setAngle(angle);
-      entity->setHunger(hunger);
-      entity->setThirst(thirst);
-      entity->setHealth(health);
-      world->addEntity(entity);
+      std::shared_ptr<Herbivore> herbivore( std::make_shared<Herbivore>(xEntity, yEntity,maxSpeed, attack, energy, 0, world, nn, mating));
+      herbivore->setSex(sex);
+      herbivore->setAge(age);
+      herbivore->setAngle(angle);
+      herbivore->setHunger(hunger);
+      herbivore->setThirst(thirst);
+      herbivore->setHealth(health);
+      world->addAnimal(herbivore);
   }
   else if(type == "Carnivore")
   {
@@ -591,14 +591,14 @@ void SaveManager::parseEntity(World * world, QXmlStreamReader& reader)
       }
       if(attack==-2)
           attack = config::ATTACK_CARNIVORE;
-      std::shared_ptr<Carnivore> entity( std::make_shared<Carnivore>(xEntity, yEntity,maxSpeed, attack, energy, 0, world, nn, mating));
-      entity->setSex(sex);
-      entity->setAge(age);
-      entity->setAngle(angle);
-      entity->setHunger(hunger);
-      entity->setThirst(thirst);
-      entity->setHealth(health);
-      world->addEntity(entity);
+      std::shared_ptr<Carnivore> carnivore( std::make_shared<Carnivore>(xEntity, yEntity,maxSpeed, attack, energy, 0, world, nn, mating));
+      carnivore->setSex(sex);
+      carnivore->setAge(age);
+      carnivore->setAngle(angle);
+      carnivore->setHunger(hunger);
+      carnivore->setThirst(thirst);
+      carnivore->setHealth(health);
+      world->addAnimal(carnivore);
   }
 }
 

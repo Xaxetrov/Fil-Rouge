@@ -45,12 +45,13 @@ void WorldCreator::finish()
     std::list<std::shared_ptr<Resource>> resources = resourceWidget.getResources();
     for(std::list<std::shared_ptr<Resource>>::iterator iteResources = resources.begin(); iteResources!=resources.end(); ++iteResources)
     {
-        world.addEntity(*iteResources);
+        world.addResource(*iteResources);
     }
 
     //set neuralnets to entities & create entities
-    unsigned numH(animalWidget.getNumberOfHerbivore()), numC(animalWidget.getNumberOfCarnivore());
-    world.feedWithRandomHerbivore(numH);
+    unsigned numHerbivore(animalWidget.getNumberOfHerbivore());
+
+    world.feedWithRandomHerbivore(numHerbivore);
     std::list<std::shared_ptr<Entity>> entities = world.getEntities();
     if(animalWidget.isHerbivoreChecked())
     {
@@ -70,11 +71,9 @@ void WorldCreator::finish()
             }
         }
     }
-    else
-    {
-    }
-    numC = 0;
-    world.feedWithRandomCarnivore(numC);
+
+    unsigned numCarnivore(animalWidget.getNumberOfCarnivore());
+    world.feedWithRandomCarnivore(numCarnivore);
     if(animalWidget.isCarnivoreChecked())
     {
         QStringList carnivores = animalWidget.getCarnivoreList();
@@ -91,9 +90,6 @@ void WorldCreator::finish()
                 }
             }
         }
-    }
-    else
-    {
     }
 
     //put World in a predefined xmlFile

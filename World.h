@@ -9,6 +9,7 @@
 #include <mutex>
 
 #include "NeuralNetwork.h"
+#include "Resource.h"
 
 class Entity;
 class Animal;
@@ -58,7 +59,8 @@ public:
     void updateGridOfEntities(std::shared_ptr<Animal> a, int oldX, int oldY, int newX, int newY);
 
     //More ! Give me more of them !
-    void addEntity(std::shared_ptr<Entity> entity);
+    void addAnimal(std::shared_ptr<Animal> animal);
+    static void addResource(std::shared_ptr<Resource> resource);
     void feedWithRandomAnimal(unsigned short numberOfEntityToAdd);
     void feedWithRandomHerbivore(unsigned short numberOfEntityToAdd);
     void feedWithRandomCarnivore(unsigned short numberOfEntityToAdd);
@@ -73,7 +75,7 @@ public:
     static std::mutex mutexGetEntity;
     static std::mutex mutexAttributes;
     static std::mutex mutexGridOfEntities;
-    static std::mutex mutexListEntities;
+    static std::mutex mutexListEntities; // If listEntities and gridEntities must be block together, listEntites should be block before.
     static std::mutex mutexCollisionList;
     static std::mutex mutexDeadList;
     static std::mutex mutexAttackList;
@@ -86,7 +88,7 @@ public:
 private:
     //Privates methods
     bool isCollision(const std::shared_ptr<Entity> e1, const std::shared_ptr<Entity> e2) const;
-    static void saveNeuralNetwork(std::shared_ptr<Animal> a);
+    static void saveNeuralNetworkIfNeeded(std::shared_ptr<Animal> a);
     double computeScore(std::shared_ptr<Animal> animal);
     NeuralNetwork * determineBestNN();
     void createGridOfEntities();
@@ -94,8 +96,9 @@ private:
     void makeAttacks();
     void makeMatings();
     void synchronizedListAndGridOfEntities();
+    static void removeEntity(std::list<std::shared_ptr<Entity>>::iterator it);
 
-    static void startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
+    static void startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
     static int playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
 
     //Private attributes
@@ -113,7 +116,7 @@ private:
     //My loves, my life
     static unsigned int m_cellSizeX;
     static unsigned int m_cellSizeY;
-    static std::list<std::shared_ptr<Entity>> m_entities;
+    static std::list<std::shared_ptr<Entity>> m_entities; // Resources are from 0 to nbResources, and animals from nbResources + 1 to list.size() - 1
     static std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> m_gridOfEntities;
 
     int m_size_x;
