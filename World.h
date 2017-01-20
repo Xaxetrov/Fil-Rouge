@@ -42,7 +42,7 @@ public:
     int getCellSizeX() const;
     int getCellSizeY() const;
 
-    unsigned int getGenerationNumber() const { return m_generationNumber; };
+    unsigned int getGenerationNumber() const { return m_generationNumber; }
 
     //I'm as wise as the world. Oh wait...
     unsigned getWorldAge() const {return m_tickPassed;}

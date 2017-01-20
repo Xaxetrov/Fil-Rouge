@@ -346,11 +346,11 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
 {
   unsigned short nbPlayThreads = config::NB_THREADS; //TODO: check in UI that NB_THREADS > 0
   std::thread threads[nbPlayThreads];
-  int * numberOfEntitiesWhoHaveAlreadyPlayed = 0;
+  int numberOfEntitiesWhoHaveAlreadyPlayed = 0;
 
   for(int i = 0; i < nbPlayThreads; i++)
   {
-    threads[i] = std::thread(playAnimals, it, numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
+    threads[i] = std::thread(playAnimals, it, &numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
   }
   for(int i = 0; i < nbPlayThreads; i++)
   {
