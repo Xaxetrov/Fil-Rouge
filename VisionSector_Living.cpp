@@ -9,7 +9,7 @@ void VisionSector_Living::see(const std::vector<std::weak_ptr<Entity> > &entitie
 {
     scan(entitiesInRangeOfVision, distanceOfEntities);
 
-    double min = -1;
+    double min = -1.0;
     std::shared_ptr<Percepted> indMin;
     for(std::shared_ptr<Percepted> p:m_percepted)
     {
@@ -20,7 +20,7 @@ void VisionSector_Living::see(const std::vector<std::weak_ptr<Entity> > &entitie
         }
     }
 
-    if(min == -1)
+    if(min == -1.0)
     {
         m_nearestPercepted->set(nullptr, 0);
     }

@@ -40,8 +40,8 @@ SOURCES += main.cpp\
     Neuronlayer.cpp \
     Percepted.cpp \
     Visionsector.cpp \
-    Visionsector_Living.cpp \
-    Visionsector_NonLiving.cpp \
+    VisionSector_Living.cpp \
+    VisionSector_NonLiving.cpp \
     SaveManager.cpp \
     EntityViewWidget.cpp \
     NNViewWidget.cpp \

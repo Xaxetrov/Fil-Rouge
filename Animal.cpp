@@ -328,7 +328,7 @@ bool Animal::tryToMate(std::shared_ptr<Entity> animalEntity)
           if(m_mating == config::MAX_MATING && animalToMate->getMating() == config::MAX_MATING)
           {
               World::mutexMateList.lock();
-              m_world->updateMateList(this, animalToMate);
+              m_world->updateMateList(this->shared_from_this(), animalToMate);
               World::mutexMateList.unlock();
               //this->reproduce(animalToMate);
               return true;

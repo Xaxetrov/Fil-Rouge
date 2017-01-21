@@ -54,7 +54,7 @@ public:
     void updateListCollision(std::shared_ptr<Animal> a) const;
     void updateAttackList(std::shared_ptr<Animal> a, double damage);
 
-    void updateMateList(Animal * female, std::shared_ptr<Animal> male);
+    void updateMateList(std::shared_ptr<Animal> female, std::shared_ptr<Animal> male);
 
     void updateGridOfEntities(std::shared_ptr<Animal> a, int oldX, int oldY, int newX, int newY);
 
@@ -110,8 +110,8 @@ private:
     static std::multimap<int,NeuralNetwork> bestHerbivore;
     static std::multimap<int,NeuralNetwork> bestCarnivore;
     std::list<std::pair<std::shared_ptr<Animal>,double>> m_attackList;
-    std::list<std::pair<Herbivore*,std::shared_ptr<Herbivore>>> m_mateListHerbivores;
-    std::list<std::pair<Carnivore*,std::shared_ptr<Carnivore>>> m_mateListCarnivores;
+    std::list<std::pair<std::shared_ptr<Herbivore>,std::shared_ptr<Herbivore>>> m_mateListHerbivores;
+    std::list<std::pair<std::shared_ptr<Carnivore>,std::shared_ptr<Carnivore>>> m_mateListCarnivores;
 
     //My loves, my life
     static unsigned int m_cellSizeX;

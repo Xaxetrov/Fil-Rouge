@@ -6,6 +6,7 @@
 #include "Vegetal.h"
 #include "Meat.h"
 #include "config/config.h"
+#include <cmath>
 
 WorldEditor::WorldEditor(std::list<std::shared_ptr<Resource> > *resourcesList) :
     QGraphicsView(),

@@ -53,7 +53,7 @@ bool Carnivore::tryToMate(std::shared_ptr<Entity> carnivoreEntity)
               if(m_thirst < (config::MAX_THIRST*3/4) && m_hunger < (config::MAX_HUNGER*3/4))
               {
                   World::mutexMateList.lock();
-                  m_world->updateMateList(this, carnivoreToMate);
+                  m_world->updateMateList(this->shared_from_this(), carnivoreToMate);
                   World::mutexMateList.unlock();
                   return true;
               }

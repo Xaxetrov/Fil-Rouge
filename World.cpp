@@ -105,6 +105,10 @@ void World::setSize(int size_x, int size_y)
 
 }
 
+/*
+ * /!\ do not make use of grid yet... can be optimised
+ * (the use of the grid need that an entity radius canot be bigger than gridSize)
+*/
 void World::updateListCollision(std::shared_ptr<Animal> a) const
 {
     a->clearEntityListCollision();
@@ -126,7 +130,8 @@ void World::updateGridOfEntities(std::shared_ptr<Animal> a, int oldX, int oldY, 
 
     if (oldCellX != newCellX || oldCellY != newCellY)
     {
-        m_gridOfEntities[oldCellX][oldCellY].erase(find(m_gridOfEntities[oldCellX][oldCellY].begin(), m_gridOfEntities[oldCellX][oldCellY].end(), a));
+        auto entityToRemove = find(m_gridOfEntities[oldCellX][oldCellY].begin(), m_gridOfEntities[oldCellX][oldCellY].end(), a);
+        m_gridOfEntities[oldCellX][oldCellY].erase(entityToRemove);
         m_gridOfEntities[newCellX][newCellY].push_back(a);
     }
 }
@@ -541,19 +546,24 @@ void World::createGridOfEntities()
     }
 }
 
-void World::updateMateList(Animal * female, std::shared_ptr<Animal> male)
+void World::updateMateList(std::shared_ptr<Animal> female, std::shared_ptr<Animal> male)
 {
-    if(shared_ptr<Herbivore> animalToMate = dynamic_pointer_cast<Herbivore>(male))
+    if(std::shared_ptr<Herbivore> maleHerbivore = dynamic_pointer_cast<Herbivore>(male) )
     {
-      Herbivore * a = dynamic_cast<Herbivore *>(female);
-      std::pair<Herbivore*,std::shared_ptr<Herbivore>> pair(a, animalToMate);
-      m_mateListHerbivores.push_back(pair);
+        if(std::shared_ptr<Herbivore> femaleHerbivore = dynamic_pointer_cast<Herbivore>(female))
+        {
+            std::pair<std::shared_ptr<Herbivore>,std::shared_ptr<Herbivore>> pair(femaleHerbivore, maleHerbivore);
+            m_mateListHerbivores.push_back(pair);
+        }
     }
-    else if(shared_ptr<Carnivore> animalToMate = dynamic_pointer_cast<Carnivore>(male))
+    else if(shared_ptr<Carnivore> maleCarnivore = dynamic_pointer_cast<Carnivore>(male))
     {
-      Carnivore * a = dynamic_cast<Carnivore *>(female);
-      std::pair<Carnivore*,std::shared_ptr<Carnivore>> pair(a, animalToMate);
-      m_mateListCarnivores.push_back(pair);
+        if(std::shared_ptr<Carnivore> femaleCarnivore = std::dynamic_pointer_cast<Carnivore>(female))
+        {
+            std::pair<std::shared_ptr<Carnivore>,std::shared_ptr<Carnivore>> pair(femaleCarnivore, maleCarnivore);
+            m_mateListCarnivores.push_back(pair);
+        }
+
     }
 }
 
@@ -570,12 +580,12 @@ void World::makeMoves()
 
 void World::makeMatings()
 {
-    for(std::pair<Herbivore*,std::shared_ptr<Herbivore>> mating : m_mateListHerbivores)
+    for(std::pair<std::shared_ptr<Herbivore>,std::shared_ptr<Herbivore>> mating : m_mateListHerbivores)
     {
         mating.first->reproduce(mating.second);
     }
     m_mateListHerbivores.clear();
-    for(std::pair<Carnivore*,std::shared_ptr<Carnivore>> mating : m_mateListCarnivores)
+    for(std::pair<std::shared_ptr<Carnivore>,std::shared_ptr<Carnivore>> mating : m_mateListCarnivores)
     {
         mating.first->reproduce(mating.second);
     }
