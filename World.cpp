@@ -15,17 +15,6 @@
 using namespace std;
 
 // Declare static attributes
-unsigned World::m_numberOfLiving;
-unsigned World::m_numberOfHerbivore;
-unsigned World::m_numberOfCarnivore;
-unsigned int World::m_cellSizeX;
-unsigned int World::m_cellSizeY;
-std::list<std::shared_ptr<Entity>> World::m_entities;
-std::vector<std::vector<std::list<std::shared_ptr<Entity>>>> World::m_gridOfEntities;
-std::multimap<int,NeuralNetwork> World::bestHerbivore;
-std::multimap<int,NeuralNetwork> World::bestCarnivore;
-unsigned World::m_tickPassed;
-
 std::mutex World::mutexGetEntity;
 std::mutex World::mutexAttributes;
 std::mutex World::mutexGridOfEntities;  // If listEntities and gridEntities must be block together, listEntites should be block before.
@@ -58,9 +47,9 @@ World::World()
     createGridOfEntities();
 }
 
-const std::list<std::shared_ptr<Entity>> &World::getEntities() const
+const std::list<std::shared_ptr<Entity>> & World::getEntities() const
 {
-    return World::m_entities;
+    return m_entities;
 }
 
 std::list<std::shared_ptr<Entity>> World::getCopyOfEntities() const
@@ -100,23 +89,21 @@ void World::setSize(int size_x, int size_y)
    config::WORLD_SIZE_X = size_x;
    config::WORLD_SIZE_Y = size_y;
 
-   createGridOfEntities();
    synchronizedListAndGridOfEntities();
-
 }
 
 /*
  * /!\ do not make use of grid yet... can be optimised
- * (the use of the grid need that an entity radius canot be bigger than gridSize)
+ * (the use of the grid need that an entity radius canot be bigger than gridSize) (entityRadius not bounded)
 */
-void World::updateListCollision(std::shared_ptr<Animal> a) const
+void World::updateListCollisionOfProvidedAnimal(std::shared_ptr<Animal> animal) const
 {
-    a->clearEntityListCollision();
+    animal->clearEntityListCollision();
     for(std::shared_ptr<Entity> currentEntity : m_entities)
     {
-        if(a!=currentEntity && isCollision(a, currentEntity))
+        if(animal!=currentEntity && isCollision(animal, currentEntity))
         {
-            a->addEntityInListCollision(currentEntity);
+            animal->addEntityInListCollision(currentEntity);
         }
     }
 }
@@ -156,7 +143,16 @@ void World::removeEntity(std::list<std::shared_ptr<Entity>>::iterator it)
     int gridX = (*it)->getX() / m_cellSizeX;
     int gridY = (*it)->getY() / m_cellSizeY;
     std::list<std::shared_ptr<Entity>> & caseList = m_gridOfEntities[gridX][gridY];
-    caseList.erase(find(caseList.begin(), caseList.end(),*it));
+    auto toDeleteOnGrid = find(caseList.begin(), caseList.end(),*it);
+    if (toDeleteOnGrid != caseList.end())
+    {
+        caseList.erase(toDeleteOnGrid);
+    }
+    else
+    {
+        std::cerr << "entity to be removed not found in grid" << std::endl;
+    }
+
     m_entities.erase(it);
 }
 
@@ -358,7 +354,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
 
   for(int i = 0; i < nbPlayThreads; i++)
   {
-    threads[i] = playThread(it, &numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
+    threads[i] = createPlayAnimalsThread(it, &numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
   }
   for(int i = 0; i < nbPlayThreads; i++)
   {
@@ -366,7 +362,7 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
   }
 }
 
-std::thread World::playThread(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+std::thread World::createPlayAnimalsThread(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
     return std::thread([=]
     {
@@ -617,6 +613,7 @@ void World::makeAttacks()
 
 void World::synchronizedListAndGridOfEntities()
 {
+    createGridOfEntities();
     for (std::shared_ptr<Entity> entity : m_entities)
     {
         m_gridOfEntities[entity->getX() / m_cellSizeX][entity->getY() / m_cellSizeY].push_back(entity);

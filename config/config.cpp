@@ -31,7 +31,7 @@ unsigned int config::WATER_MAXQUANTITY = 5000;
 
 // Animal eating parameters
 unsigned int config::EAT_MAX_VEGETAL_QUANTITY = 100; // the max is not the used value if hunger is 0
-unsigned int config::EAT_MAX_MEAT_QUANTITY = 100; // the max is not the used value if hunger is 0
+unsigned int config::EAT_MAX_MEAT_QUANTITY = 200; // the max is not the used value if hunger is 0
 unsigned int config::EAT_MAX_HEALING_VALUE = 10; //the max is not the used value if life is full
 unsigned int config::DRINK_MAX_VALUE = 100; // the max is not the used value if thrist is 0
 
@@ -44,11 +44,11 @@ double config::MAX_ENERGY = 100;
 double config::ENERGY_RECUP = 1;
 double config::MOVE_ENERGY_LOSS = 0.5;
 double config::TURN_ENERGY_LOSS = 50;
-double config::MAX_SPEED_TO_EAT = 0.5;
+double config::MAX_SPEED_TO_EAT = 0.2;
 unsigned int config::MAX_SPEED = 50;
 int config::MAX_HEALTH = 5000;
-unsigned int config::MAX_HUNGER = 2000;
-unsigned int config::MAX_THIRST = 2000;
+unsigned int config::MAX_HUNGER = 10000;
+unsigned int config::MAX_THIRST = 1000;
 unsigned int config::MAX_SCORE = 1000;
 int config::MAX_FEAR = 100;
 unsigned int config::MAX_MATING = 2500;

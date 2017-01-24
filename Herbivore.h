@@ -14,7 +14,7 @@ public:
     Herbivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, NeuralNetwork * brain, int mating = 0);
 
     virtual unsigned int getTypeId() const { return ID_HERBIVORE; }
-    virtual int getNeralNetworkId() const { return NN_ID_HERBIVORE; }
+    virtual int getNeuralNetworkId() const { return NN_ID_HERBIVORE; }
 
 protected:
     virtual void tryToEat(std::shared_ptr<Entity> food);

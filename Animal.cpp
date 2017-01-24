@@ -88,7 +88,7 @@ int Animal::play()
         m_health -= 10;
         m_hunger = config::MAX_HUNGER;
     }
-    else if(m_hunger > config::MAX_HUNGER*3/4)
+    else if(m_hunger > config::MAX_HUNGER * 3/4)
     {
         m_health--;
     }
@@ -98,7 +98,7 @@ int Animal::play()
         m_health -= 10;
         m_thirst = config::MAX_THIRST;
     }
-    else if(m_thirst > config::MAX_THIRST*3/4)
+    else if(m_thirst > config::MAX_THIRST * 3/4)
     {
       m_health--;
     }
@@ -162,7 +162,7 @@ void Animal::move()
       setCoordinate(getX() + cos(m_angle) * m_speed, getY() + sin(m_angle) * m_speed);
       m_world->updateGridOfEntities(this->shared_from_this(), oldX, oldY, getX(), getY());
     }
-    m_world->updateListCollision(this->shared_from_this());
+    m_world->updateListCollisionOfProvidedAnimal(this->shared_from_this());
 
     //Colision disabled !!!
 //    vector<weak_ptr<Entity>> animalCollisionList = getSubListSolidCollision();
@@ -188,7 +188,7 @@ void Animal::mappageInput()
         shared_ptr<Entity> e = p->getEntity();
         if(e != nullptr)
         {
-            m_nnInputs.push_back(p->getEntity()->getNeralNetworkId());
+            m_nnInputs.push_back(p->getEntity()->getNeuralNetworkId());
             m_nnInputs.push_back(p->getDistance() / (double)p->getVisionRange());
         }
         else //if nothing is percepted
@@ -199,9 +199,46 @@ void Animal::mappageInput()
     }
 
     // Memory of the last tick
-    m_nnInputs.push_back(m_speedPercentage/7);
-    m_nnInputs.push_back(m_rotation*5);
     m_nnInputs.push_back((double)m_fear / (double)config::MAX_FEAR);
+
+    // Neuron "is on" something => binary neuron for each type of entity
+    bool isOnCarnivore = false;
+    bool isOnHerbivore = false;
+    bool isOnWater = false;
+    bool isOnMeat = false;
+    bool isOnVegetal = false;
+
+    for (std::weak_ptr<Entity> entity : m_collisionList)
+    {
+        if (shared_ptr<Entity> sharedEntity = entity.lock())
+        {
+            switch(sharedEntity->getTypeId())
+            {
+            case ID_CARNIVORE:
+                isOnCarnivore = true;
+                break;
+            case ID_HERBIVORE:
+                isOnHerbivore = true;
+                break;
+            case ID_WATER:
+                isOnWater = true;
+                break;
+            case ID_MEAT:
+                isOnMeat = true;
+                break;
+            case ID_VEGETAL:
+                isOnVegetal = true;
+                break;
+            default:
+                std::cerr << "entity.getTypeId() returned an invalid id in Animal::mappageInput" << std::endl;
+            }
+        }
+    }
+    m_nnInputs.push_back(isOnCarnivore ? 1 : 0);
+    m_nnInputs.push_back(isOnHerbivore ? 1 : 0);
+    m_nnInputs.push_back(isOnWater ? 1 : 0);
+    m_nnInputs.push_back(isOnMeat ? 1 : 0);
+    m_nnInputs.push_back(isOnVegetal ? 1 : 0);
 }
 
 void Animal::mappageOutput()
