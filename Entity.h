@@ -26,7 +26,7 @@ public:
 
     virtual bool isDead() const =0;
     virtual unsigned int getTypeId() const = 0; ///?
-    virtual int getNeralNetworkId() const = 0;
+    virtual int getNeuralNetworkId() const = 0;
     //setters
     void setCoordinate(double x, double y) {m_coordinate.set(x, y);}
 

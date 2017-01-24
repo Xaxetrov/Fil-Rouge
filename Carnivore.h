@@ -11,7 +11,7 @@ public:
     Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, NeuralNetwork * brain, int mating = 0);
 
     virtual unsigned int getTypeId() const { return ID_CARNIVORE; }
-    virtual int getNeralNetworkId() const { return NN_ID_CARNIVORE; }
+    virtual int getNeuralNetworkId() const { return NN_ID_CARNIVORE; }
 
 protected:
     virtual void tryToEat(std::shared_ptr<Entity> food);

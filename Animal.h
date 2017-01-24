@@ -46,13 +46,13 @@ public:
     bool isDead() const;
     bool isFemale() const;
     virtual unsigned int getTypeId() const { return ID_ANIMAL; }
-    virtual int getNeralNetworkId() const { return NN_ID_ANIMAL; }
+    virtual int getNeuralNetworkId() const { return NN_ID_ANIMAL; }
     std::vector<std::weak_ptr<Entity> > getSubListCollision(unsigned int idEntity);
     std::vector<std::weak_ptr<Entity> > getSubListSolidCollision();
     std::vector<std::weak_ptr<Entity> > getSubListResourceCollision();
     int getCurrentCellX() const;
     int getCurrentCellY() const;
-    unsigned int getGenerationNumber() const { return m_generationNumber; };
+    unsigned int getGenerationNumber() const { return m_generationNumber; }
 
     //setters
     void resetMating();
