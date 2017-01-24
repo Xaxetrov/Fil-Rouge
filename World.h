@@ -98,8 +98,9 @@ private:
     void synchronizedListAndGridOfEntities();
     static void removeEntity(std::list<std::shared_ptr<Entity>>::iterator it);
 
-    static void startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
-    static int playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * entitiesCount, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
+    void startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
+    void playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
+    std::thread playThread(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList);
 
     //Private attributes
     static unsigned m_tickPassed; //How old that world is ?

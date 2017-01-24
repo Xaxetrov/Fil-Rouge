@@ -1,4 +1,6 @@
 *.o
 build/moc_mainwindow.cpp
 build/moc_WorldWidget.cpp
+bin/*
 *.pro.user
+*.autosave

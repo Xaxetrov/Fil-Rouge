@@ -279,9 +279,7 @@ int World::tick()
 
     std::list<std::shared_ptr<Entity>>::iterator it = m_entities.begin();
 
-    std::thread threadStart(startThreads, &it, m_entities.size(), &deadList);
-    //wait for the thread launcher to finish
-    threadStart.join(); // Entity::play is called for each Entity
+    startThreads(&it, m_entities.size(), &deadList); // Entity::play is called for each Entity
 
     makeMoves();
     makeMatings();
@@ -349,13 +347,18 @@ int World::tick(int ticNum)
 
 void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
-  unsigned short nbPlayThreads = config::NB_THREADS; //TODO: check in UI that NB_THREADS > 0
+  unsigned short nbPlayThreads = config::NB_THREADS;
+  if (nbPlayThreads < 1)
+  {
+      nbPlayThreads = 1;
+  }
+
   std::thread threads[nbPlayThreads];
   int numberOfEntitiesWhoHaveAlreadyPlayed = 0;
 
   for(int i = 0; i < nbPlayThreads; i++)
   {
-    threads[i] = std::thread(playAnimals, it, &numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
+    threads[i] = playThread(it, &numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
   }
   for(int i = 0; i < nbPlayThreads; i++)
   {
@@ -363,9 +366,16 @@ void World::startThreads(std::list<std::shared_ptr<Entity>>::iterator * it, int 
   }
 }
 
-int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+std::thread World::playThread(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
 {
-    int entityErrorsNum = 0;
+    return std::thread([=]
+    {
+        playAnimals(it, numberOfEntitiesWhoHaveAlreadyPlayed, nbEntities, deadList);
+    });
+}
+
+void World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * numberOfEntitiesWhoHaveAlreadyPlayed, int nbEntities, std::list<std::list<std::shared_ptr<Entity>>::iterator> * deadList)
+{
 
     while(true)
     {
@@ -390,7 +400,6 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
         {
             //TODO : manage entities errors
             std::cerr << "Entity failed to play" << std::endl;
-            entityErrorsNum++;
         }
 
         if(std::shared_ptr<Animal> animal = std::dynamic_pointer_cast<Animal>(*e))
@@ -437,7 +446,6 @@ int World::playAnimals(std::list<std::shared_ptr<Entity>>::iterator * it, int * 
           World::mutexDeadList.unlock();
         }
     }
-    return 0;
 }
 
 // private methods

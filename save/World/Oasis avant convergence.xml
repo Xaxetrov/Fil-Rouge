@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<World>
+    <x>800</x>
+    <y>800</y>
+    <age>0</age>
+    <Entity type="Vegetal">
+        <x>356.808</x>
+        <y>347.418</y>
+        <radius>50</radius>
+        <quantity>5425</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>446.948</x>
+        <y>424.413</y>
+        <radius>50</radius>
+        <quantity>3282</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>238.498</x>
+        <y>501.408</y>
+        <radius>50</radius>
+        <quantity>10000</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>531.455</x>
+        <y>279.812</y>
+        <radius>50</radius>
+        <quantity>6143</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>212.207</x>
+        <y>343.662</y>
+        <radius>50</radius>
+        <quantity>10000</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>272.3</x>
+        <y>234.742</y>
+        <radius>50</radius>
+        <quantity>3023</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>383.099</x>
+        <y>185.915</y>
+        <radius>50</radius>
+        <quantity>0</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>591.549</x>
+        <y>456.338</y>
+        <radius>50</radius>
+        <quantity>4209</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Water">
+        <x>497.653</x>
+        <y>552.113</y>
+        <radius>50</radius>
+        <quantity>3755</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>356.808</x>
+        <y>546.479</y>
+        <radius>50</radius>
+        <quantity>10000</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+    <Entity type="Vegetal">
+        <x>548.357</x>
+        <y>152.113</y>
+        <radius>50</radius>
+        <quantity>8374</quantity>
+        <maxQuantity>10000</maxQuantity>
+    </Entity>
+</World>
