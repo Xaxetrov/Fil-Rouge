@@ -161,10 +161,11 @@ void WorldWidget::drawEntity(const std::shared_ptr<Entity> e)
            std::vector<std::shared_ptr<Percepted>> percepted = living->getVision()->getPercepted();
            for(std::shared_ptr<Percepted> p:percepted)
            {
-               const std::shared_ptr<Entity> e = p->getEntity();
-               if(e != nullptr)
+               const std::weak_ptr<Entity> weekEntity = p->getEntity();
+               if( ! weekEntity.expired() )
                {
-                   Coordinate c = e->getCoordinate();
+                   const std::shared_ptr<Entity> entity = weekEntity.lock();
+                   Coordinate c = entity->getCoordinate();
                    m_scene->addEllipse(c.getX()-5,c.getY()-5,10,10,QPen(Qt::red));
                }
            }

@@ -153,6 +153,13 @@ void World::removeEntity(std::list<std::shared_ptr<Entity>>::iterator it)
         std::cerr << "entity to be removed not found in grid" << std::endl;
     }
 
+    if(it->use_count() != 1)
+    {
+        std::cerr << "entity to be removed as still active shared pointer (use_count="
+                  << it->use_count() << " before removing entity from main list)"
+                  << std::endl;
+    }
+
     m_entities.erase(it);
 }
 

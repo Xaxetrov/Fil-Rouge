@@ -11,23 +11,28 @@ void VisionSector_NonLiving::see(const std::vector<std::weak_ptr<Entity> > &enti
 {
     scan(entitiesInRangeOfVision, distanceOfEntities);
 
-    double min = -1.0;
-    std::shared_ptr<Percepted> indMin;
+    double currentMinDistance = -1.0;
+    std::shared_ptr<Percepted> currentNearestPercepted;
+
     for(std::shared_ptr<Percepted> p:m_percepted)
     {
-        if(dynamic_pointer_cast<Animal>(p->getEntity()) == nullptr && (min == -1 || p->getDistance() < min))
+        std::weak_ptr<Entity> weakEntity = p->getEntity();
+        if(std::shared_ptr<Entity> entity = weakEntity.lock())
         {
-            indMin = p;
-            min = p->getDistance();
+            if(dynamic_pointer_cast<Animal>(entity) == nullptr && (currentMinDistance == -1.0 || p->getDistance() < currentMinDistance))
+            {
+                currentNearestPercepted = p;
+                currentMinDistance = p->getDistance();
+            }
         }
     }
 
-    if(min == -1.0)
+    if(currentMinDistance == -1.0)
     {
-        m_nearestPercepted->set(nullptr, -1);
+        m_nearestPercepted = std::make_shared<Percepted>(std::weak_ptr<Entity>(), 0.0, getMaxRange()); //set nearestPercepted to null
     }
     else
     {
-        m_nearestPercepted = indMin;
+        m_nearestPercepted = currentNearestPercepted;
     }
 }

@@ -7,19 +7,19 @@
 class Percepted
 {
     public:
-        Percepted(std::shared_ptr<Entity> entity, double distance, int max_range);
+        Percepted(std::weak_ptr<Entity> entity, double distance, int max_range);
         Percepted();
 
-        void set(std::shared_ptr<Entity> entity, double distance);
+        void set(std::weak_ptr<Entity> entity, double distance);
 
-        const std::shared_ptr<Entity> getEntity() const { return m_entity; }
+        const std::weak_ptr<Entity> getEntity() const { return m_entity; }
         double getDistance() const { return m_distance; }
-        int getVisionRange() const {return m_visionRange; }
+        int getVisionRange() const {return m_maxVisionRange; }
 
     private:
-        std::shared_ptr<Entity> m_entity;
+        std::weak_ptr<Entity> m_entity;
         double m_distance;
-        int m_visionRange;
+        int m_maxVisionRange;
 };
 
 #endif // PERCEPTED_H

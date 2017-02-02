@@ -28,11 +28,12 @@ void EntityViewWidget::updateView()
         const std::vector<std::shared_ptr<Percepted>> & percepted = sharedAnimal->getVision()->getPercepted();
         for(unsigned i=0 ; i<NB_VISIONSECTORS_LIVING && i<percepted.size(); i++)
         {
-            if(percepted[i]->getEntity() != nullptr)
+            std::weak_ptr<Entity> weakEntity = percepted[i]->getEntity();
+            if(std::shared_ptr<Entity> entity = weakEntity.lock())
             {
                 QPolygonF filledVision;
                 filledVision = generateVisionSector(VISIONSECTORS_LIVING[i][0],VISIONSECTORS_LIVING[i][1],percepted[i]->getDistance());
-                scene.addPolygon(filledVision,borderPen,colors.getEntityBrush(percepted[i]->getEntity()));
+                scene.addPolygon(filledVision,borderPen,colors.getEntityBrush(entity));
             }
         }
     }

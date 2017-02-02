@@ -185,10 +185,10 @@ void Animal::mappageInput()
     vector<std::shared_ptr<Percepted> > percepted = m_vision->getPercepted();
     for(std::shared_ptr<Percepted> p:percepted)
     {
-        shared_ptr<Entity> e = p->getEntity();
-        if(e != nullptr)
+        std::weak_ptr<Entity> weakEntity = p->getEntity();
+        if( std::shared_ptr<Entity> entity = weakEntity.lock() )
         {
-            m_nnInputs.push_back(p->getEntity()->getNeuralNetworkId());
+            m_nnInputs.push_back(entity->getNeuralNetworkId());
             m_nnInputs.push_back(p->getDistance() / (double)p->getVisionRange());
         }
         else //if nothing is percepted

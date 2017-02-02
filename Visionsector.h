@@ -20,6 +20,7 @@ class VisionSector
 
     protected:
         void scan(const std::vector<std::weak_ptr<Entity> > &entitiesInRangeOfVision, const std::vector<double> &distanceOfEntities);
+        int getMaxRange() const;
 
         std::vector<std::shared_ptr<Percepted>> m_percepted;
         std::shared_ptr<Percepted> m_nearestPercepted;
@@ -31,7 +32,7 @@ class VisionSector
         const double & m_animalAngle;
         double m_angle1;
         double m_angle2;
-        int m_range;
+        int m_maxRange;
 };
 
 #endif // VISIONSECTOR_H
