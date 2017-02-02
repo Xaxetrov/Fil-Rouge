@@ -365,9 +365,12 @@ World SaveManager::loadWorld(QString savingPath)
 
 void SaveManager::parseWorld(World *world, QXmlStreamReader& reader)
 {
-  int xWorld, yWorld;
-  unsigned ageWorld, generationNumberWorld = 0;
-  bool sizeXfound=false, sizeYfound=false;
+  int xWorld = config::WORLD_SIZE_X;
+  int yWorld = config::WORLD_SIZE_Y;
+  unsigned ageWorld = 0;
+  unsigned generationNumberWorld = 0;
+  bool sizeXfound=false;
+  bool sizeYfound=false;
 
   if(reader.tokenType() != QXmlStreamReader::StartElement &&
      reader.name() != "World")
