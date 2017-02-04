@@ -11,7 +11,7 @@ using namespace std;
 VisionSector::VisionSector(const Coordinate &center, const double &animalAngle, const double &angle1, const double &angle2, int range) :
     m_center(center), m_animalAngle(animalAngle), m_angle1(angle1), m_angle2(angle2), m_maxRange(range)
 {
-    m_nearestPercepted = std::make_shared<Percepted>();
+    m_nearestPercepted = std::make_shared<Percepted>(std::weak_ptr<Entity>(), 0.0, m_maxRange);
 }
 
 VisionSector::~VisionSector()
