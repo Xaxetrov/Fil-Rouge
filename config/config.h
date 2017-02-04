@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 //comment to disable Intel IPP function
-#define USE_INTEL_IPP
+//#define USE_INTEL_IPP
 
 // General constants
 const double PI =  3.1415926535897932;
