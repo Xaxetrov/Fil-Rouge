@@ -46,7 +46,8 @@ void ParametersWidget::showEvent( QShowEvent* event ) {
     ui->animalMaxSpeed->setText(QString::number(config::MAX_SPEED));
     ui->maxHunger->setText(QString::number(config::MAX_HUNGER));
     ui->maxFear->setText(QString::number(config::MAX_FEAR));
-    ui->maxMating->setText(QString::number(config::MAX_MATING));
+    ui->maxMatingHerbivore->setText(QString::number(config::MAX_MATING_HERBIVORE));
+    ui->maxMatingCarnivore->setText(QString::number(config::MAX_MATING_CARNIVORE));
     ui->defaultEnergy->setText(QString::number(config::DEFAULT_ENERGY));
     ui->attackAngle->setText(QString::number(config::MAX_ATTACK_ANGLE));
     ui->maxHealth->setText(QString::number(config::MAX_HEALTH));
@@ -102,7 +103,6 @@ void ParametersWidget::updateAnimalsParam()
   config::MAX_SPEED = ui->animalMaxSpeed->text().toDouble();
   config::MAX_HUNGER = ui->maxHunger->text().toDouble();
   config::MAX_FEAR = ui->maxFear->text().toDouble();
-  config::MAX_MATING = ui->maxMating->text().toDouble();
   config::DEFAULT_ENERGY = ui->defaultEnergy->text().toDouble();
   config::MAX_ATTACK_ANGLE = ui->attackAngle->text().toDouble();
   config::MAX_HEALTH = ui->maxHealth->text().toDouble();
@@ -116,6 +116,7 @@ void ParametersWidget::updateAnimalsParam()
 void ParametersWidget::updateHerbivoresParam()
 {
   config::FATNESS_HERBIVORE = ui->herbivoreFatnessEvolution->text().toDouble();
+  config::MAX_MATING_HERBIVORE = ui->maxMatingHerbivore->text().toDouble();
   config::ATTACK_HERBIVORE = ui->herbivoreAttack->text().toDouble();
 }
 
@@ -123,6 +124,7 @@ void ParametersWidget::updateHerbivoresParam()
 void ParametersWidget::updateCarnivoresParam()
 {
   config::FATNESS_CARNIVORE = ui->carnivoreFatnessEvolution->text().toDouble();
+  config::MAX_MATING_CARNIVORE = ui->maxMatingCarnivore->text().toDouble();
   config::ATTACK_CARNIVORE = ui->carnivoreAttack->text().toDouble();
 }
 

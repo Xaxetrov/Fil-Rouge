@@ -14,7 +14,7 @@
    <string>Parameters</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>4</number>
   </property>
   <widget class="QWidget" name="tab">
    <attribute name="title">
@@ -510,8 +510,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>363</width>
-         <height>576</height>
+         <width>356</width>
+         <height>598</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -719,26 +719,6 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>Max mating</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="maxMating">
-             <property name="maximumSize">
-              <size>
-               <width>100</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
         </item>
@@ -845,7 +825,7 @@
     <item>
      <layout class="QFormLayout" name="formLayout_8">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_38">
+       <widget class="QLabel" name="label_381">
         <property name="text">
          <string>Fatness evolution</string>
         </property>
@@ -865,13 +845,33 @@
        </widget>
       </item>
       <item row="1" column="0">
+       <widget class="QLabel" name="label_38">
+        <property name="text">
+         <string>Max mating</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="maxMatingHerbivore">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QLabel" name="label_30">
         <property name="text">
          <string>Attack</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QLineEdit" name="herbivoreAttack">
         <property name="maximumSize">
          <size>
@@ -946,7 +946,7 @@
     <item>
      <layout class="QFormLayout" name="formLayout_12">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_37">
+       <widget class="QLabel" name="label_371">
         <property name="text">
          <string>Fatness evolution</string>
         </property>
@@ -966,13 +966,33 @@
        </widget>
       </item>
       <item row="1" column="0">
+       <widget class="QLabel" name="label_370">
+        <property name="text">
+         <string>Max mating</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="maxMatingCarnivore">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QLabel" name="label_20">
         <property name="text">
          <string>Attack</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <widget class="QLineEdit" name="carnivoreAttack">
         <property name="maximumSize">
          <size>

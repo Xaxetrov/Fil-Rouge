@@ -48,8 +48,8 @@ const double VISIONSECTORS_NONLIVING[NB_VISIONSECTORS_NONLIVING][3] = {
 };
 
 // Neural network
-const unsigned int NB_LAYERS = 4;
-const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4+3, 16, 12, 3};
+const unsigned int NB_LAYERS = 3;
+const unsigned int LAYER_SIZES[NB_LAYERS] = {NB_VISIONSECTORS_LIVING*2+NB_VISIONSECTORS_NONLIVING*2+4+3, 3, 3};
 
 // Reproduction
 #define FEED_WORLD_WITH_CHILD_OF_CHAMPIONS
@@ -109,7 +109,8 @@ public:
   static unsigned int MAX_THIRST;
   static unsigned int MAX_SCORE;
   static int MAX_FEAR;
-  static unsigned int MAX_MATING;
+  static unsigned int MAX_MATING_HERBIVORE;
+  static unsigned int MAX_MATING_CARNIVORE;
   static unsigned int MAX_CHILD_PER_ANIMAL;
   static unsigned int DEFAULT_HUNGER;
   static unsigned int DEFAULT_THIRST;

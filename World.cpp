@@ -137,25 +137,13 @@ void World::addEntity(std::shared_ptr<Entity> entity)
     m_gridOfEntities[entity->getX() / m_cellSizeX][entity->getY() / m_cellSizeY].push_back(entity);
 }
 
-void World::feedWithRandomAnimal(unsigned short numberOfEntityToAdd)
-{
-    for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
-    {
-      int x = rand() % config::WORLD_SIZE_X;
-      int y = rand() % config::WORLD_SIZE_Y;
-      std::shared_ptr<Animal> animal(std::make_shared<Animal>(x, y, config::MAX_SPEED, config::ATTACK_ANIMAL, config::DEFAULT_ENERGY, 0, this));
-      animal->turn( (double)(rand()%628)/100.0);
-      addEntity(animal);
-    }
-}
-
 void World::feedWithRandomHerbivore(unsigned short numberOfEntityToAdd)
 {
     for(unsigned short i = 0; i < numberOfEntityToAdd; i++)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, 0, this));
+      std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, config::MAX_MATING_HERBIVORE, 0, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -186,7 +174,7 @@ void World::feedWithChildOfChampionHerbivore(unsigned short numberOfEntityToAdd)
               //mixe them up
               NeuralNetwork *nn = new NeuralNetwork(n1,n2);
               //make a new Herbivore from that brain
-              std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, 0, this,nn,config::MAX_MATING));
+              std::shared_ptr<Herbivore> animal(std::make_shared<Herbivore>(x, y, config::MAX_SPEED, config::ATTACK_HERBIVORE, config::DEFAULT_ENERGY, config::MAX_MATING_HERBIVORE, 0, this,nn,0));
               animal->turn( (double)(rand()%628)/100.0);
               addEntity(animal);
         }
@@ -203,7 +191,7 @@ void World::feedWithRandomCarnivore(unsigned short numberOfEntityToAdd)
     {
       int x = rand() % config::WORLD_SIZE_X;
       int y = rand() % config::WORLD_SIZE_Y;
-      std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, 0, this));
+      std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, config::MAX_MATING_CARNIVORE, 0, this));
       animal->turn( (double)(rand()%628)/100.0);
       addEntity(animal);
     }
@@ -234,7 +222,7 @@ void World::feedWithChildOfChampionCarnivore(unsigned short numberOfEntityToAdd)
             //mixe them up
             NeuralNetwork *nn = new NeuralNetwork(n1,n2);
             //make a new Carnivore from that brain
-            std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, 0, this,nn,config::MAX_MATING));
+            std::shared_ptr<Carnivore> animal(std::make_shared<Carnivore>(x, y, config::MAX_SPEED, config::ATTACK_CARNIVORE, config::DEFAULT_ENERGY, config::MAX_MATING_CARNIVORE, 0, this,nn,0));
             animal->turn( (double)(rand()%628)/100.0);
             addEntity(animal);
         }

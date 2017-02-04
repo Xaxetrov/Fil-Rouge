@@ -2,17 +2,17 @@
 #include "Meat.h"
 
 
-Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world):
-    Animal(x,y,maxSpeed,damage,energy,generationNumber,world)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World *world):
+    Animal(x,y,maxSpeed,damage,energy,maxMating,generationNumber,world)
 {
 }
-Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world, bool sex):
-    Animal(x,y,maxSpeed,damage,energy,generationNumber,world, sex)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World *world, bool sex):
+    Animal(x,y,maxSpeed,damage,energy,maxMating,generationNumber,world, sex)
 {
 }
 
-Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World *world, NeuralNetwork * brain, int mating):
-    Animal(x,y,maxSpeed,damage,energy,generationNumber,world, brain, mating)
+Carnivore::Carnivore(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World *world, NeuralNetwork * brain, int mating):
+    Animal(x,y,maxSpeed,damage,energy,maxMating,generationNumber,world, brain, mating)
 {
 }
 
@@ -47,7 +47,7 @@ bool Carnivore::tryToMate(std::shared_ptr<Entity> carnivoreEntity)
        if(m_female && !carnivoreToMate->isFemale())
        {
            //both carnivore are ready to mate
-          if(m_mating == config::MAX_MATING && carnivoreToMate->getMating() == config::MAX_MATING)
+          if(m_mating >= m_maxMating && carnivoreToMate->getMating() >= carnivoreToMate->getMaxMating())
           {
               //this carnivore (female) is neither hungry nor thirsty
               if(m_thirst < (config::MAX_THIRST*3/4) && m_hunger < (config::MAX_HUNGER*3/4))

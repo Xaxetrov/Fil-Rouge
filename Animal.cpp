@@ -11,12 +11,13 @@
 
 using namespace std;
 
-Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world) :
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World * world) :
     Solid(x, y, config::INITIAL_RADIUS),
     m_health(config::MAX_HEALTH),
     m_hunger(0),
     m_thirst(0),
     m_mating(0),
+    m_maxMating(maxMating),
     m_speed(0),
     m_energy(energy),
     m_generationNumber(generationNumber),
@@ -45,13 +46,13 @@ Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, u
     setCreationDate(world->getWorldAge());
 }
 
-Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, bool sex) : Animal(x, y, maxSpeed, damage, energy, generationNumber, world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World * world, bool sex) : Animal(x, y, maxSpeed, damage, energy, maxMating, generationNumber, world)
 {
     m_female = sex;
 }
 
-Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, NeuralNetwork * brain, unsigned int mating) :
-    Animal(x,y,maxSpeed,damage,energy,generationNumber,world)
+Animal::Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World * world, NeuralNetwork * brain, unsigned int mating) :
+    Animal(x,y,maxSpeed,damage,energy,maxMating,generationNumber,world)
 {
     m_mating = mating;
     m_brain = brain;
@@ -104,7 +105,7 @@ int Animal::play()
       m_health--;
     }
 
-    if(m_mating != config::MAX_MATING)
+    if(m_mating != m_maxMating)
     {
       m_mating++;
     }
@@ -179,7 +180,7 @@ void Animal::mappageInput()
     m_nnInputs.push_back((double)m_hunger / (double)config::MAX_HUNGER);
     m_nnInputs.push_back((double)m_thirst / (double)config::MAX_THIRST);
     m_nnInputs.push_back((double)m_health / (double)config::MAX_HEALTH);
-    m_nnInputs.push_back((double)m_mating / (double)config::MAX_MATING);
+    m_nnInputs.push_back((double)m_mating / (double)m_maxMating);
 
     vector<std::shared_ptr<Percepted> > percepted = m_vision->getPercepted();
     for(std::shared_ptr<Percepted> p:percepted)
@@ -335,7 +336,7 @@ bool Animal::tryToMate(std::shared_ptr<Entity> animalEntity)
        // this Animal is the female
        if(m_female && !animalToMate->isFemale())
        {
-          if(m_mating == config::MAX_MATING && animalToMate->getMating() == config::MAX_MATING)
+          if(m_mating >= m_maxMating && animalToMate->getMating() == animalToMate->getMaxMating())
           {
               World::mutexMateList.lock();
               m_world->updateMateList(this, animalToMate);
@@ -507,6 +508,11 @@ int Animal::getFear() const
 unsigned int Animal::getMating() const
 {
    return m_mating;
+}
+
+unsigned int Animal::getMaxMating() const
+{
+   return m_maxMating;
 }
 
 unsigned int Animal::getEnergy() const

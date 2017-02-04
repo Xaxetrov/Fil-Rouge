@@ -21,9 +21,9 @@ class Animal : public Solid, public std::enable_shared_from_this<Animal>
 {
 public:
     //ctor, dtor
-    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world);
-    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, bool sex);
-    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int generationNumber, World * world, NeuralNetwork * brain, unsigned int mating = 0);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World * world);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World * world, bool sex);
+    Animal(double x, double y, int maxSpeed, double damage, double energy, unsigned int maxMating, unsigned int generationNumber, World * world, NeuralNetwork * brain, unsigned int mating = 0);
     ~Animal();
 
     //getters
@@ -34,6 +34,7 @@ public:
     unsigned int getThirst() const;
     int getFear() const;
     unsigned int getMating() const;
+    unsigned int getMaxMating() const;
     unsigned int getEnergy() const;
     virtual double getScore() const;
     double getSpeed() const;
@@ -111,6 +112,7 @@ protected:
     unsigned int m_thirst;
     bool m_female;
     unsigned int m_mating;
+    unsigned int m_maxMating;
     double m_speed;
     double m_energy;
     double m_score;
@@ -185,7 +187,7 @@ void Animal::reproduce(std::shared_ptr<Living> father)
         double distY = baseRadius*sin(baseAngle);
         double magnitude = sqrt(distX*distX + distY*distY);
         double normalizeX = distX/magnitude;
-        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::DEFAULT_ENERGY, getGenerationNumber() + 1, m_world, childBrain) );
+        std::shared_ptr<Living> animal(std::make_shared<Living>(getX()+distX, getY()-distY, 50, father->getDamage(), config::DEFAULT_ENERGY, father->getMaxMating(), getGenerationNumber() + 1, m_world, childBrain) );
         double angleToTurn = acos(normalizeX);
         if(distY > 0) angleToTurn *= -1;
         animal->turn( angleToTurn + distributionReal(generator));
