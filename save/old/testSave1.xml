@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NeuralNetwork>
+    <NeuronLayer id="0">
+        <inputsNum>3</inputsNum>
+    </NeuronLayer>
+    <NeuronLayer id="1">
+        <Neuron id="0">
+            <weights>0.1842 0.9685 0.1348 </weights>
+        </Neuron>
+        <Neuron id="1">
+            <weights>0.8462 0.7894 0.3214 </weights>
+        </Neuron>
+        <Neuron id="2">
+            <weights>0.9581 0.1685 0.3692 </weights>
+        </Neuron>
+        <Neuron id="3">
+            <weights>0.1654 0.9632 0.1475 </weights>
+        </Neuron>
+        <Neuron id="4">
+            <weights>0.1685 0.9748 0.6251 </weights>
+        </Neuron>
+    </NeuronLayer>
+    <NeuronLayer id="2">
+        <Neuron id="0">
+            <weights>0.1385 0.1147 0.2568 0.1347 0.9632 </weights>
+        </Neuron>
+        <Neuron id="1">
+            <weights>0.1954 0.1384 0.3695 0.1348 0.1345 </weights>
+        </Neuron>
+        <Neuron id="2">
+            <weights>0.7412 0.3285 0.6392 0.1234 0.1387 </weights>
+        </Neuron>
+        <Neuron id="3">
+            <weights>0.7492 0.9548 0.1648 0.9648 0.1237 </weights>
+        </Neuron>
+    </NeuronLayer>
+</NeuralNetwork>

@@ -83,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //custom load for debug
 void MainWindow::loadWorld()
 {
-    const QString savingPath("../save/World/world.xml");
+    const QString savingPath("../save/small.xml");
     world = SaveManager::loadWorld(savingPath);
 
     //random generator
