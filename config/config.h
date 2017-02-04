@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 //comment to disable Intel IPP function
-//#define USE_INTEL_IPP
+#define USE_INTEL_IPP
 
 // General constants
 const double PI =  3.1415926535897932;
@@ -13,7 +13,7 @@ const int NN_ID_HERBIVORE = 1;
 const int NN_ID_CARNIVORE = -1;
 const int NN_ID_VEGETAL = 1;
 const int NN_ID_WATER = -1;
-const int NN_ID_MEAT = 0;
+const int NN_ID_MEAT = 1;
 
 // Entities id
 const unsigned int ID_ANIMAL = 20;

@@ -185,15 +185,26 @@ void Animal::mappageInput()
     for(std::shared_ptr<Percepted> p:percepted)
     {
         shared_ptr<Entity> e = p->getEntity();
-        if(e != nullptr)
-        {
-            m_nnInputs.push_back(p->getEntity()->getNeralNetworkId());
-            m_nnInputs.push_back(p->getDistance() / (double)p->getVisionRange());
+        if(e != nullptr) {
+            double typeInputVal = (double)p->getEntity()->getNeralNetworkId();
+            // Simplify input: remove unuseful information
+            if((getTypeId() == ID_HERBIVORE && p->getEntity()->getTypeId() == ID_MEAT)
+              || (getTypeId() == ID_CARNIVORE && p->getEntity()->getTypeId() == ID_VEGETAL)) {
+                typeInputVal = 0.0;
+            }
+            // Ponderate input with quantity
+            if(shared_ptr<Resource> res = dynamic_pointer_cast<Resource>(p->getEntity()))
+            {
+              typeInputVal *= (double)(res->getQuantity()) / (double)(res->getMaxQuantity());
+            }
+
+            m_nnInputs.push_back(typeInputVal);
+            m_nnInputs.push_back(p->getDistance() == -1 || typeInputVal == 0.0 ? 0 : ((double)p->getVisionRange() - p->getDistance()) / (double)p->getVisionRange());
         }
         else //if nothing is percepted
         {
             m_nnInputs.push_back(0);
-            m_nnInputs.push_back(1);//if nothing is seen the max distance is send
+            m_nnInputs.push_back(0);
         }
     }
 
