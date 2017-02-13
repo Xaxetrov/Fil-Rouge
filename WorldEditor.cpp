@@ -1,6 +1,7 @@
 #include "WorldEditor.h"
 
 #include <QWheelEvent>
+#include <cmath>
 
 #include "Water.h"
 #include "Vegetal.h"
